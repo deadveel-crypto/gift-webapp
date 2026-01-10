@@ -1,37 +1,18 @@
 const tg = window.Telegram?.WebApp || null;
 
-// ВАЖНО: впиши username бота БЕЗ @, иначе fallback не сможет открыть бота
-// пример: const BOT_USERNAME = "my_gift_shop_bot";
+// ВПИШИ username бота без @, например: "my_gift_shop_bot"
 const BOT_USERNAME = "giftsfreeall399_bot";
 
-const grid = document.getElementById("grid");
-const statusEl = document.getElementById("status");
-const closeBtn = document.getElementById("closeBtn");
-
-function setStatus(text) {
-  if (statusEl) statusEl.textContent = text;
-}
-
-function show(text) {
-  if (tg && typeof tg.showAlert === "function") tg.showAlert(text);
-  else alert(text);
-}
-
-function initDataLen() {
-  return (tg?.initData || "").length;
-}
-
-function isRealWebApp() {
-  return !!(tg && typeof tg.sendData === "function" && initDataLen() > 0);
-}
-
 const items = [
-  { id: "rose",    title: "Букет роз",       desc: "Выдача админом после покупки.", price: 25, img: "https://picsum.photos/seed/rose/600/400" },
-  { id: "bear",    title: "Плюшевый мишка",  desc: "Выдача админом после покупки.", price: 40, img: "https://picsum.photos/seed/bear/600/400" },
-  { id: "choco",   title: "Набор шоколада",  desc: "Выдача админом после покупки.", price: 15, img: "https://picsum.photos/seed/choco/600/400" },
-  { id: "perfume", title: "Парфюм",          desc: "Выдача админом после покупки.", price: 70, img: "https://picsum.photos/seed/perfume/600/400" },
-  { id: "giftbox", title: "Подарочный бокс", desc: "Выдача админом после покупки.", price: 55, img: "https://picsum.photos/seed/giftbox/600/400" },
+  { id: "rose", title: "Букет роз", desc: "Выдача админом после покупки.", price: 25, img: "./assets/img/rose.jpg" },
+  { id: "bear", title: "Плюшевый мишка", desc: "Выдача админом после покупки.", price: 40, img: "./assets/img/bear.jpg" },
+  { id: "choco", title: "Набор шоколада", desc: "Выдача админом после покупки.", price: 15, img: "./assets/img/choco.jpg" },
+  { id: "perfume", title: "Парфюм", desc: "Выдача админом после покупки.", price: 70, img: "./assets/img/perfume.jpg" },
+  { id: "giftbox", title: "Подарочный бокс", desc: "Выдача админом после покупки.", price: 55, img: "./assets/img/giftbox.jpg" },
 ];
+
+const grid = document.getElementById("grid");
+const closeBtn = document.getElementById("closeBtn");
 
 function render() {
   grid.innerHTML = items.map(it => `
@@ -49,65 +30,27 @@ function render() {
   `).join("");
 
   document.querySelectorAll(".buy-btn").forEach(btn => {
-    btn.addEventListener("click", () => onBuy(btn.dataset.id));
+    btn.addEventListener("click", () => buy(btn.dataset.id));
   });
 }
 
-function openFallback(itemId) {
-  if (!tg || !BOT_USERNAME) {
-    show("Fallback не настроен: проверь BOT_USERNAME в app.js");
-    return;
+function buy(itemId) {
+  const url = `https://t.me/${BOT_USERNAME}?start=buy_${encodeURIComponent(itemId)}`;
+
+  // Открываем бота. Telegram сам покажет инвойс, который бот пришлёт по /start параметру
+  if (tg && typeof tg.openTelegramLink === "function") {
+    tg.openTelegramLink(url);
+    // Можно закрыть витрину сразу после перехода:
+    setTimeout(() => { try { tg.close(); } catch (_) { } }, 150);
+  } else {
+    // Если открыли не в WebApp (на всякий случай)
+    window.location.href = url;
   }
-  tg.openTelegramLink(`https://t.me/${BOT_USERNAME}?start=buy_${encodeURIComponent(itemId)}`);
-}
-
-function onBuy(itemId) {
-  const len = initDataLen();
-  setStatus(`Клик: ${itemId}. initData length=${len}`);
-
-  if (!tg) {
-    show("Открой витрину через Telegram-бота (WebApp). Сейчас Telegram.WebApp недоступен.");
-    return;
-  }
-
-  // 1) Пытаемся нормальный путь sendData
-  if (isRealWebApp()) {
-    try {
-      tg.sendData(JSON.stringify({ action: "buy", item_id: itemId }));
-      setStatus("sendData отправлен. Если бот не прислал счёт — открою fallback…");
-
-      // 2) Если на твоём клиенте sendData не доставляется — fallback спасёт
-      setTimeout(() => {
-        if (typeof tg.showConfirm === "function") {
-          tg.showConfirm("Счёт не появился? Открыть оформление в боте?", (ok) => {
-            if (ok) openFallback(itemId);
-          });
-        } else {
-          // если confirm недоступен — просто откроем fallback
-          openFallback(itemId);
-        }
-      }, 1200);
-
-      return;
-    } catch (e) {
-      show("sendData ошибка: " + (e?.message || e));
-      setStatus("sendData ошибка. Открываю fallback…");
-      openFallback(itemId);
-      return;
-    }
-  }
-
-  // initData пустой => домен не разрешён/не WebApp-контекст => сразу fallback
-  show("initData пустой. Проверь /setdomain в BotFather. Открываю оформление в боте…");
-  openFallback(itemId);
 }
 
 (function init() {
   if (tg) {
-    try { tg.ready(); tg.expand(); } catch (_) {}
-    setStatus(`Telegram WebApp найден. initData length=${initDataLen()}`);
-  } else {
-    setStatus("Открыто вне Telegram WebApp.");
+    try { tg.ready(); tg.expand(); } catch (_) { }
   }
 
   render();
