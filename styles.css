@@ -1,16 +1,96 @@
-body{margin:0;font-family:system-ui,Segoe UI,Roboto,Arial;background:#0b1220;color:#fff}
-.app{max-width:980px;margin:0 auto;padding:16px}
-.header{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;
-  padding:14px;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:rgba(255,255,255,.06)}
-.subtitle{margin:6px 0 0;color:rgba(255,255,255,.65);font-size:13px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:14px}
-.card{border:1px solid rgba(255,255,255,.12);border-radius:16px;overflow:hidden;background:rgba(255,255,255,.06)}
-.card-img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block}
-.card-body{padding:12px 12px 14px}
-.card-title{margin:0 0 6px}
-.card-desc{margin:0 0 10px;color:rgba(255,255,255,.65);font-size:13px}
-.row{display:flex;justify-content:space-between;align-items:center;gap:10px}
-.btn{border:0;border-radius:12px;padding:10px 12px;font-weight:700;cursor:pointer;background:#7c5cff;color:#fff}
-.btn-ghost{background:transparent;border:1px solid rgba(255,255,255,.18)}
-.footer{margin-top:14px;padding:12px 14px;border:1px solid rgba(255,255,255,.12);border-radius:14px;
-  background:rgba(255,255,255,.05);color:rgba(255,255,255,.75);font-size:13px}
+body {
+    margin: 0;
+    font-family: system-ui, Segoe UI, Roboto, Arial;
+    background: #0b1220;
+    color: #fff
+}
+
+.app {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 16px
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 14px;
+    border: 1px solid rgba(255, 255, 255, .12);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, .06)
+}
+
+.subtitle {
+    margin: 6px 0 0;
+    color: rgba(255, 255, 255, .65);
+    font-size: 13px
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 14px;
+    margin-top: 14px
+}
+
+.card {
+    border: 1px solid rgba(255, 255, 255, .12);
+    border-radius: 16px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, .06)
+}
+
+.card-img {
+    width: 100%;
+    aspect-ratio: 3/2;
+    object-fit: cover;
+    display: block
+}
+
+.card-body {
+    padding: 12px 12px 14px
+}
+
+.card-title {
+    margin: 0 0 6px
+}
+
+.card-desc {
+    margin: 0 0 10px;
+    color: rgba(255, 255, 255, .65);
+    font-size: 13px
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px
+}
+
+.btn {
+    border: 0;
+    border-radius: 12px;
+    padding: 10px 12px;
+    font-weight: 700;
+    cursor: pointer;
+    background: #7c5cff;
+    color: #fff
+}
+
+.btn-ghost {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, .18)
+}
+
+.footer {
+    margin-top: 14px;
+    padding: 12px 14px;
+    border: 1px solid rgba(255, 255, 255, .12);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, .05);
+    color: rgba(255, 255, 255, .75);
+    font-size: 13px
+}
