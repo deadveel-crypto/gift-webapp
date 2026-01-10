@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Маркет подарков</title>
+    <link rel="stylesheet" href="./styles.css" />
+</head>
+
+<body>
+    <div class="app">
+        <header class="header">
+            <div>
+                <h1>Маркет подарков</h1>
+                <p class="subtitle">Оплата через Telegram Stars • выдача админом после покупки</p>
+            </div>
+            <button id="closeBtn" class="btn btn-ghost">Закрыть</button>
+        </header>
+
+        <main>
+            <section class="grid" id="grid"></section>
+        </main>
+
+        <footer class="footer">
+            <div class="hint">
+                Нажимая “Купить”, вы перейдёте к оплате в Telegram Stars.
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="./app.js"></script>
+</body>
+
+</html>
