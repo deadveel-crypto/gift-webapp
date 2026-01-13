@@ -3,333 +3,1080 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TG Gift Shop</title>
+    <title>Divine Shop — Premium Gifts</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         * { font-family: 'Inter', sans-serif; }
 
-        /* ========== ТЕМА 1: Космос (по умолчанию) ========== */
-        body.theme-space { background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%); }
-        .theme-space .glass-card { background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .theme-space .gift-card { background: linear-gradient(145deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.15); }
-        .theme-space .gift-card:hover { box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4); border-color: rgba(255, 255, 255, 0.3); }
-        .theme-space .buy-btn { background: linear-gradient(135deg, #0088cc 0%, #00aaff 100%); }
-        .theme-space .buy-btn:hover { box-shadow: 0 10px 30px rgba(0, 136, 204, 0.5); }
-        .theme-space .hero-text { background: linear-gradient(to right, #ffffff, #a5c4ff, #00d4ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .theme-space .star { background: white; }
+        /* ========== ПРЕМИУМ АНИМАЦИИ ========== */
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
 
-        /* ========== ТЕМА 2: Закат ========== */
-        body.theme-sunset { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #533483 100%); }
-        .theme-sunset .glass-card { background: rgba(255, 100, 100, 0.08); backdrop-filter: blur(20px); border: 1px solid rgba(255, 150, 150, 0.15); }
-        .theme-sunset .gift-card { background: linear-gradient(145deg, rgba(255,100,150,0.12) 0%, rgba(255,50,100,0.05) 100%); backdrop-filter: blur(10px); border: 1px solid rgba(255, 150, 150, 0.2); }
-        .theme-sunset .gift-card:hover { box-shadow: 0 30px 60px rgba(255, 100, 150, 0.2); border-color: rgba(255, 150, 150, 0.4); }
-        .theme-sunset .buy-btn { background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%); }
-        .theme-sunset .buy-btn:hover { box-shadow: 0 10px 30px rgba(255, 107, 107, 0.5); }
-        .theme-sunset .hero-text { background: linear-gradient(to right, #ffffff, #ffb8b8, #ffd93d); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .theme-sunset .category-btn:hover, .theme-sunset .category-btn.active { background: rgba(255, 107, 107, 0.3); border-color: #ff6b6b; }
-        .theme-sunset .sale-badge { background: linear-gradient(135deg, #ff9a56 0%, #ff6b6b 100%); }
-        .theme-sunset .star { background: #ffd93d; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(2deg); }
+        }
 
-        /* ========== ТЕМА 3: Изумруд ========== */
-        body.theme-emerald { background: linear-gradient(135deg, #0d1b2a 0%, #1b3a4b 30%, #065a60 60%, #0b525b 100%); }
-        .theme-emerald .glass-card { background: rgba(100, 255, 200, 0.08); backdrop-filter: blur(20px); border: 1px solid rgba(100, 255, 200, 0.15); }
-        .theme-emerald .gift-card { background: linear-gradient(145deg, rgba(100,255,200,0.1) 0%, rgba(50,200,150,0.05) 100%); backdrop-filter: blur(10px); border: 1px solid rgba(100, 255, 200, 0.2); }
-        .theme-emerald .gift-card:hover { box-shadow: 0 30px 60px rgba(100, 255, 200, 0.15); border-color: rgba(100, 255, 200, 0.4); }
-        .theme-emerald .buy-btn { background: linear-gradient(135deg, #00b894 0%, #00cec9 100%); }
-        .theme-emerald .buy-btn:hover { box-shadow: 0 10px 30px rgba(0, 184, 148, 0.5); }
-        .theme-emerald .hero-text { background: linear-gradient(to right, #ffffff, #81ecec, #00b894); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .theme-emerald .category-btn:hover, .theme-emerald .category-btn.active { background: rgba(0, 184, 148, 0.3); border-color: #00b894; }
-        .theme-emerald .sale-badge { background: linear-gradient(135deg, #00b894 0%, #55efc4 100%); }
-        .theme-emerald .star { background: #55efc4; }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(139, 92, 246, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(139, 92, 246, 0.6), 0 0 60px rgba(139, 92, 246, 0.3); }
+        }
 
-        /* ========== Общие стили ========== */
-        body { min-height: 100vh; }
-        .gift-card { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .gift-card:hover { transform: translateY(-10px) scale(1.02); }
-        .buy-btn { transition: all 0.3s ease; position: relative; overflow: hidden; }
-        .buy-btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition: 0.5s; }
-        .buy-btn:hover::before { left: 100%; }
-        .buy-btn:hover { transform: scale(1.05); }
-        .gift-emoji { font-size: 4rem; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3)); animation: float 3s ease-in-out infinite; }
-        .gift-image { width: 80px; height: 80px; object-fit: contain; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3)); animation: float 3s ease-in-out infinite; }
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
 
-        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+        @keyframes card-enter {
+            0% { opacity: 0; transform: translateY(30px) scale(0.95); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
 
-        .sale-badge { background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%); animation: pulse 2s infinite; }
-        @keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(255, 65, 108, 0.4); } 50% { box-shadow: 0 0 20px 5px rgba(255, 65, 108, 0.2); } }
+        @keyframes ripple {
+            0% { transform: scale(0); opacity: 0.6; }
+            100% { transform: scale(4); opacity: 0; }
+        }
 
-        .stars-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; z-index: 0; }
-        .star { position: absolute; width: 3px; height: 3px; border-radius: 50%; opacity: 0.5; animation: twinkle 2s infinite; }
-        @keyframes twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+        @keyframes bounce-in {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); opacity: 1; }
+        }
 
-        .category-btn { transition: all 0.3s ease; }
-        .category-btn:hover, .category-btn.active { background: rgba(0, 136, 204, 0.3); border-color: #0088cc; }
+        @keyframes slide-up {
+            0% { transform: translateY(100%); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
 
-        .price-stars { color: #ffd700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
-        .old-price { color: #888; text-decoration: line-through; }
-        .discount-badge { background: rgba(255, 65, 108, 0.3); color: #ff6b8a; }
+        @keyframes glow-pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes rotate-slow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes text-shine {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+
+        /* ========== БАЗОВЫЕ СТИЛИ ========== */
+        body {
+            min-height: 100vh;
+            background: #0a0a0f;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .bg-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.5;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .bg-orb-1 {
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+            top: -100px;
+            right: -100px;
+            animation-delay: 0s;
+        }
+
+        .bg-orb-2 {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #ec4899, #8b5cf6);
+            bottom: -50px;
+            left: -50px;
+            animation-delay: -3s;
+        }
+
+        .bg-orb-3 {
+            width: 250px;
+            height: 250px;
+            background: linear-gradient(135deg, #06b6d4, #10b981);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: -5s;
+        }
+
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+
+        /* ========== HEADER ========== */
+        .header-premium {
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+
+        .logo-container {
+            position: relative;
+        }
+
+        .logo-glow {
+            position: absolute;
+            inset: -4px;
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+            border-radius: 16px;
+            opacity: 0.5;
+            filter: blur(10px);
+            animation: glow-pulse 3s ease-in-out infinite;
+        }
+
+        .logo-img {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            object-fit: cover;
+            position: relative;
+            z-index: 1;
+            border: 2px solid rgba(255,255,255,0.1);
+        }
+
+        .brand-text {
+            background: linear-gradient(135deg, #ffffff 0%, #a78bfa 50%, #06b6d4 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: text-shine 4s linear infinite;
+        }
+
+        /* ========== HERO SECTION ========== */
+        .hero-title {
+            background: linear-gradient(135deg, #ffffff 0%, #c4b5fd 30%, #8b5cf6 60%, #06b6d4 100%);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient-shift 6s ease infinite;
+        }
+
+        /* ========== КАТЕГОРИИ ========== */
+        .category-pill {
+            position: relative;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 50px;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.6);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .category-pill::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .category-pill:hover {
+            border-color: rgba(139, 92, 246, 0.3);
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        .category-pill.active {
+            border-color: transparent;
+            color: #ffffff;
+        }
+
+        .category-pill.active::before {
+            opacity: 1;
+        }
+
+        .category-pill span {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ========== GIFT CARDS ========== */
+        .gifts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .gift-card {
+            position: relative;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 24px;
+            padding: 24px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: card-enter 0.6s ease backwards;
+            overflow: hidden;
+        }
+
+        .gift-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255,255,255,0.05),
+                transparent
+            );
+            transition: left 0.5s ease;
+        }
+
+        .gift-card:hover::before {
+            left: 100%;
+        }
+
+        .gift-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(139, 92, 246, 0.3);
+            box-shadow: 
+                0 20px 40px rgba(0,0,0,0.3),
+                0 0 60px rgba(139, 92, 246, 0.1);
+        }
+
+        .gift-card:nth-child(1) { animation-delay: 0.05s; }
+        .gift-card:nth-child(2) { animation-delay: 0.1s; }
+        .gift-card:nth-child(3) { animation-delay: 0.15s; }
+        .gift-card:nth-child(4) { animation-delay: 0.2s; }
+        .gift-card:nth-child(5) { animation-delay: 0.25s; }
+        .gift-card:nth-child(6) { animation-delay: 0.3s; }
+        .gift-card:nth-child(7) { animation-delay: 0.35s; }
+        .gift-card:nth-child(8) { animation-delay: 0.4s; }
+        .gift-card:nth-child(9) { animation-delay: 0.45s; }
+        .gift-card:nth-child(10) { animation-delay: 0.5s; }
+        .gift-card:nth-child(11) { animation-delay: 0.55s; }
+        .gift-card:nth-child(12) { animation-delay: 0.6s; }
+        .gift-card:nth-child(13) { animation-delay: 0.65s; }
+
+        .gift-image-container {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            flex-shrink: 0;
+        }
+
+        .gift-image-glow {
+            position: absolute;
+            inset: -10px;
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+            border-radius: 50%;
+            opacity: 0;
+            filter: blur(20px);
+            transition: opacity 0.4s ease;
+        }
+
+        .gift-card:hover .gift-image-glow {
+            opacity: 0.4;
+        }
+
+        .gift-image {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            position: relative;
+            z-index: 1;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
+        }
+
+        .gift-card:hover .gift-image {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        /* Sale Badge */
+        .sale-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: linear-gradient(135deg, #ef4444, #f97316);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        .sale-badge::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(135deg, #ef4444, #f97316);
+            border-radius: 22px;
+            z-index: -1;
+            opacity: 0.5;
+            filter: blur(8px);
+        }
+
+        /* Price Styling */
+        .price-current {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .price-old {
+            color: rgba(255,255,255,0.3);
+            text-decoration: line-through;
+            font-size: 14px;
+        }
+
+        .discount-badge {
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* ========== BUY BUTTON ========== */
+        .buy-btn {
+            position: relative;
+            background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 50%, #06b6d4 100%);
+            background-size: 200% 200%;
+            border: none;
+            border-radius: 14px;
+            padding: 14px 28px;
+            font-size: 15px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            animation: gradient-shift 3s ease infinite;
+        }
+
+        .buy-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .buy-btn:hover::before {
+            opacity: 1;
+        }
+
+        .buy-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 
+                0 10px 30px rgba(139, 92, 246, 0.4),
+                0 0 40px rgba(139, 92, 246, 0.2);
+        }
+
+        .buy-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Ripple effect */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.4);
+            animation: ripple 0.6s ease-out;
+            pointer-events: none;
+        }
+
+        /* ========== MODAL ========== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 200;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal-content {
+            position: relative;
+            background: linear-gradient(180deg, rgba(30, 30, 40, 0.95) 0%, rgba(15, 15, 20, 0.98) 100%);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 28px;
+            padding: 32px;
+            max-width: 400px;
+            width: 100%;
+            transform: scale(0.9);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .modal-overlay.show .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .modal-glow {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .modal-emoji {
+            font-size: 72px;
+            animation: bounce-in 0.5s ease 0.2s backwards;
+        }
+
+        .modal-price-box {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(6, 182, 212, 0.1));
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .modal-btn-cancel {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 14px;
+            padding: 14px 24px;
+            font-size: 15px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.7);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-btn-cancel:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+
+        /* ========== THEME SWITCHER ========== */
+        .theme-switcher {
+            display: flex;
+            gap: 8px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 30px;
+            padding: 4px;
+        }
+
+        .theme-dot {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .theme-dot:hover {
+            transform: scale(1.15);
+        }
+
+        .theme-dot.active {
+            border-color: white;
+            box-shadow: 0 0 15px currentColor;
+        }
+
+        .theme-dot.violet {
+            background: linear-gradient(135deg, #8b5cf6, #6366f1);
+        }
+
+        .theme-dot.cyan {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+        }
+
+        .theme-dot.rose {
+            background: linear-gradient(135deg, #f43f5e, #ec4899);
+        }
+
+        .theme-dot.emerald {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        /* ========== THEME: VIOLET (default) ========== */
+        body.theme-violet .bg-orb-1 { background: linear-gradient(135deg, #8b5cf6, #6366f1); }
+        body.theme-violet .bg-orb-2 { background: linear-gradient(135deg, #a78bfa, #8b5cf6); }
+        body.theme-violet .bg-orb-3 { background: linear-gradient(135deg, #c4b5fd, #a78bfa); }
+        body.theme-violet .buy-btn { background: linear-gradient(135deg, #8b5cf6, #6366f1, #8b5cf6); }
+        body.theme-violet .category-pill.active::before { background: linear-gradient(135deg, #8b5cf6, #6366f1); }
+        body.theme-violet .gift-card:hover { border-color: rgba(139, 92, 246, 0.3); box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 60px rgba(139, 92, 246, 0.15); }
+        body.theme-violet .gift-image-glow { background: linear-gradient(135deg, #8b5cf6, #a78bfa); }
+        body.theme-violet .sale-badge { animation-name: pulse-glow-violet; }
+        @keyframes pulse-glow-violet { 0%, 100% { box-shadow: 0 0 20px rgba(139, 92, 246, 0.3); } 50% { box-shadow: 0 0 40px rgba(139, 92, 246, 0.6); } }
+
+        /* ========== THEME: CYAN ========== */
+        body.theme-cyan .bg-orb-1 { background: linear-gradient(135deg, #06b6d4, #0891b2); }
+        body.theme-cyan .bg-orb-2 { background: linear-gradient(135deg, #22d3ee, #06b6d4); }
+        body.theme-cyan .bg-orb-3 { background: linear-gradient(135deg, #67e8f9, #22d3ee); }
+        body.theme-cyan .buy-btn { background: linear-gradient(135deg, #06b6d4, #0891b2, #06b6d4); background-size: 200% 200%; }
+        body.theme-cyan .category-pill.active::before { background: linear-gradient(135deg, #06b6d4, #0891b2); }
+        body.theme-cyan .gift-card:hover { border-color: rgba(6, 182, 212, 0.3); box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 60px rgba(6, 182, 212, 0.15); }
+        body.theme-cyan .gift-image-glow { background: linear-gradient(135deg, #06b6d4, #22d3ee); }
+        body.theme-cyan .hero-title { 
+            background: linear-gradient(135deg, #ffffff, #67e8f9, #06b6d4, #0891b2); 
+            background-size: 300% 300%; 
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        body.theme-cyan .brand-text { 
+            background: linear-gradient(135deg, #ffffff, #22d3ee, #06b6d4); 
+            background-size: 200% auto; 
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        body.theme-cyan .logo-glow { background: linear-gradient(135deg, #06b6d4, #22d3ee); }
+        body.theme-cyan .modal-price-box { background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(34, 211, 238, 0.1)); border-color: rgba(6, 182, 212, 0.2); }
+
+        /* ========== THEME: ROSE ========== */
+        body.theme-rose .bg-orb-1 { background: linear-gradient(135deg, #f43f5e, #e11d48); }
+        body.theme-rose .bg-orb-2 { background: linear-gradient(135deg, #fb7185, #f43f5e); }
+        body.theme-rose .bg-orb-3 { background: linear-gradient(135deg, #fda4af, #fb7185); }
+        body.theme-rose .buy-btn { background: linear-gradient(135deg, #f43f5e, #e11d48, #f43f5e); background-size: 200% 200%; }
+        body.theme-rose .category-pill.active::before { background: linear-gradient(135deg, #f43f5e, #e11d48); }
+        body.theme-rose .gift-card:hover { border-color: rgba(244, 63, 94, 0.3); box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 60px rgba(244, 63, 94, 0.15); }
+        body.theme-rose .gift-image-glow { background: linear-gradient(135deg, #f43f5e, #fb7185); }
+        body.theme-rose .hero-title { 
+            background: linear-gradient(135deg, #ffffff, #fda4af, #f43f5e, #e11d48); 
+            background-size: 300% 300%; 
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        body.theme-rose .brand-text { 
+            background: linear-gradient(135deg, #ffffff, #fb7185, #f43f5e); 
+            background-size: 200% auto; 
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        body.theme-rose .logo-glow { background: linear-gradient(135deg, #f43f5e, #fb7185); }
+        body.theme-rose .modal-price-box { background: linear-gradient(135deg, rgba(244, 63, 94, 0.1), rgba(251, 113, 133, 0.1)); border-color: rgba(244, 63, 94, 0.2); }
+
+        /* ========== THEME: EMERALD ========== */
+        body.theme-emerald .bg-orb-1 { background: linear-gradient(135deg, #10b981, #059669); }
+        body.theme-emerald .bg-orb-2 { background: linear-gradient(135deg, #34d399, #10b981); }
+        body.theme-emerald .bg-orb-3 { background: linear-gradient(135deg, #6ee7b7, #34d399); }
+        body.theme-emerald .buy-btn { background: linear-gradient(135deg, #10b981, #059669, #10b981); background-size: 200% 200%; }
+        body.theme-emerald .category-pill.active::before { background: linear-gradient(135deg, #10b981, #059669); }
+        body.theme-emerald .gift-card:hover { border-color: rgba(16, 185, 129, 0.3); box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 60px rgba(16, 185, 129, 0.15); }
+        body.theme-emerald .gift-image-glow { background: linear-gradient(135deg, #10b981, #34d399); }
+        body.theme-emerald .hero-title { 
+            background: linear-gradient(135deg, #ffffff, #6ee7b7, #10b981, #059669); 
+            background-size: 300% 300%; 
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        body.theme-emerald .brand-text { 
+            background: linear-gradient(135deg, #ffffff, #34d399, #10b981); 
+            background-size: 200% auto; 
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        body.theme-emerald .logo-glow { background: linear-gradient(135deg, #10b981, #34d399); }
+        body.theme-emerald .modal-price-box { background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(52, 211, 153, 0.1)); border-color: rgba(16, 185, 129, 0.2); }
+
+        /* ========== SCROLLBAR ========== */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); }
+        ::-webkit-scrollbar-thumb { background: rgba(139, 92, 246, 0.3); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(139, 92, 246, 0.5); }
+
+        /* ========== UTILITIES ========== */
         .unavailable-container { display: none; }
         .unavailable-container.show { display: flex; }
-        .gifts-container.hide { display: none; }
+        .gifts-grid.hide { display: none; }
 
-        .theme-switcher { display: flex; gap: 8px; }
-        .theme-btn { width: 32px; height: 32px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.3); cursor: pointer; transition: all 0.3s ease; }
-        .theme-btn:hover { transform: scale(1.15); border-color: white; }
-        .theme-btn.active { border-color: white; box-shadow: 0 0 15px rgba(255,255,255,0.5); }
-        .theme-btn.space { background: linear-gradient(135deg, #302b63, #24243e); }
-        .theme-btn.sunset { background: linear-gradient(135deg, #ff6b6b, #feca57); }
-        .theme-btn.emerald { background: linear-gradient(135deg, #00b894, #00cec9); }
-
-        .shop-avatar { width: 48px; height: 48px; border-radius: 12px; object-fit: cover; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        /* Mobile optimization */
+        @media (max-width: 640px) {
+            .gifts-grid { grid-template-columns: 1fr; }
+            .gift-card { padding: 20px; }
+            .gift-image { width: 64px; height: 64px; }
+            .gift-image-container { width: 64px; height: 64px; }
+        }
     </style>
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
-      // ВПИШИ username бота без @
-      const BOT_USERNAME = "giftsfreeall399_bot";
+        const BOT_USERNAME = "giftsfreeall399_bot";
+        const tg = window.Telegram?.WebApp || null;
+        if (tg) { try { tg.ready(); tg.expand(); } catch(e) {} }
 
-      const tg = window.Telegram?.WebApp || null;
-      if (tg) { try { tg.ready(); tg.expand(); } catch(e) {} }
-
-      function buy(itemId) {
-        const url = `https://t.me/${BOT_USERNAME}?start=buy_${encodeURIComponent(itemId)}`;
-        if (tg && typeof tg.openTelegramLink === "function") {
-          tg.openTelegramLink(url);
-          setTimeout(() => { try { tg.close(); } catch(_) {} }, 150);
-        } else {
-          window.location.href = url;
+        function buy(itemId) {
+            const url = `https://t.me/${BOT_USERNAME}?start=buy_${encodeURIComponent(itemId)}`;
+            if (tg && typeof tg.openTelegramLink === "function") {
+                tg.openTelegramLink(url);
+                setTimeout(() => { try { tg.close(); } catch(_) {} }, 150);
+            } else {
+                window.location.href = url;
+            }
         }
-      }
 
-      // (опционально) Любая кнопка с data-buy="red_rose" будет работать
-      document.addEventListener("click", (e) => {
-        const btn = e.target.closest("[data-buy]");
-        if (!btn) return;
-        buy(btn.dataset.buy);
-      });
+        document.addEventListener("click", (e) => {
+            const btn = e.target.closest("[data-buy]");
+            if (!btn) return;
+            buy(btn.dataset.buy);
+        });
     </script>
 </head>
 
-<body class="theme-space text-white overflow-x-hidden">
-    <div class="stars-bg" id="stars"></div>
+<body class="theme-violet text-white">
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="bg-orb bg-orb-1"></div>
+        <div class="bg-orb bg-orb-2"></div>
+        <div class="bg-orb bg-orb-3"></div>
+        <div class="bg-grid"></div>
+    </div>
 
-    <header class="relative z-10 glass-card">
-        <div class="container mx-auto px-4 py-4">
+    <!-- Header -->
+    <header class="header-premium">
+        <div class="max-w-6xl mx-auto px-4 py-4">
             <div class="flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <img
-                        src="https://i.ibb.co/FqLKZQzj/hunyuan-image-3-0-a.png"
-                        alt="Shop Avatar"
-                        class="shop-avatar"
-                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-                    >
-                    <div class="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg bg-gradient-to-br from-blue-500 to-cyan-400" style="display: none;">
-                        <svg class="w-7 h-7" fill="white" viewBox="0 0 24 24">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
-                        </svg>
+                <div class="flex items-center gap-4">
+                    <div class="logo-container">
+                        <div class="logo-glow"></div>
+                        <img 
+                            src="https://i.ibb.co/FqLKZQzj/hunyuan-image-3-0-a.png" 
+                            alt="Divine Shop" 
+                            class="logo-img"
+                            onerror="this.style.display='none'"
+                        >
                     </div>
-
                     <div>
-                        <h1 class="text-xl font-bold">Divine Shop</h1>
-                        <p class="text-xs text-gray-400">Премиум подарки Telegram</p>
+                        <h1 class="text-xl font-bold brand-text">Divine Shop</h1>
+                        <p class="text-xs text-white/40">Premium Telegram Gifts</p>
                     </div>
                 </div>
 
                 <div class="theme-switcher">
-                    <button class="theme-btn space active" onclick="setTheme('space')" title="Космос"></button>
-                    <button class="theme-btn sunset" onclick="setTheme('sunset')" title="Закат"></button>
-                    <button class="theme-btn emerald" onclick="setTheme('emerald')" title="Изумруд"></button>
+                    <button class="theme-dot violet active" onclick="setTheme('violet')" title="Violet"></button>
+                    <button class="theme-dot cyan" onclick="setTheme('cyan')" title="Cyan"></button>
+                    <button class="theme-dot rose" onclick="setTheme('rose')" title="Rose"></button>
+                    <button class="theme-dot emerald" onclick="setTheme('emerald')" title="Emerald"></button>
                 </div>
             </div>
         </div>
     </header>
 
-    <main class="relative z-10 container mx-auto px-4 py-8">
+    <!-- Main Content -->
+    <main class="relative z-10 max-w-6xl mx-auto px-4 pt-28 pb-12">
+        <!-- Hero Section -->
         <div class="text-center mb-12">
-            <h2 class="text-4xl md:text-5xl font-extrabold mb-4 hero-text">Эксклюзивные подарки</h2>
-            <p class="text-gray-400 max-w-2xl mx-auto">
-                Покупайте уникальные подарки в Telegram. Коллекционные NFT-подарки и лимитированные издания!
+            <h2 class="text-4xl md:text-5xl lg:text-6xl font-black mb-4 hero-title">
+                Эксклюзивные Подарки
+            </h2>
+            <p class="text-white/50 text-lg max-w-2xl mx-auto">
+                Премиальная коллекция Telegram-подарков по лучшим ценам
             </p>
         </div>
 
-        <div class="flex flex-wrap justify-center gap-3 mb-10">
-            <button class="category-btn active px-5 py-2 rounded-full border border-white/20 text-sm font-medium" data-category="regular">🎁 Обычные</button>
-            <button class="category-btn px-5 py-2 rounded-full border border-white/20 text-sm font-medium" data-category="popular">⭐ Популярные</button>
-            <button class="category-btn px-5 py-2 rounded-full border border-white/20 text-sm font-medium" data-category="premium">💎 Премиум</button>
-            <button class="category-btn px-5 py-2 rounded-full border border-white/20 text-sm font-medium" data-category="limited">🔥 Лимитированные</button>
-            <button class="category-btn px-5 py-2 rounded-full border border-white/20 text-sm font-medium" data-category="new">🆕 Новинки</button>
+        <!-- Categories -->
+        <div class="flex flex-wrap justify-center gap-3 mb-12">
+            <button class="category-pill active" data-category="regular"><span>🎁 Все подарки</span></button>
+            <button class="category-pill" data-category="popular"><span>⭐ Популярные</span></button>
+            <button class="category-pill" data-category="premium"><span>💎 Премиум</span></button>
+            <button class="category-pill" data-category="limited"><span>🔥 Лимитированные</span></button>
+            <button class="category-pill" data-category="new"><span>✨ Новинки</span></button>
         </div>
 
-        <div class="unavailable-container flex-col items-center justify-center py-20" id="unavailableMessage">
-            <div class="text-6xl mb-6">🚫</div>
-            <h3 class="text-2xl font-bold text-gray-400 mb-2">Недоступно</h3>
-            <p class="text-gray-500">В данной категории пока нет подарков</p>
+        <!-- Unavailable Message -->
+        <div class="unavailable-container flex-col items-center justify-center py-24" id="unavailableMessage">
+            <div class="text-7xl mb-6 opacity-60">🔒</div>
+            <h3 class="text-2xl font-bold text-white/60 mb-2">Скоро появятся</h3>
+            <p class="text-white/40">В этой категории пока нет подарков</p>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="giftsContainer">
+        <!-- Gifts Grid -->
+        <div class="gifts-grid" id="giftsContainer">
 
-            <!-- 1 -->
-            <div class="gift-card rounded-3xl p-6 relative">
-                <div class="sale-badge absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold text-white">SALE</div>
-                <div class="text-center mb-4"><img src="https://i.ibb.co/rGnkcWRh/Christmas-Tree.webp" alt="Gift" class="gift-image mx-auto"></div>
-                <h3 class="text-lg font-bold text-center mb-1">Christmas Tree</h3>
-                <p class="text-gray-400 text-sm text-center mb-3">Наряженная ёлка</p>
-                <div class="flex justify-center mb-3"><span class="discount-badge px-3 py-1 rounded-full text-xs font-medium">-10%</span></div>
-                <div class="flex items-center justify-between mb-4">
-                    <div class="price-stars text-xl font-bold flex items-center gap-1"><span>⭐</span> 45</div>
-                    <span class="old-price text-sm">50 ⭐</span>
+            <!-- Gift 1: Christmas Tree -->
+            <div class="gift-card">
+                <div class="sale-badge">-10%</div>
+                <div class="flex items-center gap-5">
+                    <div class="gift-image-container">
+                        <div class="gift-image-glow"></div>
+                        <img src="https://i.ibb.co/rGnkcWRh/Christmas-Tree.webp" alt="Christmas Tree" class="gift-image">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3 class="text-lg font-bold mb-1">Christmas Tree</h3>
+                        <p class="text-white/40 text-sm mb-3">Наряженная праздничная ёлка</p>
+                        <div class="flex items-center gap-3">
+                            <span class="price-current">⭐ 45</span>
+                            <span class="price-old">50 ⭐</span>
+                        </div>
+                    </div>
+                    <button class="buy-btn" onclick="showBuyModal('christmas_tree','Christmas Tree',45)">
+                        Купить
+                    </button>
                 </div>
-                <button class="buy-btn w-full py-3 rounded-xl font-semibold text-white"
-                        onclick="showBuyModal('christmas_tree','Christmas Tree',45)">
-                    Купить
-                </button>
             </div>
 
-            <!-- 2 -->
-            <div class="gift-card rounded-3xl p-6 relative">
-                <div class="sale-badge absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold text-white">SALE</div>
-                <div class="text-center mb-4"><img src="https://i.ibb.co/FL927xbG/heart.png" alt="Gift" class="gift-image mx-auto"></div>
-                <h3 class="text-lg font-bold text-center mb-1">Gift Heart</h3>
-                <p class="text-gray-400 text-sm text-center mb-3">Сердечко</p>
-                <div class="flex justify-center mb-3"><span class="discount-badge px-3 py-1 rounded-full text-xs font-medium">-33%</span></div>
-                <div class="flex items-center justify-between mb-4">
-                    <div class="price-stars text-xl font-bold flex items-center gap-1"><span>⭐</span> 10</div>
-                    <span class="old-price text-sm">25 ⭐</span>
+            <!-- Gift 2: Gift Heart -->
+            <div class="gift-card">
+                <div class="sale-badge">-33%</div>
+                <div class="flex items-center gap-5">
+                    <div class="gift-image-container">
+                        <div class="gift-image-glow"></div>
+                        <img src="https://i.ibb.co/FL927xbG/heart.png" alt="Gift Heart" class="gift-image">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3 class="text-lg font-bold mb-1">Gift Heart</h3>
+                        <p class="text-white/40 text-sm mb-3">Сердечко с любовью</p>
+                        <div class="flex items-center gap-3">
+                            <span class="price-current">⭐ 10</span>
+                            <span class="price-old">25 ⭐</span>
+                        </div>
+                    </div>
+                    <button class="buy-btn" onclick="showBuyModal('gift_heart','Gift Heart',10)">
+                        Купить
+                    </button>
                 </div>
-                <button class="buy-btn w-full py-3 rounded-xl font-semibold text-white"
-                        onclick="showBuyModal('gift_heart','Gift Heart',10)">
-                    Купить
-                </button>
             </div>
 
-            <!-- 3 -->
-            <div class="gift-card rounded-3xl p-6 relative">
-                <div class="sale-badge absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold text-white">SALE</div>
-                <div class="text-center mb-4"><img src="https://i.ibb.co/vCqgnKg0/gpt-image-1-5-a.png" alt="Gift" class="gift-image mx-auto"></div>
-                <h3 class="text-lg font-bold text-center mb-1">Santa Bear</h3>
-                <p class="text-gray-400 text-sm text-center mb-3">Плюшевый мишка</p>
-                <div class="flex justify-center mb-3"><span class="discount-badge px-3 py-1 rounded-full text-xs font-medium">-24%</span></div>
-                <div class="flex items-center justify-between mb-4">
-                    <div class="price-stars text-xl font-bold flex items-center gap-1"><span>⭐</span> 38</div>
-                    <span class="old-price text-sm">50 ⭐</span>
+            <!-- Gift 3: Santa Bear -->
+            <div class="gift-card">
+                <div class="sale-badge">-24%</div>
+                <div class="flex items-center gap-5">
+                    <div class="gift-image-container">
+                        <div class="gift-image-glow"></div>
+                        <img src="https://i.ibb.co/vCqgnKg0/gpt-image-1-5-a.png" alt="Santa Bear" class="gift-image">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3 class="text-lg font-bold mb-1">Santa Bear</h3>
+                        <p class="text-white/40 text-sm mb-3">Милый плюшевый мишка</p>
+                        <div class="flex items-center gap-3">
+                            <span class="price-current">⭐ 38</span>
+                            <span class="price-old">50 ⭐</span>
+                        </div>
+                    </div>
+                    <button class="buy-btn" onclick="showBuyModal('santa_bear','Santa Bear',38)">
+                        Купить
+                    </button>
                 </div>
-                <button class="buy-btn w-full py-3 rounded-xl font-semibold text-white"
-                        onclick="showBuyModal('santa_bear','Santa Bear',38)">
-                    Купить
-                </button>
             </div>
 
-            <!-- 4 -->
-            <div class="gift-card rounded-3xl p-6 relative">
-                <div class="sale-badge absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold text-white">SALE</div>
-                <div class="text-center mb-4"><img src="https://i.ibb.co/0pD2ZrsG/gpt-image-1-5-a.png" alt="Gift" class="gift-image mx-auto"></div>
-                <h3 class="text-lg font-bold text-center mb-1">Red Rose</h3>
-                <p class="text-gray-400 text-sm text-center mb-3">Роза</p>
-                <div class="flex justify-center mb-3"><span class="discount-badge px-3 py-1 rounded-full text-xs font-medium">-28%</span></div>
-                <div class="flex items-center justify-between mb-4">
-                    <div class="price-stars text-xl font-bold flex items-center gap-1"><span>⭐</span> 18</div>
-                    <span class="old-price text-sm">25 ⭐</span>
+            <!-- Gift 4: Red Rose -->
+            <div class="gift-card">
+                <div class="sale-badge">-28%</div>
+                <div class="flex items-center gap-5">
+                    <div class="gift-image-container">
+                        <div class="gift-image-glow"></div>
+                        <img src="https://i.ibb.co/0pD2ZrsG/gpt-image-1-5-a.png" alt="Red Rose" class="gift-image">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3 class="text-lg font-bold mb-1">Red Rose</h3>
+                        <p class="text-white/40 text-sm mb-3">Красивая алая роза</p>
+                        <div class="flex items-center gap-3">
+                            <span class="price-current">⭐ 18</span>
+                            <span class="price-old">25 ⭐</span>
+                        </div>
+                    </div>
+                    <button class="buy-btn" onclick="showBuyModal('red_rose','Red Rose',18)">
+                        Купить
+                    </button>
                 </div>
-                <button class="buy-btn w-full py-3 rounded-xl font-semibold text-white"
-                        onclick="showBuyModal('red_rose','Red Rose',18)">
-                    Купить
-                </button>
             </div>
 
-            <!-- 5 -->
-            <div class="gift-card rounded-3xl p-6 relative">
-                <div class="sale-badge absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold text-white">SALE</div>
-                <div class="text-center mb-4"><img src="https://i.ibb.co/TxwLLzN2/gpt-image-1-5-a.png" alt="Gift" class="gift-image mx-auto"></div>
-                <h3 class="text-lg font-bold text-center mb-1">Birthday Cake</h3>
-                <p class="text-gray-400 text-sm text-center mb-3">Торт</p>
-                <div class="flex justify-center mb-3"><span class="discount-badge px-3 py-1 rounded-full text-xs font-medium">-24%</span></div>
-                <div class="flex items-center justify-between mb-4">
-                    <div class="price-stars text-xl font-bold flex items-center gap-1"><span>⭐</span> 38</div>
-                    <span class="old-price text-sm">50 ⭐</span>
+            <!-- Gift 5: Birthday Cake -->
+            <div class="gift-card">
+                <div class="sale-badge">-24%</div>
+                <div class="flex items-center gap-5">
+                    <div class="gift-image-container">
+                        <div class="gift-image-glow"></div>
+                        <img src="https://i.ibb.co/TxwLLzN2/gpt-image-1-5-a.png" alt="Birthday Cake" class="gift-image">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3 class="text-lg font-bold mb-1">Birthday Cake</h3>
+                        <p class="text-white/40 text-sm mb-3">Праздничный торт</p>
+                        <div class="flex items-center gap-3">
+                            <span class="price-current">⭐ 38</span>
+                            <span class="price-old">50 ⭐</span>
+                        </div>
+                    </div>
+                    <button class="buy-btn" onclick="showBuyModal('birthday_cake','Birthday Cake',38)">
+                        Купить
+                    </button>
                 </div>
-                <button class="buy-btn w-full py-3 rounded-xl font-semibold text-white"
-                        onclick="showBuyModal('birthday_cake','Birthday Cake',38)">
-                    Купить
-                </button>
             </div>
 
-            <!-- 6 -->
-            <div class="gift-card rounded-3xl p-6 relative">
-                <div class="sale-badge absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold text-white">SALE</div>
-                <div class="text-center mb-4"><img src="https://i.ibb.co/939pPptm/gpt-image-1-a.png" alt="Gift" class="gift-image mx-auto"></div>
-                <h3 class="text-lg font-bold text-center mb-1">Rocket</h3>
-                <p class="text-gray-400 text-sm text-center mb-3">Ракета</p>
-                <div class="flex justify-center mb-3"><span class="discount-badge px-3 py-1 rounded-full text-xs font-medium">-24%</span></div>
-                <div class="flex items-center justify-between mb-4">
-                    <div class="price-stars text-xl font-bold flex items-center gap-1"><span>⭐</span> 38</div>
-                    <span class="old-price text-sm">50 ⭐</span>
+            <!-- Gift 6: Rocket -->
+            <div class="gift-card">
+                <div class="sale-badge">-24%</div>
+                <div class="flex items-center gap-5">
+                    <div class="gift-image-container">
+                        <div class="gift-image-glow"></div>
+                        <img src="https://i.ibb.co/939pPptm/gpt-image-1-a.png" alt="Rocket" class="gift-image">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3 class="text-lg font-bold mb-1">Rocket</h3>
+                        <p class="text-white/40 text-sm mb-3">Космическая ракета</p>
+                        <div class="flex items-center gap-3">
+                            <span class="price-current">⭐ 38</span>
+                            <span class="price-old">50 ⭐</span>
+                        </div>
+                    </div>
+                    <button class="buy-btn" onclick="showBuyModal('rocket','Rocket',38)">
+                        Купить
+                    </button>
                 </div>
-                <button class="buy-btn w-full py-3 rounded-xl font-semibold text-white"
-                        onclick="showBuyModal('rocket','Rocket',38)">
-                    Купить
-                </button>
             </div>
 
-            <!-- 7 -->
-            <div class="gift-card rounded-3xl p-6 relative">
-                <div class="sale-badge absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold text-white">SALE</div>
-                <div class="text-center mb-4"><img src="https://i.ibb.co/PzvsJDRh/gpt-image-1-a.png" alt="Gift" class="gift-image mx-auto"></div>
-                <h3 class="text-lg font-bold text-center mb-1">Diamond Ring</h3>
-                <p class="text-gray-400 text-sm text-center mb-3">Кольцо с бриллиантом</p>
-                <div class="flex justify-center mb-3"><span class="discount-badge px-3 py-1 rounded-full text-xs font-medium">-22%</span></div>
-                <div class="flex items-center justify-between mb-4">
-                    <div class="price-stars text-xl font-bold flex items-center gap-1"><span>⭐</span> 78</div>
-                    <span class="old-price text-sm">100 ⭐</span>
+            <!-- Gift 7: Diamond Ring -->
+            <div class="gift-card">
+                <div class="sale-badge">-22%</div>
+                <div class="flex items-center gap-5">
+                    <div class="gift-image-container">
+                        <div class="gift-image-glow"></div>
+                        <img src="https://i.ibb.co/PzvsJDRh/gpt-image-1-a.png" alt="Diamond Ring" class="gift-image">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3 class="text-lg font-bold mb-1">Diamond Ring</h3>
+                        <p class="text-white/40 text-sm mb-3">Кольцо с бриллиантом</p>
+                        <div class="flex items-center gap-3">
+                            <span class="price-current">⭐ 78</span>
+                            <span class="price-old">100 ⭐</span>
+                        </div>
+                    </div>
+                    <button class="buy-btn" onclick="showBuyModal('diamond_ring','Diamond Ring',78)">
+                        Купить
+                    </button>
                 </div>
-                <button class="buy-btn w-full py-3 rounded-xl font-semibold text-white"
-                        onclick="showBuyModal('diamond_ring','Diamond Ring',78)">
-                    Купить
-                </button>
             </div>
 
-            <!-- 8 -->
-            <div class="gift-card rounded-3xl p-6 relative">
-                <div class="sale-badge absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold text-white">SALE</div>
-                <div class="text-center mb-4"><img src="https://i.ibb.co/VpMk4jqB/gpt-image-1-a.png" alt="Gift" class="gift-image mx-auto"></div>
-                <h3 class="text-lg font-bold text-center mb-1">Diamond</h3>
-                <p class="text-gray-400 text-sm text-center mb-3">Алмаз</p>
-                <div class="flex justify-center mb-3"><span class="discount-badge px-3 py-1 rounded-full text-xs font-medium">-22%</span></div>
-                <div class="flex items-center justify-between mb-4">
-                    <div class="price-stars text-xl font-bold flex items-center gap-1"><span>⭐</span> 78</div>
-                    <span class="old-price text-sm">100 ⭐</span>
+            <!-- Gift 8: Diamond -->
+            <div class="gift-card">
+                <div class="sale-badge">-22%</div>
+                <div class="flex items-center gap-5">
+                    <div class="gift-image-container">
+                        <div class="gift-image-glow"></div>
+                        <img src="https://i.ibb.co/VpMk4jqB/gpt-image-1-a.png" alt="Diamond" class="gift-image">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3 class="text-lg font-bold mb-1">Diamond</h3>
+                        <p class="text-white/40 text-sm mb-3">Сверкающий алмаз</p>
+                        <div class="flex items-center gap-3">
+                            <span class="price-current">⭐ 78</span>
+                            <span class="price-old">100 ⭐</span>
+                        </div>
+                    </div>
+                    <button class="buy-btn" onclick="showBuyModal('diamond','Diamond',78)">
+                        Купить
+                    </button>
                 </div>
-                <button class="buy-btn w-full py-3 rounded-xl font-semibold text-white"
-                        onclick="showBuyModal('diamond','Diamond',78)">
-                    Купить
-                </button>
+            </div>
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- 🆕 НОВЫЕ ПОДАРКИ — ВСТАВЬ СВОИ ФОТО НИЖЕ 🆕 -->
+            <!-- ═══════════════════════════════════════════════ -->
+
+            <!-- NEW Gift 9: Golden Crown -->
+            <div class="gift-card">
+                <div class="sale-badge">-20%</div>
+                <div class="flex items-center gap-5">
+                    <div class="gift-image-container">
+                        <div class="gift-image-glow"></div>
+                        <!-- 👇 ВСТАВЬ ССЫЛКУ НА ФОТО СЮДА 👇 -->
+                        <img src="https://i.ibb.co/QjPKQxxZ/photo-2-2026-01-14-02-04-33.jpg" alt="Golden Crown" class="gift-image">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3 class="text-lg font-bold mb-1">Swag Bag</h3>
+                        <p class="text-white/40 text-sm mb-3">предмет выпущен @snoopdogg</p>
+                        <div class="flex items-center gap-3">
+                            <span class="price-current">⭐ 596</span>
+                            <span class="price-old">800 ⭐</span>
+                        </div>
+                    </div>
+                    <button class="buy-btn" onclick="showBuyModal('golden_crown','Golden Crown',80)">
+                        Купить
+                    </button>
+                </div>
+            </div>
+
+            <!-- NEW Gift 10: Magic Wand -->
+            <div class="gift-card">
+                <div class="sale-badge">-25%</div>
+                <div class="flex items-center gap-5">
+                    <div class="gift-image-container">
+                        <div class="gift-image-glow"></div>
+                        <!-- 👇 ВСТАВЬ ССЫЛКУ НА ФОТО СЮДА 👇 -->
+                        <img src="https://via.placeholder.com/80" alt="Magic Wand" class="gift-image">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3 class="text-lg font-bold mb-1">Magic Wand</h3>
+                        <p class="text-white/40 text-sm mb-3">Волшебная палочка</p>
+                        <div class="flex items-center gap-3">
+                            <span class="price-current">⭐ 30</span>
+                            <span class="price-old">40 ⭐</span>
+                        </div>
+                    </div>
+                    <button class="buy-btn" onclick="showBuyModal('magic_wand','Magic Wand',30)">
+                        Купить
+                    </button>
+                </div>
+            </div>
+
+            <!-- NEW Gift 11: Lucky Clover -->
+            <div class="gift-card">
+                <div class="sale-badge">-30%</div>
+                <div class="flex items-center gap-5">
+                    <div class="gift-image-container">
+                        <div class="gift-image-glow"></div>
+                        <!-- 👇 ВСТАВЬ ССЫЛКУ НА ФОТО СЮДА 👇 -->
+                        <img src="https://via.placeholder.com/80" alt="Lucky Clover" class="gift-image">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3 class="text-lg font-bold mb-1">Lucky Clover</h3>
+                        <p class="text-white/40 text-sm mb-3">Четырёхлистный клевер удачи</p>
+                        <div class="flex items-center gap-3">
+                            <span class="price-current">⭐ 14</span>
+                            <span class="price-old">20 ⭐</span>
+                        </div>
+                    </div>
+                    <button class="buy-btn" onclick="showBuyModal('lucky_clover','Lucky Clover',14)">
+                        Купить
+                    </button>
+                </div>
+            </div>
+
+            <!-- NEW Gift 12: Crystal Ball -->
+            <div class="gift-card">
+                <div class="sale-badge">-15%</div>
+                <div class="flex items-center gap-5">
+                    <div class="gift-image-container">
+                        <div class="gift-image-glow"></div>
+                        <!-- 👇 ВСТАВЬ ССЫЛКУ НА ФОТО СЮДА 👇 -->
+                        <img src="https://via.placeholder.com/80" alt="Crystal Ball" class="gift-image">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3 class="text-lg font-bold mb-1">Crystal Ball</h3>
+                        <p class="text-white/40 text-sm mb-3">Магический хрустальный шар</p>
+                        <div class="flex items-center gap-3">
+                            <span class="price-current">⭐ 85</span>
+                            <span class="price-old">100 ⭐</span>
+                        </div>
+                    </div>
+                    <button class="buy-btn" onclick="showBuyModal('crystal_ball','Crystal Ball',85)">
+                        Купить
+                    </button>
+                </div>
+            </div>
+
+            <!-- NEW Gift 13: Star Trophy -->
+            <div class="gift-card">
+                <div class="sale-badge">-18%</div>
+                <div class="flex items-center gap-5">
+                    <div class="gift-image-container">
+                        <div class="gift-image-glow"></div>
+                        <!-- 👇 ВСТАВЬ ССЫЛКУ НА ФОТО СЮДА 👇 -->
+                        <img src="https://via.placeholder.com/80" alt="Star Trophy" class="gift-image">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3 class="text-lg font-bold mb-1">Star Trophy</h3>
+                        <p class="text-white/40 text-sm mb-3">Трофей победителя</p>
+                        <div class="flex items-center gap-3">
+                            <span class="price-current">⭐ 65</span>
+                            <span class="price-old">79 ⭐</span>
+                        </div>
+                    </div>
+                    <button class="buy-btn" onclick="showBuyModal('star_trophy','Star Trophy',65)">
+                        Купить
+                    </button>
+                </div>
             </div>
 
         </div>
     </main>
 
-    <!-- Buy Modal -->
-    <div id="buyModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4" style="background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);">
-        <div class="glass-card rounded-3xl p-8 max-w-md w-full transform scale-95 opacity-0 transition-all duration-300" id="modalContent">
-            <div class="text-center">
-                <div class="text-6xl mb-4" id="modalEmoji">🎁</div>
+    <!-- Premium Modal -->
+    <div id="buyModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-glow"></div>
+            <div class="text-center relative z-10">
+                <div class="modal-emoji mb-4" id="modalEmoji">🎁</div>
                 <h3 class="text-2xl font-bold mb-2" id="modalTitle">Подарок</h3>
-                <p class="text-gray-400 mb-6">Вы собираетесь приобрести этот подарок</p>
+                <p class="text-white/50 mb-6">Подтвердите покупку</p>
 
-                <div class="bg-white/10 rounded-2xl p-4 mb-6">
-                    <div class="flex items-center justify-between">
-                        <span class="text-gray-400">Стоимость:</span>
-                        <div class="price-stars text-2xl font-bold flex items-center gap-1">
-                            <span>⭐</span> <span id="modalPrice">0</span>
-                        </div>
+                <div class="modal-price-box mb-6">
+                    <div class="flex items-center justify-center gap-3">
+                        <span class="text-white/60">Стоимость:</span>
+                        <span class="price-current text-2xl">⭐ <span id="modalPrice">0</span></span>
                     </div>
                 </div>
 
                 <div class="flex gap-3">
-                    <button onclick="closeModal()" class="flex-1 py-3 rounded-xl border border-white/20 font-semibold hover:bg-white/10 transition">
+                    <button onclick="closeModal()" class="modal-btn-cancel flex-1">
                         Отмена
                     </button>
-                    <button onclick="confirmBuy()" class="buy-btn flex-1 py-3 rounded-xl font-semibold">
+                    <button onclick="confirmBuy()" class="buy-btn flex-1">
                         Подтвердить
                     </button>
                 </div>
@@ -338,35 +1085,21 @@
     </div>
 
     <script>
-        function createStars() {
-            const starsContainer = document.getElementById('stars');
-            starsContainer.innerHTML = '';
-            for (let i = 0; i < 100; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                star.style.animationDelay = Math.random() * 2 + 's';
-                star.style.width = Math.random() * 3 + 1 + 'px';
-                star.style.height = star.style.width;
-                starsContainer.appendChild(star);
-            }
-        }
-        createStars();
-
+        // ===== Theme Switcher =====
         function setTheme(theme) {
-            document.body.className = 'theme-' + theme + ' text-white overflow-x-hidden';
-            document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelector('.theme-btn.' + theme).classList.add('active');
+            document.body.className = 'theme-' + theme + ' text-white';
+            document.querySelectorAll('.theme-dot').forEach(dot => dot.classList.remove('active'));
+            document.querySelector('.theme-dot.' + theme)?.classList.add('active');
             localStorage.setItem('selectedTheme', theme);
         }
 
         const savedTheme = localStorage.getItem('selectedTheme');
         if (savedTheme) setTheme(savedTheme);
 
-        document.querySelectorAll('.category-btn').forEach(btn => {
+        // ===== Categories =====
+        document.querySelectorAll('.category-pill').forEach(btn => {
             btn.addEventListener('click', function() {
-                document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.category-pill').forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
 
                 const category = this.dataset.category;
@@ -383,6 +1116,7 @@
             });
         });
 
+        // ===== Gift Emojis =====
         const giftEmojis = {
             'Christmas Tree': '🎄',
             'Gift Heart': '💝',
@@ -391,64 +1125,66 @@
             'Birthday Cake': '🎂',
             'Rocket': '🚀',
             'Diamond Ring': '💍',
-            'Diamond': '💎'
+            'Diamond': '💎',
+            'Golden Crown': '👑',
+            'Magic Wand': '🪄',
+            'Lucky Clover': '🍀',
+            'Crystal Ball': '🔮',
+            'Star Trophy': '🏆'
         };
 
         let selectedItemId = null;
 
+        // ===== Modal Functions =====
         function showBuyModal(itemId, name, price) {
             selectedItemId = itemId;
 
             const modal = document.getElementById('buyModal');
-            const content = document.getElementById('modalContent');
-
             document.getElementById('modalTitle').textContent = name;
             document.getElementById('modalPrice').textContent = price;
             document.getElementById('modalEmoji').textContent = giftEmojis[name] || '🎁';
 
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-
-            setTimeout(() => {
-                content.classList.remove('scale-95', 'opacity-0');
-                content.classList.add('scale-100', 'opacity-100');
-            }, 10);
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
         }
 
         function closeModal() {
             const modal = document.getElementById('buyModal');
-            const content = document.getElementById('modalContent');
-
-            content.classList.remove('scale-100', 'opacity-100');
-            content.classList.add('scale-95', 'opacity-0');
-
-            setTimeout(() => {
-                modal.classList.remove('flex');
-                modal.classList.add('hidden');
-            }, 300);
+            modal.classList.remove('show');
+            document.body.style.overflow = '';
         }
 
         function confirmBuy() {
             if (!selectedItemId) return;
             closeModal();
-            buy(selectedItemId); // <-- создаст инвойс через /start buy_<item_id>
+            buy(selectedItemId);
         }
 
         document.getElementById('buyModal').addEventListener('click', function(e) {
             if (e.target === this) closeModal();
         });
+
+        // ===== Ripple Effect on Buttons =====
+        document.querySelectorAll('.buy-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                ripple.classList.add('ripple');
+                
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = (e.clientX - rect.left - size/2) + 'px';
+                ripple.style.top = (e.clientY - rect.top - size/2) + 'px';
+                
+                this.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+
+        // ===== Keyboard Close Modal =====
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
