@@ -938,6 +938,39 @@
             background-clip: text;
         }
 
+        /* SOLD OUT стиль */
+        .variant-card.sold-out {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+            position: relative;
+        }
+
+        .variant-card.sold-out::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            border-radius: 20px;
+        }
+
+        .sold-out-icon {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            opacity: 0.5;
+            margin: 0 auto 14px;
+        }
+
+        .sold-out-text {
+            color: #ef4444;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
         .variants-buttons {
             display: flex;
             gap: 12px;
@@ -1445,111 +1478,111 @@
             <!-- 🔥 ЛИМИТИРОВАННЫЕ ПОДАРКИ (5 штук) -->
             <!-- ══════════════════════════════════════════ -->
 
-            <!-- LIMITED 1: Swag Bag -->
-            <div class="gift-card gift-card-limited" data-category="limited" onclick="openVariantsModal('snoop_dog')">
+            <!-- LIMITED 1: Snoop Dogg -->
+            <div class="gift-card gift-card-limited" data-category="limited" onclick="openVariantsModal('snoop_dogg')">
                 <div class="sale-badge">🔥 LTD</div>
                 <div class="flex items-center gap-5">
                     <div class="gift-image-container">
                         <div class="gift-image-glow"></div>
-                        <img src="https://i.ibb.co/J1xKynR/rounded-in-photoretrica-1.png" alt="Snoop Dog" class="gift-image">
+                        <img src="https://i.ibb.co/ksZtVXNm/rounded-in-photoretrica-3.png" alt="Snoop Dogg" class="gift-image">
                     </div>
                     <div class="flex-1 min-w-0">
-                        <h3 class="text-lg font-bold mb-1 gift-title">Snoop Dog</h3>
-                        <p class="text-white/40 text-sm mb-3">3 вида</p>
+                        <h3 class="text-lg font-bold mb-1 gift-title">Snoop Dogg</h3>
+                        <p class="text-white/40 text-sm mb-3">3 variations</p>
                         <div class="flex items-center gap-3">
                             <span class="text-white/60 text-sm">от</span>
-                            <span class="price-current">⭐ 250</span>
+                            <span class="price-current">⭐ 280</span>
                         </div>
                     </div>
-                    <button class="view-btn" onclick="event.stopPropagation(); openVariantsModal('snoop_dog')">
+                    <button class="view-btn" onclick="event.stopPropagation(); openVariantsModal('snoop_dogg')">
                         <span>Выбрать</span>
                     </button>
                 </div>
             </div>
 
-            <!-- LIMITED 2: Magic Wand -->
-            <div class="gift-card gift-card-limited" data-category="limited" onclick="openVariantsModal('magic_wand')">
+            <!-- LIMITED 2: Holiday Drink -->
+            <div class="gift-card gift-card-limited" data-category="limited" onclick="openVariantsModal('holiday_drink')">
                 <div class="sale-badge">🔥 LTD</div>
                 <div class="flex items-center gap-5">
                     <div class="gift-image-container">
                         <div class="gift-image-glow"></div>
-                        <img src="https://via.placeholder.com/80?text=Wand" alt="Magic Wand" class="gift-image">
+                        <img src="https://i.ibb.co/KxgkCwYD/rounded-in-photoretrica-14.png" alt="Holiday Drink" class="gift-image">
                     </div>
                     <div class="flex-1 min-w-0">
-                        <h3 class="text-lg font-bold mb-1 gift-title">Magic Wand</h3>
-                        <p class="text-white/40 text-sm mb-3">Волшебная палочка • 3 варианта</p>
+                        <h3 class="text-lg font-bold mb-1 gift-title">Holiday Drink</h3>
+                        <p class="text-white/40 text-sm mb-3">2 variations</p>
                         <div class="flex items-center gap-3">
                             <span class="text-white/60 text-sm">от</span>
-                            <span class="price-current">⭐ 30</span>
+                            <span class="price-current">⭐ 388</span>
                         </div>
                     </div>
-                    <button class="view-btn" onclick="event.stopPropagation(); openVariantsModal('magic_wand')">
+                    <button class="view-btn" onclick="event.stopPropagation(); openVariantsModal('holiday_drink')">
                         <span>Выбрать</span>
                     </button>
                 </div>
             </div>
 
-            <!-- LIMITED 3: Lucky Clover -->
-            <div class="gift-card gift-card-limited" data-category="limited" onclick="openVariantsModal('lucky_clover')">
+            <!-- LIMITED 3: Mighty Arm -->
+            <div class="gift-card gift-card-limited" data-category="limited" onclick="openVariantsModal('mighty_arm')">
                 <div class="sale-badge">🔥 LTD</div>
                 <div class="flex items-center gap-5">
                     <div class="gift-image-container">
                         <div class="gift-image-glow"></div>
-                        <img src="https://via.placeholder.com/80?text=Clover" alt="Lucky Clover" class="gift-image">
+                        <img src="https://i.ibb.co/4g3rjCn4/rounded-in-photoretrica-7.png" alt="Mighty Arm" class="gift-image">
                     </div>
                     <div class="flex-1 min-w-0">
-                        <h3 class="text-lg font-bold mb-1 gift-title">Lucky Clover</h3>
-                        <p class="text-white/40 text-sm mb-3">Клевер удачи • 3 варианта</p>
+                        <h3 class="text-lg font-bold mb-1 gift-title">Mighty Arm</h3>
+                        <p class="text-white/40 text-sm mb-3">2 variations</p>
                         <div class="flex items-center gap-3">
                             <span class="text-white/60 text-sm">от</span>
-                            <span class="price-current">⭐ 14</span>
+                            <span class="price-current">⭐ 28452</span>
                         </div>
                     </div>
-                    <button class="view-btn" onclick="event.stopPropagation(); openVariantsModal('lucky_clover')">
+                    <button class="view-btn" onclick="event.stopPropagation(); openVariantsModal('mighty_arm')">
                         <span>Выбрать</span>
                     </button>
                 </div>
             </div>
 
-            <!-- LIMITED 4: Crystal Ball -->
-            <div class="gift-card gift-card-limited" data-category="limited" onclick="openVariantsModal('crystal_ball')">
+            <!-- LIMITED 4: Happy Brownie -->
+            <div class="gift-card gift-card-limited" data-category="limited" onclick="openVariantsModal('happy_brownie')">
                 <div class="sale-badge">🔥 LTD</div>
                 <div class="flex items-center gap-5">
                     <div class="gift-image-container">
                         <div class="gift-image-glow"></div>
-                        <img src="https://via.placeholder.com/80?text=Crystal" alt="Crystal Ball" class="gift-image">
+                        <img src="https://i.ibb.co/8LBKdDst/rounded-in-photoretrica-8.png" alt="Happy Brownie" class="gift-image">
                     </div>
                     <div class="flex-1 min-w-0">
-                        <h3 class="text-lg font-bold mb-1 gift-title">Crystal Ball</h3>
-                        <p class="text-white/40 text-sm mb-3">Хрустальный шар • 3 варианта</p>
+                        <h3 class="text-lg font-bold mb-1 gift-title">Happy Brownie</h3>
+                        <p class="text-white/40 text-sm mb-3">2 variations</p>
                         <div class="flex items-center gap-3">
                             <span class="text-white/60 text-sm">от</span>
-                            <span class="price-current">⭐ 85</span>
+                            <span class="price-current">⭐ 299</span>
                         </div>
                     </div>
-                    <button class="view-btn" onclick="event.stopPropagation(); openVariantsModal('crystal_ball')">
+                    <button class="view-btn" onclick="event.stopPropagation(); openVariantsModal('happy_brownie')">
                         <span>Выбрать</span>
                     </button>
                 </div>
             </div>
 
-            <!-- LIMITED 5: Star Trophy -->
-            <div class="gift-card gift-card-limited" data-category="limited" onclick="openVariantsModal('star_trophy')">
+            <!-- LIMITED 5: Money Pot -->
+            <div class="gift-card gift-card-limited" data-category="limited" onclick="openVariantsModal('money_pot')">
                 <div class="sale-badge">🔥 LTD</div>
                 <div class="flex items-center gap-5">
                     <div class="gift-image-container">
                         <div class="gift-image-glow"></div>
-                        <img src="https://via.placeholder.com/80?text=Trophy" alt="Star Trophy" class="gift-image">
+                        <img src="https://i.ibb.co/gMqqGRSV/rounded-in-photoretrica-10.png" alt="Money Pot" class="gift-image">
                     </div>
                     <div class="flex-1 min-w-0">
-                        <h3 class="text-lg font-bold mb-1 gift-title">Star Trophy</h3>
-                        <p class="text-white/40 text-sm mb-3">Звёздный трофей • 3 варианта</p>
+                        <h3 class="text-lg font-bold mb-1 gift-title">Money Pot</h3>
+                        <p class="text-white/40 text-sm mb-3">2 variations</p>
                         <div class="flex items-center gap-3">
                             <span class="text-white/60 text-sm">от</span>
-                            <span class="price-current">⭐ 65</span>
+                            <span class="price-current">⭐ 431</span>
                         </div>
                     </div>
-                    <button class="view-btn" onclick="event.stopPropagation(); openVariantsModal('star_trophy')">
+                    <button class="view-btn" onclick="event.stopPropagation(); openVariantsModal('money_pot')">
                         <span>Выбрать</span>
                     </button>
                 </div>
@@ -1646,62 +1679,58 @@
     <script>
         // ===== КОНФИГУРАЦИЯ ВАРИАНТОВ =====
         const GIFT_VARIANTS = {
-            'swag_bag': {
-                title: 'Swag Bag',
+            'snoop_dogg': {
+                title: 'Snoop Dogg',
                 variants: [
                     {
-                        id: 'swag_bag_v1',
-                        image: 'https://via.placeholder.com/100?text=V1',
-                        name: 'Вариант 1',
-                        details: 'Lemon Pepper • Onyx Black • Heraldic Lily',
-                        price: 75
+                        id: 'snoop_dogg_v1',
+                        image: 'https://i.ibb.co/ksZtVXNm/rounded-in-photoretrica-3.png',
+                        name: 'Snoop Dogg',
+                        details: 'Black Diamond • Like Silver • Blue',
+                        price: 310
                     },
                     {
-                        id: 'swag_bag_v2',
-                        image: 'https://via.placeholder.com/100?text=V2',
-                        name: 'Вариант 2',
-                        details: 'Gummies • Beretta • Lavender',
-                        price: 80
+                        id: 'snoop_dogg_v2',
+                        image: 'https://i.ibb.co/J1xKynR/rounded-in-photoretrica-1.png',
+                        name: 'Snoop Dogg',
+                        details: 'Super Bowl • Crystall Ball • Aquamarine',
+                        price: 315
                     },
                     {
-                        id: 'swag_bag_v3',
-                        image: 'https://via.placeholder.com/100?text=V3',
-                        name: 'Вариант 3',
-                        details: 'Узор • Фон • Модель',
-                        price: 85
+                        id: 'snoop_dogg_v3',
+                        image: 'https://i.ibb.co/V0kvFRx2/rounded-in-photoretrica-4.png',
+                        name: 'Snoop Dogg',
+                        details: 'Barks A Locks • Toilet Celtic • Blue',
+                        price: 280
                     }
                 ]
             },
-            'magic_wand': {
-                title: 'Magic Wand',
+            'holiday_drink': {
+                title: 'Holiday Drink',
                 variants: [
-                    { id: 'magic_wand_v1', image: 'https://via.placeholder.com/100?text=W1', name: 'Вариант 1', details: 'Узор • Фон • Модель', price: 30 },
-                    { id: 'magic_wand_v2', image: 'https://via.placeholder.com/100?text=W2', name: 'Вариант 2', details: 'Узор • Фон • Модель', price: 35 },
-                    { id: 'magic_wand_v3', image: 'https://via.placeholder.com/100?text=W3', name: 'Вариант 3', details: 'Узор • Фон • Модель', price: 40 }
+                    { id: 'holiday_drink_v1', image: 'https://i.ibb.co/jkv0Kd0X/rounded-in-photoretrica-5.png', name: 'Holiday Drink', details: 'Candyman • Shooting Star • Midnight Blue', price: 388 },
+                    { id: 'holiday_drink_v2', image: 'https://i.ibb.co/4n1jf07n/rounded-in-photoretrica-6.png', name: 'Holiday Drink', details: 'Hot Fuchsia • Coonskin Cap • Pacific Green', price: 472 }
                 ]
             },
-            'lucky_clover': {
-                title: 'Lucky Clover',
+            'mighty_arm': {
+                title: 'Mighty Arm',
                 variants: [
-                    { id: 'lucky_clover_v1', image: 'https://via.placeholder.com/100?text=C1', name: 'Вариант 1', details: 'Узор • Фон • Модель', price: 14 },
-                    { id: 'lucky_clover_v2', image: 'https://via.placeholder.com/100?text=C2', name: 'Вариант 2', details: 'Узор • Фон • Модель', price: 18 },
-                    { id: 'lucky_clover_v3', image: 'https://via.placeholder.com/100?text=C3', name: 'Вариант 3', details: 'Узор • Фон • Модель', price: 22 }
+                    { id: 'mighty_arm_v1', image: 'https://i.ibb.co/4g3rjCn4/rounded-in-photoretrica-7.png', name: 'Mighty Arm', details: 'Genie • La Corona • Steel Gray', price: 28452 },
+                    { id: 'mighty_arm_v2', image: '', name: 'Mighty Arm', details: 'ПРОДАНО', price: 0, soldOut: true }
                 ]
             },
-            'crystal_ball': {
-                title: 'Crystal Ball',
+            'happy_brownie': {
+                title: 'Happy Brownie',
                 variants: [
-                    { id: 'crystal_ball_v1', image: 'https://via.placeholder.com/100?text=B1', name: 'Вариант 1', details: 'Узор • Фон • Модель', price: 85 },
-                    { id: 'crystal_ball_v2', image: 'https://via.placeholder.com/100?text=B2', name: 'Вариант 2', details: 'Узор • Фон • Модель', price: 90 },
-                    { id: 'crystal_ball_v3', image: 'https://via.placeholder.com/100?text=B3', name: 'Вариант 3', details: 'Узор • Фон • Модель', price: 95 }
+                    { id: 'happy_brownie_v1', image: 'https://i.ibb.co/8LBKdDst/rounded-in-photoretrica-8.png', name: 'Happy Brownie', details: 'Alien Aztec Falcon • Pacific Cyan', price: 299 },
+                    { id: 'happy_brownie_v2', image: 'https://i.ibb.co/QjMwzYB2/rounded-in-photoretrica-9.png', name: 'Happy Brownie', details: 'Cactus Green • Helmet • Khaki Green', price: 319 }
                 ]
             },
-            'star_trophy': {
-                title: 'Star Trophy',
+            'money_pot': {
+                title: 'Money Pot',
                 variants: [
-                    { id: 'star_trophy_v1', image: 'https://via.placeholder.com/100?text=T1', name: 'Вариант 1', details: 'Узор • Фон • Модель', price: 65 },
-                    { id: 'star_trophy_v2', image: 'https://via.placeholder.com/100?text=T2', name: 'Вариант 2', details: 'Узор • Фон • Модель', price: 70 },
-                    { id: 'star_trophy_v3', image: 'https://via.placeholder.com/100?text=T3', name: 'Вариант 3', details: 'Узор • Фон • Модель', price: 75 }
+                    { id: 'money_pot_v1', image: 'https://i.ibb.co/gMqqGRSV/rounded-in-photoretrica-10.png', name: 'Money Pot', details: 'Witch Brew • Paper Crane • Steel Grey', price: 431 },
+                    { id: 'money_pot_v2', image: 'https://i.ibb.co/rRJR61ZB/rounded-in-photoretrica-11.png', name: 'Money Pot', details: 'Uzbek Pilaf • Ghost • Malachite', price: 478 }
                 ]
             }
         };
@@ -1770,14 +1799,26 @@
             document.getElementById('variantsTitle').textContent = gift.title;
             
             const grid = document.getElementById('variantsGrid');
-            grid.innerHTML = gift.variants.map(v => `
-                <div class="variant-card" onclick="selectVariant('${v.id}', this)">
-                    <img src="${v.image}" alt="${v.name}" class="variant-image">
-                    <div class="variant-name">${v.name}</div>
-                    <div class="variant-details">${v.details}</div>
-                    <div class="variant-price">⭐ ${v.price}</div>
-                </div>
-            `).join('');
+            grid.innerHTML = gift.variants.map(v => {
+                if (v.soldOut) {
+                    return `
+                        <div class="variant-card sold-out">
+                            <div class="sold-out-icon">🚫</div>
+                            <div class="variant-name">${v.name}</div>
+                            <div class="variant-details sold-out-text">${v.details}</div>
+                            <div class="variant-price" style="opacity: 0.3;">—</div>
+                        </div>
+                    `;
+                }
+                return `
+                    <div class="variant-card" onclick="selectVariant('${v.id}', this)">
+                        <img src="${v.image}" alt="${v.name}" class="variant-image">
+                        <div class="variant-name">${v.name}</div>
+                        <div class="variant-details">${v.details}</div>
+                        <div class="variant-price">⭐ ${v.price}</div>
+                    </div>
+                `;
+            }).join('');
 
             const buyBtn = document.getElementById('buyVariantBtn');
             buyBtn.disabled = true;
@@ -1901,5 +1942,3 @@
     </script>
 </body>
 </html>
-
-
