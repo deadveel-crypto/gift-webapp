@@ -31,25 +31,15 @@
         }
 
         @keyframes card-enter {
-            0% { opacity: 0; transform: translateY(30px) scale(0.95); }
+            0% { opacity: 0; transform: translateY(60px) scale(0.9); }
             100% { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        @keyframes ripple {
-            0% { transform: scale(0); opacity: 0.6; }
-            100% { transform: scale(4); opacity: 0; }
-        }
-
         @keyframes bounce-in {
-            0% { transform: scale(0.3); opacity: 0; }
-            50% { transform: scale(1.05); }
-            70% { transform: scale(0.9); }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        @keyframes slide-up {
-            0% { transform: translateY(100%); opacity: 0; }
-            100% { transform: translateY(0); opacity: 1; }
+            0% { transform: scale(0.3) rotate(-10deg); opacity: 0; }
+            50% { transform: scale(1.1) rotate(5deg); }
+            70% { transform: scale(0.9) rotate(-2deg); }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
         }
 
         @keyframes glow-pulse {
@@ -57,14 +47,84 @@
             50% { opacity: 1; }
         }
 
-        @keyframes rotate-slow {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
         @keyframes text-shine {
             0% { background-position: -200% center; }
             100% { background-position: 200% center; }
+        }
+
+        @keyframes button-press {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.92); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes success-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(139, 92, 246, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0); }
+        }
+
+        @keyframes price-glow {
+            0%, 100% { 
+                text-shadow: 0 0 10px rgba(251, 191, 36, 0.5), 0 0 20px rgba(251, 191, 36, 0.3);
+                filter: brightness(1);
+            }
+            50% { 
+                text-shadow: 0 0 20px rgba(251, 191, 36, 0.8), 0 0 40px rgba(251, 191, 36, 0.5), 0 0 60px rgba(251, 191, 36, 0.3);
+                filter: brightness(1.2);
+            }
+        }
+
+        @keyframes modal-backdrop {
+            0% { opacity: 0; backdrop-filter: blur(0); }
+            100% { opacity: 1; backdrop-filter: blur(16px); }
+        }
+
+        @keyframes modal-content-enter {
+            0% { 
+                opacity: 0; 
+                transform: scale(0.7) translateY(80px);
+            }
+            60% {
+                transform: scale(1.02) translateY(-10px);
+            }
+            100% { 
+                opacity: 1; 
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        @keyframes image-float {
+            0%, 100% { transform: translateY(0) scale(1) rotate(0deg); }
+            25% { transform: translateY(-8px) scale(1.02) rotate(2deg); }
+            50% { transform: translateY(-12px) scale(1.05) rotate(0deg); }
+            75% { transform: translateY(-8px) scale(1.02) rotate(-2deg); }
+        }
+
+        @keyframes ring-pulse {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { opacity: 0.5; }
+            100% { transform: scale(2.5); opacity: 0; }
+        }
+
+        @keyframes checkmark-draw {
+            0% { stroke-dashoffset: 50; }
+            100% { stroke-dashoffset: 0; }
+        }
+
+        @keyframes detail-slide {
+            0% { opacity: 0; transform: translateX(-20px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes star-sparkle {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.3); opacity: 0.8; }
+        }
+
+        @keyframes subtle-float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
         }
 
         /* ========== БАЗОВЫЕ СТИЛИ ========== */
@@ -200,7 +260,7 @@
             font-weight: 500;
             color: rgba(255,255,255,0.6);
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             overflow: hidden;
         }
 
@@ -213,7 +273,7 @@
             bottom: 0;
             background: linear-gradient(135deg, #8b5cf6, #06b6d4);
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.4s ease;
         }
 
         .category-pill:hover {
@@ -250,9 +310,14 @@
             border-radius: 24px;
             padding: 24px;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            animation: card-enter 0.6s ease backwards;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             overflow: hidden;
+            opacity: 0;
+            transform: translateY(60px) scale(0.9);
+        }
+
+        .gift-card.animate-in {
+            animation: card-enter 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
         }
 
         .gift-card::before {
@@ -265,10 +330,10 @@
             background: linear-gradient(
                 90deg,
                 transparent,
-                rgba(255,255,255,0.05),
+                rgba(255,255,255,0.08),
                 transparent
             );
-            transition: left 0.5s ease;
+            transition: left 0.6s ease;
         }
 
         .gift-card:hover::before {
@@ -276,26 +341,12 @@
         }
 
         .gift-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            border-color: rgba(139, 92, 246, 0.3);
+            transform: translateY(-12px) scale(1.02);
+            border-color: rgba(139, 92, 246, 0.4);
             box-shadow: 
-                0 20px 40px rgba(0,0,0,0.3),
-                0 0 60px rgba(139, 92, 246, 0.1);
+                0 25px 50px rgba(0,0,0,0.4),
+                0 0 80px rgba(139, 92, 246, 0.15);
         }
-
-        .gift-card:nth-child(1) { animation-delay: 0.05s; }
-        .gift-card:nth-child(2) { animation-delay: 0.1s; }
-        .gift-card:nth-child(3) { animation-delay: 0.15s; }
-        .gift-card:nth-child(4) { animation-delay: 0.2s; }
-        .gift-card:nth-child(5) { animation-delay: 0.25s; }
-        .gift-card:nth-child(6) { animation-delay: 0.3s; }
-        .gift-card:nth-child(7) { animation-delay: 0.35s; }
-        .gift-card:nth-child(8) { animation-delay: 0.4s; }
-        .gift-card:nth-child(9) { animation-delay: 0.45s; }
-        .gift-card:nth-child(10) { animation-delay: 0.5s; }
-        .gift-card:nth-child(11) { animation-delay: 0.55s; }
-        .gift-card:nth-child(12) { animation-delay: 0.6s; }
-        .gift-card:nth-child(13) { animation-delay: 0.65s; }
 
         .gift-image-container {
             position: relative;
@@ -311,11 +362,11 @@
             border-radius: 50%;
             opacity: 0;
             filter: blur(20px);
-            transition: opacity 0.4s ease;
+            transition: opacity 0.5s ease;
         }
 
         .gift-card:hover .gift-image-glow {
-            opacity: 0.4;
+            opacity: 0.5;
         }
 
         .gift-image {
@@ -324,12 +375,13 @@
             object-fit: contain;
             position: relative;
             z-index: 1;
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
         }
 
         .gift-card:hover .gift-image {
-            transform: scale(1.1) rotate(5deg);
+            transform: scale(1.15) rotate(5deg);
+            animation: subtle-float 2s ease-in-out infinite;
         }
 
         /* Sale Badge */
@@ -349,17 +401,6 @@
             animation: pulse-glow 2s ease-in-out infinite;
         }
 
-        .sale-badge::before {
-            content: '';
-            position: absolute;
-            inset: -2px;
-            background: linear-gradient(135deg, #ef4444, #f97316);
-            border-radius: 22px;
-            z-index: -1;
-            opacity: 0.5;
-            filter: blur(8px);
-        }
-
         /* Price Styling */
         .price-current {
             font-size: 24px;
@@ -368,6 +409,8 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            animation: price-glow 2s ease-in-out infinite;
+            position: relative;
         }
 
         .price-old {
@@ -376,13 +419,64 @@
             font-size: 14px;
         }
 
-        .discount-badge {
-            background: rgba(239, 68, 68, 0.15);
-            color: #f87171;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 12px;
+        /* Gift Title Glow */
+        .gift-title {
+            position: relative;
+            text-shadow: 0 0 20px rgba(255,255,255,0.1);
+            transition: all 0.4s ease;
+        }
+
+        .gift-card:hover .gift-title {
+            text-shadow: 0 0 15px rgba(139, 92, 246, 0.6), 0 0 30px rgba(139, 92, 246, 0.4);
+        }
+
+        /* ========== VIEW BUTTON ========== */
+        .view-btn {
+            position: relative;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 14px;
+            padding: 14px 28px;
+            font-size: 15px;
             font-weight: 600;
+            color: white;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .view-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255,255,255,0.15);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+
+        .view-btn:hover::before {
+            width: 300%;
+            height: 300%;
+        }
+
+        .view-btn:hover {
+            background: rgba(255,255,255,0.2);
+            border-color: rgba(255,255,255,0.5);
+            transform: scale(1.08) translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255,255,255,0.15);
+        }
+
+        .view-btn:active {
+            transform: scale(0.95);
+        }
+
+        .view-btn span {
+            position: relative;
+            z-index: 1;
         }
 
         /* ========== BUY BUTTON ========== */
@@ -398,7 +492,7 @@
             color: white;
             cursor: pointer;
             overflow: hidden;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             animation: gradient-shift 3s ease infinite;
         }
 
@@ -406,111 +500,447 @@
             content: '';
             position: absolute;
             top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s ease;
         }
 
         .buy-btn:hover::before {
-            opacity: 1;
+            left: 100%;
         }
 
         .buy-btn:hover {
-            transform: scale(1.05);
+            transform: scale(1.08) translateY(-3px);
             box-shadow: 
-                0 10px 30px rgba(139, 92, 246, 0.4),
-                0 0 40px rgba(139, 92, 246, 0.2);
+                0 20px 45px rgba(139, 92, 246, 0.5),
+                0 0 60px rgba(139, 92, 246, 0.4),
+                inset 0 1px 0 rgba(255,255,255,0.3);
         }
 
         .buy-btn:active {
-            transform: scale(0.98);
+            animation: button-press 0.3s ease forwards;
         }
 
-        /* Ripple effect */
-        .ripple {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.4);
-            animation: ripple 0.6s ease-out;
-            pointer-events: none;
-        }
-
-        /* ========== MODAL ========== */
+        /* ========== MODAL OVERLAY ========== */
         .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.9);
             z-index: 200;
             display: none;
             align-items: center;
             justify-content: center;
             padding: 20px;
+            overflow-y: auto;
+            opacity: 0;
+            backdrop-filter: blur(0);
+            -webkit-backdrop-filter: blur(0);
         }
 
         .modal-overlay.show {
             display: flex;
+            animation: modal-backdrop 0.5s ease forwards;
         }
 
         .modal-content {
             position: relative;
-            background: linear-gradient(180deg, rgba(30, 30, 40, 0.95) 0%, rgba(15, 15, 20, 0.98) 100%);
+            background: linear-gradient(180deg, rgba(25, 25, 35, 0.98) 0%, rgba(10, 10, 15, 0.99) 100%);
             border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 28px;
-            padding: 32px;
-            max-width: 400px;
+            border-radius: 32px;
+            padding: 0;
+            max-width: 420px;
             width: 100%;
-            transform: scale(0.9);
+            transform: scale(0.7) translateY(80px);
             opacity: 0;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
         }
 
         .modal-overlay.show .modal-content {
-            transform: scale(1);
-            opacity: 1;
+            animation: modal-content-enter 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
         }
 
-        .modal-glow {
+        /* ========== CONFIRM MODAL - ПРЕМИУМ ========== */
+        .confirm-modal-inner {
+            position: relative;
+        }
+
+        .confirm-header {
+            position: relative;
+            padding: 40px 32px 30px;
+            text-align: center;
+            background: linear-gradient(180deg, rgba(139, 92, 246, 0.15) 0%, transparent 100%);
+        }
+
+        .confirm-image-wrapper {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 20px;
+        }
+
+        .confirm-image-ring {
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
-            pointer-events: none;
+            inset: -10px;
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            border-radius: 50%;
+            animation: ring-pulse 2s ease-out infinite;
         }
 
-        .modal-emoji {
-            font-size: 72px;
-            animation: bounce-in 0.5s ease 0.2s backwards;
+        .confirm-image-ring:nth-child(2) {
+            animation-delay: 0.5s;
         }
 
-        .modal-price-box {
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(6, 182, 212, 0.1));
-            border: 1px solid rgba(139, 92, 246, 0.2);
-            border-radius: 16px;
+        .confirm-image-ring:nth-child(3) {
+            animation-delay: 1s;
+        }
+
+        .confirm-image-glow {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.4) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(20px);
+        }
+
+        .confirm-image {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+            position: relative;
+            z-index: 2;
+            margin: 10px;
+            filter: drop-shadow(0 10px 30px rgba(0,0,0,0.5));
+            animation: image-float 3s ease-in-out infinite;
+        }
+
+        .modal-overlay.show .confirm-image {
+            animation: bounce-in 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards, image-float 3s ease-in-out 0.8s infinite;
+        }
+
+        .confirm-title {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 6px;
+            background: linear-gradient(135deg, #ffffff, #c4b5fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .confirm-subtitle {
+            font-size: 14px;
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* Details Section */
+        .confirm-details {
+            padding: 0 32px 30px;
+        }
+
+        .detail-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
             padding: 20px;
+            margin-bottom: 16px;
         }
 
-        .modal-btn-cancel {
+        .detail-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+
+        .modal-overlay.show .detail-row {
+            animation: detail-slide 0.5s ease forwards;
+        }
+
+        .modal-overlay.show .detail-row:nth-child(1) { animation-delay: 0.2s; }
+        .modal-overlay.show .detail-row:nth-child(2) { animation-delay: 0.3s; }
+        .modal-overlay.show .detail-row:nth-child(3) { animation-delay: 0.4s; }
+
+        .detail-row:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .detail-row:first-child {
+            padding-top: 0;
+        }
+
+        .detail-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: rgba(255,255,255,0.6);
+            font-size: 14px;
+        }
+
+        .detail-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            background: rgba(139, 92, 246, 0.15);
+        }
+
+        .detail-value {
+            font-weight: 600;
+            font-size: 15px;
+            color: white;
+        }
+
+        /* Price Display */
+        .price-display {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.15) 0%, rgba(245, 158, 11, 0.1) 100%);
+            border: 1px solid rgba(251, 191, 36, 0.2);
+            border-radius: 20px;
+            padding: 24px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .price-label {
+            font-size: 13px;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .price-amount {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .price-star {
+            font-size: 36px;
+            animation: star-sparkle 1.5s ease-in-out infinite;
+        }
+
+        .price-value {
+            font-size: 42px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b, #fbbf24);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: text-shine 2s linear infinite, price-glow 2s ease-in-out infinite;
+        }
+
+        /* Buttons */
+        .confirm-buttons {
+            display: flex;
+            gap: 12px;
+            padding: 0 32px 32px;
+        }
+
+        .btn-cancel {
+            flex: 1;
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 14px;
-            padding: 14px 24px;
-            font-size: 15px;
+            border-radius: 16px;
+            padding: 18px 24px;
+            font-size: 16px;
             font-weight: 600;
             color: rgba(255,255,255,0.7);
             cursor: pointer;
+            transition: all 0.4s ease;
+        }
+
+        .btn-cancel:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.2);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-confirm {
+            flex: 1.5;
+            position: relative;
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 50%, #6d28d9 100%);
+            background-size: 200% 200%;
+            border: none;
+            border-radius: 16px;
+            padding: 18px 24px;
+            font-size: 16px;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: gradient-shift 3s ease infinite;
+        }
+
+        .btn-confirm::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        }
+
+        .btn-confirm:hover::before {
+            left: 100%;
+            transition: left 0.6s ease;
+        }
+
+        .btn-confirm:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 
+                0 15px 40px rgba(139, 92, 246, 0.5),
+                0 0 50px rgba(139, 92, 246, 0.3);
+        }
+
+        .btn-confirm:active {
+            transform: scale(0.98);
+        }
+
+        /* ========== VARIANT CARDS ========== */
+        .variants-modal-inner {
+            padding: 32px;
+        }
+
+        .variants-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .variants-title {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff, #c4b5fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .close-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.6);
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-btn:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        .variants-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .variant-card {
+            background: rgba(255,255,255,0.03);
+            border: 2px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 20px 16px;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px) scale(0.9);
+        }
+
+        .modal-overlay.show .variant-card {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .modal-overlay.show .variant-card:nth-child(1) { transition-delay: 0.15s; }
+        .modal-overlay.show .variant-card:nth-child(2) { transition-delay: 0.25s; }
+        .modal-overlay.show .variant-card:nth-child(3) { transition-delay: 0.35s; }
+
+        .variant-card:hover {
+            border-color: rgba(139, 92, 246, 0.5);
+            background: rgba(139, 92, 246, 0.15);
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 20px 50px rgba(139, 92, 246, 0.25);
+        }
+
+        .variant-card.selected {
+            border-color: #8b5cf6;
+            background: rgba(139, 92, 246, 0.25);
+            box-shadow: 
+                0 0 40px rgba(139, 92, 246, 0.5),
+                inset 0 0 30px rgba(139, 92, 246, 0.15);
+            animation: success-pulse 1.5s ease infinite;
+        }
+
+        .variant-image {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            margin: 0 auto 14px;
+            filter: drop-shadow(0 8px 20px rgba(0,0,0,0.4));
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .variant-card:hover .variant-image {
+            transform: scale(1.2) rotate(8deg);
+            filter: drop-shadow(0 15px 30px rgba(139, 92, 246, 0.5));
+        }
+
+        .variant-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 6px;
             transition: all 0.3s ease;
         }
 
-        .modal-btn-cancel:hover {
-            background: rgba(255,255,255,0.1);
-            color: white;
+        .variant-card:hover .variant-name {
+            text-shadow: 0 0 15px rgba(255,255,255,0.6);
+        }
+
+        .variant-details {
+            font-size: 11px;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .variant-price {
+            font-size: 18px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .variants-buttons {
+            display: flex;
+            gap: 12px;
         }
 
         /* ========== THEME SWITCHER ========== */
@@ -530,7 +960,6 @@
             cursor: pointer;
             border: 2px solid transparent;
             transition: all 0.3s ease;
-            position: relative;
         }
 
         .theme-dot:hover {
@@ -542,107 +971,200 @@
             box-shadow: 0 0 15px currentColor;
         }
 
-        .theme-dot.violet {
-            background: linear-gradient(135deg, #8b5cf6, #6366f1);
-        }
+        .theme-dot.violet { background: linear-gradient(135deg, #8b5cf6, #6366f1); }
+        .theme-dot.space { background: linear-gradient(135deg, #1e1b4b, #312e81); border: 1px solid rgba(255,255,255,0.2); }
 
-        .theme-dot.cyan {
-            background: linear-gradient(135deg, #06b6d4, #0891b2);
-        }
-
-        .theme-dot.rose {
-            background: linear-gradient(135deg, #f43f5e, #ec4899);
-        }
-
-        .theme-dot.emerald {
-            background: linear-gradient(135deg, #10b981, #059669);
-        }
-
-        /* ========== THEME: VIOLET (default) ========== */
+        /* ========== THEMES ========== */
         body.theme-violet .bg-orb-1 { background: linear-gradient(135deg, #8b5cf6, #6366f1); }
-        body.theme-violet .bg-orb-2 { background: linear-gradient(135deg, #a78bfa, #8b5cf6); }
-        body.theme-violet .bg-orb-3 { background: linear-gradient(135deg, #c4b5fd, #a78bfa); }
         body.theme-violet .buy-btn { background: linear-gradient(135deg, #8b5cf6, #6366f1, #8b5cf6); }
         body.theme-violet .category-pill.active::before { background: linear-gradient(135deg, #8b5cf6, #6366f1); }
-        body.theme-violet .gift-card:hover { border-color: rgba(139, 92, 246, 0.3); box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 60px rgba(139, 92, 246, 0.15); }
-        body.theme-violet .gift-image-glow { background: linear-gradient(135deg, #8b5cf6, #a78bfa); }
-        body.theme-violet .sale-badge { animation-name: pulse-glow-violet; }
-        @keyframes pulse-glow-violet { 0%, 100% { box-shadow: 0 0 20px rgba(139, 92, 246, 0.3); } 50% { box-shadow: 0 0 40px rgba(139, 92, 246, 0.6); } }
+        body.theme-violet .variant-card.selected { border-color: #8b5cf6; }
 
-        /* ========== THEME: CYAN ========== */
-        body.theme-cyan .bg-orb-1 { background: linear-gradient(135deg, #06b6d4, #0891b2); }
-        body.theme-cyan .bg-orb-2 { background: linear-gradient(135deg, #22d3ee, #06b6d4); }
-        body.theme-cyan .bg-orb-3 { background: linear-gradient(135deg, #67e8f9, #22d3ee); }
-        body.theme-cyan .buy-btn { background: linear-gradient(135deg, #06b6d4, #0891b2, #06b6d4); background-size: 200% 200%; }
-        body.theme-cyan .category-pill.active::before { background: linear-gradient(135deg, #06b6d4, #0891b2); }
-        body.theme-cyan .gift-card:hover { border-color: rgba(6, 182, 212, 0.3); box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 60px rgba(6, 182, 212, 0.15); }
-        body.theme-cyan .gift-image-glow { background: linear-gradient(135deg, #06b6d4, #22d3ee); }
-        body.theme-cyan .hero-title { 
-            background: linear-gradient(135deg, #ffffff, #67e8f9, #06b6d4, #0891b2); 
-            background-size: 300% 300%; 
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        /* ========== SPACE THEME - ПРЕМИУМ ========== */
+        body.theme-space {
+            background: #080810;
         }
-        body.theme-cyan .brand-text { 
-            background: linear-gradient(135deg, #ffffff, #22d3ee, #06b6d4); 
-            background-size: 200% auto; 
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        body.theme-cyan .logo-glow { background: linear-gradient(135deg, #06b6d4, #22d3ee); }
-        body.theme-cyan .modal-price-box { background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(34, 211, 238, 0.1)); border-color: rgba(6, 182, 212, 0.2); }
 
-        /* ========== THEME: ROSE ========== */
-        body.theme-rose .bg-orb-1 { background: linear-gradient(135deg, #f43f5e, #e11d48); }
-        body.theme-rose .bg-orb-2 { background: linear-gradient(135deg, #fb7185, #f43f5e); }
-        body.theme-rose .bg-orb-3 { background: linear-gradient(135deg, #fda4af, #fb7185); }
-        body.theme-rose .buy-btn { background: linear-gradient(135deg, #f43f5e, #e11d48, #f43f5e); background-size: 200% 200%; }
-        body.theme-rose .category-pill.active::before { background: linear-gradient(135deg, #f43f5e, #e11d48); }
-        body.theme-rose .gift-card:hover { border-color: rgba(244, 63, 94, 0.3); box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 60px rgba(244, 63, 94, 0.15); }
-        body.theme-rose .gift-image-glow { background: linear-gradient(135deg, #f43f5e, #fb7185); }
-        body.theme-rose .hero-title { 
-            background: linear-gradient(135deg, #ffffff, #fda4af, #f43f5e, #e11d48); 
-            background-size: 300% 300%; 
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        body.theme-space .animated-bg {
+            background: radial-gradient(ellipse at top, #0c0c1a 0%, #080810 50%, #050508 100%);
         }
-        body.theme-rose .brand-text { 
-            background: linear-gradient(135deg, #ffffff, #fb7185, #f43f5e); 
-            background-size: 200% auto; 
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        body.theme-rose .logo-glow { background: linear-gradient(135deg, #f43f5e, #fb7185); }
-        body.theme-rose .modal-price-box { background: linear-gradient(135deg, rgba(244, 63, 94, 0.1), rgba(251, 113, 133, 0.1)); border-color: rgba(244, 63, 94, 0.2); }
 
-        /* ========== THEME: EMERALD ========== */
-        body.theme-emerald .bg-orb-1 { background: linear-gradient(135deg, #10b981, #059669); }
-        body.theme-emerald .bg-orb-2 { background: linear-gradient(135deg, #34d399, #10b981); }
-        body.theme-emerald .bg-orb-3 { background: linear-gradient(135deg, #6ee7b7, #34d399); }
-        body.theme-emerald .buy-btn { background: linear-gradient(135deg, #10b981, #059669, #10b981); background-size: 200% 200%; }
-        body.theme-emerald .category-pill.active::before { background: linear-gradient(135deg, #10b981, #059669); }
-        body.theme-emerald .gift-card:hover { border-color: rgba(16, 185, 129, 0.3); box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 60px rgba(16, 185, 129, 0.15); }
-        body.theme-emerald .gift-image-glow { background: linear-gradient(135deg, #10b981, #34d399); }
-        body.theme-emerald .hero-title { 
-            background: linear-gradient(135deg, #ffffff, #6ee7b7, #10b981, #059669); 
-            background-size: 300% 300%; 
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        body.theme-space .bg-orb-1 { 
+            background: linear-gradient(135deg, #1e1b4b, #312e81); 
+            opacity: 0.4;
         }
-        body.theme-emerald .brand-text { 
-            background: linear-gradient(135deg, #ffffff, #34d399, #10b981); 
+        body.theme-space .bg-orb-2 { 
+            background: linear-gradient(135deg, #1e1b4b, #4338ca); 
+            opacity: 0.3;
+        }
+        body.theme-space .bg-orb-3 { 
+            background: linear-gradient(135deg, #312e81, #4338ca); 
+            opacity: 0.25;
+        }
+
+        body.theme-space .header-premium {
+            background: rgba(8, 8, 16, 0.9);
+            border-bottom-color: rgba(99, 102, 241, 0.1);
+        }
+
+        body.theme-space .logo-glow {
+            background: linear-gradient(135deg, #4338ca, #6366f1);
+            opacity: 0.3;
+        }
+
+        body.theme-space .brand-text { 
+            background: linear-gradient(135deg, #e0e7ff, #c7d2fe, #a5b4fc); 
             background-size: 200% auto; 
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
             background-clip: text;
+            animation: text-shine 5s linear infinite;
         }
-        body.theme-emerald .logo-glow { background: linear-gradient(135deg, #10b981, #34d399); }
-        body.theme-emerald .modal-price-box { background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(52, 211, 153, 0.1)); border-color: rgba(16, 185, 129, 0.2); }
+
+        body.theme-space .hero-title { 
+            background: linear-gradient(135deg, #e0e7ff, #c7d2fe, #a5b4fc, #818cf8); 
+            background-size: 300% 300%; 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            background-clip: text; 
+        }
+
+        body.theme-space .category-pill {
+            background: rgba(99, 102, 241, 0.05);
+            border-color: rgba(99, 102, 241, 0.15);
+        }
+
+        body.theme-space .category-pill.active::before { 
+            background: linear-gradient(135deg, #4338ca, #6366f1); 
+        }
+
+        body.theme-space .gift-card {
+            background: rgba(99, 102, 241, 0.03);
+            border-color: rgba(99, 102, 241, 0.1);
+        }
+
+        body.theme-space .gift-card:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+            box-shadow: 
+                0 25px 50px rgba(0,0,0,0.5),
+                0 0 60px rgba(99, 102, 241, 0.1);
+        }
+
+        body.theme-space .gift-image-glow {
+            background: linear-gradient(135deg, #4338ca, #6366f1);
+        }
+
+        body.theme-space .gift-card:hover .gift-title {
+            text-shadow: 0 0 15px rgba(99, 102, 241, 0.5), 0 0 30px rgba(99, 102, 241, 0.3);
+        }
+
+        body.theme-space .sale-badge {
+            background: linear-gradient(135deg, #ef4444, #f97316);
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+        }
+
+        body.theme-space .buy-btn { 
+            background: linear-gradient(135deg, #4338ca, #6366f1, #4338ca); 
+            background-size: 200% 200%;
+        }
+
+        body.theme-space .buy-btn:hover {
+            box-shadow: 
+                0 20px 45px rgba(99, 102, 241, 0.4),
+                0 0 60px rgba(99, 102, 241, 0.3);
+        }
+
+        body.theme-space .view-btn {
+            background: rgba(99, 102, 241, 0.1);
+            border-color: rgba(99, 102, 241, 0.2);
+        }
+
+        body.theme-space .view-btn:hover {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: rgba(99, 102, 241, 0.4);
+            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.2);
+        }
+
+        body.theme-space .btn-confirm { 
+            background: linear-gradient(135deg, #4338ca, #6366f1, #4f46e5); 
+        }
+
+        body.theme-space .variant-card {
+            background: rgba(99, 102, 241, 0.05);
+            border-color: rgba(99, 102, 241, 0.1);
+        }
+
+        body.theme-space .variant-card:hover {
+            border-color: rgba(99, 102, 241, 0.4);
+            background: rgba(99, 102, 241, 0.15);
+            box-shadow: 0 20px 50px rgba(99, 102, 241, 0.2);
+        }
+
+        body.theme-space .variant-card.selected { 
+            border-color: #6366f1; 
+            background: rgba(99, 102, 241, 0.2);
+            box-shadow: 
+                0 0 40px rgba(99, 102, 241, 0.4),
+                inset 0 0 30px rgba(99, 102, 241, 0.1);
+        }
+
+        body.theme-space .confirm-header {
+            background: linear-gradient(180deg, rgba(99, 102, 241, 0.1) 0%, transparent 100%);
+        }
+
+        body.theme-space .confirm-image-ring { 
+            border-color: rgba(99, 102, 241, 0.25); 
+        }
+
+        body.theme-space .confirm-image-glow { 
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.3) 0%, transparent 70%); 
+        }
+
+        body.theme-space .detail-icon { 
+            background: rgba(99, 102, 241, 0.1); 
+        }
+
+        body.theme-space .detail-card {
+            background: rgba(99, 102, 241, 0.03);
+            border-color: rgba(99, 102, 241, 0.1);
+        }
+
+        body.theme-space .price-display {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(79, 70, 229, 0.08) 100%);
+            border-color: rgba(99, 102, 241, 0.15);
+        }
+
+        body.theme-space .modal-content {
+            background: linear-gradient(180deg, rgba(15, 15, 30, 0.98) 0%, rgba(8, 8, 16, 0.99) 100%);
+            border-color: rgba(99, 102, 241, 0.15);
+        }
+
+        body.theme-space .btn-cancel {
+            background: rgba(99, 102, 241, 0.05);
+            border-color: rgba(99, 102, 241, 0.15);
+        }
+
+        body.theme-space .btn-cancel:hover {
+            background: rgba(99, 102, 241, 0.1);
+            border-color: rgba(99, 102, 241, 0.25);
+        }
+
+        body.theme-space .close-btn {
+            background: rgba(99, 102, 241, 0.05);
+            border-color: rgba(99, 102, 241, 0.15);
+        }
+
+        body.theme-space .close-btn:hover {
+            background: rgba(99, 102, 241, 0.15);
+        }
+
+        /* Space theme scrollbar */
+        body.theme-space::-webkit-scrollbar-thumb { 
+            background: rgba(99, 102, 241, 0.3); 
+        }
+        body.theme-space::-webkit-scrollbar-thumb:hover { 
+            background: rgba(99, 102, 241, 0.5); 
+        }
 
         /* ========== SCROLLBAR ========== */
         ::-webkit-scrollbar { width: 8px; }
@@ -654,13 +1176,17 @@
         .unavailable-container { display: none; }
         .unavailable-container.show { display: flex; }
         .gifts-grid.hide { display: none; }
+        .gift-card.hidden-by-filter { display: none !important; }
 
-        /* Mobile optimization */
+        /* Mobile */
         @media (max-width: 640px) {
             .gifts-grid { grid-template-columns: 1fr; }
             .gift-card { padding: 20px; }
-            .gift-image { width: 64px; height: 64px; }
-            .gift-image-container { width: 64px; height: 64px; }
+            .variants-grid { grid-template-columns: 1fr; }
+            .confirm-buttons { flex-direction: column; }
+            .btn-confirm { order: -1; }
+            .price-value { font-size: 36px; }
+            .confirm-image { width: 100px; height: 100px; }
         }
     </style>
 
@@ -679,12 +1205,6 @@
                 window.location.href = url;
             }
         }
-
-        document.addEventListener("click", (e) => {
-            const btn = e.target.closest("[data-buy]");
-            if (!btn) return;
-            buy(btn.dataset.buy);
-        });
     </script>
 </head>
 
@@ -704,12 +1224,7 @@
                 <div class="flex items-center gap-4">
                     <div class="logo-container">
                         <div class="logo-glow"></div>
-                        <img 
-                            src="https://i.ibb.co/FqLKZQzj/hunyuan-image-3-0-a.png" 
-                            alt="Divine Shop" 
-                            class="logo-img"
-                            onerror="this.style.display='none'"
-                        >
+                        <img src="https://i.ibb.co/FqLKZQzj/hunyuan-image-3-0-a.png" alt="Divine Shop" class="logo-img">
                     </div>
                     <div>
                         <h1 class="text-xl font-bold brand-text">Divine Shop</h1>
@@ -719,9 +1234,7 @@
 
                 <div class="theme-switcher">
                     <button class="theme-dot violet active" onclick="setTheme('violet')" title="Violet"></button>
-                    <button class="theme-dot cyan" onclick="setTheme('cyan')" title="Cyan"></button>
-                    <button class="theme-dot rose" onclick="setTheme('rose')" title="Rose"></button>
-                    <button class="theme-dot emerald" onclick="setTheme('emerald')" title="Emerald"></button>
+                    <button class="theme-dot space" onclick="setTheme('space')" title="Space"></button>
                 </div>
             </div>
         </div>
@@ -729,7 +1242,7 @@
 
     <!-- Main Content -->
     <main class="relative z-10 max-w-6xl mx-auto px-4 pt-28 pb-12">
-        <!-- Hero Section -->
+        <!-- Hero -->
         <div class="text-center mb-12">
             <h2 class="text-4xl md:text-5xl lg:text-6xl font-black mb-4 hero-title">
                 Эксклюзивные Подарки
@@ -741,25 +1254,19 @@
 
         <!-- Categories -->
         <div class="flex flex-wrap justify-center gap-3 mb-12">
-            <button class="category-pill active" data-category="regular"><span>🎁 Все подарки</span></button>
-            <button class="category-pill" data-category="popular"><span>⭐ Популярные</span></button>
-            <button class="category-pill" data-category="premium"><span>💎 Премиум</span></button>
-            <button class="category-pill" data-category="limited"><span>🔥 Лимитированные</span></button>
-            <button class="category-pill" data-category="new"><span>✨ Новинки</span></button>
-        </div>
-
-        <!-- Unavailable Message -->
-        <div class="unavailable-container flex-col items-center justify-center py-24" id="unavailableMessage">
-            <div class="text-7xl mb-6 opacity-60">🔒</div>
-            <h3 class="text-2xl font-bold text-white/60 mb-2">Скоро появятся</h3>
-            <p class="text-white/40">В этой категории пока нет подарков</p>
+            <button class="category-pill active" data-category="all"><span>🎁 Все подарки</span></button>
+            <button class="category-pill" data-category="limited"><span>🔥 NFT</span></button>
         </div>
 
         <!-- Gifts Grid -->
         <div class="gifts-grid" id="giftsContainer">
 
+            <!-- ══════════════════════════════════════════ -->
+            <!-- ОБЫЧНЫЕ ПОДАРКИ (8 штук) -->
+            <!-- ══════════════════════════════════════════ -->
+
             <!-- Gift 1: Christmas Tree -->
-            <div class="gift-card">
+            <div class="gift-card" data-category="regular">
                 <div class="sale-badge">-10%</div>
                 <div class="flex items-center gap-5">
                     <div class="gift-image-container">
@@ -767,21 +1274,21 @@
                         <img src="https://i.ibb.co/rGnkcWRh/Christmas-Tree.webp" alt="Christmas Tree" class="gift-image">
                     </div>
                     <div class="flex-1 min-w-0">
-                        <h3 class="text-lg font-bold mb-1">Christmas Tree</h3>
-                        <p class="text-white/40 text-sm mb-3">Наряженная праздничная ёлка</p>
+                        <h3 class="text-lg font-bold mb-1 gift-title">Christmas Tree</h3>
+                        <p class="text-white/40 text-sm mb-3">Ёлка</p>
                         <div class="flex items-center gap-3">
                             <span class="price-current">⭐ 45</span>
                             <span class="price-old">50 ⭐</span>
                         </div>
                     </div>
-                    <button class="buy-btn" onclick="showBuyModal('christmas_tree','Christmas Tree',45)">
+                    <button class="buy-btn" onclick="event.stopPropagation(); showRegularBuyModal('christmas_tree', 'Christmas Tree', 45, 'https://i.ibb.co/rGnkcWRh/Christmas-Tree.webp', 'Наряженная праздничная ёлка')">
                         Купить
                     </button>
                 </div>
             </div>
 
             <!-- Gift 2: Gift Heart -->
-            <div class="gift-card">
+            <div class="gift-card" data-category="regular">
                 <div class="sale-badge">-33%</div>
                 <div class="flex items-center gap-5">
                     <div class="gift-image-container">
@@ -789,21 +1296,21 @@
                         <img src="https://i.ibb.co/FL927xbG/heart.png" alt="Gift Heart" class="gift-image">
                     </div>
                     <div class="flex-1 min-w-0">
-                        <h3 class="text-lg font-bold mb-1">Gift Heart</h3>
-                        <p class="text-white/40 text-sm mb-3">Сердечко с любовью</p>
+                        <h3 class="text-lg font-bold mb-1 gift-title">Gift Heart</h3>
+                        <p class="text-white/40 text-sm mb-3">Сердечко</p>
                         <div class="flex items-center gap-3">
                             <span class="price-current">⭐ 10</span>
                             <span class="price-old">25 ⭐</span>
                         </div>
                     </div>
-                    <button class="buy-btn" onclick="showBuyModal('gift_heart','Gift Heart',10)">
+                    <button class="buy-btn" onclick="event.stopPropagation(); showRegularBuyModal('gift_heart', 'Gift Heart', 10, 'https://i.ibb.co/FL927xbG/heart.png', 'Сердечко с любовью')">
                         Купить
                     </button>
                 </div>
             </div>
 
             <!-- Gift 3: Santa Bear -->
-            <div class="gift-card">
+            <div class="gift-card" data-category="regular">
                 <div class="sale-badge">-24%</div>
                 <div class="flex items-center gap-5">
                     <div class="gift-image-container">
@@ -811,21 +1318,21 @@
                         <img src="https://i.ibb.co/vCqgnKg0/gpt-image-1-5-a.png" alt="Santa Bear" class="gift-image">
                     </div>
                     <div class="flex-1 min-w-0">
-                        <h3 class="text-lg font-bold mb-1">Santa Bear</h3>
-                        <p class="text-white/40 text-sm mb-3">Милый плюшевый мишка</p>
+                        <h3 class="text-lg font-bold mb-1 gift-title">Santa Bear</h3>
+                        <p class="text-white/40 text-sm mb-3">Новогодний мишка</p>
                         <div class="flex items-center gap-3">
                             <span class="price-current">⭐ 38</span>
                             <span class="price-old">50 ⭐</span>
                         </div>
                     </div>
-                    <button class="buy-btn" onclick="showBuyModal('santa_bear','Santa Bear',38)">
+                    <button class="buy-btn" onclick="event.stopPropagation(); showRegularBuyModal('santa_bear', 'Santa Bear', 38, 'https://i.ibb.co/vCqgnKg0/gpt-image-1-5-a.png', 'Милый плюшевый мишка')">
                         Купить
                     </button>
                 </div>
             </div>
 
             <!-- Gift 4: Red Rose -->
-            <div class="gift-card">
+            <div class="gift-card" data-category="regular">
                 <div class="sale-badge">-28%</div>
                 <div class="flex items-center gap-5">
                     <div class="gift-image-container">
@@ -833,21 +1340,21 @@
                         <img src="https://i.ibb.co/0pD2ZrsG/gpt-image-1-5-a.png" alt="Red Rose" class="gift-image">
                     </div>
                     <div class="flex-1 min-w-0">
-                        <h3 class="text-lg font-bold mb-1">Red Rose</h3>
-                        <p class="text-white/40 text-sm mb-3">Красивая алая роза</p>
+                        <h3 class="text-lg font-bold mb-1 gift-title">Red Rose</h3>
+                        <p class="text-white/40 text-sm mb-3">Роза</p>
                         <div class="flex items-center gap-3">
                             <span class="price-current">⭐ 18</span>
                             <span class="price-old">25 ⭐</span>
                         </div>
                     </div>
-                    <button class="buy-btn" onclick="showBuyModal('red_rose','Red Rose',18)">
+                    <button class="buy-btn" onclick="event.stopPropagation(); showRegularBuyModal('red_rose', 'Red Rose', 18, 'https://i.ibb.co/0pD2ZrsG/gpt-image-1-5-a.png', 'Красивая алая роза')">
                         Купить
                     </button>
                 </div>
             </div>
 
             <!-- Gift 5: Birthday Cake -->
-            <div class="gift-card">
+            <div class="gift-card" data-category="regular">
                 <div class="sale-badge">-24%</div>
                 <div class="flex items-center gap-5">
                     <div class="gift-image-container">
@@ -855,21 +1362,21 @@
                         <img src="https://i.ibb.co/TxwLLzN2/gpt-image-1-5-a.png" alt="Birthday Cake" class="gift-image">
                     </div>
                     <div class="flex-1 min-w-0">
-                        <h3 class="text-lg font-bold mb-1">Birthday Cake</h3>
-                        <p class="text-white/40 text-sm mb-3">Праздничный торт</p>
+                        <h3 class="text-lg font-bold mb-1 gift-title">Birthday Cake</h3>
+                        <p class="text-white/40 text-sm mb-3">Торт</p>
                         <div class="flex items-center gap-3">
                             <span class="price-current">⭐ 38</span>
                             <span class="price-old">50 ⭐</span>
                         </div>
                     </div>
-                    <button class="buy-btn" onclick="showBuyModal('birthday_cake','Birthday Cake',38)">
+                    <button class="buy-btn" onclick="event.stopPropagation(); showRegularBuyModal('birthday_cake', 'Birthday Cake', 38, 'https://i.ibb.co/TxwLLzN2/gpt-image-1-5-a.png', 'Праздничный торт')">
                         Купить
                     </button>
                 </div>
             </div>
 
             <!-- Gift 6: Rocket -->
-            <div class="gift-card">
+            <div class="gift-card" data-category="regular">
                 <div class="sale-badge">-24%</div>
                 <div class="flex items-center gap-5">
                     <div class="gift-image-container">
@@ -877,21 +1384,21 @@
                         <img src="https://i.ibb.co/939pPptm/gpt-image-1-a.png" alt="Rocket" class="gift-image">
                     </div>
                     <div class="flex-1 min-w-0">
-                        <h3 class="text-lg font-bold mb-1">Rocket</h3>
-                        <p class="text-white/40 text-sm mb-3">Космическая ракета</p>
+                        <h3 class="text-lg font-bold mb-1 gift-title">Rocket</h3>
+                        <p class="text-white/40 text-sm mb-3">Ракета</p>
                         <div class="flex items-center gap-3">
                             <span class="price-current">⭐ 38</span>
                             <span class="price-old">50 ⭐</span>
                         </div>
                     </div>
-                    <button class="buy-btn" onclick="showBuyModal('rocket','Rocket',38)">
+                    <button class="buy-btn" onclick="event.stopPropagation(); showRegularBuyModal('rocket', 'Rocket', 38, 'https://i.ibb.co/939pPptm/gpt-image-1-a.png', 'Космическая ракета')">
                         Купить
                     </button>
                 </div>
             </div>
 
             <!-- Gift 7: Diamond Ring -->
-            <div class="gift-card">
+            <div class="gift-card" data-category="regular">
                 <div class="sale-badge">-22%</div>
                 <div class="flex items-center gap-5">
                     <div class="gift-image-container">
@@ -899,21 +1406,21 @@
                         <img src="https://i.ibb.co/PzvsJDRh/gpt-image-1-a.png" alt="Diamond Ring" class="gift-image">
                     </div>
                     <div class="flex-1 min-w-0">
-                        <h3 class="text-lg font-bold mb-1">Diamond Ring</h3>
+                        <h3 class="text-lg font-bold mb-1 gift-title">Diamond Ring</h3>
                         <p class="text-white/40 text-sm mb-3">Кольцо с бриллиантом</p>
                         <div class="flex items-center gap-3">
                             <span class="price-current">⭐ 78</span>
                             <span class="price-old">100 ⭐</span>
                         </div>
                     </div>
-                    <button class="buy-btn" onclick="showBuyModal('diamond_ring','Diamond Ring',78)">
+                    <button class="buy-btn" onclick="event.stopPropagation(); showRegularBuyModal('diamond_ring', 'Diamond Ring', 78, 'https://i.ibb.co/PzvsJDRh/gpt-image-1-a.png', 'Кольцо с бриллиантом')">
                         Купить
                     </button>
                 </div>
             </div>
 
             <!-- Gift 8: Diamond -->
-            <div class="gift-card">
+            <div class="gift-card" data-category="regular">
                 <div class="sale-badge">-22%</div>
                 <div class="flex items-center gap-5">
                     <div class="gift-image-container">
@@ -921,134 +1428,129 @@
                         <img src="https://i.ibb.co/VpMk4jqB/gpt-image-1-a.png" alt="Diamond" class="gift-image">
                     </div>
                     <div class="flex-1 min-w-0">
-                        <h3 class="text-lg font-bold mb-1">Diamond</h3>
-                        <p class="text-white/40 text-sm mb-3">Сверкающий алмаз</p>
+                        <h3 class="text-lg font-bold mb-1 gift-title">Diamond</h3>
+                        <p class="text-white/40 text-sm mb-3">Алмаз</p>
                         <div class="flex items-center gap-3">
                             <span class="price-current">⭐ 78</span>
                             <span class="price-old">100 ⭐</span>
                         </div>
                     </div>
-                    <button class="buy-btn" onclick="showBuyModal('diamond','Diamond',78)">
+                    <button class="buy-btn" onclick="event.stopPropagation(); showRegularBuyModal('diamond', 'Diamond', 78, 'https://i.ibb.co/VpMk4jqB/gpt-image-1-a.png', 'Сверкающий алмаз')">
                         Купить
                     </button>
                 </div>
             </div>
 
-            <!-- ═══════════════════════════════════════════════ -->
-            <!-- 🆕 НОВЫЕ ПОДАРКИ — ВСТАВЬ СВОИ ФОТО НИЖЕ 🆕 -->
-            <!-- ═══════════════════════════════════════════════ -->
+            <!-- ══════════════════════════════════════════ -->
+            <!-- 🔥 ЛИМИТИРОВАННЫЕ ПОДАРКИ (5 штук) -->
+            <!-- ══════════════════════════════════════════ -->
 
-            <!-- NEW Gift 9: Golden Crown -->
-            <div class="gift-card">
-                <div class="sale-badge">-20%</div>
+            <!-- LIMITED 1: Swag Bag -->
+            <div class="gift-card gift-card-limited" data-category="limited" onclick="openVariantsModal('swag_bag')">
+                <div class="sale-badge">🔥 LTD</div>
                 <div class="flex items-center gap-5">
                     <div class="gift-image-container">
                         <div class="gift-image-glow"></div>
-                        <!-- 👇 ВСТАВЬ ССЫЛКУ НА ФОТО СЮДА 👇 -->
-                        <img src="https://i.ibb.co/QjPKQxxZ/photo-2-2026-01-14-02-04-33.jpg" alt="Golden Crown" class="gift-image">
+                        <img src="https://via.placeholder.com/80?text=SwagBag" alt="Swag Bag" class="gift-image">
                     </div>
                     <div class="flex-1 min-w-0">
-                        <h3 class="text-lg font-bold mb-1">Swag Bag</h3>
-                        <p class="text-white/40 text-sm mb-3">предмет выпущен @snoopdogg</p>
+                        <h3 class="text-lg font-bold mb-1 gift-title">Swag Bag</h3>
+                        <p class="text-white/40 text-sm mb-3">Эксклюзивная сумка</p>
                         <div class="flex items-center gap-3">
-                            <span class="price-current">⭐ 596</span>
-                            <span class="price-old">800 ⭐</span>
+                            <span class="text-white/60 text-sm">от</span>
+                            <span class="price-current">⭐ 75</span>
                         </div>
                     </div>
-                    <button class="buy-btn" onclick="showBuyModal('golden_crown','Golden Crown',80)">
-                        Купить
+                    <button class="view-btn" onclick="event.stopPropagation(); openVariantsModal('swag_bag')">
+                        <span>Выбрать</span>
                     </button>
                 </div>
             </div>
 
-            <!-- NEW Gift 10: Magic Wand -->
-            <div class="gift-card">
-                <div class="sale-badge">-25%</div>
+            <!-- LIMITED 2: Magic Wand -->
+            <div class="gift-card gift-card-limited" data-category="limited" onclick="openVariantsModal('magic_wand')">
+                <div class="sale-badge">🔥 LTD</div>
                 <div class="flex items-center gap-5">
                     <div class="gift-image-container">
                         <div class="gift-image-glow"></div>
-                        <!-- 👇 ВСТАВЬ ССЫЛКУ НА ФОТО СЮДА 👇 -->
-                        <img src="https://via.placeholder.com/80" alt="Magic Wand" class="gift-image">
+                        <img src="https://via.placeholder.com/80?text=Wand" alt="Magic Wand" class="gift-image">
                     </div>
                     <div class="flex-1 min-w-0">
-                        <h3 class="text-lg font-bold mb-1">Magic Wand</h3>
-                        <p class="text-white/40 text-sm mb-3">Волшебная палочка</p>
+                        <h3 class="text-lg font-bold mb-1 gift-title">Magic Wand</h3>
+                        <p class="text-white/40 text-sm mb-3">Волшебная палочка • 3 варианта</p>
                         <div class="flex items-center gap-3">
+                            <span class="text-white/60 text-sm">от</span>
                             <span class="price-current">⭐ 30</span>
-                            <span class="price-old">40 ⭐</span>
                         </div>
                     </div>
-                    <button class="buy-btn" onclick="showBuyModal('magic_wand','Magic Wand',30)">
-                        Купить
+                    <button class="view-btn" onclick="event.stopPropagation(); openVariantsModal('magic_wand')">
+                        <span>Выбрать</span>
                     </button>
                 </div>
             </div>
 
-            <!-- NEW Gift 11: Lucky Clover -->
-            <div class="gift-card">
-                <div class="sale-badge">-30%</div>
+            <!-- LIMITED 3: Lucky Clover -->
+            <div class="gift-card gift-card-limited" data-category="limited" onclick="openVariantsModal('lucky_clover')">
+                <div class="sale-badge">🔥 LTD</div>
                 <div class="flex items-center gap-5">
                     <div class="gift-image-container">
                         <div class="gift-image-glow"></div>
-                        <!-- 👇 ВСТАВЬ ССЫЛКУ НА ФОТО СЮДА 👇 -->
-                        <img src="https://via.placeholder.com/80" alt="Lucky Clover" class="gift-image">
+                        <img src="https://via.placeholder.com/80?text=Clover" alt="Lucky Clover" class="gift-image">
                     </div>
                     <div class="flex-1 min-w-0">
-                        <h3 class="text-lg font-bold mb-1">Lucky Clover</h3>
-                        <p class="text-white/40 text-sm mb-3">Четырёхлистный клевер удачи</p>
+                        <h3 class="text-lg font-bold mb-1 gift-title">Lucky Clover</h3>
+                        <p class="text-white/40 text-sm mb-3">Клевер удачи • 3 варианта</p>
                         <div class="flex items-center gap-3">
+                            <span class="text-white/60 text-sm">от</span>
                             <span class="price-current">⭐ 14</span>
-                            <span class="price-old">20 ⭐</span>
                         </div>
                     </div>
-                    <button class="buy-btn" onclick="showBuyModal('lucky_clover','Lucky Clover',14)">
-                        Купить
+                    <button class="view-btn" onclick="event.stopPropagation(); openVariantsModal('lucky_clover')">
+                        <span>Выбрать</span>
                     </button>
                 </div>
             </div>
 
-            <!-- NEW Gift 12: Crystal Ball -->
-            <div class="gift-card">
-                <div class="sale-badge">-15%</div>
+            <!-- LIMITED 4: Crystal Ball -->
+            <div class="gift-card gift-card-limited" data-category="limited" onclick="openVariantsModal('crystal_ball')">
+                <div class="sale-badge">🔥 LTD</div>
                 <div class="flex items-center gap-5">
                     <div class="gift-image-container">
                         <div class="gift-image-glow"></div>
-                        <!-- 👇 ВСТАВЬ ССЫЛКУ НА ФОТО СЮДА 👇 -->
-                        <img src="https://via.placeholder.com/80" alt="Crystal Ball" class="gift-image">
+                        <img src="https://via.placeholder.com/80?text=Crystal" alt="Crystal Ball" class="gift-image">
                     </div>
                     <div class="flex-1 min-w-0">
-                        <h3 class="text-lg font-bold mb-1">Crystal Ball</h3>
-                        <p class="text-white/40 text-sm mb-3">Магический хрустальный шар</p>
+                        <h3 class="text-lg font-bold mb-1 gift-title">Crystal Ball</h3>
+                        <p class="text-white/40 text-sm mb-3">Хрустальный шар • 3 варианта</p>
                         <div class="flex items-center gap-3">
+                            <span class="text-white/60 text-sm">от</span>
                             <span class="price-current">⭐ 85</span>
-                            <span class="price-old">100 ⭐</span>
                         </div>
                     </div>
-                    <button class="buy-btn" onclick="showBuyModal('crystal_ball','Crystal Ball',85)">
-                        Купить
+                    <button class="view-btn" onclick="event.stopPropagation(); openVariantsModal('crystal_ball')">
+                        <span>Выбрать</span>
                     </button>
                 </div>
             </div>
 
-            <!-- NEW Gift 13: Star Trophy -->
-            <div class="gift-card">
-                <div class="sale-badge">-18%</div>
+            <!-- LIMITED 5: Star Trophy -->
+            <div class="gift-card gift-card-limited" data-category="limited" onclick="openVariantsModal('star_trophy')">
+                <div class="sale-badge">🔥 LTD</div>
                 <div class="flex items-center gap-5">
                     <div class="gift-image-container">
                         <div class="gift-image-glow"></div>
-                        <!-- 👇 ВСТАВЬ ССЫЛКУ НА ФОТО СЮДА 👇 -->
-                        <img src="https://via.placeholder.com/80" alt="Star Trophy" class="gift-image">
+                        <img src="https://via.placeholder.com/80?text=Trophy" alt="Star Trophy" class="gift-image">
                     </div>
                     <div class="flex-1 min-w-0">
-                        <h3 class="text-lg font-bold mb-1">Star Trophy</h3>
-                        <p class="text-white/40 text-sm mb-3">Трофей победителя</p>
+                        <h3 class="text-lg font-bold mb-1 gift-title">Star Trophy</h3>
+                        <p class="text-white/40 text-sm mb-3">Звёздный трофей • 3 варианта</p>
                         <div class="flex items-center gap-3">
+                            <span class="text-white/60 text-sm">от</span>
                             <span class="price-current">⭐ 65</span>
-                            <span class="price-old">79 ⭐</span>
                         </div>
                     </div>
-                    <button class="buy-btn" onclick="showBuyModal('star_trophy','Star Trophy',65)">
-                        Купить
+                    <button class="view-btn" onclick="event.stopPropagation(); openVariantsModal('star_trophy')">
+                        <span>Выбрать</span>
                     </button>
                 </div>
             </div>
@@ -1056,35 +1558,176 @@
         </div>
     </main>
 
-    <!-- Premium Modal -->
-    <div id="buyModal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-glow"></div>
-            <div class="text-center relative z-10">
-                <div class="modal-emoji mb-4" id="modalEmoji">🎁</div>
-                <h3 class="text-2xl font-bold mb-2" id="modalTitle">Подарок</h3>
-                <p class="text-white/50 mb-6">Подтвердите покупку</p>
-
-                <div class="modal-price-box mb-6">
-                    <div class="flex items-center justify-center gap-3">
-                        <span class="text-white/60">Стоимость:</span>
-                        <span class="price-current text-2xl">⭐ <span id="modalPrice">0</span></span>
-                    </div>
+    <!-- Variants Modal -->
+    <div id="variantsModal" class="modal-overlay">
+        <div class="modal-content max-w-lg">
+            <div class="variants-modal-inner">
+                <div class="variants-header">
+                    <h3 class="variants-title" id="variantsTitle">Выберите вариант</h3>
+                    <button onclick="closeVariantsModal()" class="close-btn">&times;</button>
                 </div>
+                
+                <div class="variants-grid" id="variantsGrid"></div>
 
-                <div class="flex gap-3">
-                    <button onclick="closeModal()" class="modal-btn-cancel flex-1">
-                        Отмена
-                    </button>
-                    <button onclick="confirmBuy()" class="buy-btn flex-1">
-                        Подтвердить
+                <div class="variants-buttons">
+                    <button onclick="closeVariantsModal()" class="btn-cancel flex-1">Отмена</button>
+                    <button onclick="buySelectedVariant()" class="buy-btn flex-1" id="buyVariantBtn" disabled style="opacity: 0.5;">
+                        Выбрать вариант
                     </button>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Confirm Purchase Modal -->
+    <div id="confirmModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="confirm-modal-inner">
+                <!-- Header with Image -->
+                <div class="confirm-header">
+                    <div class="confirm-image-wrapper">
+                        <div class="confirm-image-ring"></div>
+                        <div class="confirm-image-ring"></div>
+                        <div class="confirm-image-ring"></div>
+                        <div class="confirm-image-glow"></div>
+                        <img id="confirmImage" src="" alt="" class="confirm-image">
+                    </div>
+                    <h3 class="confirm-title" id="confirmTitle">Подтверждение</h3>
+                    <p class="confirm-subtitle">Проверьте детали заказа</p>
+                </div>
+
+                <!-- Details Section -->
+                <div class="confirm-details">
+                    <div class="detail-card">
+                        <div class="detail-row">
+                            <div class="detail-label">
+                                <div class="detail-icon">🎁</div>
+                                <span>Товар</span>
+                            </div>
+                            <div class="detail-value" id="confirmItemName">-</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">
+                                <div class="detail-icon">📝</div>
+                                <span>Описание</span>
+                            </div>
+                            <div class="detail-value" id="confirmItemDesc" style="font-size: 13px; color: rgba(255,255,255,0.7);">-</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">
+                                <div class="detail-icon">📦</div>
+                                <span>Тип</span>
+                            </div>
+                            <div class="detail-value" id="confirmItemType">Обычный подарок</div>
+                        </div>
+                    </div>
+
+                    <!-- Price Display -->
+                    <div class="price-display">
+                        <div class="price-label">Итого к оплате</div>
+                        <div class="price-amount">
+                            <span class="price-star">⭐</span>
+                            <span class="price-value" id="confirmPrice">0</span>
+                        </div>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="confirm-buttons">
+                        <button onclick="closeConfirmModal()" class="btn-cancel">Отмена</button>
+                        <button onclick="confirmPurchase()" class="btn-confirm">
+                            ✓ Подтвердить покупку
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // ===== КОНФИГУРАЦИЯ ВАРИАНТОВ =====
+        const GIFT_VARIANTS = {
+            'swag_bag': {
+                title: 'Swag Bag',
+                variants: [
+                    {
+                        id: 'swag_bag_v1',
+                        image: 'https://via.placeholder.com/100?text=V1',
+                        name: 'Вариант 1',
+                        details: 'Lemon Pepper • Onyx Black • Heraldic Lily',
+                        price: 75
+                    },
+                    {
+                        id: 'swag_bag_v2',
+                        image: 'https://via.placeholder.com/100?text=V2',
+                        name: 'Вариант 2',
+                        details: 'Gummies • Beretta • Lavender',
+                        price: 80
+                    },
+                    {
+                        id: 'swag_bag_v3',
+                        image: 'https://via.placeholder.com/100?text=V3',
+                        name: 'Вариант 3',
+                        details: 'Узор • Фон • Модель',
+                        price: 85
+                    }
+                ]
+            },
+            'magic_wand': {
+                title: 'Magic Wand',
+                variants: [
+                    { id: 'magic_wand_v1', image: 'https://via.placeholder.com/100?text=W1', name: 'Вариант 1', details: 'Узор • Фон • Модель', price: 30 },
+                    { id: 'magic_wand_v2', image: 'https://via.placeholder.com/100?text=W2', name: 'Вариант 2', details: 'Узор • Фон • Модель', price: 35 },
+                    { id: 'magic_wand_v3', image: 'https://via.placeholder.com/100?text=W3', name: 'Вариант 3', details: 'Узор • Фон • Модель', price: 40 }
+                ]
+            },
+            'lucky_clover': {
+                title: 'Lucky Clover',
+                variants: [
+                    { id: 'lucky_clover_v1', image: 'https://via.placeholder.com/100?text=C1', name: 'Вариант 1', details: 'Узор • Фон • Модель', price: 14 },
+                    { id: 'lucky_clover_v2', image: 'https://via.placeholder.com/100?text=C2', name: 'Вариант 2', details: 'Узор • Фон • Модель', price: 18 },
+                    { id: 'lucky_clover_v3', image: 'https://via.placeholder.com/100?text=C3', name: 'Вариант 3', details: 'Узор • Фон • Модель', price: 22 }
+                ]
+            },
+            'crystal_ball': {
+                title: 'Crystal Ball',
+                variants: [
+                    { id: 'crystal_ball_v1', image: 'https://via.placeholder.com/100?text=B1', name: 'Вариант 1', details: 'Узор • Фон • Модель', price: 85 },
+                    { id: 'crystal_ball_v2', image: 'https://via.placeholder.com/100?text=B2', name: 'Вариант 2', details: 'Узор • Фон • Модель', price: 90 },
+                    { id: 'crystal_ball_v3', image: 'https://via.placeholder.com/100?text=B3', name: 'Вариант 3', details: 'Узор • Фон • Модель', price: 95 }
+                ]
+            },
+            'star_trophy': {
+                title: 'Star Trophy',
+                variants: [
+                    { id: 'star_trophy_v1', image: 'https://via.placeholder.com/100?text=T1', name: 'Вариант 1', details: 'Узор • Фон • Модель', price: 65 },
+                    { id: 'star_trophy_v2', image: 'https://via.placeholder.com/100?text=T2', name: 'Вариант 2', details: 'Узор • Фон • Модель', price: 70 },
+                    { id: 'star_trophy_v3', image: 'https://via.placeholder.com/100?text=T3', name: 'Вариант 3', details: 'Узор • Фон • Модель', price: 75 }
+                ]
+            }
+        };
+
+        let currentGiftId = null;
+        let selectedVariantId = null;
+        let pendingPurchase = null;
+
+        // ===== Scroll Animation =====
+        function initScrollAnimation() {
+            const cards = document.querySelectorAll('.gift-card');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('animate-in');
+                        }, index * 100);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: '50px' });
+
+            cards.forEach(card => observer.observe(card));
+        }
+
         // ===== Theme Switcher =====
         function setTheme(theme) {
             document.body.className = 'theme-' + theme + ' text-white';
@@ -1093,9 +1736,6 @@
             localStorage.setItem('selectedTheme', theme);
         }
 
-        const savedTheme = localStorage.getItem('selectedTheme');
-        if (savedTheme) setTheme(savedTheme);
-
         // ===== Categories =====
         document.querySelectorAll('.category-pill').forEach(btn => {
             btn.addEventListener('click', function() {
@@ -1103,87 +1743,160 @@
                 this.classList.add('active');
 
                 const category = this.dataset.category;
-                const giftsContainer = document.getElementById('giftsContainer');
-                const unavailableMessage = document.getElementById('unavailableMessage');
+                const allCards = document.querySelectorAll('.gift-card');
 
-                if (category === 'regular') {
-                    giftsContainer.classList.remove('hide');
-                    unavailableMessage.classList.remove('show');
-                } else {
-                    giftsContainer.classList.add('hide');
-                    unavailableMessage.classList.add('show');
+                if (category === 'all') {
+                    allCards.forEach(card => card.classList.remove('hidden-by-filter'));
+                } else if (category === 'limited') {
+                    allCards.forEach(card => {
+                        if (card.classList.contains('gift-card-limited')) {
+                            card.classList.remove('hidden-by-filter');
+                        } else {
+                            card.classList.add('hidden-by-filter');
+                        }
+                    });
                 }
             });
         });
 
-        // ===== Gift Emojis =====
-        const giftEmojis = {
-            'Christmas Tree': '🎄',
-            'Gift Heart': '💝',
-            'Santa Bear': '🧸',
-            'Red Rose': '🌹',
-            'Birthday Cake': '🎂',
-            'Rocket': '🚀',
-            'Diamond Ring': '💍',
-            'Diamond': '💎',
-            'Golden Crown': '👑',
-            'Magic Wand': '🪄',
-            'Lucky Clover': '🍀',
-            'Crystal Ball': '🔮',
-            'Star Trophy': '🏆'
-        };
+        // ===== Variants Modal =====
+        function openVariantsModal(giftId) {
+            const gift = GIFT_VARIANTS[giftId];
+            if (!gift) return;
 
-        let selectedItemId = null;
+            currentGiftId = giftId;
+            selectedVariantId = null;
 
-        // ===== Modal Functions =====
-        function showBuyModal(itemId, name, price) {
-            selectedItemId = itemId;
+            document.getElementById('variantsTitle').textContent = gift.title;
+            
+            const grid = document.getElementById('variantsGrid');
+            grid.innerHTML = gift.variants.map(v => `
+                <div class="variant-card" onclick="selectVariant('${v.id}', this)">
+                    <img src="${v.image}" alt="${v.name}" class="variant-image">
+                    <div class="variant-name">${v.name}</div>
+                    <div class="variant-details">${v.details}</div>
+                    <div class="variant-price">⭐ ${v.price}</div>
+                </div>
+            `).join('');
 
-            const modal = document.getElementById('buyModal');
-            document.getElementById('modalTitle').textContent = name;
-            document.getElementById('modalPrice').textContent = price;
-            document.getElementById('modalEmoji').textContent = giftEmojis[name] || '🎁';
+            const buyBtn = document.getElementById('buyVariantBtn');
+            buyBtn.disabled = true;
+            buyBtn.style.opacity = '0.5';
+            buyBtn.textContent = 'Выбрать вариант';
 
-            modal.classList.add('show');
+            document.getElementById('variantsModal').classList.add('show');
             document.body.style.overflow = 'hidden';
         }
 
-        function closeModal() {
-            const modal = document.getElementById('buyModal');
-            modal.classList.remove('show');
+        function selectVariant(variantId, element) {
+            selectedVariantId = variantId;
+
+            document.querySelectorAll('.variant-card').forEach(c => c.classList.remove('selected'));
+            element.classList.add('selected');
+
+            const gift = GIFT_VARIANTS[currentGiftId];
+            const variant = gift.variants.find(v => v.id === variantId);
+
+            const buyBtn = document.getElementById('buyVariantBtn');
+            buyBtn.disabled = false;
+            buyBtn.style.opacity = '1';
+            buyBtn.textContent = `Купить за ⭐ ${variant.price}`;
+        }
+
+        function buySelectedVariant() {
+            if (!selectedVariantId || !currentGiftId) return;
+
+            const gift = GIFT_VARIANTS[currentGiftId];
+            const variant = gift.variants.find(v => v.id === selectedVariantId);
+            
+            if (!variant) return;
+
+            pendingPurchase = {
+                id: selectedVariantId,
+                title: gift.title,
+                name: variant.name,
+                details: variant.details,
+                price: variant.price,
+                image: variant.image,
+                type: 'Лимитированный'
+            };
+
+            closeVariantsModal();
+            showConfirmModal();
+        }
+
+        function closeVariantsModal() {
+            document.getElementById('variantsModal').classList.remove('show');
             document.body.style.overflow = '';
+            currentGiftId = null;
+            selectedVariantId = null;
         }
 
-        function confirmBuy() {
-            if (!selectedItemId) return;
-            closeModal();
-            buy(selectedItemId);
+        // ===== Confirm Modal =====
+        function showConfirmModal() {
+            if (!pendingPurchase) return;
+
+            document.getElementById('confirmImage').src = pendingPurchase.image;
+            document.getElementById('confirmTitle').textContent = pendingPurchase.title;
+            document.getElementById('confirmItemName').textContent = pendingPurchase.name || pendingPurchase.title;
+            document.getElementById('confirmItemDesc').textContent = pendingPurchase.details;
+            document.getElementById('confirmItemType').textContent = pendingPurchase.type;
+            document.getElementById('confirmPrice').textContent = pendingPurchase.price;
+
+            document.getElementById('confirmModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
         }
 
-        document.getElementById('buyModal').addEventListener('click', function(e) {
-            if (e.target === this) closeModal();
+        function closeConfirmModal() {
+            document.getElementById('confirmModal').classList.remove('show');
+            document.body.style.overflow = '';
+            pendingPurchase = null;
+        }
+
+        function confirmPurchase() {
+            if (!pendingPurchase) return;
+            const itemId = pendingPurchase.id;
+            closeConfirmModal();
+            buy(itemId);
+        }
+
+        // Regular gifts
+        function showRegularBuyModal(itemId, title, price, image, description) {
+            pendingPurchase = {
+                id: itemId,
+                title: title,
+                name: title,
+                details: description || 'Подарок',
+                price: price,
+                image: image,
+                type: 'Обычный подарок'
+            };
+            showConfirmModal();
+        }
+
+        // Close modals on overlay click
+        document.getElementById('variantsModal').addEventListener('click', function(e) {
+            if (e.target === this) closeVariantsModal();
         });
 
-        // ===== Ripple Effect on Buttons =====
-        document.querySelectorAll('.buy-btn').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                const ripple = document.createElement('span');
-                ripple.classList.add('ripple');
-                
-                const rect = this.getBoundingClientRect();
-                const size = Math.max(rect.width, rect.height);
-                ripple.style.width = ripple.style.height = size + 'px';
-                ripple.style.left = (e.clientX - rect.left - size/2) + 'px';
-                ripple.style.top = (e.clientY - rect.top - size/2) + 'px';
-                
-                this.appendChild(ripple);
-                setTimeout(() => ripple.remove(), 600);
-            });
+        document.getElementById('confirmModal').addEventListener('click', function(e) {
+            if (e.target === this) closeConfirmModal();
         });
 
-        // ===== Keyboard Close Modal =====
+        // Close on Escape
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeModal();
+            if (e.key === 'Escape') {
+                closeVariantsModal();
+                closeConfirmModal();
+            }
+        });
+
+        // ===== Init =====
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('selectedTheme');
+            if (savedTheme) setTheme(savedTheme);
+            
+            initScrollAnimation();
         });
     </script>
 </body>
