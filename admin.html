@@ -16,13 +16,15 @@
 
     <div class="bg-white/5 border border-white/10 rounded-2xl p-4 mb-4">
       <div class="flex flex-col md:flex-row gap-3">
-        <input id="q" class="flex-1 px-4 py-3 rounded-xl bg-black/30 border border-white/10 outline-none"
+        <input id="q"
+               class="flex-1 px-4 py-3 rounded-xl bg-black/30 border border-white/10 outline-none"
                placeholder="Search by ID / name / username" />
         <button id="searchBtn" class="px-4 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500">
           Search
         </button>
       </div>
       <div class="text-white/60 text-sm mt-3" id="meta">—</div>
+      <div class="text-red-300 text-sm mt-2 hidden" id="errBox"></div>
     </div>
 
     <div class="overflow-auto bg-white/5 border border-white/10 rounded-2xl">
@@ -57,16 +59,38 @@
 const tg = window.Telegram?.WebApp;
 if (tg) { try { tg.ready(); tg.expand(); } catch(e) {} }
 
-const API = "/api/admin/users";
+// ВАЖНО: абсолютный URL на текущий домен, чтобы точно попадать в ваш backend
+const API = (window.location.origin.replace(/\/$/, "")) + "/api/admin/users";
+
 let offset = 0;
 const limit = 50;
 let lastQuery = "";
 
 function esc(s){ return (s ?? "").toString(); }
 
+function showError(msg){
+  const box = document.getElementById("errBox");
+  if (!msg){
+    box.classList.add("hidden");
+    box.textContent = "";
+    return;
+  }
+  box.classList.remove("hidden");
+  box.textContent = msg;
+}
+
 async function fetchUsers(reset=false){
+  showError("");
+
+  // Если админка открыта не из Telegram WebApp — initData будет пустой и сервер вернет 403
   const initData = tg?.initData || "";
+  if (!initData) {
+    showError("Telegram initData is empty. Open admin panel from the bot button (WebApp), not from browser.");
+    return;
+  }
+
   const query = document.getElementById("q").value.trim();
+
   if (reset){
     offset = 0;
     document.getElementById("rows").innerHTML = "";
@@ -79,14 +103,18 @@ async function fetchUsers(reset=false){
     body: JSON.stringify({ init_data: initData, query: lastQuery, offset, limit })
   });
 
-  const data = await res.json();
+  let data = null;
+  try { data = await res.json(); } catch(e) { data = null; }
+
   if (!res.ok){
-    document.getElementById("meta").textContent = "Error: " + (data.error || res.status);
+    const err = (data && data.error) ? data.error : ("HTTP " + res.status);
+    showError("API error: " + err);
+    document.getElementById("meta").textContent = `Query: "${lastQuery}" | API: ${API}`;
     return;
   }
 
   document.getElementById("meta").textContent =
-    `Total: ${data.total} | Showing: ${Math.min(offset + data.users.length, data.total)}/${data.total}`;
+    `Query: "${lastQuery}" | Total: ${data.total} | Showing: ${Math.min(offset + data.users.length, data.total)}/${data.total}`;
 
   const tbody = document.getElementById("rows");
   for (const u of data.users){
@@ -115,6 +143,11 @@ async function fetchUsers(reset=false){
 document.getElementById("searchBtn").onclick = () => fetchUsers(true);
 document.getElementById("reloadBtn").onclick = () => fetchUsers(true);
 document.getElementById("moreBtn").onclick = () => fetchUsers(false);
+
+// Поиск по Enter
+document.getElementById("q").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") fetchUsers(true);
+});
 
 fetchUsers(true);
 </script>
