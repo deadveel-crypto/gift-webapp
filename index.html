@@ -24,6 +24,22 @@
             0%, 100% { box-shadow: 0 0 20px rgba(139, 92, 246, 0.3); }
             50% { box-shadow: 0 0 40px rgba(139, 92, 246, 0.6), 0 0 60px rgba(139, 92, 246, 0.3); }
         }
+        /* Центрируем подарок строго по центру */
+        .confirm-image-wrapper{
+            position: relative;
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 20px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .confirm-image{
+            margin: 0;          /* было margin: 10px; */
+            display: block;     /* чтобы не было смещения из-за inline/baseline */
+        }
 
         @keyframes shimmer {
             0% { transform: translateX(-100%); }
@@ -1947,6 +1963,7 @@
     </script>
 </body>
 </html>
+
 
 
 
