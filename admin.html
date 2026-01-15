@@ -23,8 +23,10 @@
           Search
         </button>
       </div>
+
       <div class="text-white/60 text-sm mt-3" id="meta">—</div>
       <div class="text-red-300 text-sm mt-2 hidden" id="errBox"></div>
+      <div class="text-white/40 text-xs mt-2" id="apiBox"></div>
     </div>
 
     <div class="overflow-auto bg-white/5 border border-white/10 rounded-2xl">
@@ -56,100 +58,110 @@
   </div>
 
 <script>
-const tg = window.Telegram?.WebApp;
-if (tg) { try { tg.ready(); tg.expand(); } catch(e) {} }
+  const tg = window.Telegram?.WebApp;
+  if (tg) { try { tg.ready(); tg.expand(); } catch(e) {} }
 
-// ВАЖНО: абсолютный URL на текущий домен, чтобы точно попадать в ваш backend
-const API = (window.location.origin.replace(/\/$/, "")) + "/api/admin/users";
+  // Берём API домен из параметра ?api=https://your-backend.com
+  // Если параметр не задан — будет ошибка (чтобы сразу было понятно что не настроено).
+  const params = new URLSearchParams(window.location.search);
+  const API_BASE = (params.get("api") || "").trim().replace(/\/$/, "");
 
-let offset = 0;
-const limit = 50;
-let lastQuery = "";
+  const API = API_BASE ? (API_BASE + "/api/admin/users") : "";
 
-function esc(s){ return (s ?? "").toString(); }
+  let offset = 0;
+  const limit = 50;
+  let lastQuery = "";
 
-function showError(msg){
-  const box = document.getElementById("errBox");
-  if (!msg){
-    box.classList.add("hidden");
-    box.textContent = "";
-    return;
-  }
-  box.classList.remove("hidden");
-  box.textContent = msg;
-}
+  function esc(s){ return (s ?? "").toString(); }
 
-async function fetchUsers(reset=false){
-  showError("");
-
-  // Если админка открыта не из Telegram WebApp — initData будет пустой и сервер вернет 403
-  const initData = tg?.initData || "";
-  if (!initData) {
-    showError("Telegram initData is empty. Open admin panel from the bot button (WebApp), not from browser.");
-    return;
+  function showError(msg){
+    const box = document.getElementById("errBox");
+    if (!msg){
+      box.classList.add("hidden");
+      box.textContent = "";
+      return;
+    }
+    box.classList.remove("hidden");
+    box.textContent = msg;
   }
 
-  const query = document.getElementById("q").value.trim();
+  async function fetchUsers(reset=false){
+    showError("");
 
-  if (reset){
-    offset = 0;
-    document.getElementById("rows").innerHTML = "";
-    lastQuery = query;
+    document.getElementById("apiBox").textContent = API ? `API: ${API}` : "API: not set";
+
+    if (!API) {
+      showError('API is not configured. Open admin with URL like: admin.html?api=https://YOUR_BACKEND_DOMAIN');
+      return;
+    }
+
+    // ВАЖНО: initData есть только если открыть как Telegram WebApp (через кнопку в боте)
+    const initData = tg?.initData || "";
+    if (!initData) {
+      showError("Telegram initData is empty. Open admin panel from the bot button (WebApp), not from browser.");
+      return;
+    }
+
+    const query = document.getElementById("q").value.trim();
+
+    if (reset){
+      offset = 0;
+      document.getElementById("rows").innerHTML = "";
+      lastQuery = query;
+    }
+
+    const res = await fetch(API, {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({ init_data: initData, query: lastQuery, offset, limit })
+    });
+
+    let data = null;
+    try { data = await res.json(); } catch(e) { data = null; }
+
+    if (!res.ok){
+      const err = (data && data.error) ? data.error : ("HTTP " + res.status);
+      showError("API error: " + err);
+      document.getElementById("meta").textContent = `Query: "${lastQuery}"`;
+      return;
+    }
+
+    document.getElementById("meta").textContent =
+      `Query: "${lastQuery}" | Total: ${data.total} | Showing: ${Math.min(offset + data.users.length, data.total)}/${data.total}`;
+
+    const tbody = document.getElementById("rows");
+    for (const u of data.users){
+      const tr = document.createElement("tr");
+      tr.className = "border-b border-white/5 hover:bg-white/5";
+
+      tr.innerHTML = `
+        <td class="p-3 font-mono">${u.user_id}</td>
+        <td class="p-3">${esc(u.full_name)}</td>
+        <td class="p-3">${u.username ? ("@" + esc(u.username)) : "—"}</td>
+        <td class="p-3">${esc(u.lang)}</td>
+        <td class="p-3">${u.sapphires}</td>
+        <td class="p-3">${u.purchases_count}</td>
+        <td class="p-3">${u.total_spent}</td>
+        <td class="p-3">${u.referrals_count}</td>
+        <td class="p-3">${u.withdrawals_count}</td>
+        <td class="p-3">${esc(u.created_at).slice(0,19).replace("T"," ")}</td>
+        <td class="p-3">${u.is_banned ? "BANNED" : "OK"}</td>
+      `;
+      tbody.appendChild(tr);
+    }
+
+    offset += data.users.length;
   }
 
-  const res = await fetch(API, {
-    method: "POST",
-    headers: {"Content-Type":"application/json"},
-    body: JSON.stringify({ init_data: initData, query: lastQuery, offset, limit })
+  document.getElementById("searchBtn").onclick = () => fetchUsers(true);
+  document.getElementById("reloadBtn").onclick = () => fetchUsers(true);
+  document.getElementById("moreBtn").onclick = () => fetchUsers(false);
+
+  document.getElementById("q").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") fetchUsers(true);
   });
 
-  let data = null;
-  try { data = await res.json(); } catch(e) { data = null; }
-
-  if (!res.ok){
-    const err = (data && data.error) ? data.error : ("HTTP " + res.status);
-    showError("API error: " + err);
-    document.getElementById("meta").textContent = `Query: "${lastQuery}" | API: ${API}`;
-    return;
-  }
-
-  document.getElementById("meta").textContent =
-    `Query: "${lastQuery}" | Total: ${data.total} | Showing: ${Math.min(offset + data.users.length, data.total)}/${data.total}`;
-
-  const tbody = document.getElementById("rows");
-  for (const u of data.users){
-    const tr = document.createElement("tr");
-    tr.className = "border-b border-white/5 hover:bg-white/5";
-
-    tr.innerHTML = `
-      <td class="p-3 font-mono">${u.user_id}</td>
-      <td class="p-3">${esc(u.full_name)}</td>
-      <td class="p-3">${u.username ? ("@" + esc(u.username)) : "—"}</td>
-      <td class="p-3">${esc(u.lang)}</td>
-      <td class="p-3">${u.sapphires}</td>
-      <td class="p-3">${u.purchases_count}</td>
-      <td class="p-3">${u.total_spent}</td>
-      <td class="p-3">${u.referrals_count}</td>
-      <td class="p-3">${u.withdrawals_count}</td>
-      <td class="p-3">${esc(u.created_at).slice(0,19).replace("T"," ")}</td>
-      <td class="p-3">${u.is_banned ? "BANNED" : "OK"}</td>
-    `;
-    tbody.appendChild(tr);
-  }
-
-  offset += data.users.length;
-}
-
-document.getElementById("searchBtn").onclick = () => fetchUsers(true);
-document.getElementById("reloadBtn").onclick = () => fetchUsers(true);
-document.getElementById("moreBtn").onclick = () => fetchUsers(false);
-
-// Поиск по Enter
-document.getElementById("q").addEventListener("keydown", (e) => {
-  if (e.key === "Enter") fetchUsers(true);
-});
-
-fetchUsers(true);
+  fetchUsers(true);
 </script>
 </body>
 </html>
