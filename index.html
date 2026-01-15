@@ -1241,6 +1241,19 @@
             .price-value { font-size: 36px; }
             .confirm-image { width: 100px; height: 100px; }
         }
+        /* === Confirm modal: убираем подписи "Товар/Описание/Тип" и эмодзи === */
+        #confirmModal .detail-label {
+            display: none; /* прячет и текст, и эмодзи-иконку */
+        }
+
+        #confirmModal .detail-row {
+            justify-content: flex-start; /* чтобы значение не "прилипало" вправо */
+        }
+
+        #confirmModal .detail-value {
+            width: 100%;
+            text-align: left; /* можно center, если хочешь по центру */
+        }
     </style>
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -1963,6 +1976,7 @@
     </script>
 </body>
 </html>
+
 
 
 
