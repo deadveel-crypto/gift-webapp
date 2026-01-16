@@ -25,7 +25,6 @@
             50% { box-shadow: 0 0 40px rgba(139, 92, 246, 0.6), 0 0 60px rgba(139, 92, 246, 0.3); }
         }
 
-        /* Центрируем подарок строго по центру */
         .confirm-image-wrapper{
             position: relative;
             width: 140px;
@@ -143,6 +142,11 @@
             50% { transform: translateY(-5px); }
         }
 
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.5); }
+        }
+
         /* ========== БАЗОВЫЕ СТИЛИ ========== */
         body {
             min-height: 100vh;
@@ -159,6 +163,7 @@
             bottom: 0;
             z-index: 0;
             overflow: hidden;
+            background: radial-gradient(ellipse at top, #0c0c1a 0%, #080810 50%, #050508 100%);
         }
 
         .bg-orb {
@@ -200,16 +205,22 @@
             opacity: 0.25;
         }
 
-        .bg-grid {
+        /* Stars Background */
+        .bg-stars {
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background-image:
-                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-            background-size: 50px 50px;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s ease-in-out infinite;
         }
 
         /* ========== HEADER ========== */
@@ -258,12 +269,45 @@
 
         /* ========== HERO SECTION ========== */
         .hero-title {
-            background: linear-gradient(135deg, #e0e7ff, #c7d2fe, #a5b4fc, #818cf8);
-            background-size: 300% 300%;
+            background: linear-gradient(135deg, #c4b5fd 0%, #a78bfa 25%, #8b5cf6 50%, #a78bfa 75%, #c4b5fd 100%);
+            background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: gradient-shift 6s ease infinite;
+            animation: text-shine 4s linear infinite;
+            text-shadow: none;
+        }
+
+        /* ========== DIVINE SHOP NEON LOGO ========== */
+        .brand-text {
+            position: relative;
+            color: transparent;
+            -webkit-text-stroke: 1.5px #a78bfa;
+            text-stroke: 1.5px #a78bfa;
+            background: none;
+            -webkit-background-clip: unset;
+            -webkit-text-fill-color: transparent;
+            animation: brand-neon 2.5s ease-in-out infinite;
+            letter-spacing: 1px;
+        }
+
+        @keyframes brand-neon {
+            0%, 100% {
+                text-shadow:
+                    0 0 5px rgba(167, 139, 250, 0.6),
+                    0 0 10px rgba(139, 92, 246, 0.4),
+                    0 0 20px rgba(139, 92, 246, 0.3),
+                    0 0 40px rgba(99, 102, 241, 0.2);
+                -webkit-text-stroke-color: #a78bfa;
+            }
+            50% {
+                text-shadow:
+                    0 0 8px rgba(167, 139, 250, 0.9),
+                    0 0 15px rgba(139, 92, 246, 0.6),
+                    0 0 30px rgba(139, 92, 246, 0.4),
+                    0 0 50px rgba(99, 102, 241, 0.3);
+                -webkit-text-stroke-color: #c4b5fd;
+            }
         }
 
         /* ========== КАТЕГОРИИ ========== */
@@ -966,17 +1010,6 @@
             background: rgba(99,102,241,0.22);
         }
 
-        /* ========== SPACE THEME ========== */
-        body.theme-space { background: #080810; }
-
-        body.theme-space .animated-bg {
-            background: radial-gradient(ellipse at top, #0c0c1a 0%, #080810 50%, #050508 100%);
-        }
-
-        /* Space theme scrollbar */
-        body.theme-space::-webkit-scrollbar-thumb { background: rgba(99, 102, 241, 0.3); }
-        body.theme-space::-webkit-scrollbar-thumb:hover { background: rgba(99, 102, 241, 0.5); }
-
         /* ========== SCROLLBAR ========== */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); }
@@ -1024,13 +1057,13 @@
     </script>
 </head>
 
-<body class="theme-space text-white">
+<body class="text-white">
     <!-- Animated Background -->
     <div class="animated-bg">
         <div class="bg-orb bg-orb-1"></div>
         <div class="bg-orb bg-orb-2"></div>
         <div class="bg-orb bg-orb-3"></div>
-        <div class="bg-grid"></div>
+        <div class="bg-stars" id="bgStars"></div>
     </div>
 
     <!-- Header -->
@@ -1382,7 +1415,8 @@
 
         </div>
     </main>
-        <!-- Variants Modal -->
+
+    <!-- Variants Modal -->
     <div id="variantsModal" class="modal-overlay">
         <div class="modal-content max-w-lg">
             <div class="variants-modal-inner">
@@ -1539,18 +1573,13 @@
             document.getElementById("catAll").textContent = t.cat_all;
             document.getElementById("catLimited").textContent = t.cat_limited;
 
-            // Regular buy buttons
             document.querySelectorAll(".buy-btn-regular").forEach(btn => btn.textContent = t.buy);
-
-            // Limited choose buttons
             document.querySelectorAll(".chooseText").forEach(el => el.textContent = t.choose);
 
-            // Replace "от"/"from" in limited cards
             document.querySelectorAll(".gift-card-limited .text-white\\/60.text-sm").forEach(el => {
                 el.textContent = t.from;
             });
 
-            // Modals static labels
             document.getElementById("variantsTitle").textContent = t.variants_title;
             document.getElementById("variantsCancelBtn").textContent = t.cancel;
 
@@ -1565,7 +1594,6 @@
             document.getElementById("confirmCancelBtn").textContent = t.cancel;
             document.getElementById("confirmOkBtn").textContent = t.confirm_btn;
 
-            // Если модалка открыта — обновим тип
             if (window.pendingPurchase?.typeKey) {
                 document.getElementById("confirmItemType").textContent =
                     (window.pendingPurchase.typeKey === "limited") ? t.type_limited : t.type_regular;
@@ -1573,7 +1601,6 @@
         }
 
         // ===== КОНФИГУРАЦИЯ ВАРИАНТОВ =====
-        // ID должны совпадать с catalog.py!
         const GIFT_VARIANTS = {
             'snoop_dogg': {
                 title: 'Snoop Dogg',
@@ -1616,6 +1643,23 @@
         let currentGiftId = null;
         let selectedVariantId = null;
         window.pendingPurchase = null;
+
+        // ===== Generate Stars =====
+        function generateStars() {
+            const starsContainer = document.getElementById('bgStars');
+            for (let i = 0; i < 120; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                star.style.opacity = Math.random() * 0.7 + 0.3;
+                const size = Math.random() * 2 + 1;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                starsContainer.appendChild(star);
+            }
+        }
 
         // ===== Scroll Animation =====
         function initScrollAnimation() {
@@ -1816,6 +1860,7 @@
         // ===== Init =====
         document.addEventListener('DOMContentLoaded', () => {
             setLang(detectDefaultLang());
+            generateStars();
             initScrollAnimation();
         });
     </script>
