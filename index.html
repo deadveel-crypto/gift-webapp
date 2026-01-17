@@ -1062,6 +1062,13 @@
             font-size: 16px;
         }
 
+        /* ========== HEADER RIGHT CONTROLS ========== */
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
         /* ========== SELL MODAL ========== */
         .sell-modal-inner {
             padding: 0;
@@ -1339,6 +1346,10 @@
             .price-value { font-size: 36px; }
             .confirm-image { width: 100px; height: 100px; }
             .brand-text { font-size: 1.25rem; }
+            .header-controls { gap: 8px; }
+            .sell-btn { padding: 8px 12px; font-size: 12px; }
+            .sell-btn-icon { font-size: 14px; }
+            .sell-btn-text { display: none; }
         }
 
         /* === Confirm modal: убираем подписи "Товар/Описание/Тип" и эмодзи === */
@@ -1389,16 +1400,19 @@
                     </div>
                 </div>
 
-                <!-- Sell Button -->
-                <button class="sell-btn" onclick="openSellModal()">
-                    <span class="sell-btn-icon">💰</span>
-                    <span class="sell-btn-text" id="sellBtnText">Продать</span>
-                </button>
+                <!-- Right Controls: Sell Button + Language Switcher -->
+                <div class="header-controls">
+                    <!-- Sell Button -->
+                    <button class="sell-btn" onclick="openSellModal()">
+                        <span class="sell-btn-icon">💰</span>
+                        <span class="sell-btn-text" id="sellBtnText">Продать</span>
+                    </button>
 
-                <!-- Language Switcher -->
-                <div class="lang-switcher">
-                    <button class="lang-btn" id="langRuBtn" onclick="setLang('ru')" title="Русский">RU</button>
-                    <button class="lang-btn" id="langEnBtn" onclick="setLang('en')" title="English">EN</button>
+                    <!-- Language Switcher -->
+                    <div class="lang-switcher">
+                        <button class="lang-btn" id="langRuBtn" onclick="setLang('ru')" title="Русский">RU</button>
+                        <button class="lang-btn" id="langEnBtn" onclick="setLang('en')" title="English">EN</button>
+                    </div>
                 </div>
             </div>
         </div>
