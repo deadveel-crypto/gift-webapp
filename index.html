@@ -9,7 +9,6 @@
     <style>
         * { font-family: 'Inter', sans-serif; }
 
-        /* ========== ПРЕМИУМ АНИМАЦИИ ========== */
         @keyframes gradient-shift {
             0%, 100% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -25,7 +24,7 @@
             50% { box-shadow: 0 0 40px rgba(139, 92, 246, 0.6), 0 0 60px rgba(139, 92, 246, 0.3); }
         }
 
-        .confirm-image-wrapper{
+        .confirm-image-wrapper {
             position: relative;
             width: 140px;
             height: 140px;
@@ -35,14 +34,9 @@
             justify-content: center;
         }
 
-        .confirm-image{
+        .confirm-image {
             margin: 0;
             display: block;
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
         }
 
         @keyframes card-enter {
@@ -96,17 +90,9 @@
         }
 
         @keyframes modal-content-enter {
-            0% {
-                opacity: 0;
-                transform: scale(0.7) translateY(80px);
-            }
-            60% {
-                transform: scale(1.02) translateY(-10px);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
+            0% { opacity: 0; transform: scale(0.7) translateY(80px); }
+            60% { transform: scale(1.02) translateY(-10px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
         }
 
         @keyframes image-float {
@@ -120,11 +106,6 @@
             0% { transform: scale(0.8); opacity: 0; }
             50% { opacity: 0.5; }
             100% { transform: scale(2.5); opacity: 0; }
-        }
-
-        @keyframes checkmark-draw {
-            0% { stroke-dashoffset: 50; }
-            100% { stroke-dashoffset: 0; }
         }
 
         @keyframes detail-slide {
@@ -147,14 +128,12 @@
             50% { opacity: 1; transform: scale(1.5); }
         }
 
-        /* ========== БАЗОВЫЕ СТИЛИ ========== */
         body {
             min-height: 100vh;
             background: #0a0a0f;
             overflow-x: hidden;
         }
 
-        /* Animated Background */
         .animated-bg {
             position: fixed;
             top: 0;
@@ -205,7 +184,6 @@
             opacity: 0.25;
         }
 
-        /* Stars Background */
         .bg-stars {
             position: absolute;
             top: 0;
@@ -223,7 +201,6 @@
             animation: twinkle 3s ease-in-out infinite;
         }
 
-        /* ========== HEADER ========== */
         .header-premium {
             background: rgba(8, 8, 16, 0.9);
             backdrop-filter: blur(20px);
@@ -258,7 +235,6 @@
             border: 2px solid rgba(255,255,255,0.1);
         }
 
-        /* ========== DIVINE SHOP ELEGANT FONT ========== */
         .brand-text {
             font-family: 'Playfair Display', serif;
             font-weight: 700;
@@ -285,14 +261,10 @@
             font-size: 1.5rem;
             letter-spacing: 2px;
             color: transparent;
-            text-shadow: 
-                0 0 20px rgba(167, 139, 250, 0.5),
-                0 0 40px rgba(139, 92, 246, 0.3),
-                0 0 60px rgba(99, 102, 241, 0.2);
+            text-shadow: 0 0 20px rgba(167, 139, 250, 0.5), 0 0 40px rgba(139, 92, 246, 0.3), 0 0 60px rgba(99, 102, 241, 0.2);
             -webkit-text-stroke: 0;
         }
 
-        /* ========== HERO SECTION ========== */
         .hero-title {
             background: linear-gradient(135deg, #c4b5fd 0%, #a78bfa 25%, #8b5cf6 50%, #a78bfa 75%, #c4b5fd 100%);
             background-size: 200% auto;
@@ -303,7 +275,6 @@
             text-shadow: none;
         }
 
-        /* ========== КАТЕГОРИИ ========== */
         .category-pill {
             position: relative;
             background: rgba(99, 102, 241, 0.05);
@@ -344,7 +315,6 @@
         .category-pill.active::before { opacity: 1; }
         .category-pill span { position: relative; z-index: 1; }
 
-        /* ========== GIFT CARDS ========== */
         .gifts-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -366,17 +336,11 @@
             -webkit-backdrop-filter: blur(20px);
         }
 
-        /* Premium Glass Blur Effect */
         .gift-card::after {
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(
-                135deg,
-                rgba(99, 102, 241, 0.08) 0%,
-                rgba(139, 92, 246, 0.05) 50%,
-                rgba(99, 102, 241, 0.08) 100%
-            );
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(139, 92, 246, 0.05) 50%, rgba(99, 102, 241, 0.08) 100%);
             border-radius: 24px;
             z-index: -1;
             opacity: 0.5;
@@ -403,10 +367,7 @@
         .gift-card:hover {
             transform: translateY(-12px) scale(1.02);
             border-color: rgba(99, 102, 241, 0.3);
-            box-shadow:
-                0 25px 50px rgba(0,0,0,0.5),
-                0 0 60px rgba(99, 102, 241, 0.15),
-                inset 0 0 60px rgba(99, 102, 241, 0.05);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5), 0 0 60px rgba(99, 102, 241, 0.15), inset 0 0 60px rgba(99, 102, 241, 0.05);
             backdrop-filter: blur(30px);
         }
 
@@ -444,7 +405,6 @@
             animation: subtle-float 2s ease-in-out infinite;
         }
 
-        /* Sale Badge */
         .sale-badge {
             position: absolute;
             top: 16px;
@@ -462,7 +422,6 @@
             z-index: 2;
         }
 
-        /* Price Styling */
         .price-current {
             font-size: 24px;
             font-weight: 800;
@@ -474,13 +433,6 @@
             position: relative;
         }
 
-        .price-old {
-            color: rgba(255,255,255,0.3);
-            text-decoration: line-through;
-            font-size: 14px;
-        }
-
-        /* Gift Title Glow */
         .gift-title {
             position: relative;
             text-shadow: 0 0 20px rgba(255,255,255,0.1);
@@ -497,7 +449,6 @@
             line-height: 1.4;
         }
 
-        /* ========== BUY BUTTON ========== */
         .buy-btn {
             position: relative;
             background: linear-gradient(135deg, #4338ca, #6366f1, #4338ca);
@@ -530,15 +481,11 @@
 
         .buy-btn:hover {
             transform: scale(1.08) translateY(-3px);
-            box-shadow:
-                0 20px 45px rgba(99, 102, 241, 0.4),
-                0 0 60px rgba(99, 102, 241, 0.3),
-                inset 0 1px 0 rgba(255,255,255,0.3);
+            box-shadow: 0 20px 45px rgba(99, 102, 241, 0.4), 0 0 60px rgba(99, 102, 241, 0.3), inset 0 1px 0 rgba(255,255,255,0.3);
         }
 
         .buy-btn:active { animation: button-press 0.3s ease forwards; }
 
-        /* ========== VIEW BUTTON ========== */
         .view-btn {
             position: relative;
             background: rgba(99, 102, 241, 0.1);
@@ -579,7 +526,6 @@
         .view-btn:active { transform: scale(0.95); }
         .view-btn span { position: relative; z-index: 1; }
 
-        /* ========== MODAL OVERLAY ========== */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -618,7 +564,6 @@
             animation: modal-content-enter 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
         }
 
-        /* ========== CONFIRM MODAL - ПРЕМИУМ ========== */
         .confirm-modal-inner { position: relative; }
 
         .confirm-header {
@@ -677,7 +622,6 @@
             color: rgba(255,255,255,0.5);
         }
 
-        /* Details Section */
         .confirm-details { padding: 0 32px 30px; }
 
         .detail-card {
@@ -732,7 +676,6 @@
             color: white;
         }
 
-        /* Price Display */
         .price-display {
             background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(79, 70, 229, 0.08) 100%);
             border: 1px solid rgba(99, 102, 241, 0.15);
@@ -771,7 +714,6 @@
             animation: text-shine 2s linear infinite, price-glow 2s ease-in-out infinite;
         }
 
-        /* Buttons */
         .confirm-buttons {
             display: flex;
             gap: 12px;
@@ -813,10 +755,7 @@
             overflow: hidden;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             animation: gradient-shift 3s ease infinite;
-            box-shadow:
-                0 18px 45px rgba(34, 197, 94, 0.35),
-                0 0 60px rgba(16, 185, 129, 0.20),
-                inset 0 1px 0 rgba(255,255,255,0.25);
+            box-shadow: 0 18px 45px rgba(34, 197, 94, 0.35), 0 0 60px rgba(16, 185, 129, 0.20), inset 0 1px 0 rgba(255,255,255,0.25);
         }
 
         .btn-confirm::before {
@@ -833,20 +772,11 @@
 
         .btn-confirm:hover {
             transform: translateY(-3px) scale(1.02);
-            box-shadow:
-                0 22px 55px rgba(34, 197, 94, 0.45),
-                0 0 80px rgba(16, 185, 129, 0.35),
-                inset 0 1px 0 rgba(255,255,255,0.30);
+            box-shadow: 0 22px 55px rgba(34, 197, 94, 0.45), 0 0 80px rgba(16, 185, 129, 0.35), inset 0 1px 0 rgba(255,255,255,0.30);
         }
 
         .btn-confirm:active { transform: scale(0.98); }
-        .btn-confirm:focus { outline: none; }
-        .btn-confirm:focus-visible {
-            outline: 3px solid rgba(34, 197, 94, 0.45);
-            outline-offset: 3px;
-        }
 
-        /* ========== VARIANT CARDS ========== */
         .variants-modal-inner { padding: 32px; }
 
         .variants-header {
@@ -920,9 +850,7 @@
         .variant-card.selected {
             border-color: #6366f1;
             background: rgba(99, 102, 241, 0.2);
-            box-shadow:
-                0 0 40px rgba(99, 102, 241, 0.4),
-                inset 0 0 30px rgba(99, 102, 241, 0.1);
+            box-shadow: 0 0 40px rgba(99, 102, 241, 0.4), inset 0 0 30px rgba(99, 102, 241, 0.1);
             animation: success-pulse 1.5s ease infinite;
         }
 
@@ -966,7 +894,6 @@
             background-clip: text;
         }
 
-        /* SOLD OUT стиль */
         .variant-card.sold-out {
             opacity: 0.5;
             cursor: not-allowed;
@@ -1001,7 +928,6 @@
 
         .variants-buttons { display: flex; gap: 12px; }
 
-        /* ========== LANGUAGE SWITCHER ========== */
         .lang-switcher {
             display: flex;
             gap: 8px;
@@ -1036,307 +962,13 @@
             background: rgba(99,102,241,0.22);
         }
 
-        /* ========== SELL BUTTON ========== */
-        .sell-btn {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: linear-gradient(135deg, #10b981, #059669);
-            border: none;
-            border-radius: 12px;
-            padding: 10px 18px;
-            font-size: 14px;
-            font-weight: 700;
-            color: white;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
-        }
-
-        .sell-btn:hover {
-            transform: translateY(-2px) scale(1.05);
-            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
-        }
-
-        .sell-btn-icon {
-            font-size: 16px;
-        }
-
-        /* ========== HEADER RIGHT CONTROLS ========== */
-        .header-controls {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        /* ========== SELL MODAL ========== */
-        .sell-modal-inner {
-            padding: 0;
-        }
-
-        .sell-header {
-            background: linear-gradient(180deg, rgba(16, 185, 129, 0.15) 0%, transparent 100%);
-            padding: 32px 32px 24px;
-            text-align: center;
-        }
-
-        .sell-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #10b981, #059669);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 36px;
-            margin: 0 auto 16px;
-            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
-            animation: float 3s ease-in-out infinite;
-        }
-
-        .sell-title {
-            font-size: 24px;
-            font-weight: 800;
-            margin-bottom: 8px;
-            background: linear-gradient(135deg, #ffffff, #6ee7b7);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .sell-subtitle {
-            font-size: 14px;
-            color: rgba(255,255,255,0.5);
-            line-height: 1.5;
-        }
-
-        /* Benefits Banner */
-        .sell-benefits {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.05));
-            border: 1px solid rgba(16, 185, 129, 0.2);
-            border-radius: 16px;
-            padding: 16px;
-            margin: 0 24px 20px;
-        }
-
-        .benefits-title {
-            font-size: 13px;
-            font-weight: 700;
-            color: #10b981;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .benefits-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .benefit-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 12px;
-            color: rgba(255,255,255,0.7);
-        }
-
-        .benefit-icon {
-            width: 24px;
-            height: 24px;
-            background: rgba(16, 185, 129, 0.15);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            flex-shrink: 0;
-        }
-
-        /* Form */
-        .sell-form {
-            padding: 0 24px 24px;
-        }
-
-        .form-group {
-            margin-bottom: 16px;
-        }
-
-        .form-label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            color: rgba(255,255,255,0.7);
-            margin-bottom: 8px;
-        }
-
-        .form-input {
-            width: 100%;
-            background: rgba(99, 102, 241, 0.05);
-            border: 1px solid rgba(99, 102, 241, 0.15);
-            border-radius: 12px;
-            padding: 14px 16px;
-            font-size: 15px;
-            color: white;
-            transition: all 0.3s ease;
-            outline: none;
-        }
-
-        .form-input::placeholder {
-            color: rgba(255,255,255,0.3);
-        }
-
-        .form-input:focus {
-            border-color: rgba(16, 185, 129, 0.5);
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 12px;
-        }
-
-        .form-hint {
-            font-size: 11px;
-            color: rgba(255,255,255,0.4);
-            margin-top: 6px;
-        }
-
-        /* Submit Button */
-        .sell-submit-btn {
-            width: 100%;
-            background: linear-gradient(135deg, #10b981 0%, #059669 50%, #10b981 100%);
-            background-size: 200% 200%;
-            border: none;
-            border-radius: 14px;
-            padding: 16px 24px;
-            font-size: 16px;
-            font-weight: 700;
-            color: white;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            animation: gradient-shift 3s ease infinite;
-            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
-            margin-top: 8px;
-        }
-
-        .sell-submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 40px rgba(16, 185, 129, 0.4);
-        }
-
-        .sell-submit-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* Success State */
-        .sell-success {
-            display: none;
-            padding: 40px 32px;
-            text-align: center;
-        }
-
-        .sell-success.show {
-            display: block;
-        }
-
-        .sell-form-container.hide {
-            display: none;
-        }
-
-        .success-icon {
-            width: 100px;
-            height: 100px;
-            background: linear-gradient(135deg, #10b981, #059669);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 48px;
-            margin: 0 auto 24px;
-            animation: bounce-in 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            box-shadow: 0 15px 40px rgba(16, 185, 129, 0.4);
-        }
-
-        .success-title {
-            font-size: 22px;
-            font-weight: 800;
-            margin-bottom: 12px;
-            color: white;
-        }
-
-        .success-text {
-            font-size: 14px;
-            color: rgba(255,255,255,0.6);
-            line-height: 1.6;
-            margin-bottom: 24px;
-        }
-
-        .success-details {
-            background: rgba(99, 102, 241, 0.05);
-            border: 1px solid rgba(99, 102, 241, 0.1);
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 24px;
-            text-align: left;
-        }
-
-        .success-detail-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            font-size: 13px;
-        }
-
-        .success-detail-row:last-child {
-            border-bottom: none;
-        }
-
-        .success-detail-label {
-            color: rgba(255,255,255,0.5);
-        }
-
-        .success-detail-value {
-            color: white;
-            font-weight: 600;
-        }
-
-        .success-close-btn {
-            width: 100%;
-            background: rgba(99, 102, 241, 0.1);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            border-radius: 12px;
-            padding: 14px;
-            font-size: 15px;
-            font-weight: 600;
-            color: white;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .success-close-btn:hover {
-            background: rgba(99, 102, 241, 0.2);
-        }
-
-        /* ========== SCROLLBAR ========== */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); }
         ::-webkit-scrollbar-thumb { background: rgba(99, 102, 241, 0.3); border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: rgba(99, 102, 241, 0.5); }
 
-        /* ========== UTILITIES ========== */
-        .unavailable-container { display: none; }
-        .unavailable-container.show { display: flex; }
-        .gifts-grid.hide { display: none; }
         .gift-card.hidden-by-filter { display: none !important; }
 
-        /* Mobile */
         @media (max-width: 640px) {
             .gifts-grid { grid-template-columns: 1fr; }
             .gift-card { padding: 20px; }
@@ -1346,14 +978,8 @@
             .price-value { font-size: 36px; }
             .confirm-image { width: 100px; height: 100px; }
             .brand-text { font-size: 1.25rem; }
-            .header-controls { gap: 8px; }
-            .sell-btn { padding: 8px 12px; font-size: 12px; }
-            .sell-btn-icon { font-size: 14px; }
-            .sell-btn-text { display: none; }
-            .form-row { grid-template-columns: 1fr; }
         }
 
-        /* === Confirm modal: убираем подписи "Товар/Описание/Тип" и эмодзи === */
         #confirmModal .detail-label { display: none; }
         #confirmModal .detail-row { justify-content: flex-start; }
         #confirmModal .detail-value { width: 100%; text-align: left; }
@@ -1364,23 +990,6 @@
         const BOT_USERNAME = "divinemarketshop_bot";
         const tg = window.Telegram?.WebApp || null;
         if (tg) { try { tg.ready(); tg.expand(); } catch(e) {} }
-
-        // Проверяем, запущено ли приложение внутри Telegram
-        const isInsideTelegram = tg && tg.initData && tg.initData.length > 0;
-
-        // Функция для отправки данных формы продажи
-        function sendSellData(data) {
-            // Если внутри Telegram — используем sendData (рекомендуется)
-            if (isInsideTelegram && tg && typeof tg.sendData === 'function') {
-                try {
-                    tg.sendData(JSON.stringify(data));
-                    return true;
-                } catch (e) {
-                    console.error('sendData error:', e);
-                }
-            }
-            return false;
-        }
 
         function buy(itemId) {
             const url = `https://t.me/${BOT_USERNAME}?start=buy_${encodeURIComponent(itemId)}`;
@@ -1395,7 +1004,6 @@
 </head>
 
 <body class="text-white">
-    <!-- Animated Background -->
     <div class="animated-bg">
         <div class="bg-orb bg-orb-1"></div>
         <div class="bg-orb bg-orb-2"></div>
@@ -1403,7 +1011,6 @@
         <div class="bg-stars" id="bgStars"></div>
     </div>
 
-    <!-- Header -->
     <header class="header-premium">
         <div class="max-w-6xl mx-auto px-4 py-4">
             <div class="flex items-center justify-between">
@@ -1418,27 +1025,15 @@
                     </div>
                 </div>
 
-                <!-- Right Controls: Sell Button + Language Switcher -->
-                <div class="header-controls">
-                    <!-- Sell Button -->
-                    <button class="sell-btn" onclick="openSellModal()">
-                        <span class="sell-btn-icon">💰</span>
-                        <span class="sell-btn-text" id="sellBtnText">Продать</span>
-                    </button>
-
-                    <!-- Language Switcher -->
-                    <div class="lang-switcher">
-                        <button class="lang-btn" id="langRuBtn" onclick="setLang('ru')" title="Русский">RU</button>
-                        <button class="lang-btn" id="langEnBtn" onclick="setLang('en')" title="English">EN</button>
-                    </div>
+                <div class="lang-switcher">
+                    <button class="lang-btn" id="langRuBtn" onclick="setLang('ru')" title="Русский">RU</button>
+                    <button class="lang-btn" id="langEnBtn" onclick="setLang('en')" title="English">EN</button>
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- Main Content -->
     <main class="relative z-10 max-w-6xl mx-auto px-4 pt-28 pb-12">
-        <!-- Hero -->
         <div class="text-center mb-12">
             <h2 class="text-4xl md:text-5xl lg:text-6xl font-black mb-4 hero-title" id="heroTitle">
                 Эксклюзивные Подарки
@@ -1448,16 +1043,13 @@
             </p>
         </div>
 
-        <!-- Categories -->
         <div class="flex flex-wrap justify-center gap-3 mb-12">
             <button class="category-pill active" data-category="all"><span id="catAll">🎁 Все подарки</span></button>
             <button class="category-pill" data-category="nft"><span id="catNft">💎 NFT</span></button>
         </div>
 
-        <!-- Gifts Grid -->
         <div class="gifts-grid" id="giftsContainer">
 
-            <!-- 1: Neko Helmet -->
             <div class="gift-card" data-category="nft">
                 <div class="sale-badge">💎 NFT</div>
                 <div class="flex items-center gap-5">
@@ -1472,14 +1064,12 @@
                             <span class="price-current">⭐ 2800</span>
                         </div>
                     </div>
-                    <button class="buy-btn"
-                        onclick="event.stopPropagation(); showBuyModal('neko_helmet', 'Neko Helmet', 2800, 'https://i.ibb.co/8L2fPTtw/IMG-3330.png', 'Red Shift • Duck Face • Lemongrass')">
+                    <button class="buy-btn" onclick="event.stopPropagation(); showBuyModal('neko_helmet', 'Neko Helmet', 2800, 'https://i.ibb.co/8L2fPTtw/IMG-3330.png', 'Red Shift • Duck Face • Lemongrass')">
                         <span class="buyText">Купить</span>
                     </button>
                 </div>
             </div>
 
-            <!-- 2: Love Potion -->
             <div class="gift-card" data-category="nft">
                 <div class="sale-badge">💎 NFT</div>
                 <div class="flex items-center gap-5">
@@ -1494,14 +1084,12 @@
                             <span class="price-current">⭐ 990</span>
                         </div>
                     </div>
-                    <button class="buy-btn"
-                        onclick="event.stopPropagation(); showBuyModal('love_potion', 'Love Potion', 990, 'https://i.ibb.co/sdCPtPJ4/IMG-3335.png', 'Fairy Pollen • Geisha Fan • Carrot Juice')">
+                    <button class="buy-btn" onclick="event.stopPropagation(); showBuyModal('love_potion', 'Love Potion', 990, 'https://i.ibb.co/sdCPtPJ4/IMG-3335.png', 'Fairy Pollen • Geisha Fan • Carrot Juice')">
                         <span class="buyText">Купить</span>
                     </button>
                 </div>
             </div>
 
-            <!-- 3: Electric Skull -->
             <div class="gift-card" data-category="nft">
                 <div class="sale-badge">💎 NFT</div>
                 <div class="flex items-center gap-5">
@@ -1516,14 +1104,12 @@
                             <span class="price-current">⭐ 2600</span>
                         </div>
                     </div>
-                    <button class="buy-btn"
-                        onclick="event.stopPropagation(); showBuyModal('electric_skull', 'Electric Skull', 2600, 'https://i.ibb.co/tFCQB8c/IMG-3333.png', 'Chromatic • Tombstone • Purple')">
+                    <button class="buy-btn" onclick="event.stopPropagation(); showBuyModal('electric_skull', 'Electric Skull', 2600, 'https://i.ibb.co/tFCQB8c/IMG-3333.png', 'Chromatic • Tombstone • Purple')">
                         <span class="buyText">Купить</span>
                     </button>
                 </div>
             </div>
 
-            <!-- 4: Vintage Sigar -->
             <div class="gift-card" data-category="nft">
                 <div class="sale-badge">💎 NFT</div>
                 <div class="flex items-center gap-5">
@@ -1538,14 +1124,12 @@
                             <span class="price-current">⭐ 2235</span>
                         </div>
                     </div>
-                    <button class="buy-btn"
-                        onclick="event.stopPropagation(); showBuyModal('vintage_sigar', 'Vintage Sigar', 2235, 'https://i.ibb.co/RpF32sXK/IMG-3332.png', 'Stained Glass • Illuminati • Mystic Pearl')">
+                    <button class="buy-btn" onclick="event.stopPropagation(); showBuyModal('vintage_sigar', 'Vintage Sigar', 2235, 'https://i.ibb.co/RpF32sXK/IMG-3332.png', 'Stained Glass • Illuminati • Mystic Pearl')">
                         <span class="buyText">Купить</span>
                     </button>
                 </div>
             </div>
 
-            <!-- 5: Signed Ring -->
             <div class="gift-card" data-category="nft">
                 <div class="sale-badge">💎 NFT</div>
                 <div class="flex items-center gap-5">
@@ -1560,14 +1144,12 @@
                             <span class="price-current">⭐ 3150</span>
                         </div>
                     </div>
-                    <button class="buy-btn"
-                        onclick="event.stopPropagation(); showBuyModal('signed_ring', 'Signed Ring', 3150, 'https://i.ibb.co/GfRtFwsQ/IMG-3334.png', 'Golden Pearl • Nordic Wolf • Caramel')">
+                    <button class="buy-btn" onclick="event.stopPropagation(); showBuyModal('signed_ring', 'Signed Ring', 3150, 'https://i.ibb.co/GfRtFwsQ/IMG-3334.png', 'Golden Pearl • Nordic Wolf • Caramel')">
                         <span class="buyText">Купить</span>
                     </button>
                 </div>
             </div>
 
-            <!-- 6: Ionic Dryer -->
             <div class="gift-card" data-category="nft">
                 <div class="sale-badge">💎 NFT</div>
                 <div class="flex items-center gap-5">
@@ -1582,14 +1164,12 @@
                             <span class="price-current">⭐ 890</span>
                         </div>
                     </div>
-                    <button class="buy-btn"
-                        onclick="event.stopPropagation(); showBuyModal('ionic_dryer', 'Ionic Dryer', 890, 'https://i.ibb.co/3yJhhxYR/IMG-3336.png', 'Zephyrus • Lightning • Grape')">
+                    <button class="buy-btn" onclick="event.stopPropagation(); showBuyModal('ionic_dryer', 'Ionic Dryer', 890, 'https://i.ibb.co/3yJhhxYR/IMG-3336.png', 'Zephyrus • Lightning • Grape')">
                         <span class="buyText">Купить</span>
                     </button>
                 </div>
             </div>
 
-            <!-- 7: Bling Binky -->
             <div class="gift-card" data-category="nft">
                 <div class="sale-badge">💎 NFT</div>
                 <div class="flex items-center gap-5">
@@ -1604,14 +1184,12 @@
                             <span class="price-current">⭐ 2450</span>
                         </div>
                     </div>
-                    <button class="buy-btn"
-                        onclick="event.stopPropagation(); showBuyModal('bling_binky', 'Bling Binky', 2450, 'https://i.ibb.co/HLKbqxRd/IMG-3331.png', 'Crystal Wings • Horned Helm • Deep Cyan')">
+                    <button class="buy-btn" onclick="event.stopPropagation(); showBuyModal('bling_binky', 'Bling Binky', 2450, 'https://i.ibb.co/HLKbqxRd/IMG-3331.png', 'Crystal Wings • Horned Helm • Deep Cyan')">
                         <span class="buyText">Купить</span>
                     </button>
                 </div>
             </div>
 
-            <!-- 8: Toy Bear -->
             <div class="gift-card" data-category="nft">
                 <div class="sale-badge">💎 NFT</div>
                 <div class="flex items-center gap-5">
@@ -1626,14 +1204,12 @@
                             <span class="price-current">⭐ 2990</span>
                         </div>
                     </div>
-                    <button class="buy-btn"
-                        onclick="event.stopPropagation(); showBuyModal('toy_bear', 'Toy Bear', 2990, 'https://i.ibb.co/G3Ch7JgV/IMG-3329.png', 'Pink Doodle • Fleur-de-lis • Midnight Blue')">
+                    <button class="buy-btn" onclick="event.stopPropagation(); showBuyModal('toy_bear', 'Toy Bear', 2990, 'https://i.ibb.co/G3Ch7JgV/IMG-3329.png', 'Pink Doodle • Fleur-de-lis • Midnight Blue')">
                         <span class="buyText">Купить</span>
                     </button>
                 </div>
             </div>
 
-            <!-- 9: Snoop Dogg (3 variations) -->
             <div class="gift-card gift-card-collection" data-category="nft" onclick="openVariantsModal('snoop_dogg')">
                 <div class="sale-badge">💎 NFT</div>
                 <div class="flex items-center gap-5">
@@ -1655,7 +1231,6 @@
                 </div>
             </div>
 
-            <!-- 10: Holiday Drink (2 variations) -->
             <div class="gift-card gift-card-collection" data-category="nft" onclick="openVariantsModal('holiday_drink')">
                 <div class="sale-badge">💎 NFT</div>
                 <div class="flex items-center gap-5">
@@ -1677,7 +1252,6 @@
                 </div>
             </div>
 
-            <!-- 11: Mighty Arm (2 variations) -->
             <div class="gift-card gift-card-collection" data-category="nft" onclick="openVariantsModal('mighty_arm')">
                 <div class="sale-badge">💎 NFT</div>
                 <div class="flex items-center gap-5">
@@ -1699,7 +1273,6 @@
                 </div>
             </div>
 
-            <!-- 12: Happy Brownie (2 variations) -->
             <div class="gift-card gift-card-collection" data-category="nft" onclick="openVariantsModal('happy_brownie')">
                 <div class="sale-badge">💎 NFT</div>
                 <div class="flex items-center gap-5">
@@ -1721,7 +1294,6 @@
                 </div>
             </div>
 
-            <!-- 13: Money Pot (2 variations) -->
             <div class="gift-card gift-card-collection" data-category="nft" onclick="openVariantsModal('money_pot')">
                 <div class="sale-badge">💎 NFT</div>
                 <div class="flex items-center gap-5">
@@ -1754,9 +1326,7 @@
                     <h3 class="variants-title" id="variantsTitle">Выберите вариант</h3>
                     <button onclick="closeVariantsModal()" class="close-btn">&times;</button>
                 </div>
-
                 <div class="variants-grid" id="variantsGrid"></div>
-
                 <div class="variants-buttons">
                     <button onclick="closeVariantsModal()" class="btn-cancel flex-1" id="variantsCancelBtn">Отмена</button>
                     <button onclick="buySelectedVariant()" class="buy-btn flex-1" id="buyVariantBtn" disabled style="opacity: 0.5;">
@@ -1767,101 +1337,10 @@
         </div>
     </div>
 
-    <!-- Sell Gift Modal -->
-    <div id="sellModal" class="modal-overlay">
-        <div class="modal-content" style="max-width: 440px;">
-            <div class="sell-modal-inner">
-                <!-- Form Container -->
-                <div class="sell-form-container" id="sellFormContainer">
-                    <!-- Header -->
-                    <div class="sell-header">
-                        <div class="sell-icon">💰</div>
-                        <h3 class="sell-title" id="sellModalTitle">Продать подарок</h3>
-                        <p class="sell-subtitle" id="sellModalSubtitle">Заполните информацию о вашем NFT-подарке</p>
-                    </div>
-
-                    <!-- Benefits Banner -->
-                    <div class="sell-benefits">
-                        <div class="benefits-title">
-                            <span>✨</span>
-                            <span id="benefitsTitle">Почему продавать у нас выгодно?</span>
-                        </div>
-                        <div class="benefits-list">
-                            <div class="benefit-item">
-                                <div class="benefit-icon">🔒</div>
-                                <span id="benefit1">Безопасная сделка через гарант-сервис</span>
-                            </div>
-                            <div class="benefit-item">
-                                <div class="benefit-icon">⚡</div>
-                                <span id="benefit2">Быстрая продажа — тысячи покупателей</span>
-                            </div>
-                            <div class="benefit-item">
-                                <div class="benefit-icon">💎</div>
-                                <span id="benefit3">Лучшие цены на рынке NFT-подарков</span>
-                            </div>
-                            <div class="benefit-item">
-                                <div class="benefit-icon">🏆</div>
-                                <span id="benefit4">0% комиссии для первых продаж</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Form -->
-                    <form class="sell-form" id="sellForm" onsubmit="submitSellForm(event)">
-                        <div class="form-group">
-                            <label class="form-label" id="labelName">Название подарка *</label>
-                            <input type="text" class="form-input" id="sellGiftName" placeholder="Например: Snoop Dogg" required>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label" id="labelModel">Модель *</label>
-                                <input type="text" class="form-input" id="sellGiftModel" placeholder="Black Diamond" required>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label" id="labelPattern">Узор *</label>
-                                <input type="text" class="form-input" id="sellGiftPattern" placeholder="Like Silver" required>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label" id="labelBackground">Фон *</label>
-                                <input type="text" class="form-input" id="sellGiftBackground" placeholder="Blue" required>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label" id="labelPrice">Желаемая цена (⭐ Stars) *</label>
-                            <input type="number" class="form-input" id="sellGiftPrice" placeholder="1000" min="1" required>
-                            <p class="form-hint" id="priceHint">Укажите цену в Telegram Stars</p>
-                        </div>
-
-                        <button type="submit" class="sell-submit-btn" id="sellSubmitBtn">
-                            📨 Создать заявку
-                        </button>
-                    </form>
-                </div>
-
-                <!-- Success State -->
-                <div class="sell-success" id="sellSuccess">
-                    <div class="success-icon">✓</div>
-                    <h3 class="success-title" id="successTitle">Заявка отправлена!</h3>
-                    <p class="success-text" id="successText">
-                        Ваша заявка отправлена админам на рассмотрение. 
-                        Мы уведомим вас в Telegram о решении в течение 24 часов.
-                    </p>
-                    <div class="success-details" id="successDetails">
-                        <!-- Filled dynamically -->
-                    </div>
-                    <button onclick="closeSellModal()" class="success-close-btn" id="successCloseBtn">Закрыть</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Confirm Purchase Modal -->
     <div id="confirmModal" class="modal-overlay">
         <div class="modal-content">
             <div class="confirm-modal-inner">
-                <!-- Header with Image -->
                 <div class="confirm-header">
                     <div class="confirm-image-wrapper">
                         <div class="confirm-image-ring"></div>
@@ -1874,7 +1353,6 @@
                     <p class="confirm-subtitle" id="confirmSubtitle">Проверьте детали заказа</p>
                 </div>
 
-                <!-- Details Section -->
                 <div class="confirm-details">
                     <div class="detail-card">
                         <div class="detail-row">
@@ -1900,7 +1378,6 @@
                         </div>
                     </div>
 
-                    <!-- Price Display -->
                     <div class="price-display">
                         <div class="price-label" id="priceLabel">Итого к оплате</div>
                         <div class="price-amount">
@@ -1909,7 +1386,6 @@
                         </div>
                     </div>
 
-                    <!-- Buttons -->
                     <div class="confirm-buttons">
                         <button onclick="closeConfirmModal()" class="btn-cancel" id="confirmCancelBtn">Отмена</button>
                         <button onclick="confirmPurchase()" class="btn-confirm" id="confirmOkBtn">
@@ -1922,7 +1398,6 @@
     </div>
 
     <script>
-        // ===== i18n =====
         const I18N = {
             ru: {
                 top_sub: "Premium Telegram Gifts",
@@ -1940,29 +1415,7 @@
                 confirm_sub: "Проверьте детали заказа",
                 total: "Итого к оплате",
                 confirm_btn: "✓ Подтвердить покупку",
-                type_nft: "NFT Подарок",
-                // Sell modal
-                sell_btn: "Продать",
-                sell_title: "Продать подарок",
-                sell_subtitle: "Заполните информацию о вашем NFT-подарке",
-                benefits_title: "Почему продавать у нас выгодно?",
-                benefit_1: "Безопасная сделка через гарант-сервис",
-                benefit_2: "Быстрая продажа — тысячи покупателей",
-                benefit_3: "Лучшие цены на рынке NFT-подарков",
-                benefit_4: "0% комиссии для первых продаж",
-                label_name: "Название подарка *",
-                label_model: "Модель *",
-                label_pattern: "Узор *",
-                label_background: "Фон *",
-                label_price: "Желаемая цена (⭐ Stars) *",
-                price_hint: "Укажите цену в Telegram Stars",
-                submit_btn: "📨 Создать заявку",
-                success_title: "Заявка отправлена!",
-                success_text: "Ваша заявка отправлена админам на рассмотрение. Мы уведомим вас в Telegram о решении в течение 24 часов.",
-                success_close: "Закрыть",
-                detail_name: "Название",
-                detail_traits: "Характеристики",
-                detail_price: "Цена"
+                type_nft: "NFT Подарок"
             },
             en: {
                 top_sub: "Premium Telegram Gifts",
@@ -1980,33 +1433,10 @@
                 confirm_sub: "Check your order details",
                 total: "Total to pay",
                 confirm_btn: "✓ Confirm purchase",
-                type_nft: "NFT Gift",
-                // Sell modal
-                sell_btn: "Sell",
-                sell_title: "Sell your gift",
-                sell_subtitle: "Fill in your NFT gift information",
-                benefits_title: "Why sell with us?",
-                benefit_1: "Secure transaction via escrow service",
-                benefit_2: "Fast sale — thousands of buyers",
-                benefit_3: "Best prices on the NFT gift market",
-                benefit_4: "0% commission for first sales",
-                label_name: "Gift name *",
-                label_model: "Model *",
-                label_pattern: "Pattern *",
-                label_background: "Background *",
-                label_price: "Desired price (⭐ Stars) *",
-                price_hint: "Enter price in Telegram Stars",
-                submit_btn: "📨 Submit request",
-                success_title: "Request submitted!",
-                success_text: "Your request has been sent to admins for review. We'll notify you on Telegram within 24 hours.",
-                success_close: "Close",
-                detail_name: "Name",
-                detail_traits: "Traits",
-                detail_price: "Price"
+                type_nft: "NFT Gift"
             }
         };
 
-        // ===== КОНФИГУРАЦИЯ ВАРИАНТОВ =====
         const GIFT_VARIANTS = {
             'snoop_dogg': {
                 title: 'Snoop Dogg',
@@ -2050,78 +1480,46 @@
         let currentGiftId = null;
         let selectedVariantId = null;
         window.pendingPurchase = null;
-        
-        // Метод отправки: автоматически выбираем лучший
-        let sendMethod = isInsideTelegram ? 'sendData' : 'deepLink';
 
-        function detectDefaultLang(){
+        function detectDefaultLang() {
             const saved = localStorage.getItem("lang");
             if (saved === "ru" || saved === "en") return saved;
             const code = (tg?.initDataUnsafe?.user?.language_code || "").toLowerCase();
             return code.startsWith("ru") ? "ru" : "en";
         }
 
-        function setLang(lang){
+        function setLang(lang) {
             currentLang = (lang === "en") ? "en" : "ru";
             localStorage.setItem("lang", currentLang);
-
             document.getElementById("langRuBtn")?.classList.toggle("active", currentLang === "ru");
             document.getElementById("langEnBtn")?.classList.toggle("active", currentLang === "en");
-
             applyLang();
         }
 
-        function applyLang(){
+        function applyLang() {
             const t = I18N[currentLang];
-
             document.getElementById("subtitleTop").textContent = t.top_sub;
             document.getElementById("heroTitle").textContent = t.hero_title;
             document.getElementById("heroSubtitle").textContent = t.hero_sub;
-
             document.getElementById("catAll").textContent = t.cat_all;
             document.getElementById("catNft").textContent = t.cat_nft;
-
             document.querySelectorAll(".buyText").forEach(el => el.textContent = t.buy);
             document.querySelectorAll(".chooseText").forEach(el => el.textContent = t.choose);
             document.querySelectorAll(".fromText").forEach(el => el.textContent = t.from);
-
             document.getElementById("variantsTitle").textContent = t.variants_title;
             document.getElementById("variantsCancelBtn").textContent = t.cancel;
-
             const buyVariantBtn = document.getElementById("buyVariantBtn");
             if (buyVariantBtn && buyVariantBtn.disabled) {
                 buyVariantBtn.textContent = t.choose_variant;
             }
-
             document.getElementById("confirmTitle").textContent = t.confirm_title;
             document.getElementById("confirmSubtitle").textContent = t.confirm_sub;
             document.getElementById("priceLabel").textContent = t.total;
             document.getElementById("confirmCancelBtn").textContent = t.cancel;
             document.getElementById("confirmOkBtn").textContent = t.confirm_btn;
             document.getElementById("confirmItemType").textContent = t.type_nft;
-
-            // Sell modal
-            document.getElementById("sellBtnText").textContent = t.sell_btn;
-            document.getElementById("sellModalTitle").textContent = t.sell_title;
-            document.getElementById("sellModalSubtitle").textContent = t.sell_subtitle;
-            document.getElementById("benefitsTitle").textContent = t.benefits_title;
-            document.getElementById("benefit1").textContent = t.benefit_1;
-            document.getElementById("benefit2").textContent = t.benefit_2;
-            document.getElementById("benefit3").textContent = t.benefit_3;
-            document.getElementById("benefit4").textContent = t.benefit_4;
-            document.getElementById("labelName").textContent = t.label_name;
-            document.getElementById("labelModel").textContent = t.label_model;
-            document.getElementById("labelPattern").textContent = t.label_pattern;
-            document.getElementById("labelBackground").textContent = t.label_background;
-            document.getElementById("labelPrice").textContent = t.label_price;
-            document.getElementById("priceHint").textContent = t.price_hint;
-            document.getElementById("sellSubmitBtn").textContent = t.submit_btn;
-            document.getElementById("successTitle").textContent = t.success_title;
-            document.getElementById("successText").textContent = t.success_text;
-            document.getElementById("successCloseBtn").textContent = t.success_close;
         }
 
-        // ===== Generate Stars =====
         function generateStars() {
             const starsContainer = document.getElementById('bgStars');
             for (let i = 0; i < 120; i++) {
@@ -2138,10 +1536,8 @@
             }
         }
 
-        // ===== Scroll Animation =====
         function initScrollAnimation() {
             const cards = document.querySelectorAll('.gift-card');
-
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach((entry, index) => {
                     if (entry.isIntersecting) {
@@ -2152,19 +1548,15 @@
                     }
                 });
             }, { threshold: 0.1, rootMargin: '50px' });
-
             cards.forEach(card => observer.observe(card));
         }
 
-        // ===== Categories =====
         document.querySelectorAll('.category-pill').forEach(btn => {
             btn.addEventListener('click', function() {
                 document.querySelectorAll('.category-pill').forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
-
                 const category = this.dataset.category;
                 const allCards = document.querySelectorAll('.gift-card');
-
                 if (category === 'all') {
                     allCards.forEach(card => card.classList.remove('hidden-by-filter'));
                 } else if (category === 'nft') {
@@ -2179,16 +1571,12 @@
             });
         });
 
-        // ===== Variants Modal =====
         function openVariantsModal(giftId) {
             const gift = GIFT_VARIANTS[giftId];
             if (!gift) return;
-
             currentGiftId = giftId;
             selectedVariantId = null;
-
             document.getElementById('variantsTitle').textContent = gift.title;
-
             const grid = document.getElementById('variantsGrid');
             grid.innerHTML = gift.variants.map(v => {
                 if (v.soldOut) {
@@ -2210,25 +1598,20 @@
                     </div>
                 `;
             }).join('');
-
             const buyBtn = document.getElementById('buyVariantBtn');
             buyBtn.disabled = true;
             buyBtn.style.opacity = '0.5';
             buyBtn.textContent = I18N[currentLang].choose_variant;
-
             document.getElementById('variantsModal').classList.add('show');
             document.body.style.overflow = 'hidden';
         }
 
         function selectVariant(variantId, element) {
             selectedVariantId = variantId;
-
             document.querySelectorAll('.variant-card').forEach(c => c.classList.remove('selected'));
             element.classList.add('selected');
-
             const gift = GIFT_VARIANTS[currentGiftId];
             const variant = gift.variants.find(v => v.id === variantId);
-
             const buyBtn = document.getElementById('buyVariantBtn');
             buyBtn.disabled = false;
             buyBtn.style.opacity = '1';
@@ -2237,11 +1620,9 @@
 
         function buySelectedVariant() {
             if (!selectedVariantId || !currentGiftId) return;
-
             const gift = GIFT_VARIANTS[currentGiftId];
             const variant = gift.variants.find(v => v.id === selectedVariantId);
             if (!variant) return;
-
             window.pendingPurchase = {
                 id: selectedVariantId,
                 title: gift.title,
@@ -2250,7 +1631,6 @@
                 price: variant.price,
                 image: variant.image
             };
-
             closeVariantsModal();
             showConfirmModal();
         }
@@ -2262,9 +1642,7 @@
             selectedVariantId = null;
         }
 
-        // ===== Confirm Modal =====
         function showBuyModal(itemId, title, price, image, details) {
-            const t = I18N[currentLang];
             window.pendingPurchase = {
                 id: itemId,
                 title: title,
@@ -2278,23 +1656,17 @@
 
         function showConfirmModal() {
             if (!window.pendingPurchase) return;
-
             const t = I18N[currentLang];
-
             document.getElementById('confirmImage').src = window.pendingPurchase.image;
             document.getElementById('confirmTitle').textContent = t.confirm_title;
             document.getElementById('confirmSubtitle').textContent = t.confirm_sub;
-
             document.getElementById('confirmItemName').textContent = window.pendingPurchase.name || window.pendingPurchase.title;
             document.getElementById('confirmItemDesc').textContent = window.pendingPurchase.details;
             document.getElementById('confirmItemType').textContent = t.type_nft;
-
             document.getElementById('confirmPrice').textContent = window.pendingPurchase.price;
             document.getElementById('priceLabel').textContent = t.total;
-
             document.getElementById('confirmCancelBtn').textContent = t.cancel;
             document.getElementById('confirmOkBtn').textContent = t.confirm_btn;
-
             document.getElementById('confirmModal').classList.add('show');
             document.body.style.overflow = 'hidden';
         }
@@ -2312,7 +1684,6 @@
             buy(itemId);
         }
 
-        // Close modals on overlay click
         document.getElementById('variantsModal').addEventListener('click', function(e) {
             if (e.target === this) closeVariantsModal();
         });
@@ -2321,157 +1692,17 @@
             if (e.target === this) closeConfirmModal();
         });
 
-        // Close on Escape
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 closeVariantsModal();
                 closeConfirmModal();
-                closeSellModal();
             }
         });
 
-        // ===== SELL MODAL =====
-        function openSellModal() {
-            // Reset form
-            document.getElementById('sellForm').reset();
-            document.getElementById('sellFormContainer').classList.remove('hide');
-            document.getElementById('sellSuccess').classList.remove('show');
-            
-            document.getElementById('sellModal').classList.add('show');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeSellModal() {
-            document.getElementById('sellModal').classList.remove('show');
-            document.body.style.overflow = '';
-            
-            // Reset after animation
-            setTimeout(() => {
-                document.getElementById('sellForm').reset();
-                document.getElementById('sellFormContainer').classList.remove('hide');
-                document.getElementById('sellSuccess').classList.remove('show');
-            }, 300);
-        }
-
-        function submitSellForm(event) {
-            event.preventDefault();
-            
-            const t = I18N[currentLang];
-            
-            const giftName = document.getElementById('sellGiftName').value.trim();
-            const giftModel = document.getElementById('sellGiftModel').value.trim();
-            const giftPattern = document.getElementById('sellGiftPattern').value.trim();
-            const giftBackground = document.getElementById('sellGiftBackground').value.trim();
-            const giftPrice = document.getElementById('sellGiftPrice').value;
-
-            if (!giftName || !giftModel || !giftPattern || !giftBackground || !giftPrice) {
-                return;
-            }
-
-            const traits = `${giftModel} • ${giftPattern} • ${giftBackground}`;
-            
-            // ✅ ВАЖНО: action должен быть 'sell_request' — так ожидает бот!
-            const sellData = {
-                action: 'sell_request',  // <-- Бот проверяет именно это значение
-                name: giftName,
-                model: giftModel,
-                pattern: giftPattern,
-                background: giftBackground,
-                traits: traits,
-                price: parseInt(giftPrice),
-                timestamp: Date.now()
-            };
-
-            // Если внутри Telegram — используем sendData (лучший способ)
-            if (isInsideTelegram && tg && typeof tg.sendData === 'function') {
-                try {
-                    const jsonData = JSON.stringify(sellData);
-                    
-                    // Показываем успех
-                    showSellSuccess(giftName, giftModel, giftPattern, giftBackground, giftPrice, t);
-                    
-                    // Отправляем данные боту (после этого Mini App закроется)
-                    setTimeout(() => {
-                        tg.sendData(jsonData);
-                    }, 1200);
-                    
-                    return;
-                } catch (error) {
-                    console.error('sendData error:', error);
-                    // Fallback на deep link
-                }
-            }
-            
-            // Fallback: Deep Link (для браузера или если sendData не работает)
-            sendViaDeepLink(giftName, traits, giftPrice, t);
-        }
-
-        function sendViaDeepLink(giftName, traits, giftPrice, t) {
-            // Формат: name|traits|price (бот парсит через base64)
-            const sellParam = `${giftName}|${traits}|${giftPrice}`;
-            
-            // Кодируем в base64
-            const encoded = btoa(unescape(encodeURIComponent(sellParam)));
-            
-            // URL для бота
-            const url = `https://t.me/${BOT_USERNAME}?start=sell_${encoded}`;
-            
-            // Показываем успех
-            const giftModel = document.getElementById('sellGiftModel').value.trim();
-            const giftPattern = document.getElementById('sellGiftPattern').value.trim();
-            const giftBackground = document.getElementById('sellGiftBackground').value.trim();
-            showSellSuccess(giftName, giftModel, giftPattern, giftBackground, giftPrice, t);
-            
-            // Редирект через 1.5 сек
-            setTimeout(() => {
-                if (tg && typeof tg.openTelegramLink === "function") {
-                    tg.openTelegramLink(url);
-                    setTimeout(() => { try { tg.close(); } catch(e) {} }, 150);
-                } else {
-                    window.location.href = url;
-                }
-            }, 1500);
-        }
-
-        function showSellSuccess(giftName, giftModel, giftPattern, giftBackground, giftPrice, t) {
-            // Show success state
-            document.getElementById('sellFormContainer').classList.add('hide');
-            
-            // Fill success details
-            const successDetails = document.getElementById('successDetails');
-            successDetails.innerHTML = `
-                <div class="success-detail-row">
-                    <span class="success-detail-label">${t.detail_name}</span>
-                    <span class="success-detail-value">${giftName}</span>
-                </div>
-                <div class="success-detail-row">
-                    <span class="success-detail-label">${t.detail_traits}</span>
-                    <span class="success-detail-value">${giftModel} • ${giftPattern} • ${giftBackground}</span>
-                </div>
-                <div class="success-detail-row">
-                    <span class="success-detail-label">${t.detail_price}</span>
-                    <span class="success-detail-value">⭐ ${giftPrice}</span>
-                </div>
-            `;
-            
-            document.getElementById('sellSuccess').classList.add('show');
-        }
-
-        // Close sell modal on overlay click
-        document.getElementById('sellModal').addEventListener('click', function(e) {
-            if (e.target === this) closeSellModal();
-        });
-
-        // ===== Init =====
         document.addEventListener('DOMContentLoaded', () => {
             setLang(detectDefaultLang());
             generateStars();
             initScrollAnimation();
-            
-            // Debug info
-            console.log('🔷 Divine Shop Mini App');
-            console.log('📱 Inside Telegram:', isInsideTelegram);
-            console.log('👤 User:', tg?.initDataUnsafe?.user);
         });
     </script>
 </body>
