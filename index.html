@@ -2358,16 +2358,37 @@
                 traits: `${giftModel} • ${giftPattern} • ${giftBackground}`
             };
 
-            // Send to Telegram bot
-            if (tg && tg.sendData) {
-                tg.sendData(JSON.stringify(sellData));
-            } else {
-                // Fallback: open bot with sell command
-                const sellParam = encodeURIComponent(JSON.stringify(sellData));
-                const url = `https://t.me/${BOT_USERNAME}?start=sell_${btoa(JSON.stringify(sellData))}`;
-                window.location.href = url;
-            }
+            // Проверяем, открыто ли приложение как Mini App
+            const isInTelegramWebApp = tg && tg.initData && tg.initData.length > 0;
 
+            if (isInTelegramWebApp && typeof tg.sendData === 'function') {
+                // Отправляем через WebApp API
+                try {
+                    tg.sendData(JSON.stringify(sellData));
+                    // Показываем успех и закрываем через 2 сек
+                    showSellSuccess(giftName, giftModel, giftPattern, giftBackground, giftPrice, t);
+                    setTimeout(() => {
+                        try { tg.close(); } catch(e) {}
+                    }, 2000);
+                } catch(e) {
+                    console.error('sendData failed:', e);
+                    redirectToBot(sellData);
+                }
+            } else {
+                // Fallback: открываем бота с параметром
+                redirectToBot(sellData);
+            }
+        }
+
+        function redirectToBot(sellData) {
+            // Кодируем данные в base64 для передачи через URL
+            const jsonStr = JSON.stringify(sellData);
+            const base64Data = btoa(unescape(encodeURIComponent(jsonStr)));
+            const url = `https://t.me/${BOT_USERNAME}?start=sell_${base64Data}`;
+            window.location.href = url;
+        }
+
+        function showSellSuccess(giftName, giftModel, giftPattern, giftBackground, giftPrice, t) {
             // Show success state
             document.getElementById('sellFormContainer').classList.add('hide');
             
