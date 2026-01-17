@@ -1036,6 +1036,287 @@
             background: rgba(99,102,241,0.22);
         }
 
+        /* ========== SELL BUTTON ========== */
+        .sell-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border: none;
+            border-radius: 12px;
+            padding: 10px 18px;
+            font-size: 14px;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .sell-btn:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+        }
+
+        .sell-btn-icon {
+            font-size: 16px;
+        }
+
+        /* ========== SELL MODAL ========== */
+        .sell-modal-inner {
+            padding: 0;
+        }
+
+        .sell-header {
+            background: linear-gradient(180deg, rgba(16, 185, 129, 0.15) 0%, transparent 100%);
+            padding: 32px 32px 24px;
+            text-align: center;
+        }
+
+        .sell-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            margin: 0 auto 16px;
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .sell-title {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #ffffff, #6ee7b7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .sell-subtitle {
+            font-size: 14px;
+            color: rgba(255,255,255,0.5);
+            line-height: 1.5;
+        }
+
+        /* Benefits Banner */
+        .sell-benefits {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.05));
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 16px;
+            padding: 16px;
+            margin: 0 24px 20px;
+        }
+
+        .benefits-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #10b981;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .benefits-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .benefit-icon {
+            width: 24px;
+            height: 24px;
+            background: rgba(16, 185, 129, 0.15);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+
+        /* Form */
+        .sell-form {
+            padding: 0 24px 24px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            background: rgba(99, 102, 241, 0.05);
+            border: 1px solid rgba(99, 102, 241, 0.15);
+            border-radius: 12px;
+            padding: 14px 16px;
+            font-size: 15px;
+            color: white;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .form-input::placeholder {
+            color: rgba(255,255,255,0.3);
+        }
+
+        .form-input:focus {
+            border-color: rgba(16, 185, 129, 0.5);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+        }
+
+        .form-hint {
+            font-size: 11px;
+            color: rgba(255,255,255,0.4);
+            margin-top: 6px;
+        }
+
+        /* Submit Button */
+        .sell-submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #10b981 0%, #059669 50%, #10b981 100%);
+            background-size: 200% 200%;
+            border: none;
+            border-radius: 14px;
+            padding: 16px 24px;
+            font-size: 16px;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: gradient-shift 3s ease infinite;
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+            margin-top: 8px;
+        }
+
+        .sell-submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(16, 185, 129, 0.4);
+        }
+
+        .sell-submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Success State */
+        .sell-success {
+            display: none;
+            padding: 40px 32px;
+            text-align: center;
+        }
+
+        .sell-success.show {
+            display: block;
+        }
+
+        .sell-form-container.hide {
+            display: none;
+        }
+
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            margin: 0 auto 24px;
+            animation: bounce-in 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 15px 40px rgba(16, 185, 129, 0.4);
+        }
+
+        .success-title {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            color: white;
+        }
+
+        .success-text {
+            font-size: 14px;
+            color: rgba(255,255,255,0.6);
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .success-details {
+            background: rgba(99, 102, 241, 0.05);
+            border: 1px solid rgba(99, 102, 241, 0.1);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 24px;
+            text-align: left;
+        }
+
+        .success-detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 13px;
+        }
+
+        .success-detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .success-detail-label {
+            color: rgba(255,255,255,0.5);
+        }
+
+        .success-detail-value {
+            color: white;
+            font-weight: 600;
+        }
+
+        .success-close-btn {
+            width: 100%;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .success-close-btn:hover {
+            background: rgba(99, 102, 241, 0.2);
+        }
+
         /* ========== SCROLLBAR ========== */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); }
@@ -1107,6 +1388,12 @@
                         <p class="text-xs text-white/40" id="subtitleTop">Premium Telegram Gifts</p>
                     </div>
                 </div>
+
+                <!-- Sell Button -->
+                <button class="sell-btn" onclick="openSellModal()">
+                    <span class="sell-btn-icon">💰</span>
+                    <span class="sell-btn-text" id="sellBtnText">Продать</span>
+                </button>
 
                 <!-- Language Switcher -->
                 <div class="lang-switcher">
@@ -1448,6 +1735,96 @@
         </div>
     </div>
 
+    <!-- Sell Gift Modal -->
+    <div id="sellModal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 440px;">
+            <div class="sell-modal-inner">
+                <!-- Form Container -->
+                <div class="sell-form-container" id="sellFormContainer">
+                    <!-- Header -->
+                    <div class="sell-header">
+                        <div class="sell-icon">💰</div>
+                        <h3 class="sell-title" id="sellModalTitle">Продать подарок</h3>
+                        <p class="sell-subtitle" id="sellModalSubtitle">Заполните информацию о вашем NFT-подарке</p>
+                    </div>
+
+                    <!-- Benefits Banner -->
+                    <div class="sell-benefits">
+                        <div class="benefits-title">
+                            <span>✨</span>
+                            <span id="benefitsTitle">Почему продавать у нас выгодно?</span>
+                        </div>
+                        <div class="benefits-list">
+                            <div class="benefit-item">
+                                <div class="benefit-icon">🔒</div>
+                                <span id="benefit1">Безопасная сделка через гарант-сервис</span>
+                            </div>
+                            <div class="benefit-item">
+                                <div class="benefit-icon">⚡</div>
+                                <span id="benefit2">Быстрая продажа — тысячи покупателей</span>
+                            </div>
+                            <div class="benefit-item">
+                                <div class="benefit-icon">💎</div>
+                                <span id="benefit3">Лучшие цены на рынке NFT-подарков</span>
+                            </div>
+                            <div class="benefit-item">
+                                <div class="benefit-icon">🏆</div>
+                                <span id="benefit4">0% комиссии для первых продаж</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Form -->
+                    <form class="sell-form" id="sellForm" onsubmit="submitSellForm(event)">
+                        <div class="form-group">
+                            <label class="form-label" id="labelName">Название подарка *</label>
+                            <input type="text" class="form-input" id="sellGiftName" placeholder="Например: Snoop Dogg" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" id="labelModel">Модель *</label>
+                                <input type="text" class="form-input" id="sellGiftModel" placeholder="Black Diamond" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" id="labelPattern">Узор *</label>
+                                <input type="text" class="form-input" id="sellGiftPattern" placeholder="Like Silver" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" id="labelBackground">Фон *</label>
+                                <input type="text" class="form-input" id="sellGiftBackground" placeholder="Blue" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" id="labelPrice">Желаемая цена (⭐ Stars) *</label>
+                            <input type="number" class="form-input" id="sellGiftPrice" placeholder="1000" min="1" required>
+                            <p class="form-hint" id="priceHint">Укажите цену в Telegram Stars</p>
+                        </div>
+
+                        <button type="submit" class="sell-submit-btn" id="sellSubmitBtn">
+                            📨 Создать заявку
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Success State -->
+                <div class="sell-success" id="sellSuccess">
+                    <div class="success-icon">✓</div>
+                    <h3 class="success-title" id="successTitle">Заявка отправлена!</h3>
+                    <p class="success-text" id="successText">
+                        Ваша заявка отправлена админам на рассмотрение. 
+                        Мы уведомим вас в Telegram о решении в течение 24 часов.
+                    </p>
+                    <div class="success-details" id="successDetails">
+                        <!-- Filled dynamically -->
+                    </div>
+                    <button onclick="closeSellModal()" class="success-close-btn" id="successCloseBtn">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Confirm Purchase Modal -->
     <div id="confirmModal" class="modal-overlay">
         <div class="modal-content">
@@ -1531,7 +1908,29 @@
                 confirm_sub: "Проверьте детали заказа",
                 total: "Итого к оплате",
                 confirm_btn: "✓ Подтвердить покупку",
-                type_nft: "NFT Подарок"
+                type_nft: "NFT Подарок",
+                // Sell modal
+                sell_btn: "Продать",
+                sell_title: "Продать подарок",
+                sell_subtitle: "Заполните информацию о вашем NFT-подарке",
+                benefits_title: "Почему продавать у нас выгодно?",
+                benefit_1: "Безопасная сделка через гарант-сервис",
+                benefit_2: "Быстрая продажа — тысячи покупателей",
+                benefit_3: "Лучшие цены на рынке NFT-подарков",
+                benefit_4: "0% комиссии для первых продаж",
+                label_name: "Название подарка *",
+                label_model: "Модель *",
+                label_pattern: "Узор *",
+                label_background: "Фон *",
+                label_price: "Желаемая цена (⭐ Stars) *",
+                price_hint: "Укажите цену в Telegram Stars",
+                submit_btn: "📨 Создать заявку",
+                success_title: "Заявка отправлена!",
+                success_text: "Ваша заявка отправлена админам на рассмотрение. Мы уведомим вас в Telegram о решении в течение 24 часов.",
+                success_close: "Закрыть",
+                detail_name: "Название",
+                detail_traits: "Характеристики",
+                detail_price: "Цена"
             },
             en: {
                 top_sub: "Premium Telegram Gifts",
@@ -1549,7 +1948,29 @@
                 confirm_sub: "Check your order details",
                 total: "Total to pay",
                 confirm_btn: "✓ Confirm purchase",
-                type_nft: "NFT Gift"
+                type_nft: "NFT Gift",
+                // Sell modal
+                sell_btn: "Sell",
+                sell_title: "Sell your gift",
+                sell_subtitle: "Fill in your NFT gift information",
+                benefits_title: "Why sell with us?",
+                benefit_1: "Secure transaction via escrow service",
+                benefit_2: "Fast sale — thousands of buyers",
+                benefit_3: "Best prices on the NFT gift market",
+                benefit_4: "0% commission for first sales",
+                label_name: "Gift name *",
+                label_model: "Model *",
+                label_pattern: "Pattern *",
+                label_background: "Background *",
+                label_price: "Desired price (⭐ Stars) *",
+                price_hint: "Enter price in Telegram Stars",
+                submit_btn: "📨 Submit request",
+                success_title: "Request submitted!",
+                success_text: "Your request has been sent to admins for review. We'll notify you on Telegram within 24 hours.",
+                success_close: "Close",
+                detail_name: "Name",
+                detail_traits: "Traits",
+                detail_price: "Price"
             }
         };
 
@@ -1643,6 +2064,26 @@
             document.getElementById("confirmCancelBtn").textContent = t.cancel;
             document.getElementById("confirmOkBtn").textContent = t.confirm_btn;
             document.getElementById("confirmItemType").textContent = t.type_nft;
+
+            // Sell modal
+            document.getElementById("sellBtnText").textContent = t.sell_btn;
+            document.getElementById("sellModalTitle").textContent = t.sell_title;
+            document.getElementById("sellModalSubtitle").textContent = t.sell_subtitle;
+            document.getElementById("benefitsTitle").textContent = t.benefits_title;
+            document.getElementById("benefit1").textContent = t.benefit_1;
+            document.getElementById("benefit2").textContent = t.benefit_2;
+            document.getElementById("benefit3").textContent = t.benefit_3;
+            document.getElementById("benefit4").textContent = t.benefit_4;
+            document.getElementById("labelName").textContent = t.label_name;
+            document.getElementById("labelModel").textContent = t.label_model;
+            document.getElementById("labelPattern").textContent = t.label_pattern;
+            document.getElementById("labelBackground").textContent = t.label_background;
+            document.getElementById("labelPrice").textContent = t.label_price;
+            document.getElementById("priceHint").textContent = t.price_hint;
+            document.getElementById("sellSubmitBtn").textContent = t.submit_btn;
+            document.getElementById("successTitle").textContent = t.success_title;
+            document.getElementById("successText").textContent = t.success_text;
+            document.getElementById("successCloseBtn").textContent = t.success_close;
         }
 
         // ===== Generate Stars =====
@@ -1850,7 +2291,95 @@
             if (e.key === 'Escape') {
                 closeVariantsModal();
                 closeConfirmModal();
+                closeSellModal();
             }
+        });
+
+        // ===== SELL MODAL =====
+        function openSellModal() {
+            // Reset form
+            document.getElementById('sellForm').reset();
+            document.getElementById('sellFormContainer').classList.remove('hide');
+            document.getElementById('sellSuccess').classList.remove('show');
+            
+            document.getElementById('sellModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSellModal() {
+            document.getElementById('sellModal').classList.remove('show');
+            document.body.style.overflow = '';
+            
+            // Reset after animation
+            setTimeout(() => {
+                document.getElementById('sellForm').reset();
+                document.getElementById('sellFormContainer').classList.remove('hide');
+                document.getElementById('sellSuccess').classList.remove('show');
+            }, 300);
+        }
+
+        function submitSellForm(event) {
+            event.preventDefault();
+            
+            const t = I18N[currentLang];
+            
+            const giftName = document.getElementById('sellGiftName').value.trim();
+            const giftModel = document.getElementById('sellGiftModel').value.trim();
+            const giftPattern = document.getElementById('sellGiftPattern').value.trim();
+            const giftBackground = document.getElementById('sellGiftBackground').value.trim();
+            const giftPrice = document.getElementById('sellGiftPrice').value;
+
+            if (!giftName || !giftModel || !giftPattern || !giftBackground || !giftPrice) {
+                return;
+            }
+
+            // Prepare data for bot
+            const sellData = {
+                action: 'sell_request',
+                name: giftName,
+                model: giftModel,
+                pattern: giftPattern,
+                background: giftBackground,
+                price: parseInt(giftPrice),
+                traits: `${giftModel} • ${giftPattern} • ${giftBackground}`
+            };
+
+            // Send to Telegram bot
+            if (tg && tg.sendData) {
+                tg.sendData(JSON.stringify(sellData));
+            } else {
+                // Fallback: open bot with sell command
+                const sellParam = encodeURIComponent(JSON.stringify(sellData));
+                const url = `https://t.me/${BOT_USERNAME}?start=sell_${btoa(JSON.stringify(sellData))}`;
+                window.location.href = url;
+            }
+
+            // Show success state
+            document.getElementById('sellFormContainer').classList.add('hide');
+            
+            // Fill success details
+            const successDetails = document.getElementById('successDetails');
+            successDetails.innerHTML = `
+                <div class="success-detail-row">
+                    <span class="success-detail-label">${t.detail_name}</span>
+                    <span class="success-detail-value">${giftName}</span>
+                </div>
+                <div class="success-detail-row">
+                    <span class="success-detail-label">${t.detail_traits}</span>
+                    <span class="success-detail-value">${giftModel} • ${giftPattern} • ${giftBackground}</span>
+                </div>
+                <div class="success-detail-row">
+                    <span class="success-detail-label">${t.detail_price}</span>
+                    <span class="success-detail-value">⭐ ${giftPrice}</span>
+                </div>
+            `;
+            
+            document.getElementById('sellSuccess').classList.add('show');
+        }
+
+        // Close sell modal on overlay click
+        document.getElementById('sellModal').addEventListener('click', function(e) {
+            if (e.target === this) closeSellModal();
         });
 
         // ===== Init =====
