@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Divine Shop — Premium Gifts</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         * { font-family: 'Inter', sans-serif; }
 
@@ -258,13 +258,38 @@
             border: 2px solid rgba(255,255,255,0.1);
         }
 
+        /* ========== DIVINE SHOP ELEGANT FONT ========== */
         .brand-text {
-            background: linear-gradient(135deg, #e0e7ff, #c7d2fe, #a5b4fc);
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #e0e7ff 0%, #c4b5fd 25%, #a78bfa 50%, #c4b5fd 75%, #e0e7ff 100%);
             background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: text-shine 5s linear infinite;
+            animation: text-shine 4s linear infinite;
+            text-shadow: none;
+            position: relative;
+        }
+
+        .brand-text::after {
+            content: 'Divine Shop';
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: -1;
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            color: transparent;
+            text-shadow: 
+                0 0 20px rgba(167, 139, 250, 0.5),
+                0 0 40px rgba(139, 92, 246, 0.3),
+                0 0 60px rgba(99, 102, 241, 0.2);
+            -webkit-text-stroke: 0;
         }
 
         /* ========== HERO SECTION ========== */
@@ -276,38 +301,6 @@
             background-clip: text;
             animation: text-shine 4s linear infinite;
             text-shadow: none;
-        }
-
-        /* ========== DIVINE SHOP NEON LOGO ========== */
-        .brand-text {
-            position: relative;
-            color: transparent;
-            -webkit-text-stroke: 1.5px #a78bfa;
-            text-stroke: 1.5px #a78bfa;
-            background: none;
-            -webkit-background-clip: unset;
-            -webkit-text-fill-color: transparent;
-            animation: brand-neon 2.5s ease-in-out infinite;
-            letter-spacing: 1px;
-        }
-
-        @keyframes brand-neon {
-            0%, 100% {
-                text-shadow:
-                    0 0 5px rgba(167, 139, 250, 0.6),
-                    0 0 10px rgba(139, 92, 246, 0.4),
-                    0 0 20px rgba(139, 92, 246, 0.3),
-                    0 0 40px rgba(99, 102, 241, 0.2);
-                -webkit-text-stroke-color: #a78bfa;
-            }
-            50% {
-                text-shadow:
-                    0 0 8px rgba(167, 139, 250, 0.9),
-                    0 0 15px rgba(139, 92, 246, 0.6),
-                    0 0 30px rgba(139, 92, 246, 0.4),
-                    0 0 50px rgba(99, 102, 241, 0.3);
-                -webkit-text-stroke-color: #c4b5fd;
-            }
         }
 
         /* ========== КАТЕГОРИИ ========== */
@@ -369,6 +362,24 @@
             overflow: hidden;
             opacity: 0;
             transform: translateY(60px) scale(0.9);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        /* Premium Glass Blur Effect */
+        .gift-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                135deg,
+                rgba(99, 102, 241, 0.08) 0%,
+                rgba(139, 92, 246, 0.05) 50%,
+                rgba(99, 102, 241, 0.08) 100%
+            );
+            border-radius: 24px;
+            z-index: -1;
+            opacity: 0.5;
         }
 
         .gift-card.animate-in {
@@ -384,6 +395,7 @@
             height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
             transition: left 0.6s ease;
+            z-index: 1;
         }
 
         .gift-card:hover::before { left: 100%; }
@@ -393,7 +405,9 @@
             border-color: rgba(99, 102, 241, 0.3);
             box-shadow:
                 0 25px 50px rgba(0,0,0,0.5),
-                0 0 60px rgba(99, 102, 241, 0.1);
+                0 0 60px rgba(99, 102, 241, 0.15),
+                inset 0 0 60px rgba(99, 102, 241, 0.05);
+            backdrop-filter: blur(30px);
         }
 
         .gift-image-container {
@@ -435,7 +449,7 @@
             position: absolute;
             top: 16px;
             right: 16px;
-            background: linear-gradient(135deg, #ef4444, #f97316);
+            background: linear-gradient(135deg, #8b5cf6, #6366f1);
             padding: 6px 12px;
             border-radius: 20px;
             font-size: 11px;
@@ -443,8 +457,9 @@
             color: white;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
             animation: pulse-glow 2s ease-in-out infinite;
+            z-index: 2;
         }
 
         /* Price Styling */
@@ -476,6 +491,53 @@
             text-shadow: 0 0 15px rgba(99, 102, 241, 0.5), 0 0 30px rgba(99, 102, 241, 0.3);
         }
 
+        .gift-details {
+            color: rgba(255,255,255,0.5);
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        /* ========== BUY BUTTON ========== */
+        .buy-btn {
+            position: relative;
+            background: linear-gradient(135deg, #4338ca, #6366f1, #4338ca);
+            background-size: 200% 200%;
+            border: none;
+            border-radius: 14px;
+            padding: 14px 28px;
+            font-size: 15px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: gradient-shift 3s ease infinite;
+            z-index: 2;
+        }
+
+        .buy-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .buy-btn:hover::before { left: 100%; }
+
+        .buy-btn:hover {
+            transform: scale(1.08) translateY(-3px);
+            box-shadow:
+                0 20px 45px rgba(99, 102, 241, 0.4),
+                0 0 60px rgba(99, 102, 241, 0.3),
+                inset 0 1px 0 rgba(255,255,255,0.3);
+        }
+
+        .buy-btn:active { animation: button-press 0.3s ease forwards; }
+
         /* ========== VIEW BUTTON ========== */
         .view-btn {
             position: relative;
@@ -489,6 +551,7 @@
             cursor: pointer;
             overflow: hidden;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 2;
         }
 
         .view-btn::before {
@@ -515,46 +578,6 @@
 
         .view-btn:active { transform: scale(0.95); }
         .view-btn span { position: relative; z-index: 1; }
-
-        /* ========== BUY BUTTON ========== */
-        .buy-btn {
-            position: relative;
-            background: linear-gradient(135deg, #4338ca, #6366f1, #4338ca);
-            background-size: 200% 200%;
-            border: none;
-            border-radius: 14px;
-            padding: 14px 28px;
-            font-size: 15px;
-            font-weight: 600;
-            color: white;
-            cursor: pointer;
-            overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            animation: gradient-shift 3s ease infinite;
-        }
-
-        .buy-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .buy-btn:hover::before { left: 100%; }
-
-        .buy-btn:hover {
-            transform: scale(1.08) translateY(-3px);
-            box-shadow:
-                0 20px 45px rgba(99, 102, 241, 0.4),
-                0 0 60px rgba(99, 102, 241, 0.3),
-                inset 0 1px 0 rgba(255,255,255,0.3);
-        }
-
-        .buy-btn:active { animation: button-press 0.3s ease forwards; }
 
         /* ========== MODAL OVERLAY ========== */
         .modal-overlay {
@@ -588,6 +611,7 @@
             transform: scale(0.7) translateY(80px);
             opacity: 0;
             overflow: hidden;
+            backdrop-filter: blur(40px);
         }
 
         .modal-overlay.show .modal-content {
@@ -662,6 +686,7 @@
             border-radius: 20px;
             padding: 20px;
             margin-bottom: 16px;
+            backdrop-filter: blur(10px);
         }
 
         .detail-row {
@@ -715,6 +740,7 @@
             padding: 24px;
             text-align: center;
             margin-bottom: 20px;
+            backdrop-filter: blur(10px);
         }
 
         .price-label {
@@ -1031,6 +1057,7 @@
             .btn-confirm { order: -1; }
             .price-value { font-size: 36px; }
             .confirm-image { width: 100px; height: 100px; }
+            .brand-text { font-size: 1.25rem; }
         }
 
         /* === Confirm modal: убираем подписи "Товар/Описание/Тип" и эмодзи === */
@@ -1076,7 +1103,7 @@
                         <img src="https://i.ibb.co/FqLKZQzj/hunyuan-image-3-0-a.png" alt="Divine Shop" class="logo-img">
                     </div>
                     <div>
-                        <h1 class="text-xl font-bold brand-text">Divine Shop</h1>
+                        <h1 class="brand-text">Divine Shop</h1>
                         <p class="text-xs text-white/40" id="subtitleTop">Premium Telegram Gifts</p>
                     </div>
                 </div>
@@ -1105,19 +1132,15 @@
         <!-- Categories -->
         <div class="flex flex-wrap justify-center gap-3 mb-12">
             <button class="category-pill active" data-category="all"><span id="catAll">🎁 Все подарки</span></button>
-            <button class="category-pill" data-category="limited"><span id="catLimited">💙 NFT</span></button>
+            <button class="category-pill" data-category="nft"><span id="catNft">💎 NFT</span></button>
         </div>
 
         <!-- Gifts Grid -->
         <div class="gifts-grid" id="giftsContainer">
 
-            <!-- ══════════════════════════════════════════ -->
-            <!-- ОБЫЧНЫЕ ПОДАРКИ (8 штук) -->
-            <!-- ══════════════════════════════════════════ -->
-
-            <!-- Gift 1: Christmas Tree -->
-            <div class="gift-card" data-category="regular">
-                <div class="sale-badge">-10%</div>
+            <!-- 1: Neko Helmet -->
+            <div class="gift-card" data-category="nft">
+                <div class="sale-badge">💎 NFT</div>
                 <div class="flex items-center gap-5">
                     <div class="gift-image-container">
                         <div class="gift-image-glow"></div>
@@ -1125,187 +1148,175 @@
                     </div>
                     <div class="flex-1 min-w-0">
                         <h3 class="text-lg font-bold mb-1 gift-title">Neko Helmet</h3>
-                        <p class="text-white/40 text-sm mb-3">1 variations</p>
-                        <div class="flex items-center gap-3">
-                            <span class="price-current">⭐ 2890</span>
-                            <span class="price-old">4100 ⭐</span>
+                        <p class="gift-details">Red Shift • Duck Face • Lemongrass</p>
+                        <div class="flex items-center gap-3 mt-2">
+                            <span class="price-current">⭐ 2800</span>
                         </div>
                     </div>
-                    <button class="buy-btn buy-btn-regular"
-                        onclick="event.stopPropagation(); showRegularBuyModal('neko_helmet', 'Neko Helmet', 45, 'https://i.ibb.co/8L2fPTtw/IMG-3330.png', 'Наряженная праздничная ёлка', 'Decorated holiday tree')">
-                        Купить
+                    <button class="buy-btn"
+                        onclick="event.stopPropagation(); showBuyModal('neko_helmet', 'Neko Helmet', 2800, 'https://i.ibb.co/8L2fPTtw/IMG-3330.png', 'Red Shift • Duck Face • Lemongrass')">
+                        <span class="buyText">Купить</span>
                     </button>
                 </div>
             </div>
 
-            <!-- Gift 2: Gift Heart -->
-            <div class="gift-card" data-category="regular">
-                <div class="sale-badge">-33%</div>
+            <!-- 2: Love Potion -->
+            <div class="gift-card" data-category="nft">
+                <div class="sale-badge">💎 NFT</div>
+                <div class="flex items-center gap-5">
+                    <div class="gift-image-container">
+                        <div class="gift-image-glow"></div>
+                        <img src="https://i.ibb.co/sdCPtPJ4/IMG-3335.png" alt="Love Potion" class="gift-image">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3 class="text-lg font-bold mb-1 gift-title">Love Potion</h3>
+                        <p class="gift-details">Fairy Pollen • Geisha Fan • Carrot Juice</p>
+                        <div class="flex items-center gap-3 mt-2">
+                            <span class="price-current">⭐ 990</span>
+                        </div>
+                    </div>
+                    <button class="buy-btn"
+                        onclick="event.stopPropagation(); showBuyModal('love_potion', 'Love Potion', 990, 'https://i.ibb.co/sdCPtPJ4/IMG-3335.png', 'Fairy Pollen • Geisha Fan • Carrot Juice')">
+                        <span class="buyText">Купить</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 3: Electric Skull -->
+            <div class="gift-card" data-category="nft">
+                <div class="sale-badge">💎 NFT</div>
+                <div class="flex items-center gap-5">
+                    <div class="gift-image-container">
+                        <div class="gift-image-glow"></div>
+                        <img src="https://i.ibb.co/tFCQB8c/IMG-3333.png" alt="Electric Skull" class="gift-image">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3 class="text-lg font-bold mb-1 gift-title">Electric Skull</h3>
+                        <p class="gift-details">Chromatic • Tombstone • Purple</p>
+                        <div class="flex items-center gap-3 mt-2">
+                            <span class="price-current">⭐ 2600</span>
+                        </div>
+                    </div>
+                    <button class="buy-btn"
+                        onclick="event.stopPropagation(); showBuyModal('electric_skull', 'Electric Skull', 2600, 'https://i.ibb.co/tFCQB8c/IMG-3333.png', 'Chromatic • Tombstone • Purple')">
+                        <span class="buyText">Купить</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 4: Vintage Sigar -->
+            <div class="gift-card" data-category="nft">
+                <div class="sale-badge">💎 NFT</div>
+                <div class="flex items-center gap-5">
+                    <div class="gift-image-container">
+                        <div class="gift-image-glow"></div>
+                        <img src="https://i.ibb.co/RpF32sXK/IMG-3332.png" alt="Vintage Sigar" class="gift-image">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3 class="text-lg font-bold mb-1 gift-title">Vintage Sigar</h3>
+                        <p class="gift-details">Stained Glass • Illuminati • Mystic Pearl</p>
+                        <div class="flex items-center gap-3 mt-2">
+                            <span class="price-current">⭐ 2235</span>
+                        </div>
+                    </div>
+                    <button class="buy-btn"
+                        onclick="event.stopPropagation(); showBuyModal('vintage_sigar', 'Vintage Sigar', 2235, 'https://i.ibb.co/RpF32sXK/IMG-3332.png', 'Stained Glass • Illuminati • Mystic Pearl')">
+                        <span class="buyText">Купить</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 5: Signed Ring -->
+            <div class="gift-card" data-category="nft">
+                <div class="sale-badge">💎 NFT</div>
+                <div class="flex items-center gap-5">
+                    <div class="gift-image-container">
+                        <div class="gift-image-glow"></div>
+                        <img src="https://i.ibb.co/GfRtFwsQ/IMG-3334.png" alt="Signed Ring" class="gift-image">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3 class="text-lg font-bold mb-1 gift-title">Signed Ring</h3>
+                        <p class="gift-details">Golden Pearl • Nordic Wolf • Caramel</p>
+                        <div class="flex items-center gap-3 mt-2">
+                            <span class="price-current">⭐ 3150</span>
+                        </div>
+                    </div>
+                    <button class="buy-btn"
+                        onclick="event.stopPropagation(); showBuyModal('signed_ring', 'Signed Ring', 3150, 'https://i.ibb.co/GfRtFwsQ/IMG-3334.png', 'Golden Pearl • Nordic Wolf • Caramel')">
+                        <span class="buyText">Купить</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 6: Ionic Dryer -->
+            <div class="gift-card" data-category="nft">
+                <div class="sale-badge">💎 NFT</div>
+                <div class="flex items-center gap-5">
+                    <div class="gift-image-container">
+                        <div class="gift-image-glow"></div>
+                        <img src="https://i.ibb.co/3yJhhxYR/IMG-3336.png" alt="Ionic Dryer" class="gift-image">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3 class="text-lg font-bold mb-1 gift-title">Ionic Dryer</h3>
+                        <p class="gift-details">Zephyrus • Lightning • Grape</p>
+                        <div class="flex items-center gap-3 mt-2">
+                            <span class="price-current">⭐ 890</span>
+                        </div>
+                    </div>
+                    <button class="buy-btn"
+                        onclick="event.stopPropagation(); showBuyModal('ionic_dryer', 'Ionic Dryer', 890, 'https://i.ibb.co/3yJhhxYR/IMG-3336.png', 'Zephyrus • Lightning • Grape')">
+                        <span class="buyText">Купить</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 7: Bling Binky -->
+            <div class="gift-card" data-category="nft">
+                <div class="sale-badge">💎 NFT</div>
+                <div class="flex items-center gap-5">
+                    <div class="gift-image-container">
+                        <div class="gift-image-glow"></div>
+                        <img src="https://i.ibb.co/HLKbqxRd/IMG-3331.png" alt="Bling Binky" class="gift-image">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3 class="text-lg font-bold mb-1 gift-title">Bling Binky</h3>
+                        <p class="gift-details">Crystal Wings • Horned Helm • Deep Cyan</p>
+                        <div class="flex items-center gap-3 mt-2">
+                            <span class="price-current">⭐ 2450</span>
+                        </div>
+                    </div>
+                    <button class="buy-btn"
+                        onclick="event.stopPropagation(); showBuyModal('bling_binky', 'Bling Binky', 2450, 'https://i.ibb.co/HLKbqxRd/IMG-3331.png', 'Crystal Wings • Horned Helm • Deep Cyan')">
+                        <span class="buyText">Купить</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 8: Toy Bear -->
+            <div class="gift-card" data-category="nft">
+                <div class="sale-badge">💎 NFT</div>
                 <div class="flex items-center gap-5">
                     <div class="gift-image-container">
                         <div class="gift-image-glow"></div>
                         <img src="https://i.ibb.co/G3Ch7JgV/IMG-3329.png" alt="Toy Bear" class="gift-image">
                     </div>
                     <div class="flex-1 min-w-0">
-                        <h3 class="text-lg font-bold mb-1 gift-title">Gift Heart</h3>
-                        <p class="text-white/40 text-sm mb-3">Сердечко с любовью</p>
-                        <div class="flex items-center gap-3">
-                            <span class="price-current">⭐ 3260</span>
-                            <span class="price-old">4800 ⭐</span>
+                        <h3 class="text-lg font-bold mb-1 gift-title">Toy Bear</h3>
+                        <p class="gift-details">Pink Doodle • Fleur-de-lis • Midnight Blue</p>
+                        <div class="flex items-center gap-3 mt-2">
+                            <span class="price-current">⭐ 2990</span>
                         </div>
                     </div>
-                    <button class="buy-btn buy-btn-regular"
-                        onclick="event.stopPropagation(); showRegularBuyModal('gift_heart', 'Gift Heart', 10, 'https://i.ibb.co/FL927xbG/heart.png', 'Сердечко с любовью', 'A heart made with love')">
-                        Купить
+                    <button class="buy-btn"
+                        onclick="event.stopPropagation(); showBuyModal('toy_bear', 'Toy Bear', 2990, 'https://i.ibb.co/G3Ch7JgV/IMG-3329.png', 'Pink Doodle • Fleur-de-lis • Midnight Blue')">
+                        <span class="buyText">Купить</span>
                     </button>
                 </div>
             </div>
 
-            <!-- Gift 3: Santa Bear -->
-            <div class="gift-card" data-category="regular">
-                <div class="sale-badge">-24%</div>
-                <div class="flex items-center gap-5">
-                    <div class="gift-image-container">
-                        <div class="gift-image-glow"></div>
-                        <img src="https://i.ibb.co/vCqgnKg0/gpt-image-1-5-a.png" alt="Santa Bear" class="gift-image">
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <h3 class="text-lg font-bold mb-1 gift-title">Santa Bear</h3>
-                        <p class="text-white/40 text-sm mb-3">Милый плюшевый мишка</p>
-                        <div class="flex items-center gap-3">
-                            <span class="price-current">⭐ 38</span>
-                            <span class="price-old">50 ⭐</span>
-                        </div>
-                    </div>
-                    <button class="buy-btn buy-btn-regular"
-                        onclick="event.stopPropagation(); showRegularBuyModal('santa_bear', 'Santa Bear', 38, 'https://i.ibb.co/vCqgnKg0/gpt-image-1-5-a.png', 'Милый плюшевый мишка', 'Cute plush bear')">
-                        Купить
-                    </button>
-                </div>
-            </div>
-
-            <!-- Gift 4: Red Rose -->
-            <div class="gift-card" data-category="regular">
-                <div class="sale-badge">-28%</div>
-                <div class="flex items-center gap-5">
-                    <div class="gift-image-container">
-                        <div class="gift-image-glow"></div>
-                        <img src="https://i.ibb.co/0pD2ZrsG/gpt-image-1-5-a.png" alt="Red Rose" class="gift-image">
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <h3 class="text-lg font-bold mb-1 gift-title">Red Rose</h3>
-                        <p class="text-white/40 text-sm mb-3">Красивая алая роза</p>
-                        <div class="flex items-center gap-3">
-                            <span class="price-current">⭐ 18</span>
-                            <span class="price-old">25 ⭐</span>
-                        </div>
-                    </div>
-                    <button class="buy-btn buy-btn-regular"
-                        onclick="event.stopPropagation(); showRegularBuyModal('red_rose', 'Red Rose', 18, 'https://i.ibb.co/0pD2ZrsG/gpt-image-1-5-a.png', 'Красивая алая роза', 'Beautiful red rose')">
-                        Купить
-                    </button>
-                </div>
-            </div>
-
-            <!-- Gift 5: Birthday Cake -->
-            <div class="gift-card" data-category="regular">
-                <div class="sale-badge">-24%</div>
-                <div class="flex items-center gap-5">
-                    <div class="gift-image-container">
-                        <div class="gift-image-glow"></div>
-                        <img src="https://i.ibb.co/TxwLLzN2/gpt-image-1-5-a.png" alt="Birthday Cake" class="gift-image">
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <h3 class="text-lg font-bold mb-1 gift-title">Birthday Cake</h3>
-                        <p class="text-white/40 text-sm mb-3">Праздничный торт</p>
-                        <div class="flex items-center gap-3">
-                            <span class="price-current">⭐ 38</span>
-                            <span class="price-old">50 ⭐</span>
-                        </div>
-                    </div>
-                    <button class="buy-btn buy-btn-regular"
-                        onclick="event.stopPropagation(); showRegularBuyModal('birthday_cake', 'Birthday Cake', 38, 'https://i.ibb.co/TxwLLzN2/gpt-image-1-5-a.png', 'Праздничный торт', 'Birthday cake')">
-                        Купить
-                    </button>
-                </div>
-            </div>
-
-            <!-- Gift 6: Rocket -->
-            <div class="gift-card" data-category="regular">
-                <div class="sale-badge">-24%</div>
-                <div class="flex items-center gap-5">
-                    <div class="gift-image-container">
-                        <div class="gift-image-glow"></div>
-                        <img src="https://i.ibb.co/939pPptm/gpt-image-1-a.png" alt="Rocket" class="gift-image">
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <h3 class="text-lg font-bold mb-1 gift-title">Rocket</h3>
-                        <p class="text-white/40 text-sm mb-3">Космическая ракета</p>
-                        <div class="flex items-center gap-3">
-                            <span class="price-current">⭐ 38</span>
-                            <span class="price-old">50 ⭐</span>
-                        </div>
-                    </div>
-                    <button class="buy-btn buy-btn-regular"
-                        onclick="event.stopPropagation(); showRegularBuyModal('rocket', 'Rocket', 38, 'https://i.ibb.co/939pPptm/gpt-image-1-a.png', 'Космическая ракета', 'Space rocket')">
-                        Купить
-                    </button>
-                </div>
-            </div>
-
-            <!-- Gift 7: Diamond Ring -->
-            <div class="gift-card" data-category="regular">
-                <div class="sale-badge">-22%</div>
-                <div class="flex items-center gap-5">
-                    <div class="gift-image-container">
-                        <div class="gift-image-glow"></div>
-                        <img src="https://i.ibb.co/PzvsJDRh/gpt-image-1-a.png" alt="Diamond Ring" class="gift-image">
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <h3 class="text-lg font-bold mb-1 gift-title">Diamond Ring</h3>
-                        <p class="text-white/40 text-sm mb-3">Кольцо с бриллиантом</p>
-                        <div class="flex items-center gap-3">
-                            <span class="price-current">⭐ 78</span>
-                            <span class="price-old">100 ⭐</span>
-                        </div>
-                    </div>
-                    <button class="buy-btn buy-btn-regular"
-                        onclick="event.stopPropagation(); showRegularBuyModal('diamond_ring', 'Diamond Ring', 78, 'https://i.ibb.co/PzvsJDRh/gpt-image-1-a.png', 'Кольцо с бриллиантом', 'Diamond ring')">
-                        Купить
-                    </button>
-                </div>
-            </div>
-
-            <!-- Gift 8: Diamond -->
-            <div class="gift-card" data-category="regular">
-                <div class="sale-badge">-22%</div>
-                <div class="flex items-center gap-5">
-                    <div class="gift-image-container">
-                        <div class="gift-image-glow"></div>
-                        <img src="https://i.ibb.co/VpMk4jqB/gpt-image-1-a.png" alt="Diamond" class="gift-image">
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <h3 class="text-lg font-bold mb-1 gift-title">Diamond</h3>
-                        <p class="text-white/40 text-sm mb-3">Сверкающий алмаз</p>
-                        <div class="flex items-center gap-3">
-                            <span class="price-current">⭐ 78</span>
-                            <span class="price-old">100 ⭐</span>
-                        </div>
-                    </div>
-                    <button class="buy-btn buy-btn-regular"
-                        onclick="event.stopPropagation(); showRegularBuyModal('diamond', 'Diamond', 78, 'https://i.ibb.co/VpMk4jqB/gpt-image-1-a.png', 'Сверкающий алмаз', 'Sparkling diamond')">
-                        Купить
-                    </button>
-                </div>
-            </div>
-
-            <!-- ══════════════════════════════════════════ -->
-            <!-- 🔥 ЛИМИТИРОВАННЫЕ ПОДАРКИ (5 штук) -->
-            <!-- ══════════════════════════════════════════ -->
-
-            <!-- LIMITED 1: Snoop Dogg -->
-            <div class="gift-card gift-card-limited" data-category="limited" onclick="openVariantsModal('snoop_dogg')">
-                <div class="sale-badge">🔥 LTD</div>
+            <!-- 9: Snoop Dogg (3 variations) -->
+            <div class="gift-card gift-card-collection" data-category="nft" onclick="openVariantsModal('snoop_dogg')">
+                <div class="sale-badge">💎 NFT</div>
                 <div class="flex items-center gap-5">
                     <div class="gift-image-container">
                         <div class="gift-image-glow"></div>
@@ -1313,9 +1324,9 @@
                     </div>
                     <div class="flex-1 min-w-0">
                         <h3 class="text-lg font-bold mb-1 gift-title">Snoop Dogg</h3>
-                        <p class="text-white/40 text-sm mb-3">3 variations</p>
-                        <div class="flex items-center gap-3">
-                            <span class="text-white/60 text-sm">от</span>
+                        <p class="gift-details">3 variations</p>
+                        <div class="flex items-center gap-3 mt-2">
+                            <span class="text-white/60 text-sm fromText">от</span>
                             <span class="price-current">⭐ 280</span>
                         </div>
                     </div>
@@ -1325,9 +1336,9 @@
                 </div>
             </div>
 
-            <!-- LIMITED 2: Holiday Drink -->
-            <div class="gift-card gift-card-limited" data-category="limited" onclick="openVariantsModal('holiday_drink')">
-                <div class="sale-badge">🔥 LTD</div>
+            <!-- 10: Holiday Drink (2 variations) -->
+            <div class="gift-card gift-card-collection" data-category="nft" onclick="openVariantsModal('holiday_drink')">
+                <div class="sale-badge">💎 NFT</div>
                 <div class="flex items-center gap-5">
                     <div class="gift-image-container">
                         <div class="gift-image-glow"></div>
@@ -1335,9 +1346,9 @@
                     </div>
                     <div class="flex-1 min-w-0">
                         <h3 class="text-lg font-bold mb-1 gift-title">Holiday Drink</h3>
-                        <p class="text-white/40 text-sm mb-3">2 variations</p>
-                        <div class="flex items-center gap-3">
-                            <span class="text-white/60 text-sm">от</span>
+                        <p class="gift-details">2 variations</p>
+                        <div class="flex items-center gap-3 mt-2">
+                            <span class="text-white/60 text-sm fromText">от</span>
                             <span class="price-current">⭐ 388</span>
                         </div>
                     </div>
@@ -1347,9 +1358,9 @@
                 </div>
             </div>
 
-            <!-- LIMITED 3: Mighty Arm -->
-            <div class="gift-card gift-card-limited" data-category="limited" onclick="openVariantsModal('mighty_arm')">
-                <div class="sale-badge">🔥 LTD</div>
+            <!-- 11: Mighty Arm (2 variations) -->
+            <div class="gift-card gift-card-collection" data-category="nft" onclick="openVariantsModal('mighty_arm')">
+                <div class="sale-badge">💎 NFT</div>
                 <div class="flex items-center gap-5">
                     <div class="gift-image-container">
                         <div class="gift-image-glow"></div>
@@ -1357,9 +1368,9 @@
                     </div>
                     <div class="flex-1 min-w-0">
                         <h3 class="text-lg font-bold mb-1 gift-title">Mighty Arm</h3>
-                        <p class="text-white/40 text-sm mb-3">2 variations</p>
-                        <div class="flex items-center gap-3">
-                            <span class="text-white/60 text-sm">от</span>
+                        <p class="gift-details">2 variations</p>
+                        <div class="flex items-center gap-3 mt-2">
+                            <span class="text-white/60 text-sm fromText">от</span>
                             <span class="price-current">⭐ 28452</span>
                         </div>
                     </div>
@@ -1369,9 +1380,9 @@
                 </div>
             </div>
 
-            <!-- LIMITED 4: Happy Brownie -->
-            <div class="gift-card gift-card-limited" data-category="limited" onclick="openVariantsModal('happy_brownie')">
-                <div class="sale-badge">🔥 LTD</div>
+            <!-- 12: Happy Brownie (2 variations) -->
+            <div class="gift-card gift-card-collection" data-category="nft" onclick="openVariantsModal('happy_brownie')">
+                <div class="sale-badge">💎 NFT</div>
                 <div class="flex items-center gap-5">
                     <div class="gift-image-container">
                         <div class="gift-image-glow"></div>
@@ -1379,9 +1390,9 @@
                     </div>
                     <div class="flex-1 min-w-0">
                         <h3 class="text-lg font-bold mb-1 gift-title">Happy Brownie</h3>
-                        <p class="text-white/40 text-sm mb-3">2 variations</p>
-                        <div class="flex items-center gap-3">
-                            <span class="text-white/60 text-sm">от</span>
+                        <p class="gift-details">2 variations</p>
+                        <div class="flex items-center gap-3 mt-2">
+                            <span class="text-white/60 text-sm fromText">от</span>
                             <span class="price-current">⭐ 299</span>
                         </div>
                     </div>
@@ -1391,9 +1402,9 @@
                 </div>
             </div>
 
-            <!-- LIMITED 5: Money Pot -->
-            <div class="gift-card gift-card-limited" data-category="limited" onclick="openVariantsModal('money_pot')">
-                <div class="sale-badge">🔥 LTD</div>
+            <!-- 13: Money Pot (2 variations) -->
+            <div class="gift-card gift-card-collection" data-category="nft" onclick="openVariantsModal('money_pot')">
+                <div class="sale-badge">💎 NFT</div>
                 <div class="flex items-center gap-5">
                     <div class="gift-image-container">
                         <div class="gift-image-glow"></div>
@@ -1401,9 +1412,9 @@
                     </div>
                     <div class="flex-1 min-w-0">
                         <h3 class="text-lg font-bold mb-1 gift-title">Money Pot</h3>
-                        <p class="text-white/40 text-sm mb-3">2 variations</p>
-                        <div class="flex items-center gap-3">
-                            <span class="text-white/60 text-sm">от</span>
+                        <p class="gift-details">2 variations</p>
+                        <div class="flex items-center gap-3 mt-2">
+                            <span class="text-white/60 text-sm fromText">от</span>
                             <span class="price-current">⭐ 431</span>
                         </div>
                     </div>
@@ -1476,7 +1487,7 @@
                                 <div class="detail-icon">📦</div>
                                 <span>Тип</span>
                             </div>
-                            <div class="detail-value" id="confirmItemType">Обычный подарок</div>
+                            <div class="detail-value" id="confirmItemType">NFT Подарок</div>
                         </div>
                     </div>
 
@@ -1509,9 +1520,10 @@
                 hero_title: "Эксклюзивные Подарки",
                 hero_sub: "Премиальная коллекция Telegram-подарков по лучшим ценам",
                 cat_all: "🎁 Все подарки",
-                cat_limited: "🔥 Лимитированные",
+                cat_nft: "💎 NFT",
                 buy: "Купить",
                 choose: "Выбрать",
+                from: "от",
                 variants_title: "Выберите вариант",
                 cancel: "Отмена",
                 choose_variant: "Выбрать вариант",
@@ -1519,18 +1531,17 @@
                 confirm_sub: "Проверьте детали заказа",
                 total: "Итого к оплате",
                 confirm_btn: "✓ Подтвердить покупку",
-                type_regular: "Обычный подарок",
-                type_limited: "Лимитированный",
-                from: "от"
+                type_nft: "NFT Подарок"
             },
             en: {
                 top_sub: "Premium Telegram Gifts",
                 hero_title: "Exclusive Gifts",
                 hero_sub: "Premium Telegram gifts collection at the best prices",
                 cat_all: "🎁 All gifts",
-                cat_limited: "🔥 Limited",
+                cat_nft: "💎 NFT",
                 buy: "Buy",
                 choose: "Choose",
+                from: "from",
                 variants_title: "Choose a variant",
                 cancel: "Cancel",
                 choose_variant: "Choose variant",
@@ -1538,67 +1549,9 @@
                 confirm_sub: "Check your order details",
                 total: "Total to pay",
                 confirm_btn: "✓ Confirm purchase",
-                type_regular: "Regular gift",
-                type_limited: "Limited",
-                from: "from"
+                type_nft: "NFT Gift"
             }
         };
-
-        let currentLang = "ru";
-
-        function detectDefaultLang(){
-            const saved = localStorage.getItem("lang");
-            if (saved === "ru" || saved === "en") return saved;
-            const code = (tg?.initDataUnsafe?.user?.language_code || "").toLowerCase();
-            return code.startsWith("ru") ? "ru" : "en";
-        }
-
-        function setLang(lang){
-            currentLang = (lang === "en") ? "en" : "ru";
-            localStorage.setItem("lang", currentLang);
-
-            document.getElementById("langRuBtn")?.classList.toggle("active", currentLang === "ru");
-            document.getElementById("langEnBtn")?.classList.toggle("active", currentLang === "en");
-
-            applyLang();
-        }
-
-        function applyLang(){
-            const t = I18N[currentLang];
-
-            document.getElementById("subtitleTop").textContent = t.top_sub;
-            document.getElementById("heroTitle").textContent = t.hero_title;
-            document.getElementById("heroSubtitle").textContent = t.hero_sub;
-
-            document.getElementById("catAll").textContent = t.cat_all;
-            document.getElementById("catLimited").textContent = t.cat_limited;
-
-            document.querySelectorAll(".buy-btn-regular").forEach(btn => btn.textContent = t.buy);
-            document.querySelectorAll(".chooseText").forEach(el => el.textContent = t.choose);
-
-            document.querySelectorAll(".gift-card-limited .text-white\\/60.text-sm").forEach(el => {
-                el.textContent = t.from;
-            });
-
-            document.getElementById("variantsTitle").textContent = t.variants_title;
-            document.getElementById("variantsCancelBtn").textContent = t.cancel;
-
-            const buyVariantBtn = document.getElementById("buyVariantBtn");
-            if (buyVariantBtn && buyVariantBtn.disabled) {
-                buyVariantBtn.textContent = t.choose_variant;
-            }
-
-            document.getElementById("confirmTitle").textContent = t.confirm_title;
-            document.getElementById("confirmSubtitle").textContent = t.confirm_sub;
-            document.getElementById("priceLabel").textContent = t.total;
-            document.getElementById("confirmCancelBtn").textContent = t.cancel;
-            document.getElementById("confirmOkBtn").textContent = t.confirm_btn;
-
-            if (window.pendingPurchase?.typeKey) {
-                document.getElementById("confirmItemType").textContent =
-                    (window.pendingPurchase.typeKey === "limited") ? t.type_limited : t.type_regular;
-            }
-        }
 
         // ===== КОНФИГУРАЦИЯ ВАРИАНТОВ =====
         const GIFT_VARIANTS = {
@@ -1606,7 +1559,7 @@
                 title: 'Snoop Dogg',
                 variants: [
                     { id: 'snoop_dogg_v1', image: 'https://i.ibb.co/bj92r592/rounded-in-photoretrica-15.png', name: 'Snoop Dogg', details: 'Black Diamond • Like Silver • Blue', price: 310 },
-                    { id: 'snoop_dogg_v2', image: 'https://i.ibb.co/BVbdGXQm/rounded-in-photoretrica-16.png', name: 'Snoop Dogg', details: 'Super Bowl • Crystall Ball • Aquamarine', price: 315 },
+                    { id: 'snoop_dogg_v2', image: 'https://i.ibb.co/BVbdGXQm/rounded-in-photoretrica-16.png', name: 'Snoop Dogg', details: 'Super Bowl • Crystal Ball • Aquamarine', price: 315 },
                     { id: 'snoop_dogg_v3', image: 'https://i.ibb.co/YnQtTnz/rounded-in-photoretrica-17.png', name: 'Snoop Dogg', details: 'Barks A Locks • Toilet Celtic • Blue', price: 280 }
                 ]
             },
@@ -1640,9 +1593,57 @@
             }
         };
 
+        let currentLang = "ru";
         let currentGiftId = null;
         let selectedVariantId = null;
         window.pendingPurchase = null;
+
+        function detectDefaultLang(){
+            const saved = localStorage.getItem("lang");
+            if (saved === "ru" || saved === "en") return saved;
+            const code = (tg?.initDataUnsafe?.user?.language_code || "").toLowerCase();
+            return code.startsWith("ru") ? "ru" : "en";
+        }
+
+        function setLang(lang){
+            currentLang = (lang === "en") ? "en" : "ru";
+            localStorage.setItem("lang", currentLang);
+
+            document.getElementById("langRuBtn")?.classList.toggle("active", currentLang === "ru");
+            document.getElementById("langEnBtn")?.classList.toggle("active", currentLang === "en");
+
+            applyLang();
+        }
+
+        function applyLang(){
+            const t = I18N[currentLang];
+
+            document.getElementById("subtitleTop").textContent = t.top_sub;
+            document.getElementById("heroTitle").textContent = t.hero_title;
+            document.getElementById("heroSubtitle").textContent = t.hero_sub;
+
+            document.getElementById("catAll").textContent = t.cat_all;
+            document.getElementById("catNft").textContent = t.cat_nft;
+
+            document.querySelectorAll(".buyText").forEach(el => el.textContent = t.buy);
+            document.querySelectorAll(".chooseText").forEach(el => el.textContent = t.choose);
+            document.querySelectorAll(".fromText").forEach(el => el.textContent = t.from);
+
+            document.getElementById("variantsTitle").textContent = t.variants_title;
+            document.getElementById("variantsCancelBtn").textContent = t.cancel;
+
+            const buyVariantBtn = document.getElementById("buyVariantBtn");
+            if (buyVariantBtn && buyVariantBtn.disabled) {
+                buyVariantBtn.textContent = t.choose_variant;
+            }
+
+            document.getElementById("confirmTitle").textContent = t.confirm_title;
+            document.getElementById("confirmSubtitle").textContent = t.confirm_sub;
+            document.getElementById("priceLabel").textContent = t.total;
+            document.getElementById("confirmCancelBtn").textContent = t.cancel;
+            document.getElementById("confirmOkBtn").textContent = t.confirm_btn;
+            document.getElementById("confirmItemType").textContent = t.type_nft;
+        }
 
         // ===== Generate Stars =====
         function generateStars() {
@@ -1690,9 +1691,9 @@
 
                 if (category === 'all') {
                     allCards.forEach(card => card.classList.remove('hidden-by-filter'));
-                } else if (category === 'limited') {
+                } else if (category === 'nft') {
                     allCards.forEach(card => {
-                        if (card.classList.contains('gift-card-limited')) {
+                        if (card.dataset.category === 'nft') {
                             card.classList.remove('hidden-by-filter');
                         } else {
                             card.classList.add('hidden-by-filter');
@@ -1771,8 +1772,7 @@
                 name: variant.name,
                 details: variant.details,
                 price: variant.price,
-                image: variant.image,
-                typeKey: 'limited'
+                image: variant.image
             };
 
             closeVariantsModal();
@@ -1787,6 +1787,19 @@
         }
 
         // ===== Confirm Modal =====
+        function showBuyModal(itemId, title, price, image, details) {
+            const t = I18N[currentLang];
+            window.pendingPurchase = {
+                id: itemId,
+                title: title,
+                name: title,
+                details: details,
+                price: price,
+                image: image
+            };
+            showConfirmModal();
+        }
+
         function showConfirmModal() {
             if (!window.pendingPurchase) return;
 
@@ -1798,9 +1811,7 @@
 
             document.getElementById('confirmItemName').textContent = window.pendingPurchase.name || window.pendingPurchase.title;
             document.getElementById('confirmItemDesc').textContent = window.pendingPurchase.details;
-
-            document.getElementById('confirmItemType').textContent =
-                (window.pendingPurchase.typeKey === 'limited') ? t.type_limited : t.type_regular;
+            document.getElementById('confirmItemType').textContent = t.type_nft;
 
             document.getElementById('confirmPrice').textContent = window.pendingPurchase.price;
             document.getElementById('priceLabel').textContent = t.total;
@@ -1823,21 +1834,6 @@
             const itemId = window.pendingPurchase.id;
             closeConfirmModal();
             buy(itemId);
-        }
-
-        // Regular gifts
-        function showRegularBuyModal(itemId, title, price, image, descRu, descEn) {
-            const t = I18N[currentLang];
-            window.pendingPurchase = {
-                id: itemId,
-                title: title,
-                name: title,
-                details: (currentLang === "en") ? (descEn || descRu || "Gift") : (descRu || descEn || "Подарок"),
-                price: price,
-                image: image,
-                typeKey: 'regular'
-            };
-            showConfirmModal();
         }
 
         // Close modals on overlay click
@@ -1866,6 +1862,3 @@
     </script>
 </body>
 </html>
-
-
-
