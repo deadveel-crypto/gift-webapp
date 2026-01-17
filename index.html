@@ -128,6 +128,33 @@
             50% { opacity: 1; transform: scale(1.5); }
         }
 
+        /* Roulette Animations */
+        @keyframes spin-wheel {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(var(--spin-degrees)); }
+        }
+
+        @keyframes prize-reveal {
+            0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+            50% { transform: scale(1.2) rotate(10deg); }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        @keyframes confetti-fall {
+            0% { transform: translateY(-100%) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        @keyframes glow-rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse-scale {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
         body {
             min-height: 100vh;
             background: #0a0a0f;
@@ -314,6 +341,54 @@
 
         .category-pill.active::before { opacity: 1; }
         .category-pill span { position: relative; z-index: 1; }
+
+        /* Roulette Button */
+        .roulette-btn {
+            position: relative;
+            background: linear-gradient(135deg, #f59e0b, #d97706, #f59e0b);
+            background-size: 200% 200%;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: gradient-shift 3s ease infinite, pulse-scale 2s ease-in-out infinite;
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
+        }
+
+        .roulette-btn:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 0 30px rgba(245, 158, 11, 0.6), 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .roulette-btn.disabled {
+            background: linear-gradient(135deg, #374151, #4b5563);
+            animation: none;
+            box-shadow: none;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .roulette-btn.disabled:hover {
+            transform: none;
+        }
+
+        .sapphire-balance {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 20px;
+            padding: 6px 12px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #a78bfa;
+        }
 
         .gifts-grid {
             display: grid;
@@ -962,6 +1037,280 @@
             background: rgba(99,102,241,0.22);
         }
 
+        /* ===== ROULETTE STYLES ===== */
+        .roulette-modal-inner {
+            padding: 32px;
+            text-align: center;
+        }
+
+        .roulette-header {
+            margin-bottom: 24px;
+        }
+
+        .roulette-title {
+            font-size: 28px;
+            font-weight: 900;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b, #fbbf24);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: text-shine 2s linear infinite;
+        }
+
+        .roulette-subtitle {
+            font-size: 14px;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .roulette-wheel-container {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            margin: 0 auto 24px;
+        }
+
+        .roulette-wheel-glow {
+            position: absolute;
+            inset: -20px;
+            background: conic-gradient(
+                from 0deg,
+                rgba(139, 92, 246, 0.3),
+                rgba(245, 158, 11, 0.3),
+                rgba(34, 197, 94, 0.3),
+                rgba(59, 130, 246, 0.3),
+                rgba(239, 68, 68, 0.3),
+                rgba(139, 92, 246, 0.3)
+            );
+            border-radius: 50%;
+            filter: blur(30px);
+            animation: glow-rotate 10s linear infinite;
+        }
+
+        .roulette-wheel {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(
+                from 0deg,
+                #8b5cf6 0deg 45deg,
+                #f59e0b 45deg 90deg,
+                #22c55e 90deg 135deg,
+                #3b82f6 135deg 180deg,
+                #ef4444 180deg 225deg,
+                #8b5cf6 225deg 270deg,
+                #f59e0b 270deg 315deg,
+                #22c55e 315deg 360deg
+            );
+            border: 4px solid rgba(255,255,255,0.2);
+            box-shadow: 0 0 40px rgba(0,0,0,0.5), inset 0 0 60px rgba(0,0,0,0.3);
+            transition: transform 5s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+        }
+
+        .roulette-wheel.spinning {
+            transition: transform 5s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+        }
+
+        .roulette-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1e1b4b, #312e81);
+            border: 3px solid rgba(255,255,255,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            z-index: 10;
+        }
+
+        .roulette-pointer {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 30px solid #fbbf24;
+            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
+            z-index: 20;
+        }
+
+        .roulette-pointer::after {
+            content: '';
+            position: absolute;
+            top: -32px;
+            left: -8px;
+            width: 16px;
+            height: 16px;
+            background: #fbbf24;
+            border-radius: 50%;
+            box-shadow: 0 0 15px rgba(251, 191, 36, 0.8);
+        }
+
+        .roulette-segment-label {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 25px;
+            font-size: 20px;
+            font-weight: 800;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            pointer-events: none;
+        }
+
+        .segment-0 { transform: rotate(22.5deg); }
+        .segment-1 { transform: rotate(67.5deg); }
+        .segment-2 { transform: rotate(112.5deg); }
+        .segment-3 { transform: rotate(157.5deg); }
+        .segment-4 { transform: rotate(202.5deg); }
+        .segment-5 { transform: rotate(247.5deg); }
+        .segment-6 { transform: rotate(292.5deg); }
+        .segment-7 { transform: rotate(337.5deg); }
+
+        .roulette-info {
+            background: rgba(99, 102, 241, 0.05);
+            border: 1px solid rgba(99, 102, 241, 0.15);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .roulette-balance {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 18px;
+            font-weight: 700;
+            color: #a78bfa;
+            margin-bottom: 8px;
+        }
+
+        .roulette-cost {
+            font-size: 13px;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .spin-btn {
+            position: relative;
+            width: 100%;
+            background: linear-gradient(135deg, #f59e0b, #d97706, #f59e0b);
+            background-size: 200% 200%;
+            border: none;
+            border-radius: 16px;
+            padding: 18px 32px;
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: gradient-shift 3s ease infinite;
+            box-shadow: 0 15px 40px rgba(245, 158, 11, 0.4);
+        }
+
+        .spin-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(245, 158, 11, 0.5);
+        }
+
+        .spin-btn:disabled {
+            background: linear-gradient(135deg, #374151, #4b5563);
+            animation: none;
+            box-shadow: none;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .spin-btn:disabled:hover {
+            transform: none;
+        }
+
+        /* Prize Result */
+        .prize-result {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .prize-result.show {
+            display: flex;
+            animation: prize-reveal 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+        }
+
+        .prize-icon {
+            font-size: 80px;
+            margin-bottom: 16px;
+            filter: drop-shadow(0 10px 30px rgba(0,0,0,0.5));
+        }
+
+        .prize-title {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .prize-description {
+            font-size: 14px;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 20px;
+        }
+
+        .prize-claim-btn {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            border: none;
+            border-radius: 12px;
+            padding: 14px 32px;
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .prize-claim-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(34, 197, 94, 0.4);
+        }
+
+        /* Confetti */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            animation: confetti-fall 3s ease-out forwards;
+        }
+
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); }
         ::-webkit-scrollbar-thumb { background: rgba(99, 102, 241, 0.3); border-radius: 4px; }
@@ -978,18 +1327,103 @@
             .price-value { font-size: 36px; }
             .confirm-image { width: 100px; height: 100px; }
             .brand-text { font-size: 1.25rem; }
+            .roulette-wheel-container { width: 240px; height: 240px; }
+            .roulette-center { width: 60px; height: 60px; font-size: 28px; }
+            .header-controls { flex-wrap: wrap; gap: 8px; }
         }
 
         #confirmModal .detail-label { display: none; }
         #confirmModal .detail-row { justify-content: flex-start; }
         #confirmModal .detail-value { width: 100%; text-align: left; }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
     </style>
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
         const BOT_USERNAME = "divinemarketshop_bot";
+        const SPIN_COST = 100;
         const tg = window.Telegram?.WebApp || null;
-        if (tg) { try { tg.ready(); tg.expand(); } catch(e) {} }
+        
+        // Получаем баланс сапфиров из URL или Telegram WebApp
+        let userSapphires = 0;
+        let userId = null;
+
+        function initUserData() {
+            // Получаем данные из URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const sapphiresParam = urlParams.get('sapphires');
+            const userIdParam = urlParams.get('user_id');
+            
+            if (sapphiresParam) {
+                userSapphires = parseInt(sapphiresParam) || 0;
+            }
+            if (userIdParam) {
+                userId = userIdParam;
+            }
+
+            // Или из Telegram WebApp initData
+            if (tg && tg.initDataUnsafe) {
+                if (tg.initDataUnsafe.user) {
+                    userId = tg.initDataUnsafe.user.id;
+                }
+                // Можно также получить sapphires из start_param
+                if (tg.initDataUnsafe.start_param) {
+                    const parts = tg.initDataUnsafe.start_param.split('_');
+                    if (parts[0] === 'roulette' && parts[1]) {
+                        userSapphires = parseInt(parts[1]) || 0;
+                    }
+                }
+            }
+
+            updateSapphireDisplay();
+        }
+
+        function updateSapphireDisplay() {
+            const balanceEl = document.getElementById('sapphireBalanceHeader');
+            const rouletteBalanceEl = document.getElementById('rouletteBalance');
+            const spinBtn = document.getElementById('spinBtn');
+            const rouletteBtn = document.getElementById('rouletteBtn');
+            
+            if (balanceEl) {
+                balanceEl.textContent = userSapphires;
+            }
+            if (rouletteBalanceEl) {
+                rouletteBalanceEl.textContent = userSapphires;
+            }
+
+            // Обновляем состояние кнопок
+            const canSpin = userSapphires >= SPIN_COST;
+            
+            if (spinBtn) {
+                spinBtn.disabled = !canSpin;
+                if (canSpin) {
+                    spinBtn.textContent = currentLang === 'ru' ? `🎰 Крутить (${SPIN_COST} 💎)` : `🎰 Spin (${SPIN_COST} 💎)`;
+                } else {
+                    const need = SPIN_COST - userSapphires;
+                    spinBtn.textContent = currentLang === 'ru' ? `Не хватает ${need} 💎` : `Need ${need} more 💎`;
+                }
+            }
+
+            if (rouletteBtn) {
+                if (canSpin) {
+                    rouletteBtn.classList.remove('disabled');
+                } else {
+                    rouletteBtn.classList.add('disabled');
+                }
+            }
+        }
+
+        if (tg) { 
+            try { 
+                tg.ready(); 
+                tg.expand(); 
+            } catch(e) {} 
+        }
 
         function buy(itemId) {
             const url = `https://t.me/${BOT_USERNAME}?start=buy_${encodeURIComponent(itemId)}`;
@@ -1025,9 +1459,23 @@
                     </div>
                 </div>
 
-                <div class="lang-switcher">
-                    <button class="lang-btn" id="langRuBtn" onclick="setLang('ru')" title="Русский">RU</button>
-                    <button class="lang-btn" id="langEnBtn" onclick="setLang('en')" title="English">EN</button>
+                <div class="header-controls">
+                    <!-- Sapphire Balance -->
+                    <div class="sapphire-balance">
+                        <span>💎</span>
+                        <span id="sapphireBalanceHeader">0</span>
+                    </div>
+
+                    <!-- Roulette Button -->
+                    <button class="roulette-btn" id="rouletteBtn" onclick="openRouletteModal()">
+                        <span>🎰</span>
+                        <span id="rouletteBtnText">Рулетка</span>
+                    </button>
+
+                    <div class="lang-switcher">
+                        <button class="lang-btn" id="langRuBtn" onclick="setLang('ru')" title="Русский">RU</button>
+                        <button class="lang-btn" id="langEnBtn" onclick="setLang('en')" title="English">EN</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1318,6 +1766,60 @@
         </div>
     </main>
 
+    <!-- Roulette Modal -->
+    <div id="rouletteModal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 380px;">
+            <div class="roulette-modal-inner">
+                <div class="roulette-header">
+                    <button onclick="closeRouletteModal()" class="close-btn" style="position: absolute; top: 16px; right: 16px;">&times;</button>
+                    <h3 class="roulette-title" id="rouletteTitle">🎰 Рулетка призов</h3>
+                    <p class="roulette-subtitle" id="rouletteSubtitle">Испытай удачу и выиграй!</p>
+                </div>
+
+                <div id="rouletteGame">
+                    <div class="roulette-wheel-container">
+                        <div class="roulette-wheel-glow"></div>
+                        <div class="roulette-pointer"></div>
+                        <div class="roulette-wheel" id="rouletteWheel">
+                            <div class="roulette-segment-label segment-0">💎</div>
+                            <div class="roulette-segment-label segment-1">⭐</div>
+                            <div class="roulette-segment-label segment-2">🎁</div>
+                            <div class="roulette-segment-label segment-3">💎</div>
+                            <div class="roulette-segment-label segment-4">❌</div>
+                            <div class="roulette-segment-label segment-5">💎</div>
+                            <div class="roulette-segment-label segment-6">⭐</div>
+                            <div class="roulette-segment-label segment-7">🎁</div>
+                            <div class="roulette-center">🎰</div>
+                        </div>
+                    </div>
+
+                    <div class="roulette-info">
+                        <div class="roulette-balance">
+                            <span>💎</span>
+                            <span id="rouletteBalance">0</span>
+                            <span id="sapphiresText">сапфиров</span>
+                        </div>
+                        <p class="roulette-cost" id="rouletteCostText">Стоимость прокрутки: 100 💎</p>
+                    </div>
+
+                    <button class="spin-btn" id="spinBtn" onclick="spinRoulette()">
+                        🎰 Крутить (100 💎)
+                    </button>
+                </div>
+
+                <div class="prize-result" id="prizeResult">
+                    <div class="prize-icon" id="prizeIcon">🎁</div>
+                    <h4 class="prize-title" id="prizeTitle">Поздравляем!</h4>
+                    <p class="prize-description" id="prizeDescription">Вы выиграли приз!</p>
+                    <button class="prize-claim-btn" id="prizeClaimBtn" onclick="claimPrize()">Забрать приз</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confetti Container -->
+    <div class="confetti-container" id="confettiContainer"></div>
+
     <!-- Variants Modal -->
     <div id="variantsModal" class="modal-overlay">
         <div class="modal-content max-w-lg">
@@ -1415,7 +1917,22 @@
                 confirm_sub: "Проверьте детали заказа",
                 total: "Итого к оплате",
                 confirm_btn: "✓ Подтвердить покупку",
-                type_nft: "NFT Подарок"
+                type_nft: "NFT Подарок",
+                roulette: "Рулетка",
+                roulette_title: "🎰 Рулетка призов",
+                roulette_sub: "Испытай удачу и выиграй!",
+                sapphires: "сапфиров",
+                spin_cost: "Стоимость прокрутки: 100 💎",
+                spin_btn: "🎰 Крутить (100 💎)",
+                need_more: "Не хватает",
+                congrats: "Поздравляем!",
+                you_won: "Вы выиграли",
+                claim: "Забрать приз",
+                prize_stars: "⭐ Telegram Stars",
+                prize_sapphires: "💎 Сапфиров",
+                prize_gift: "🎁 Подарок",
+                prize_nothing: "Попробуйте ещё раз!",
+                spin_again: "Крутить ещё"
             },
             en: {
                 top_sub: "Premium Telegram Gifts",
@@ -1433,7 +1950,22 @@
                 confirm_sub: "Check your order details",
                 total: "Total to pay",
                 confirm_btn: "✓ Confirm purchase",
-                type_nft: "NFT Gift"
+                type_nft: "NFT Gift",
+                roulette: "Roulette",
+                roulette_title: "🎰 Prize Roulette",
+                roulette_sub: "Try your luck and win!",
+                sapphires: "sapphires",
+                spin_cost: "Spin cost: 100 💎",
+                spin_btn: "🎰 Spin (100 💎)",
+                need_more: "Need",
+                congrats: "Congratulations!",
+                you_won: "You won",
+                claim: "Claim prize",
+                prize_stars: "⭐ Telegram Stars",
+                prize_sapphires: "💎 Sapphires",
+                prize_gift: "🎁 Gift",
+                prize_nothing: "Try again!",
+                spin_again: "Spin again"
             }
         };
 
@@ -1476,9 +2008,23 @@
             }
         };
 
+        // Roulette prizes configuration
+        const ROULETTE_PRIZES = [
+            { type: 'sapphires', amount: 50, icon: '💎', probability: 0.15 },
+            { type: 'stars', amount: 5, icon: '⭐', probability: 0.10 },
+            { type: 'gift', amount: 1, icon: '🎁', probability: 0.05 },
+            { type: 'sapphires', amount: 20, icon: '💎', probability: 0.20 },
+            { type: 'nothing', amount: 0, icon: '❌', probability: 0.25 },
+            { type: 'sapphires', amount: 100, icon: '💎', probability: 0.05 },
+            { type: 'stars', amount: 10, icon: '⭐', probability: 0.08 },
+            { type: 'gift', amount: 1, icon: '🎁', probability: 0.12 }
+        ];
+
         let currentLang = "ru";
         let currentGiftId = null;
         let selectedVariantId = null;
+        let isSpinning = false;
+        let currentPrize = null;
         window.pendingPurchase = null;
 
         function detectDefaultLang() {
@@ -1518,6 +2064,15 @@
             document.getElementById("confirmCancelBtn").textContent = t.cancel;
             document.getElementById("confirmOkBtn").textContent = t.confirm_btn;
             document.getElementById("confirmItemType").textContent = t.type_nft;
+            
+            // Roulette translations
+            document.getElementById("rouletteBtnText").textContent = t.roulette;
+            document.getElementById("rouletteTitle").textContent = t.roulette_title;
+            document.getElementById("rouletteSubtitle").textContent = t.roulette_sub;
+            document.getElementById("sapphiresText").textContent = t.sapphires;
+            document.getElementById("rouletteCostText").textContent = t.spin_cost;
+            
+            updateSapphireDisplay();
         }
 
         function generateStars() {
@@ -1570,6 +2125,167 @@
                 }
             });
         });
+
+        // ===== ROULETTE FUNCTIONS =====
+        function openRouletteModal() {
+            document.getElementById('rouletteGame').style.display = 'block';
+            document.getElementById('prizeResult').classList.remove('show');
+            document.getElementById('rouletteWheel').style.transform = 'rotate(0deg)';
+            document.getElementById('rouletteModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+            updateSapphireDisplay();
+        }
+
+        function closeRouletteModal() {
+            document.getElementById('rouletteModal').classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        function spinRoulette() {
+            if (isSpinning || userSapphires < SPIN_COST) return;
+
+            isSpinning = true;
+            const spinBtn = document.getElementById('spinBtn');
+            spinBtn.disabled = true;
+
+            // Deduct sapphires
+            userSapphires -= SPIN_COST;
+            updateSapphireDisplay();
+
+            // Determine prize based on weighted probability
+            const rand = Math.random();
+            let cumulativeProb = 0;
+            let prizeIndex = 0;
+
+            for (let i = 0; i < ROULETTE_PRIZES.length; i++) {
+                cumulativeProb += ROULETTE_PRIZES[i].probability;
+                if (rand <= cumulativeProb) {
+                    prizeIndex = i;
+                    break;
+                }
+            }
+
+            currentPrize = ROULETTE_PRIZES[prizeIndex];
+
+            // Calculate spin angle
+            const segmentAngle = 360 / 8;
+            const prizeAngle = prizeIndex * segmentAngle + segmentAngle / 2;
+            const extraSpins = 5 + Math.floor(Math.random() * 3); // 5-7 full rotations
+            const finalAngle = extraSpins * 360 + (360 - prizeAngle + 90); // Adjust for pointer at top
+
+            const wheel = document.getElementById('rouletteWheel');
+            wheel.style.transition = 'transform 5s cubic-bezier(0.17, 0.67, 0.12, 0.99)';
+            wheel.style.transform = `rotate(${finalAngle}deg)`;
+
+            // Show result after spin
+            setTimeout(() => {
+                showPrizeResult();
+                isSpinning = false;
+            }, 5200);
+        }
+
+        function showPrizeResult() {
+            const t = I18N[currentLang];
+            const gameEl = document.getElementById('rouletteGame');
+            const resultEl = document.getElementById('prizeResult');
+            const iconEl = document.getElementById('prizeIcon');
+            const titleEl = document.getElementById('prizeTitle');
+            const descEl = document.getElementById('prizeDescription');
+            const claimBtn = document.getElementById('prizeClaimBtn');
+
+            gameEl.style.display = 'none';
+
+            iconEl.textContent = currentPrize.icon;
+
+            if (currentPrize.type === 'nothing') {
+                titleEl.textContent = '😔';
+                descEl.textContent = t.prize_nothing;
+                claimBtn.textContent = t.spin_again;
+            } else {
+                titleEl.textContent = t.congrats;
+                let prizeText = '';
+                switch (currentPrize.type) {
+                    case 'stars':
+                        prizeText = `${currentPrize.amount} ${t.prize_stars}`;
+                        break;
+                    case 'sapphires':
+                        prizeText = `${currentPrize.amount} ${t.prize_sapphires}`;
+                        // Add sapphires to balance
+                        userSapphires += currentPrize.amount;
+                        updateSapphireDisplay();
+                        break;
+                    case 'gift':
+                        prizeText = t.prize_gift;
+                        break;
+                }
+                descEl.textContent = `${t.you_won}: ${prizeText}`;
+                claimBtn.textContent = t.claim;
+
+                // Show confetti for wins
+                createConfetti();
+            }
+
+            resultEl.classList.add('show');
+
+            // Send result to bot
+            sendSpinResult(currentPrize);
+        }
+
+        function claimPrize() {
+            // Reset and allow another spin or close
+            document.getElementById('rouletteGame').style.display = 'block';
+            document.getElementById('prizeResult').classList.remove('show');
+            
+            // Reset wheel
+            const wheel = document.getElementById('rouletteWheel');
+            wheel.style.transition = 'none';
+            wheel.style.transform = 'rotate(0deg)';
+            
+            setTimeout(() => {
+                wheel.style.transition = 'transform 5s cubic-bezier(0.17, 0.67, 0.12, 0.99)';
+            }, 100);
+
+            updateSapphireDisplay();
+        }
+
+        function sendSpinResult(prize) {
+            // Send result back to Telegram bot
+            if (tg && typeof tg.sendData === 'function') {
+                const data = JSON.stringify({
+                    action: 'roulette_spin',
+                    user_id: userId,
+                    prize_type: prize.type,
+                    prize_amount: prize.amount,
+                    new_balance: userSapphires
+                });
+                try {
+                    tg.sendData(data);
+                } catch (e) {
+                    console.log('Could not send data to bot:', e);
+                }
+            }
+        }
+
+        function createConfetti() {
+            const container = document.getElementById('confettiContainer');
+            container.innerHTML = '';
+            
+            const colors = ['#8b5cf6', '#f59e0b', '#22c55e', '#3b82f6', '#ef4444', '#ec4899'];
+            
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                container.appendChild(confetti);
+            }
+
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 3500);
+        }
 
         function openVariantsModal(giftId) {
             const gift = GIFT_VARIANTS[giftId];
@@ -1692,14 +2408,20 @@
             if (e.target === this) closeConfirmModal();
         });
 
+        document.getElementById('rouletteModal').addEventListener('click', function(e) {
+            if (e.target === this && !isSpinning) closeRouletteModal();
+        });
+
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
+            if (e.key === 'Escape' && !isSpinning) {
                 closeVariantsModal();
                 closeConfirmModal();
+                closeRouletteModal();
             }
         });
 
         document.addEventListener('DOMContentLoaded', () => {
+            initUserData();
             setLang(detectDefaultLang());
             generateStars();
             initScrollAnimation();
