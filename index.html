@@ -1349,15 +1349,20 @@
         const SPIN_COST = 100;
         const tg = window.Telegram?.WebApp || null;
         
-        // Получаем баланс сапфиров из URL или Telegram WebApp
+        // Получаем баланс сапфиров из URL
         let userSapphires = 0;
         let userId = null;
+        let userLang = 'ru';
 
         function initUserData() {
-            // Получаем данные из URL
+            // ГЛАВНОЕ: Получаем данные из URL параметров (передаются ботом)
             const urlParams = new URLSearchParams(window.location.search);
+            
             const sapphiresParam = urlParams.get('sapphires');
             const userIdParam = urlParams.get('user_id');
+            const langParam = urlParams.get('lang');
+            
+            console.log('URL params:', {sapphires: sapphiresParam, user_id: userIdParam, lang: langParam});
             
             if (sapphiresParam) {
                 userSapphires = parseInt(sapphiresParam) || 0;
@@ -1365,22 +1370,26 @@
             if (userIdParam) {
                 userId = userIdParam;
             }
-
-            // Или из Telegram WebApp initData
-            if (tg && tg.initDataUnsafe) {
-                if (tg.initDataUnsafe.user) {
-                    userId = tg.initDataUnsafe.user.id;
-                }
-                // Можно также получить sapphires из start_param
-                if (tg.initDataUnsafe.start_param) {
-                    const parts = tg.initDataUnsafe.start_param.split('_');
-                    if (parts[0] === 'roulette' && parts[1]) {
-                        userSapphires = parseInt(parts[1]) || 0;
-                    }
-                }
+            if (langParam) {
+                userLang = langParam;
+                currentLang = langParam;
             }
 
+            // Дополнительно из Telegram WebApp
+            if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+                userId = userId || tg.initDataUnsafe.user.id;
+            }
+            
+            console.log('User data initialized:', {sapphires: userSapphires, userId: userId, lang: userLang});
+
             updateSapphireDisplay();
+            
+            // Если открыто из бота и достаточно сапфиров - сразу открыть рулетку
+            if (tg && userSapphires >= SPIN_COST) {
+                setTimeout(() => {
+                    openRouletteModal();
+                }, 500);
+            }
         }
 
         function updateSapphireDisplay() {
@@ -2250,7 +2259,9 @@
 
         function sendSpinResult(prize) {
             // Send result back to Telegram bot
-            if (tg && typeof tg.sendData === 'function') {
+            console.log('Sending spin result:', prize);
+            
+            if (tg) {
                 const data = JSON.stringify({
                     action: 'roulette_spin',
                     user_id: userId,
@@ -2258,11 +2269,23 @@
                     prize_amount: prize.amount,
                     new_balance: userSapphires
                 });
+                
                 try {
-                    tg.sendData(data);
+                    // Пробуем отправить данные боту
+                    if (typeof tg.sendData === 'function') {
+                        tg.sendData(data);
+                        console.log('Data sent via sendData');
+                        
+                        // Закрываем WebApp после отправки
+                        setTimeout(() => {
+                            try { tg.close(); } catch(e) {}
+                        }, 1500);
+                    }
                 } catch (e) {
                     console.log('Could not send data to bot:', e);
                 }
+            } else {
+                console.log('Telegram WebApp not available, prize:', prize);
             }
         }
 
