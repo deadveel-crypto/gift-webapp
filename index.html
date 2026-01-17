@@ -2347,45 +2347,30 @@
                 return;
             }
 
-            // Prepare data for bot
-            const sellData = {
-                action: 'sell_request',
-                name: giftName,
-                model: giftModel,
-                pattern: giftPattern,
-                background: giftBackground,
-                price: parseInt(giftPrice),
-                traits: `${giftModel} • ${giftPattern} • ${giftBackground}`
-            };
-
-            // Проверяем, открыто ли приложение как Mini App
-            const isInTelegramWebApp = tg && tg.initData && tg.initData.length > 0;
-
-            if (isInTelegramWebApp && typeof tg.sendData === 'function') {
-                // Отправляем через WebApp API
-                try {
-                    tg.sendData(JSON.stringify(sellData));
-                    // Показываем успех и закрываем через 2 сек
-                    showSellSuccess(giftName, giftModel, giftPattern, giftBackground, giftPrice, t);
-                    setTimeout(() => {
-                        try { tg.close(); } catch(e) {}
-                    }, 2000);
-                } catch(e) {
-                    console.error('sendData failed:', e);
-                    redirectToBot(sellData);
+            // Формируем простой текст для передачи в бота
+            const traits = `${giftModel} • ${giftPattern} • ${giftBackground}`;
+            
+            // Простой формат: sell|name|traits|price
+            const sellParam = `${giftName}|${traits}|${giftPrice}`;
+            
+            // Кодируем в base64 (безопасно для URL)
+            const encoded = btoa(unescape(encodeURIComponent(sellParam)));
+            
+            // Формируем URL для бота
+            const url = `https://t.me/${BOT_USERNAME}?start=sell_${encoded}`;
+            
+            // Показываем успех перед редиректом
+            showSellSuccess(giftName, giftModel, giftPattern, giftBackground, giftPrice, t);
+            
+            // Редирект через 1.5 сек
+            setTimeout(() => {
+                if (tg && typeof tg.openTelegramLink === "function") {
+                    tg.openTelegramLink(url);
+                    setTimeout(() => { try { tg.close(); } catch(e) {} }, 150);
+                } else {
+                    window.location.href = url;
                 }
-            } else {
-                // Fallback: открываем бота с параметром
-                redirectToBot(sellData);
-            }
-        }
-
-        function redirectToBot(sellData) {
-            // Кодируем данные в base64 для передачи через URL
-            const jsonStr = JSON.stringify(sellData);
-            const base64Data = btoa(unescape(encodeURIComponent(jsonStr)));
-            const url = `https://t.me/${BOT_USERNAME}?start=sell_${base64Data}`;
-            window.location.href = url;
+            }, 1500);
         }
 
         function showSellSuccess(giftName, giftModel, giftPattern, giftBackground, giftPrice, t) {
