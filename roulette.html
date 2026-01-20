@@ -967,7 +967,7 @@
     </div>
 
     <button class="spin-button" id="spinBtn" onclick="openCase()">
-        <span>🚀 Открыть кейс</span>
+        <span>Открыть кейс</span>
         <span class="spin-cost">100 💎</span>
     </button>
 
@@ -977,29 +977,24 @@
         <div class="info-title">🎁 Возможные призы</div>
         <div class="prizes-grid">
             <div class="prize-card legendary">
-                <div class="prize-card-emoji">💫</div>
+                <div class="prize-card-emoji">⭐</div>
                 <div class="prize-card-name">500⭐</div>
-                <div class="prize-card-chance">0.2%</div>
             </div>
             <div class="prize-card">
-                <div class="prize-card-emoji">🌟</div>
+                <div class="prize-card-emoji">⭐</div>
                 <div class="prize-card-name">100⭐</div>
-                <div class="prize-card-chance">0.8%</div>
             </div>
             <div class="prize-card">
-                <div class="prize-card-emoji">✨</div>
+                <div class="prize-card-emoji">⭐</div>
                 <div class="prize-card-name">50⭐</div>
-                <div class="prize-card-chance">1%</div>
             </div>
             <div class="prize-card">
                 <div class="prize-card-emoji">⭐</div>
                 <div class="prize-card-name">25⭐</div>
-                <div class="prize-card-chance">1%</div>
             </div>
             <div class="prize-card">
                 <div class="prize-card-emoji">💨</div>
-                <div class="prize-card-name">0</div>
-                <div class="prize-card-chance">97%</div>
+                <div class="prize-card-name">0⭐</div>
             </div>
         </div>
     </div>
@@ -1356,23 +1351,34 @@
         // 🔒 ЗАКРЫТИЕ И ОТПРАВКА ДАННЫХ В БОТ
         // ============================================
         function closeAndExit() {
-            // Отправляем результаты сессии в бота через sendData
-            const resultData = {
-                action: 'roulette_result',
-                user_id: STATE.userId,
-                spins_count: STATE.spinsCount,
-                total_won: STATE.totalWon,
-                sapphires_spent: STATE.sapphiresSpent,
-                final_sapphires: STATE.sapphires,
-                final_stars: STATE.stars,
-                timestamp: Date.now()
-            };
+            // Закрываем модалку если открыта
+            closeModal();
             
-            console.log("📤 Sending data to bot:", resultData);
+            // Если были прокруты - отправляем данные
+            if (STATE.spinsCount > 0) {
+                const resultData = {
+                    action: 'roulette_result',
+                    user_id: STATE.userId,
+                    spins_count: STATE.spinsCount,
+                    total_won: STATE.totalWon,
+                    sapphires_spent: STATE.sapphiresSpent,
+                    final_sapphires: STATE.sapphires,
+                    final_stars: STATE.stars,
+                    timestamp: Date.now()
+                };
+                
+                console.log("📤 Sending data to bot:", resultData);
+                
+                if (tg?.sendData) {
+                    // sendData автоматически закрывает WebApp
+                    tg.sendData(JSON.stringify(resultData));
+                    return; // sendData закроет приложение
+                }
+            }
             
-            if (tg?.sendData) {
-                // Отправляем данные боту - он обновит БД
-                tg.sendData(JSON.stringify(resultData));
+            // Если прокрутов не было или нет tg - просто закрываем
+            if (tg?.close) {
+                tg.close();
             }
         }
 
