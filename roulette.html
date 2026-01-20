@@ -293,17 +293,6 @@
             animation: shimmerCard 4s ease-in-out infinite;
         }
 
-        /* Case image */
-        .case-image {
-            width: 90px;
-            height: 90px;
-            object-fit: contain;
-            position: relative;
-            z-index: 1;
-            filter: drop-shadow(0 5px 20px rgba(99, 102, 241, 0.5));
-        }
-
-        /* Fallback emoji if no image */
         .case-emoji {
             font-size: 4rem;
             position: relative;
@@ -358,7 +347,6 @@
             pointer-events: none;
         }
 
-        /* Center pointer */
         .center-pointer {
             position: absolute;
             top: 0;
@@ -405,7 +393,6 @@
             border-bottom: 18px solid var(--accent-gold);
         }
 
-        /* Items strip */
         .items-strip {
             display: flex;
             align-items: center;
@@ -420,7 +407,6 @@
             transition: transform 5s cubic-bezier(0.15, 0.85, 0.25, 1);
         }
 
-        /* Prize item */
         .prize-item {
             flex-shrink: 0;
             width: 100px;
@@ -479,15 +465,6 @@
         @keyframes legendaryPulse {
             0%, 100% { box-shadow: 0 0 25px rgba(251, 191, 36, 0.4); }
             50% { box-shadow: 0 0 40px rgba(251, 191, 36, 0.7); }
-        }
-
-        /* Prize image */
-        .prize-image {
-            width: 50px;
-            height: 50px;
-            object-fit: contain;
-            margin-bottom: 6px;
-            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
         }
 
         .prize-emoji {
@@ -635,14 +612,6 @@
             background: linear-gradient(135deg, rgba(120, 53, 15, 0.3), var(--bg-card));
         }
 
-        /* Prize card image */
-        .prize-card-image {
-            width: 40px;
-            height: 40px;
-            object-fit: contain;
-            margin: 0 auto 6px;
-        }
-
         .prize-card-emoji { 
             font-size: 1.5rem; 
             margin-bottom: 6px;
@@ -662,8 +631,8 @@
             margin-top: 4px;
         }
 
-        /* ========== ERROR MESSAGE ========== */
-        .error-message {
+        /* ========== ERROR/STATUS MESSAGE ========== */
+        .status-message {
             background: linear-gradient(135deg, rgba(127, 29, 29, 0.6), rgba(69, 10, 10, 0.6));
             backdrop-filter: blur(10px);
             border: 1px solid rgba(239, 68, 68, 0.3);
@@ -675,6 +644,13 @@
             display: none;
             z-index: 10;
             animation: shake 0.5s ease-in-out;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .status-message.success {
+            background: linear-gradient(135deg, rgba(21, 87, 36, 0.6), rgba(6, 78, 59, 0.6));
+            border-color: rgba(34, 197, 94, 0.3);
         }
 
         @keyframes shake {
@@ -683,7 +659,7 @@
             40%, 80% { transform: translateX(5px); }
         }
 
-        .error-message.show { display: block; }
+        .status-message.show { display: block; }
 
         /* ========== MODAL ========== */
         .modal-overlay {
@@ -747,15 +723,6 @@
         .modal.win {
             border-color: rgba(251, 191, 36, 0.4);
             box-shadow: 0 0 60px rgba(251, 191, 36, 0.2);
-        }
-
-        /* Modal prize image */
-        .modal-image {
-            width: 80px;
-            height: 80px;
-            object-fit: contain;
-            margin-bottom: 20px;
-            animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
         .modal-emoji {
@@ -938,43 +905,45 @@
             bottom: 5px;
             left: 5px;
             font-size: 0.55rem;
-            color: rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.15);
             z-index: 1;
             font-family: monospace;
         }
 
+        /* ========== MODE INDICATOR ========== */
+        .mode-indicator {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            z-index: 50;
+            display: none;
+        }
+
+        .mode-indicator.demo {
+            display: block;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.9), rgba(217, 119, 6, 0.9));
+            color: #1a1a2e;
+        }
+
+        .mode-indicator.secure {
+            display: block;
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(22, 163, 74, 0.2));
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
         /* ========== RESPONSIVE ========== */
         @media (max-width: 380px) {
-            .case-container {
-                height: 110px;
-            }
-            
-            .prize-item {
-                width: 85px;
-                height: 85px;
-            }
-            
-            .prize-image {
-                width: 40px;
-                height: 40px;
-            }
-            
-            .prize-emoji {
-                font-size: 1.7rem;
-            }
-            
-            .prize-stars {
-                font-size: 0.7rem;
-                padding: 3px 8px;
-            }
-            
-            .brand-text {
-                font-size: 1.6rem;
-            }
-
-            .pointer-line {
-                height: 110px;
-            }
+            .case-container { height: 110px; }
+            .prize-item { width: 85px; height: 85px; }
+            .prize-emoji { font-size: 1.7rem; }
+            .prize-stars { font-size: 0.7rem; padding: 3px 8px; }
+            .brand-text { font-size: 1.6rem; }
+            .pointer-line { height: 110px; }
         }
     </style>
 </head>
@@ -982,8 +951,11 @@
     <!-- Loading overlay -->
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loader"></div>
-        <div class="loading-text">Loading...</div>
+        <div class="loading-text">Загрузка...</div>
     </div>
+
+    <!-- Mode indicator -->
+    <div class="mode-indicator" id="modeIndicator"></div>
 
     <!-- Animated background -->
     <div class="animated-bg">
@@ -1019,11 +991,6 @@
         <div class="case-box">
             <div class="case-glow"></div>
             <div class="case-box-inner">
-                <!-- ========== ВСТАВЬТЕ СЮДА ФОТО КЕЙСА ========== -->
-                <!-- Вариант 1: Использовать изображение -->
-                <!-- <img src="YOUR_CASE_IMAGE_URL_HERE" alt="Case" class="case-image"> -->
-                
-                <!-- Вариант 2: Использовать эмодзи (по умолчанию) -->
                 <span class="case-emoji">🎁</span>
             </div>
         </div>
@@ -1050,55 +1017,34 @@
         <span class="spin-cost">100 💎</span>
     </button>
 
-    <!-- Error message -->
-    <div class="error-message" id="errorMessage">
-        ❌ Недостаточно сапфиров!<br>
-        <span style="font-size: 0.75rem; opacity: 0.7;">Приглашайте друзей или выполняйте задания</span>
-    </div>
+    <!-- Status message -->
+    <div class="status-message" id="statusMessage"></div>
 
     <!-- Prizes section -->
     <div class="info-section">
         <div class="info-title">🎁 Возможные призы</div>
         <div class="prizes-grid">
-            <!-- ========== ПРИЗ 1: 500 ЗВЁЗД (LEGENDARY) ========== -->
             <div class="prize-card legendary">
-                <!-- Вариант 1: Использовать изображение -->
-                <!-- <img src="YOUR_500_STARS_IMAGE_URL" alt="500 Stars" class="prize-card-image"> -->
-                
-                <!-- Вариант 2: Использовать эмодзи (по умолчанию) -->
                 <div class="prize-card-emoji">💫</div>
-                
                 <div class="prize-card-name">500⭐</div>
                 <div class="prize-card-chance">0.5%</div>
             </div>
-            
-            <!-- ========== ПРИЗ 2: 100 ЗВЁЗД (EPIC) ========== -->
             <div class="prize-card">
-                <!-- <img src="YOUR_100_STARS_IMAGE_URL" alt="100 Stars" class="prize-card-image"> -->
                 <div class="prize-card-emoji">🌟</div>
                 <div class="prize-card-name">100⭐</div>
                 <div class="prize-card-chance">1%</div>
             </div>
-            
-            <!-- ========== ПРИЗ 3: 50 ЗВЁЗД (RARE) ========== -->
             <div class="prize-card">
-                <!-- <img src="YOUR_50_STARS_IMAGE_URL" alt="50 Stars" class="prize-card-image"> -->
                 <div class="prize-card-emoji">✨</div>
                 <div class="prize-card-name">50⭐</div>
                 <div class="prize-card-chance">1.5%</div>
             </div>
-            
-            <!-- ========== ПРИЗ 4: 25 ЗВЁЗД (UNCOMMON) ========== -->
             <div class="prize-card">
-                <!-- <img src="YOUR_25_STARS_IMAGE_URL" alt="25 Stars" class="prize-card-image"> -->
                 <div class="prize-card-emoji">⭐</div>
                 <div class="prize-card-name">25⭐</div>
                 <div class="prize-card-chance">2%</div>
             </div>
-            
-            <!-- ========== ПРИЗ 5: ПУСТО (COMMON) ========== -->
             <div class="prize-card">
-                <!-- <img src="YOUR_EMPTY_IMAGE_URL" alt="Empty" class="prize-card-image"> -->
                 <div class="prize-card-emoji">💨</div>
                 <div class="prize-card-name">0</div>
                 <div class="prize-card-chance">95%</div>
@@ -1108,23 +1054,11 @@
 
     <!-- Session info -->
     <div class="session-info" id="sessionInfo"></div>
-    
-    <!-- Demo mode indicator -->
-    <div id="demoIndicator" style="display: none; position: fixed; top: 70px; left: 50%; transform: translateX(-50%); 
-        background: linear-gradient(135deg, rgba(245, 158, 11, 0.95), rgba(217, 119, 6, 0.95)); 
-        color: #1a1a2e; padding: 8px 20px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; 
-        z-index: 100; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4); text-align: center;">
-        ⚠️ DEMO MODE<br><span style="font-size: 0.65rem; opacity: 0.8;">Баланс не сохраняется</span>
-    </div>
 
     <!-- Result modal -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal" id="modal">
-            <!-- Здесь будет либо изображение, либо эмодзи -->
-            <div id="modalImageContainer">
-                <!-- <img id="modalImage" src="" alt="" class="modal-image" style="display: none;"> -->
-                <div class="modal-emoji" id="modalEmoji">🎉</div>
-            </div>
+            <div class="modal-emoji" id="modalEmoji">🎉</div>
             <div class="modal-title" id="modalTitle">Поздравляем!</div>
             <div class="modal-prize" id="modalPrize">+50 ⭐</div>
             <div class="modal-balance" id="modalBalance">💎 150 сапфиров | ⭐ 50 звёзд</div>
@@ -1140,94 +1074,40 @@
 
     <script>
         // ============================================
-        // 🔒 НАСТРОЙКИ БЕЗОПАСНОСТИ
+        // 🔒 КОНФИГУРАЦИЯ
         // ============================================
-        // 
-        // ВАЖНО: Эта версия БЕЗОПАСНА от манипуляций с URL!
-        // 
-        // Баланс загружается с сервера через initData Telegram,
-        // который криптографически подписан и не может быть подделан.
-        //
-        // =============================================
-        // 📋 КАК НАСТРОИТЬ СЕРВЕРНУЮ ЧАСТЬ (Python пример):
-        // =============================================
-        //
-        // 1. Эндпоинт GET BALANCE (/api/get-balance):
-        //    - Принимает initData от Telegram
-        //    - Проверяет подпись через HMAC-SHA256
-        //    - Возвращает баланс пользователя из БД
-        //
-        // 2. Эндпоинт OPEN CASE (/api/open-case):
-        //    - Проверяет initData
-        //    - Проверяет баланс >= 100 сапфиров
-        //    - Списывает 100 сапфиров в БД
-        //    - Генерирует приз по шансам НА СЕРВЕРЕ
-        //    - Начисляет звёзды в БД
-        //    - Возвращает {success, prize_stars, new_sapphires, new_stars}
-        //
-        // 3. Проверка initData (Python):
-        //    ```python
-        //    import hmac
-        //    import hashlib
-        //    from urllib.parse import parse_qs
-        //    
-        //    def verify_telegram_webapp(init_data: str, bot_token: str) -> bool:
-        //        parsed = parse_qs(init_data)
-        //        hash_value = parsed.get('hash', [None])[0]
-        //        
-        //        data_check_string = '\n'.join(
-        //            f"{k}={v[0]}" for k, v in sorted(parsed.items()) if k != 'hash'
-        //        )
-        //        
-        //        secret_key = hmac.new(
-        //            b"WebAppData", bot_token.encode(), hashlib.sha256
-        //        ).digest()
-        //        
-        //        computed_hash = hmac.new(
-        //            secret_key, data_check_string.encode(), hashlib.sha256
-        //        ).hexdigest()
-        //        
-        //        return hmac.compare_digest(computed_hash, hash_value)
-        //    ```
-        //
-        // =============================================
         
-        // ВАЖНО: Вставьте URL вашего API бота
-        const API_BASE_URL = "https://your-bot-api.com"; // Замените на URL вашего сервера
+        // URL вашего API сервера (Python бота)
+        // ВАЖНО: Замените на реальный URL вашего сервера!
+        const API_BASE_URL = window.location.hostname === 'localhost' 
+            ? 'http://localhost:8080'  // Для локальной разработки
+            : 'https://your-bot-server.com';  // Для продакшена
+        
+        const CASE_COST = 100;
         
         // ============================================
-        // НАСТРОЙКИ ИЗОБРАЖЕНИЙ ПРИЗОВ
-        // ============================================
-        const PRIZE_IMAGES = {
-            500: null,  // Вставьте URL: "https://example.com/500stars.png"
-            100: null,  // Вставьте URL: "https://example.com/100stars.png"
-            50: null,   // Вставьте URL: "https://example.com/50stars.png"
-            25: null,   // Вставьте URL: "https://example.com/25stars.png"
-            0: null     // Вставьте URL: "https://example.com/empty.png"
-        };
-
-        // ============================================
-        // TELEGRAM WEBAPP INTEGRATION
+        // TELEGRAM WEBAPP
         // ============================================
         const tg = window.Telegram?.WebApp;
         
-        let SESSION = {
-            user_id: null,
+        // ============================================
+        // СОСТОЯНИЕ ПРИЛОЖЕНИЯ
+        // ============================================
+        let STATE = {
+            userId: null,
             username: '',
             sapphires: 0,
             stars: 0,
-            totalWon: 0,
-            spinsCount: 0,
-            isInitialized: false,
             isDemo: false,
-            authToken: null  // Токен для API запросов
+            isInitialized: false,
+            spinsCount: 0,
+            totalWon: 0
         };
-
-        const CASE_COST = 100;
+        
         let isSpinning = false;
 
         // ============================================
-        // ПРИЗЫ С ШАНСАМИ
+        // ПРИЗЫ
         // ============================================
         const PRIZES = [
             { stars: 0, chance: 95, emoji: "💨", rarity: "common" },
@@ -1241,155 +1121,403 @@
         const VISIBLE_ITEMS = 50;
 
         // ============================================
-        // 🔒 БЕЗОПАСНАЯ ЗАГРУЗКА БАЛАНСА С СЕРВЕРА
-        // ============================================
-        async function loadBalanceFromServer() {
-            // Получаем initData из Telegram - это подписанные данные которые нельзя подделать
-            const initData = tg?.initData || '';
-            
-            if (!initData) {
-                console.warn("⚠️ No initData - running in demo mode");
-                SESSION.isDemo = true;
-                SESSION.sapphires = 500; // Демо баланс
-                SESSION.stars = 0;
-                return true;
-            }
-            
-            try {
-                const response = await fetch(`${API_BASE_URL}/api/get-balance`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        initData: initData  // Сервер проверит подпись!
-                    })
-                });
-                
-                if (!response.ok) {
-                    throw new Error('Failed to load balance');
-                }
-                
-                const data = await response.json();
-                
-                SESSION.user_id = data.user_id;
-                SESSION.sapphires = data.sapphires;
-                SESSION.stars = data.stars;
-                SESSION.authToken = data.token; // Токен для последующих запросов
-                SESSION.isDemo = false;
-                
-                console.log("✅ Balance loaded from server:", data);
-                return true;
-                
-            } catch (error) {
-                console.error("❌ Failed to load balance:", error);
-                // Fallback to demo mode
-                SESSION.isDemo = true;
-                SESSION.sapphires = 500;
-                SESSION.stars = 0;
-                showDemoWarning();
-                return true;
-            }
-        }
-
-        // ============================================
-        // 🔒 БЕЗОПАСНОЕ ОТКРЫТИЕ КЕЙСА ЧЕРЕЗ СЕРВЕР
-        // ============================================
-        async function openCaseOnServer() {
-            const initData = tg?.initData || '';
-            
-            if (SESSION.isDemo || !initData) {
-                // В демо-режиме используем локальную логику
-                return {
-                    success: true,
-                    prize: getRandomPrize(),
-                    newBalance: {
-                        sapphires: SESSION.sapphires - CASE_COST,
-                        stars: SESSION.stars
-                    }
-                };
-            }
-            
-            try {
-                const response = await fetch(`${API_BASE_URL}/api/open-case`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        initData: initData,
-                        caseType: 'cosmic'  // Тип кейса
-                    })
-                });
-                
-                const data = await response.json();
-                
-                if (!data.success) {
-                    throw new Error(data.error || 'Failed to open case');
-                }
-                
-                // Приз определяется на СЕРВЕРЕ, не на клиенте!
-                return {
-                    success: true,
-                    prize: PRIZES.find(p => p.stars === data.prize_stars) || PRIZES[0],
-                    newBalance: {
-                        sapphires: data.new_sapphires,
-                        stars: data.new_stars
-                    }
-                };
-                
-            } catch (error) {
-                console.error("❌ Server error:", error);
-                throw error;
-            }
-        }
-
-        function showDemoWarning() {
-            const indicator = document.getElementById('demoIndicator');
-            if (indicator) {
-                indicator.style.display = 'block';
-            }
-        }
-
-        // ============================================
-        // INITIALIZATION
+        // 🔒 ИНИЦИАЛИЗАЦИЯ
         // ============================================
         async function init() {
-            console.log("📦 Initializing Divine Case...");
+            console.log("🎁 Divine Case - Initializing...");
             
+            // Инициализация Telegram WebApp
             if (tg) {
                 tg.ready();
                 tg.expand();
                 
+                // Получаем данные пользователя
                 if (tg.initDataUnsafe?.user) {
-                    SESSION.user_id = tg.initDataUnsafe.user.id;
-                    SESSION.username = tg.initDataUnsafe.user.username || '';
+                    STATE.userId = tg.initDataUnsafe.user.id;
+                    STATE.username = tg.initDataUnsafe.user.username || '';
+                    console.log("📱 Telegram user:", STATE.userId, STATE.username);
                 }
                 
+                // Кнопка назад
                 tg.BackButton.show();
                 tg.BackButton.onClick(() => closeAndExit());
             }
             
-            // 🔒 БЕЗОПАСНО: Загружаем баланс с сервера, а НЕ из URL!
-            await loadBalanceFromServer();
+            // Загружаем баланс с сервера
+            await loadBalance();
             
-            SESSION.isInitialized = true;
-            
+            // Инициализация UI
             generateStars();
             generateItemsStrip();
             updateUI();
+            updateModeIndicator();
             
+            STATE.isInitialized = true;
+            
+            // Скрываем загрузку
             setTimeout(() => {
                 document.getElementById('loadingOverlay').classList.add('hidden');
-            }, 600);
+            }, 500);
             
             updateSessionInfo();
-            console.log("✅ Case initialized:", SESSION);
+            console.log("✅ Initialized:", STATE);
         }
 
         // ============================================
-        // GENERATE STARS BACKGROUND
+        // 🔒 ЗАГРУЗКА БАЛАНСА С СЕРВЕРА
         // ============================================
+        async function loadBalance() {
+            const initData = tg?.initData;
+            
+            // Если нет initData - демо режим
+            if (!initData) {
+                console.warn("⚠️ No Telegram initData - Demo mode");
+                STATE.isDemo = true;
+                STATE.sapphires = 500;
+                STATE.stars = 0;
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/balance`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        initData: initData
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    STATE.sapphires = data.sapphires;
+                    STATE.stars = data.stars;
+                    STATE.userId = data.user_id;
+                    STATE.isDemo = false;
+                    console.log("✅ Balance loaded:", data);
+                } else {
+                    throw new Error(data.error || 'Unknown error');
+                }
+                
+            } catch (error) {
+                console.error("❌ Failed to load balance:", error);
+                // Fallback to demo
+                STATE.isDemo = true;
+                STATE.sapphires = 500;
+                STATE.stars = 0;
+                showStatus('⚠️ Не удалось подключиться к серверу. Демо-режим.', 'error');
+            }
+        }
+
+        // ============================================
+        // 🔒 ОТКРЫТИЕ КЕЙСА
+        // ============================================
+        async function openCase() {
+            if (isSpinning) return;
+            
+            if (STATE.sapphires < CASE_COST) {
+                showStatus('❌ Недостаточно сапфиров!', 'error');
+                haptic('error');
+                return;
+            }
+
+            isSpinning = true;
+            hideStatus();
+            document.getElementById('spinBtn').disabled = true;
+            haptic('impact');
+            
+            let prize;
+            
+            try {
+                if (STATE.isDemo) {
+                    // Демо режим - локальная логика
+                    prize = getRandomPrize();
+                    STATE.sapphires -= CASE_COST;
+                    STATE.stars += prize.stars;
+                } else {
+                    // 🔒 Реальный режим - запрос к серверу
+                    const result = await openCaseOnServer();
+                    prize = PRIZES.find(p => p.stars === result.prize_stars) || PRIZES[0];
+                    STATE.sapphires = result.new_sapphires;
+                    STATE.stars = result.new_stars;
+                }
+                
+                STATE.spinsCount++;
+                if (prize.stars > 0) {
+                    STATE.totalWon += prize.stars;
+                }
+                
+                console.log("🎲 Prize:", prize);
+                
+            } catch (error) {
+                console.error("❌ Open case error:", error);
+                showStatus('❌ Ошибка сервера. Попробуйте позже.', 'error');
+                document.getElementById('spinBtn').disabled = false;
+                isSpinning = false;
+                return;
+            }
+            
+            updateUI();
+            
+            // Анимация
+            await runAnimation(prize);
+            
+            // Результат
+            setTimeout(() => showResult(prize), 500);
+            
+            document.getElementById('spinBtn').disabled = false;
+            isSpinning = false;
+            updateSessionInfo();
+        }
+
+        // ============================================
+        // 🔒 ЗАПРОС К СЕРВЕРУ
+        // ============================================
+        async function openCaseOnServer() {
+            const initData = tg?.initData;
+            
+            if (!initData) {
+                throw new Error('No initData');
+            }
+            
+            const response = await fetch(`${API_BASE_URL}/api/open-case`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    initData: initData,
+                    caseType: 'cosmic'
+                })
+            });
+            
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+            
+            const data = await response.json();
+            
+            if (!data.success) {
+                throw new Error(data.error || 'Server error');
+            }
+            
+            return data;
+        }
+
+        // ============================================
+        // ЛОКАЛЬНЫЙ РАСЧЁТ ПРИЗА (для демо)
+        // ============================================
+        function getRandomPrize() {
+            const rand = Math.random() * 100;
+            let cumulative = 0;
+            
+            for (const prize of PRIZES) {
+                cumulative += prize.chance;
+                if (rand <= cumulative) return prize;
+            }
+            return PRIZES[0];
+        }
+
+        // Красивое отображение во время прокрутки
+        function getRandomPrizeForDisplay() {
+            const rand = Math.random() * 100;
+            if (rand < 30) return PRIZES[0];
+            if (rand < 55) return PRIZES[1];
+            if (rand < 75) return PRIZES[2];
+            if (rand < 90) return PRIZES[3];
+            return PRIZES[4];
+        }
+
+        // ============================================
+        // АНИМАЦИЯ
+        // ============================================
+        async function runAnimation(winningPrize) {
+            const winningIndex = 35 + Math.floor(Math.random() * 5);
+            
+            generateItemsStrip(winningPrize, winningIndex);
+            
+            const container = document.getElementById('caseContainer');
+            const strip = document.getElementById('itemsStrip');
+            const containerWidth = container.offsetWidth;
+            const centerPosition = containerWidth / 2;
+            const targetPosition = (winningIndex * ITEM_WIDTH) + (ITEM_WIDTH / 2) - centerPosition;
+            const randomOffset = (Math.random() - 0.5) * 30;
+            const finalPosition = targetPosition + randomOffset;
+            
+            strip.style.transform = `translateX(${containerWidth}px)`;
+            strip.offsetHeight; // Force reflow
+            
+            setTimeout(() => {
+                strip.classList.add('animating');
+                strip.style.transform = `translateX(-${finalPosition}px)`;
+            }, 50);
+            
+            playTickSounds();
+            
+            await new Promise(resolve => setTimeout(resolve, 5200));
+            
+            const winnerItem = strip.querySelector(`[data-index="${winningIndex}"]`);
+            if (winnerItem) {
+                winnerItem.classList.add('winner');
+            }
+        }
+
+        function generateItemsStrip(winningPrize = null, winningIndex = null) {
+            const strip = document.getElementById('itemsStrip');
+            strip.innerHTML = '';
+            strip.classList.remove('animating');
+            strip.style.transform = 'translateX(0)';
+            
+            for (let i = 0; i < VISIBLE_ITEMS; i++) {
+                let prize = (winningIndex !== null && i === winningIndex) 
+                    ? winningPrize 
+                    : getRandomPrizeForDisplay();
+                
+                const item = document.createElement('div');
+                item.className = `prize-item rarity-${prize.rarity}`;
+                item.dataset.index = i;
+                item.dataset.stars = prize.stars;
+                
+                item.innerHTML = `
+                    <div class="prize-emoji">${prize.emoji}</div>
+                    <div class="prize-stars">
+                        ${prize.stars > 0 ? `<span class="star-small">⭐</span>${prize.stars}` : '—'}
+                    </div>
+                `;
+                
+                strip.appendChild(item);
+            }
+        }
+
+        function playTickSounds() {
+            let tickCount = 0;
+            const maxTicks = 40;
+            
+            const tickInterval = setInterval(() => {
+                tickCount++;
+                if (tickCount > maxTicks) {
+                    clearInterval(tickInterval);
+                    return;
+                }
+                if (tickCount < 20) {
+                    haptic('selection');
+                }
+            }, 100);
+        }
+
+        // ============================================
+        // РЕЗУЛЬТАТ
+        // ============================================
+        function showResult(prize) {
+            const overlay = document.getElementById('modalOverlay');
+            const modal = document.getElementById('modal');
+            const emoji = document.getElementById('modalEmoji');
+            const title = document.getElementById('modalTitle');
+            const prizeText = document.getElementById('modalPrize');
+            const balance = document.getElementById('modalBalance');
+            const spinAgainBtn = document.getElementById('spinAgainBtn');
+            
+            if (prize.stars > 0) {
+                modal.classList.add('win');
+                emoji.textContent = prize.emoji;
+                title.textContent = prize.stars >= 100 ? 'Джекпот!' : 'Поздравляем!';
+                prizeText.textContent = `+${prize.stars} ⭐`;
+                prizeText.style.fontSize = '';
+                createConfetti();
+                haptic('success');
+            } else {
+                modal.classList.remove('win');
+                emoji.textContent = '💨';
+                title.textContent = 'Пусто...';
+                prizeText.textContent = 'Попробуй ещё!';
+                prizeText.style.fontSize = '1.2rem';
+                haptic('error');
+            }
+            
+            balance.textContent = `💎 ${STATE.sapphires} сапфиров | ⭐ ${STATE.stars} звёзд`;
+            spinAgainBtn.style.display = STATE.sapphires >= CASE_COST ? 'block' : 'none';
+            
+            overlay.classList.add('show');
+        }
+
+        function spinAgain() {
+            closeModal();
+            setTimeout(() => {
+                generateItemsStrip();
+                openCase();
+            }, 400);
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('show');
+        }
+
+        // ============================================
+        // ЗАКРЫТИЕ И ВЫХОД
+        // ============================================
+        function closeAndExit() {
+            const resultData = {
+                action: 'case_closed',
+                user_id: STATE.userId,
+                spins_count: STATE.spinsCount,
+                total_won: STATE.totalWon,
+                final_sapphires: STATE.sapphires,
+                final_stars: STATE.stars,
+                is_demo: STATE.isDemo
+            };
+            
+            console.log("📤 Closing with data:", resultData);
+            
+            if (tg?.sendData) {
+                tg.sendData(JSON.stringify(resultData));
+            } else {
+                alert(`Сессия завершена!\nОткрыто кейсов: ${STATE.spinsCount}\nВыиграно звёзд: ${STATE.totalWon}`);
+            }
+        }
+
+        // ============================================
+        // UI HELPERS
+        // ============================================
+        function updateUI() {
+            document.getElementById('sapphires').textContent = STATE.sapphires;
+            document.getElementById('stars-balance').textContent = STATE.stars;
+            document.getElementById('spinBtn').disabled = STATE.sapphires < CASE_COST || isSpinning;
+        }
+
+        function updateModeIndicator() {
+            const indicator = document.getElementById('modeIndicator');
+            if (STATE.isDemo) {
+                indicator.className = 'mode-indicator demo';
+                indicator.textContent = '🎮 DEMO';
+            } else {
+                indicator.className = 'mode-indicator secure';
+                indicator.textContent = '🔒 SECURE';
+            }
+        }
+
+        function showStatus(message, type = 'error') {
+            const el = document.getElementById('statusMessage');
+            el.innerHTML = message;
+            el.className = `status-message show ${type === 'success' ? 'success' : ''}`;
+            setTimeout(() => hideStatus(), 4000);
+        }
+
+        function hideStatus() {
+            document.getElementById('statusMessage').classList.remove('show');
+        }
+
+        function updateSessionInfo() {
+            const mode = STATE.isDemo ? 'DEMO' : 'LIVE';
+            document.getElementById('sessionInfo').textContent = 
+                `${mode} | ID:${STATE.userId || '?'} | Spins:${STATE.spinsCount} | Won:${STATE.totalWon}⭐`;
+        }
+
         function generateStars() {
             const container = document.getElementById('bgStars');
             for (let i = 0; i < 100; i++) {
@@ -1406,297 +1534,14 @@
             }
         }
 
-        // ============================================
-        // PRIZE LOGIC
-        // ============================================
-        
-        // Реальные шансы - используются ТОЛЬКО для финального результата
-        function getRandomPrize() {
-            const rand = Math.random() * 100;
-            let cumulative = 0;
-            
-            for (const prize of PRIZES) {
-                cumulative += prize.chance;
-                if (rand <= cumulative) return prize;
-            }
-            return PRIZES[0];
-        }
-
-        // Показывает МНОГО ценных призов во время анимации (для азарта!)
-        // Но это НЕ влияет на реальный результат
-        function getRandomPrizeForDisplay() {
-            const rand = Math.random() * 100;
-            
-            // Во время прокрутки показываем много ценного лута:
-            // 30% - пусто (common)
-            // 25% - 25 звёзд (uncommon)  
-            // 20% - 50 звёзд (rare)
-            // 15% - 100 звёзд (epic)
-            // 10% - 500 звёзд (legendary)
-            
-            if (rand < 30) return PRIZES[0];      // 💨 Пусто
-            if (rand < 55) return PRIZES[1];      // ⭐ 25
-            if (rand < 75) return PRIZES[2];      // ✨ 50
-            if (rand < 90) return PRIZES[3];      // 🌟 100
-            return PRIZES[4];                      // 💫 500
-        }
-
-        // ============================================
-        // GENERATE ITEMS STRIP
-        // ============================================
-        function generateItemsStrip(winningPrize = null, winningIndex = null) {
-            const strip = document.getElementById('itemsStrip');
-            strip.innerHTML = '';
-            strip.classList.remove('animating');
-            strip.style.transform = 'translateX(0)';
-            
-            for (let i = 0; i < VISIBLE_ITEMS; i++) {
-                let prize;
-                
-                if (winningIndex !== null && i === winningIndex) {
-                    // Финальный приз - по реальным шансам
-                    prize = winningPrize;
-                } else {
-                    // Все остальные - много ценного для красоты!
-                    prize = getRandomPrizeForDisplay();
-                }
-                
-                const item = document.createElement('div');
-                item.className = `prize-item rarity-${prize.rarity}`;
-                item.dataset.index = i;
-                item.dataset.stars = prize.stars;
-                
-                // Проверяем есть ли изображение для этого приза
-                const imageUrl = PRIZE_IMAGES[prize.stars];
-                
-                if (imageUrl) {
-                    item.innerHTML = `
-                        <img src="${imageUrl}" alt="${prize.stars} Stars" class="prize-image">
-                        <div class="prize-stars">
-                            ${prize.stars > 0 ? `<span class="star-small">⭐</span>${prize.stars}` : '—'}
-                        </div>
-                    `;
-                } else {
-                    item.innerHTML = `
-                        <div class="prize-emoji">${prize.emoji}</div>
-                        <div class="prize-stars">
-                            ${prize.stars > 0 ? `<span class="star-small">⭐</span>${prize.stars}` : '—'}
-                        </div>
-                    `;
-                }
-                
-                strip.appendChild(item);
-            }
-        }
-
-        // ============================================
-        // OPEN CASE
-        // ============================================
-        async function openCase() {
-            if (isSpinning) return;
-            
-            if (SESSION.sapphires < CASE_COST) {
-                showError();
-                haptic('error');
-                return;
-            }
-
-            isSpinning = true;
-            hideError();
-            
-            document.getElementById('spinBtn').disabled = true;
-            
-            haptic('impact');
-            
-            let prize;
-            let serverError = false;
-            
-            try {
-                // 🔒 БЕЗОПАСНО: Открываем кейс через сервер!
-                // Сервер проверяет баланс, списывает сапфиры и генерирует приз
-                const result = await openCaseOnServer();
-                
-                prize = result.prize;
-                SESSION.sapphires = result.newBalance.sapphires;
-                SESSION.stars = result.newBalance.stars;
-                SESSION.spinsCount++;
-                
-                console.log("🎲 Prize from server:", prize);
-                
-            } catch (error) {
-                console.error("❌ Failed to open case:", error);
-                serverError = true;
-                
-                // Показываем ошибку и выходим
-                showServerError();
-                document.getElementById('spinBtn').disabled = false;
-                isSpinning = false;
-                return;
-            }
-            
-            updateUI();
-            
-            // Winning item position - ближе к концу ленты
-            const winningIndex = 35 + Math.floor(Math.random() * 5);
-            
-            // Regenerate strip with winning item at the end
-            // Все остальные позиции - много ценного лута для красоты
-            generateItemsStrip(prize, winningIndex);
-            
-            // Calculate scroll distance
-            const container = document.getElementById('caseContainer');
-            const containerWidth = container.offsetWidth;
-            const centerPosition = containerWidth / 2;
-            const targetPosition = (winningIndex * ITEM_WIDTH) + (ITEM_WIDTH / 2) - centerPosition;
-            
-            // Small random offset for natural feel
-            const randomOffset = (Math.random() - 0.5) * 30;
-            const finalPosition = targetPosition + randomOffset;
-            
-            // Animate
-            const strip = document.getElementById('itemsStrip');
-            
-            // Start position
-            strip.style.transform = `translateX(${containerWidth}px)`;
-            
-            // Force reflow
-            strip.offsetHeight;
-            
-            // Add transition and animate
-            setTimeout(() => {
-                strip.classList.add('animating');
-                strip.style.transform = `translateX(-${finalPosition}px)`;
-            }, 50);
-            
-            // Play tick sounds during spin
-            playTickSounds();
-            
-            // Wait for animation
-            await new Promise(resolve => setTimeout(resolve, 5200));
-            
-            // Mark winner
-            const winnerItem = strip.querySelector(`[data-index="${winningIndex}"]`);
-            if (winnerItem) {
-                winnerItem.classList.add('winner');
-            }
-            
-            // Add winnings to display (already updated from server)
-            if (prize.stars > 0) {
-                SESSION.totalWon += prize.stars;
-            }
-            updateUI();
-            
-            // Show result
-            setTimeout(() => {
-                showResult(prize);
-            }, 500);
-            
-            document.getElementById('spinBtn').disabled = false;
-            isSpinning = false;
-            
-            updateSessionInfo();
-        }
-        
-        function showServerError() {
-            const error = document.getElementById('errorMessage');
-            error.innerHTML = `
-                ❌ Ошибка сервера!<br>
-                <span style="font-size: 0.75rem; opacity: 0.7;">Попробуйте позже или перезагрузите страницу</span>
-            `;
-            error.classList.add('show');
-            setTimeout(() => hideError(), 4000);
-        }
-
-        function playTickSounds() {
-            let tickCount = 0;
-            const maxTicks = 40;
-            
-            const tickInterval = setInterval(() => {
-                tickCount++;
-                if (tickCount > maxTicks) {
-                    clearInterval(tickInterval);
-                    return;
-                }
-                
-                if (tickCount < 20) {
-                    haptic('selection');
-                }
-            }, 100);
-        }
-
-        // ============================================
-        // SHOW RESULT
-        // ============================================
-        function showResult(prize) {
-            const overlay = document.getElementById('modalOverlay');
-            const modal = document.getElementById('modal');
-            const emoji = document.getElementById('modalEmoji');
-            const title = document.getElementById('modalTitle');
-            const prizeText = document.getElementById('modalPrize');
-            const balance = document.getElementById('modalBalance');
-            const spinAgainBtn = document.getElementById('spinAgainBtn');
-            
-            // Проверяем есть ли изображение для приза
-            const imageUrl = PRIZE_IMAGES[prize.stars];
-            
-            if (prize.stars > 0) {
-                modal.classList.add('win');
-                
-                if (imageUrl) {
-                    emoji.style.display = 'none';
-                    // Можно добавить img элемент для модалки
-                } else {
-                    emoji.style.display = 'block';
-                    emoji.textContent = prize.emoji;
-                }
-                
-                title.textContent = prize.stars >= 100 ? 'Джекпот!' : 'Поздравляем!';
-                prizeText.textContent = `+${prize.stars} ⭐`;
-                createConfetti();
-                haptic('success');
-            } else {
-                modal.classList.remove('win');
-                emoji.style.display = 'block';
-                emoji.textContent = '💨';
-                title.textContent = 'Пусто...';
-                prizeText.textContent = 'Попробуй ещё!';
-                prizeText.style.fontSize = '1.2rem';
-                haptic('error');
-            }
-            
-            balance.textContent = `💎 ${SESSION.sapphires} сапфиров | ⭐ ${SESSION.stars} звёзд`;
-            spinAgainBtn.style.display = SESSION.sapphires >= CASE_COST ? 'block' : 'none';
-            
-            overlay.classList.add('show');
-            
-            setTimeout(() => prizeText.style.fontSize = '', 100);
-        }
-
-        function spinAgain() {
-            closeModal();
-            setTimeout(() => {
-                generateItemsStrip();
-                openCase();
-            }, 400);
-        }
-
-        function closeModal() {
-            document.getElementById('modalOverlay').classList.remove('show');
-        }
-
-        // ============================================
-        // CONFETTI
-        // ============================================
         function createConfetti() {
             const container = document.getElementById('confetti');
             container.innerHTML = '';
-            
             const colors = ['#fbbf24', '#f59e0b', '#6366f1', '#818cf8', '#a78bfa', '#c4b5fd', '#22c55e'];
             
             for (let i = 0; i < 80; i++) {
                 const piece = document.createElement('div');
                 piece.className = 'confetti-piece';
-                
                 const size = Math.random() * 10 + 6;
                 const color = colors[Math.floor(Math.random() * colors.length)];
                 
@@ -1713,57 +1558,6 @@
             }
             
             setTimeout(() => container.innerHTML = '', 5000);
-        }
-
-        // ============================================
-        // CLOSE AND EXIT
-        // ============================================
-        function closeAndExit() {
-            // 🔒 Отправляем только статистику сессии
-            // Баланс уже обновлён на сервере при каждом открытии кейса
-            const resultData = {
-                action: 'case_session_end',
-                user_id: SESSION.user_id,
-                spins_count: SESSION.spinsCount,
-                total_won: SESSION.totalWon,
-                is_demo: SESSION.isDemo,
-                timestamp: Date.now()
-            };
-            
-            console.log("📤 Sending session data to bot:", resultData);
-            
-            if (tg?.sendData) {
-                tg.sendData(JSON.stringify(resultData));
-            } else {
-                alert(`Результат:\nОткрыто: ${SESSION.spinsCount} кейсов\nВыиграно: ${SESSION.totalWon} ⭐`);
-            }
-        }
-
-        // ============================================
-        // UI HELPERS
-        // ============================================
-        function updateUI() {
-            document.getElementById('sapphires').textContent = SESSION.sapphires;
-            document.getElementById('stars-balance').textContent = SESSION.stars;
-            
-            const spinBtn = document.getElementById('spinBtn');
-            spinBtn.disabled = SESSION.sapphires < CASE_COST || isSpinning;
-        }
-
-        function showError() {
-            const error = document.getElementById('errorMessage');
-            error.classList.add('show');
-            setTimeout(() => hideError(), 3000);
-        }
-
-        function hideError() {
-            document.getElementById('errorMessage').classList.remove('show');
-        }
-
-        function updateSessionInfo() {
-            const mode = SESSION.isDemo ? '🎮DEMO' : '🔒SECURE';
-            document.getElementById('sessionInfo').textContent = 
-                `${mode} ID:${SESSION.user_id || '?'} O:${SESSION.spinsCount} W:${SESSION.totalWon}`;
         }
 
         function haptic(type) {
@@ -1791,12 +1585,6 @@
             }
             if (e.code === 'Escape') closeModal();
         });
-
-        document.addEventListener('touchmove', (e) => {
-            if (e.target.closest('.modal') || e.target.closest('.case-container')) {
-                e.preventDefault();
-            }
-        }, { passive: false });
     </script>
 </body>
 </html>
