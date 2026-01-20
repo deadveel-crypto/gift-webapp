@@ -1108,6 +1108,14 @@
 
     <!-- Session info -->
     <div class="session-info" id="sessionInfo"></div>
+    
+    <!-- Demo mode indicator -->
+    <div id="demoIndicator" style="display: none; position: fixed; top: 70px; left: 50%; transform: translateX(-50%); 
+        background: linear-gradient(135deg, rgba(245, 158, 11, 0.95), rgba(217, 119, 6, 0.95)); 
+        color: #1a1a2e; padding: 8px 20px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; 
+        z-index: 100; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4); text-align: center;">
+        ⚠️ DEMO MODE<br><span style="font-size: 0.65rem; opacity: 0.8;">Баланс не сохраняется</span>
+    </div>
 
     <!-- Result modal -->
     <div class="modal-overlay" id="modalOverlay">
@@ -1132,11 +1140,64 @@
 
     <script>
         // ============================================
+        // 🔒 НАСТРОЙКИ БЕЗОПАСНОСТИ
+        // ============================================
+        // 
+        // ВАЖНО: Эта версия БЕЗОПАСНА от манипуляций с URL!
+        // 
+        // Баланс загружается с сервера через initData Telegram,
+        // который криптографически подписан и не может быть подделан.
+        //
+        // =============================================
+        // 📋 КАК НАСТРОИТЬ СЕРВЕРНУЮ ЧАСТЬ (Python пример):
+        // =============================================
+        //
+        // 1. Эндпоинт GET BALANCE (/api/get-balance):
+        //    - Принимает initData от Telegram
+        //    - Проверяет подпись через HMAC-SHA256
+        //    - Возвращает баланс пользователя из БД
+        //
+        // 2. Эндпоинт OPEN CASE (/api/open-case):
+        //    - Проверяет initData
+        //    - Проверяет баланс >= 100 сапфиров
+        //    - Списывает 100 сапфиров в БД
+        //    - Генерирует приз по шансам НА СЕРВЕРЕ
+        //    - Начисляет звёзды в БД
+        //    - Возвращает {success, prize_stars, new_sapphires, new_stars}
+        //
+        // 3. Проверка initData (Python):
+        //    ```python
+        //    import hmac
+        //    import hashlib
+        //    from urllib.parse import parse_qs
+        //    
+        //    def verify_telegram_webapp(init_data: str, bot_token: str) -> bool:
+        //        parsed = parse_qs(init_data)
+        //        hash_value = parsed.get('hash', [None])[0]
+        //        
+        //        data_check_string = '\n'.join(
+        //            f"{k}={v[0]}" for k, v in sorted(parsed.items()) if k != 'hash'
+        //        )
+        //        
+        //        secret_key = hmac.new(
+        //            b"WebAppData", bot_token.encode(), hashlib.sha256
+        //        ).digest()
+        //        
+        //        computed_hash = hmac.new(
+        //            secret_key, data_check_string.encode(), hashlib.sha256
+        //        ).hexdigest()
+        //        
+        //        return hmac.compare_digest(computed_hash, hash_value)
+        //    ```
+        //
+        // =============================================
+        
+        // ВАЖНО: Вставьте URL вашего API бота
+        const API_BASE_URL = "https://your-bot-api.com"; // Замените на URL вашего сервера
+        
+        // ============================================
         // НАСТРОЙКИ ИЗОБРАЖЕНИЙ ПРИЗОВ
         // ============================================
-        // Замените null на URL изображений для каждого приза
-        // Если оставить null - будет использоваться эмодзи
-        
         const PRIZE_IMAGES = {
             500: null,  // Вставьте URL: "https://example.com/500stars.png"
             100: null,  // Вставьте URL: "https://example.com/100stars.png"
@@ -1157,7 +1218,9 @@
             stars: 0,
             totalWon: 0,
             spinsCount: 0,
-            isInitialized: false
+            isInitialized: false,
+            isDemo: false,
+            authToken: null  // Токен для API запросов
         };
 
         const CASE_COST = 100;
@@ -1166,7 +1229,6 @@
         // ============================================
         // ПРИЗЫ С ШАНСАМИ
         // ============================================
-        // Реальные шансы для финального результата
         const PRIZES = [
             { stars: 0, chance: 95, emoji: "💨", rarity: "common" },
             { stars: 25, chance: 2, emoji: "⭐", rarity: "uncommon" },
@@ -1175,13 +1237,124 @@
             { stars: 500, chance: 0.5, emoji: "💫", rarity: "legendary" },
         ];
 
-        const ITEM_WIDTH = 112; // width (100) + margin (6*2)
+        const ITEM_WIDTH = 112;
         const VISIBLE_ITEMS = 50;
+
+        // ============================================
+        // 🔒 БЕЗОПАСНАЯ ЗАГРУЗКА БАЛАНСА С СЕРВЕРА
+        // ============================================
+        async function loadBalanceFromServer() {
+            // Получаем initData из Telegram - это подписанные данные которые нельзя подделать
+            const initData = tg?.initData || '';
+            
+            if (!initData) {
+                console.warn("⚠️ No initData - running in demo mode");
+                SESSION.isDemo = true;
+                SESSION.sapphires = 500; // Демо баланс
+                SESSION.stars = 0;
+                return true;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/get-balance`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        initData: initData  // Сервер проверит подпись!
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to load balance');
+                }
+                
+                const data = await response.json();
+                
+                SESSION.user_id = data.user_id;
+                SESSION.sapphires = data.sapphires;
+                SESSION.stars = data.stars;
+                SESSION.authToken = data.token; // Токен для последующих запросов
+                SESSION.isDemo = false;
+                
+                console.log("✅ Balance loaded from server:", data);
+                return true;
+                
+            } catch (error) {
+                console.error("❌ Failed to load balance:", error);
+                // Fallback to demo mode
+                SESSION.isDemo = true;
+                SESSION.sapphires = 500;
+                SESSION.stars = 0;
+                showDemoWarning();
+                return true;
+            }
+        }
+
+        // ============================================
+        // 🔒 БЕЗОПАСНОЕ ОТКРЫТИЕ КЕЙСА ЧЕРЕЗ СЕРВЕР
+        // ============================================
+        async function openCaseOnServer() {
+            const initData = tg?.initData || '';
+            
+            if (SESSION.isDemo || !initData) {
+                // В демо-режиме используем локальную логику
+                return {
+                    success: true,
+                    prize: getRandomPrize(),
+                    newBalance: {
+                        sapphires: SESSION.sapphires - CASE_COST,
+                        stars: SESSION.stars
+                    }
+                };
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/open-case`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        initData: initData,
+                        caseType: 'cosmic'  // Тип кейса
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (!data.success) {
+                    throw new Error(data.error || 'Failed to open case');
+                }
+                
+                // Приз определяется на СЕРВЕРЕ, не на клиенте!
+                return {
+                    success: true,
+                    prize: PRIZES.find(p => p.stars === data.prize_stars) || PRIZES[0],
+                    newBalance: {
+                        sapphires: data.new_sapphires,
+                        stars: data.new_stars
+                    }
+                };
+                
+            } catch (error) {
+                console.error("❌ Server error:", error);
+                throw error;
+            }
+        }
+
+        function showDemoWarning() {
+            const indicator = document.getElementById('demoIndicator');
+            if (indicator) {
+                indicator.style.display = 'block';
+            }
+        }
 
         // ============================================
         // INITIALIZATION
         // ============================================
-        function init() {
+        async function init() {
             console.log("📦 Initializing Divine Case...");
             
             if (tg) {
@@ -1197,14 +1370,8 @@
                 tg.BackButton.onClick(() => closeAndExit());
             }
             
-            const params = new URLSearchParams(window.location.search);
-            
-            if (params.has('user_id')) SESSION.user_id = parseInt(params.get('user_id'));
-            if (params.has('sapphires')) SESSION.sapphires = parseInt(params.get('sapphires')) || 0;
-            if (params.has('stars')) SESSION.stars = parseInt(params.get('stars')) || 0;
-            
-            // Demo mode
-            if (!SESSION.sapphires) SESSION.sapphires = 500;
+            // 🔒 БЕЗОПАСНО: Загружаем баланс с сервера, а НЕ из URL!
+            await loadBalanceFromServer();
             
             SESSION.isInitialized = true;
             
@@ -1337,17 +1504,37 @@
             isSpinning = true;
             hideError();
             
-            SESSION.sapphires -= CASE_COST;
-            SESSION.spinsCount++;
-            updateUI();
-            
             document.getElementById('spinBtn').disabled = true;
             
             haptic('impact');
             
-            // Получаем РЕАЛЬНЫЙ приз по настоящим шансам
-            const prize = getRandomPrize();
-            console.log("🎲 Real Prize:", prize);
+            let prize;
+            let serverError = false;
+            
+            try {
+                // 🔒 БЕЗОПАСНО: Открываем кейс через сервер!
+                // Сервер проверяет баланс, списывает сапфиры и генерирует приз
+                const result = await openCaseOnServer();
+                
+                prize = result.prize;
+                SESSION.sapphires = result.newBalance.sapphires;
+                SESSION.stars = result.newBalance.stars;
+                SESSION.spinsCount++;
+                
+                console.log("🎲 Prize from server:", prize);
+                
+            } catch (error) {
+                console.error("❌ Failed to open case:", error);
+                serverError = true;
+                
+                // Показываем ошибку и выходим
+                showServerError();
+                document.getElementById('spinBtn').disabled = false;
+                isSpinning = false;
+                return;
+            }
+            
+            updateUI();
             
             // Winning item position - ближе к концу ленты
             const winningIndex = 35 + Math.floor(Math.random() * 5);
@@ -1393,9 +1580,8 @@
                 winnerItem.classList.add('winner');
             }
             
-            // Add winnings
+            // Add winnings to display (already updated from server)
             if (prize.stars > 0) {
-                SESSION.stars += prize.stars;
                 SESSION.totalWon += prize.stars;
             }
             updateUI();
@@ -1409,6 +1595,16 @@
             isSpinning = false;
             
             updateSessionInfo();
+        }
+        
+        function showServerError() {
+            const error = document.getElementById('errorMessage');
+            error.innerHTML = `
+                ❌ Ошибка сервера!<br>
+                <span style="font-size: 0.75rem; opacity: 0.7;">Попробуйте позже или перезагрузите страницу</span>
+            `;
+            error.classList.add('show');
+            setTimeout(() => hideError(), 4000);
         }
 
         function playTickSounds() {
@@ -1523,17 +1719,18 @@
         // CLOSE AND EXIT
         // ============================================
         function closeAndExit() {
+            // 🔒 Отправляем только статистику сессии
+            // Баланс уже обновлён на сервере при каждом открытии кейса
             const resultData = {
-                action: 'case_result',
+                action: 'case_session_end',
                 user_id: SESSION.user_id,
                 spins_count: SESSION.spinsCount,
                 total_won: SESSION.totalWon,
-                final_sapphires: SESSION.sapphires,
-                final_stars: SESSION.stars,
+                is_demo: SESSION.isDemo,
                 timestamp: Date.now()
             };
             
-            console.log("📤 Sending data to bot:", resultData);
+            console.log("📤 Sending session data to bot:", resultData);
             
             if (tg?.sendData) {
                 tg.sendData(JSON.stringify(resultData));
@@ -1564,8 +1761,9 @@
         }
 
         function updateSessionInfo() {
+            const mode = SESSION.isDemo ? '🎮DEMO' : '🔒SECURE';
             document.getElementById('sessionInfo').textContent = 
-                `ID:${SESSION.user_id || '?'} O:${SESSION.spinsCount} W:${SESSION.totalWon}`;
+                `${mode} ID:${SESSION.user_id || '?'} O:${SESSION.spinsCount} W:${SESSION.totalWon}`;
         }
 
         function haptic(type) {
