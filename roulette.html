@@ -416,7 +416,11 @@
             overflow: hidden;
             border: 2px solid rgba(255, 255, 255, 0.08);
             transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
+            padding: 0;
+        }
+
+        .prize-item.has-image {
+            background: transparent !important;
         }
 
         .prize-item::before {
@@ -425,6 +429,7 @@
             inset: 0;
             background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 50%);
             pointer-events: none;
+            z-index: 2;
         }
 
         .prize-item.rarity-common {
@@ -463,36 +468,18 @@
         }
 
         .prize-emoji {
-            font-size: 2rem;
-            margin-bottom: 6px;
+            font-size: 2.5rem;
             filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
         }
 
         .prize-image {
-            width: 50px;
-            height: 50px;
-            object-fit: contain;
-            margin-bottom: 6px;
-            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
-            border-radius: 8px;
-        }
-
-        .prize-stars {
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: white;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-            background: rgba(0, 0, 0, 0.3);
-            padding: 4px 10px;
-            border-radius: 20px;
-            backdrop-filter: blur(5px);
-        }
-
-        .prize-stars .star-small {
-            font-size: 0.75rem;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 14px;
         }
 
         .prize-item.winner {
@@ -596,7 +583,8 @@
             backdrop-filter: blur(10px);
             border: 1px solid var(--border-color);
             border-radius: 16px;
-            padding: 14px 6px;
+            padding: 8px;
+            padding-bottom: 10px;
             text-align: center;
             transition: all 0.4s ease;
             position: relative;
@@ -614,31 +602,36 @@
             background: linear-gradient(135deg, rgba(120, 53, 15, 0.3), var(--bg-card));
         }
 
+        .prize-card-visual {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
         .prize-card-emoji { 
-            font-size: 1.5rem; 
-            margin-bottom: 6px;
+            font-size: 1.8rem; 
         }
 
         .prize-card-image {
-            width: 40px;
-            height: 40px;
-            object-fit: contain;
-            margin-bottom: 6px;
-            border-radius: 6px;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         
         .prize-card-name { 
-            font-size: 0.8rem; 
+            font-size: 0.75rem; 
             font-weight: 700;
             background: linear-gradient(135deg, var(--accent-gold), #f59e0b);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-        }
-        
-        .prize-card-chance { 
-            font-size: 0.65rem; 
-            color: var(--text-secondary); 
-            margin-top: 4px;
+            text-align: center;
         }
 
         .status-message {
@@ -740,11 +733,12 @@
         }
 
         .modal-prize-image {
-            width: 80px;
-            height: 80px;
-            object-fit: contain;
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
             margin-bottom: 20px;
-            border-radius: 12px;
+            border-radius: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
             animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
@@ -1058,9 +1052,8 @@
                 chance: 97, 
                 emoji: "💨", 
                 rarity: "common",
-                // Можно указать свою картинку:
-                // image: "https://your-domain.com/images/empty.png",
-                image: null,
+                // Замените на свою картинку:
+                image: "https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=200&h=200&fit=crop",
                 name: "Пусто"
             },
             { 
@@ -1068,8 +1061,7 @@
                 chance: 1, 
                 emoji: "⭐", 
                 rarity: "uncommon",
-                // image: "https://your-domain.com/images/stars-25.png",
-                image: null,
+                image: "https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?w=200&h=200&fit=crop",
                 name: "25 звёзд"
             },
             { 
@@ -1077,8 +1069,7 @@
                 chance: 1, 
                 emoji: "✨", 
                 rarity: "rare",
-                // image: "https://your-domain.com/images/stars-50.png",
-                image: null,
+                image: "https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?w=200&h=200&fit=crop",
                 name: "50 звёзд"
             },
             { 
@@ -1086,8 +1077,7 @@
                 chance: 0.8, 
                 emoji: "🌟", 
                 rarity: "epic",
-                // image: "https://your-domain.com/images/stars-100.png",
-                image: null,
+                image: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=200&h=200&fit=crop",
                 name: "100 звёзд"
             },
             { 
@@ -1095,8 +1085,7 @@
                 chance: 0.2, 
                 emoji: "💫", 
                 rarity: "legendary",
-                // image: "https://your-domain.com/images/jackpot.png",
-                image: "https://i.ibb.co/jZ84qR2b/1768914636162-019bdb88-8d21-7c93-b133-dec9a3c8ffb7.png",
+                image: "https://images.unsplash.com/photo-1543722530-d2c3201371e7?w=200&h=200&fit=crop",
                 name: "Джекпот!"
             },
         ];
@@ -1162,10 +1151,12 @@
             
             grid.innerHTML = displayPrizes.map(prize => `
                 <div class="prize-card ${prize.rarity === 'legendary' ? 'legendary' : ''}">
-                    ${prize.image 
-                        ? `<img src="${prize.image}" alt="${prize.name}" class="prize-card-image" onerror="this.outerHTML='<div class=\\'prize-card-emoji\\'>${prize.emoji}</div>'">`
-                        : `<div class="prize-card-emoji">${prize.emoji}</div>`
-                    }
+                    <div class="prize-card-visual">
+                        ${prize.image 
+                            ? `<img src="${prize.image}" alt="${prize.name}" class="prize-card-image" onerror="this.outerHTML='<div class=\\'prize-card-emoji\\'>${prize.emoji}</div>'">`
+                            : `<div class="prize-card-emoji">${prize.emoji}</div>`
+                        }
+                    </div>
                     <div class="prize-card-name">${prize.stars}⭐</div>
                 </div>
             `).join('');
@@ -1330,20 +1321,16 @@
                 
                 const item = document.createElement('div');
                 item.className = `prize-item rarity-${prize.rarity}`;
+                if (prize.image) item.classList.add('has-image');
                 item.dataset.index = i;
                 item.dataset.stars = prize.stars;
                 
-                // Используем картинку или эмодзи
-                const visual = prize.image 
-                    ? `<img src="${prize.image}" alt="" class="prize-image" onerror="this.outerHTML='<div class=\\'prize-emoji\\'>${prize.emoji}</div>'">`
-                    : `<div class="prize-emoji">${prize.emoji}</div>`;
-                
-                item.innerHTML = `
-                    ${visual}
-                    <div class="prize-stars">
-                        ${prize.stars > 0 ? `<span class="star-small">⭐</span>${prize.stars}` : '—'}
-                    </div>
-                `;
+                // Только картинка или эмодзи, без текста
+                if (prize.image) {
+                    item.innerHTML = `<img src="${prize.image}" alt="" class="prize-image" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\\'prize-emoji\\'>${prize.emoji}</div>'">`;
+                } else {
+                    item.innerHTML = `<div class="prize-emoji">${prize.emoji}</div>`;
+                }
                 
                 strip.appendChild(item);
             }
@@ -1382,23 +1369,23 @@
             
             // Показываем картинку или эмодзи
             if (prize.image) {
-                emoji.innerHTML = `<img src="${prize.image}" class="modal-prize-image" onerror="this.outerHTML='${prize.emoji}'">`;
+                emoji.innerHTML = `<img src="${prize.image}" class="modal-prize-image" onerror="this.outerHTML='${prize.stars > 0 ? prize.emoji : '💨'}'">`;
             } else {
-                emoji.textContent = prize.stars > 0 ? prize.emoji : '💨';
+                emoji.innerHTML = prize.stars > 0 ? prize.emoji : '💨';
             }
             
             if (prize.stars > 0) {
                 modal.classList.add('win');
                 title.textContent = prize.stars >= 100 ? 'Джекпот!' : 'Поздравляем!';
                 prizeText.textContent = `+${prize.stars} ⭐`;
-                prizeText.style.fontSize = '';
+                prizeText.style.display = '';
                 createConfetti();
                 haptic('success');
             } else {
                 modal.classList.remove('win');
                 title.textContent = 'Пусто...';
                 prizeText.textContent = 'Попробуй ещё!';
-                prizeText.style.fontSize = '1.2rem';
+                prizeText.style.display = '';
                 haptic('error');
             }
             
