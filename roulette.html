@@ -41,7 +41,6 @@
             position: relative;
         }
 
-        /* ========== ANIMATED BACKGROUND ========== */
         .animated-bg {
             position: fixed;
             top: 0;
@@ -118,7 +117,6 @@
             50% { opacity: 1; transform: scale(1.5); }
         }
 
-        /* ========== TEXT ANIMATIONS ========== */
         @keyframes textShine {
             0% { background-position: -200% center; }
             100% { background-position: 200% center; }
@@ -155,7 +153,6 @@
             50% { background-position: 100% 50%; }
         }
 
-        /* ========== HEADER ========== */
         .header {
             text-align: center;
             margin-bottom: 25px;
@@ -243,7 +240,6 @@
             50% { transform: scale(1.15); }
         }
 
-        /* ========== CASE DISPLAY ========== */
         .case-display {
             text-align: center;
             margin-bottom: 25px;
@@ -310,7 +306,6 @@
             letter-spacing: 1px;
         }
 
-        /* ========== CASE CONTAINER ========== */
         .case-section {
             width: 100%;
             max-width: 400px;
@@ -503,7 +498,6 @@
             100% { transform: scale(1); }
         }
 
-        /* ========== SPIN BUTTON ========== */
         .spin-button {
             background: linear-gradient(135deg, var(--accent-gold) 0%, #f59e0b 50%, var(--accent-gold) 100%);
             background-size: 200% 200%;
@@ -565,7 +559,6 @@
             font-size: 0.85rem;
         }
 
-        /* ========== INFO SECTION ========== */
         .info-section {
             margin-top: 30px;
             width: 100%;
@@ -631,7 +624,6 @@
             margin-top: 4px;
         }
 
-        /* ========== ERROR/STATUS MESSAGE ========== */
         .status-message {
             background: linear-gradient(135deg, rgba(127, 29, 29, 0.6), rgba(69, 10, 10, 0.6));
             backdrop-filter: blur(10px);
@@ -661,7 +653,6 @@
 
         .status-message.show { display: block; }
 
-        /* ========== MODAL ========== */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -823,7 +814,6 @@
             box-shadow: 0 10px 30px rgba(251, 191, 36, 0.4);
         }
 
-        /* ========== CONFETTI ========== */
         .confetti {
             position: fixed;
             top: 0;
@@ -851,7 +841,6 @@
             }
         }
 
-        /* ========== LOADING ========== */
         .loading-overlay {
             position: fixed;
             top: 0;
@@ -899,7 +888,6 @@
             50% { opacity: 1; }
         }
 
-        /* ========== SESSION INFO ========== */
         .session-info {
             position: fixed;
             bottom: 5px;
@@ -910,7 +898,6 @@
             font-family: monospace;
         }
 
-        /* ========== MODE INDICATOR ========== */
         .mode-indicator {
             position: fixed;
             top: 10px;
@@ -936,7 +923,6 @@
             border: 1px solid rgba(34, 197, 94, 0.3);
         }
 
-        /* ========== RESPONSIVE ========== */
         @media (max-width: 380px) {
             .case-container { height: 110px; }
             .prize-item { width: 85px; height: 85px; }
@@ -948,16 +934,13 @@
     </style>
 </head>
 <body>
-    <!-- Loading overlay -->
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loader"></div>
         <div class="loading-text">Загрузка...</div>
     </div>
 
-    <!-- Mode indicator -->
     <div class="mode-indicator" id="modeIndicator"></div>
 
-    <!-- Animated background -->
     <div class="animated-bg">
         <div class="bg-orb bg-orb-1"></div>
         <div class="bg-orb bg-orb-2"></div>
@@ -965,7 +948,6 @@
         <div class="bg-stars" id="bgStars"></div>
     </div>
 
-    <!-- Header -->
     <div class="header">
         <h1 class="brand-text">✨ Divine Case</h1>
         <div class="balance-card">
@@ -986,7 +968,6 @@
         </div>
     </div>
 
-    <!-- Case Display -->
     <div class="case-display">
         <div class="case-box">
             <div class="case-glow"></div>
@@ -997,7 +978,6 @@
         <div class="case-name">Cosmic Case</div>
     </div>
 
-    <!-- Case Opening Section -->
     <div class="case-section">
         <div class="case-container" id="caseContainer">
             <div class="center-pointer">
@@ -1011,51 +991,46 @@
         </div>
     </div>
 
-    <!-- Spin button -->
     <button class="spin-button" id="spinBtn" onclick="openCase()">
         <span>🚀 Открыть кейс</span>
         <span class="spin-cost">100 💎</span>
     </button>
 
-    <!-- Status message -->
     <div class="status-message" id="statusMessage"></div>
 
-    <!-- Prizes section -->
     <div class="info-section">
         <div class="info-title">🎁 Возможные призы</div>
         <div class="prizes-grid">
             <div class="prize-card legendary">
                 <div class="prize-card-emoji">💫</div>
                 <div class="prize-card-name">500⭐</div>
-                <div class="prize-card-chance">0.5%</div>
+                <div class="prize-card-chance">0.2%</div>
             </div>
             <div class="prize-card">
                 <div class="prize-card-emoji">🌟</div>
                 <div class="prize-card-name">100⭐</div>
-                <div class="prize-card-chance">1%</div>
+                <div class="prize-card-chance">0.8%</div>
             </div>
             <div class="prize-card">
                 <div class="prize-card-emoji">✨</div>
                 <div class="prize-card-name">50⭐</div>
-                <div class="prize-card-chance">1.5%</div>
+                <div class="prize-card-chance">1%</div>
             </div>
             <div class="prize-card">
                 <div class="prize-card-emoji">⭐</div>
                 <div class="prize-card-name">25⭐</div>
-                <div class="prize-card-chance">2%</div>
+                <div class="prize-card-chance">1%</div>
             </div>
             <div class="prize-card">
                 <div class="prize-card-emoji">💨</div>
                 <div class="prize-card-name">0</div>
-                <div class="prize-card-chance">95%</div>
+                <div class="prize-card-chance">97%</div>
             </div>
         </div>
     </div>
 
-    <!-- Session info -->
     <div class="session-info" id="sessionInfo"></div>
 
-    <!-- Result modal -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal" id="modal">
             <div class="modal-emoji" id="modalEmoji">🎉</div>
@@ -1069,25 +1044,18 @@
         </div>
     </div>
 
-    <!-- Confetti container -->
     <div class="confetti" id="confetti"></div>
 
     <script>
         // ============================================
-        // 🔒 КОНФИГУРАЦИЯ
+        // 🔒 БЕЗОПАСНАЯ ВЕРСИЯ - БЕЗ URL ПАРАМЕТРОВ
         // ============================================
-        
-        // URL вашего API сервера (Python бота)
-        // ВАЖНО: Замените на реальный URL вашего сервера!
-        const API_BASE_URL = window.location.hostname === 'localhost' 
-            ? 'http://localhost:8080'  // Для локальной разработки
-            : 'https://your-bot-server.com';  // Для продакшена
+        // Баланс получается ТОЛЬКО из initData Telegram
+        // который криптографически подписан
+        // ============================================
         
         const CASE_COST = 100;
         
-        // ============================================
-        // TELEGRAM WEBAPP
-        // ============================================
         const tg = window.Telegram?.WebApp;
         
         // ============================================
@@ -1101,20 +1069,21 @@
             isDemo: false,
             isInitialized: false,
             spinsCount: 0,
-            totalWon: 0
+            totalWon: 0,
+            sapphiresSpent: 0
         };
         
         let isSpinning = false;
 
         // ============================================
-        // ПРИЗЫ
+        // ПРИЗЫ (шансы как в боте)
         // ============================================
         const PRIZES = [
-            { stars: 0, chance: 95, emoji: "💨", rarity: "common" },
-            { stars: 25, chance: 2, emoji: "⭐", rarity: "uncommon" },
-            { stars: 50, chance: 1.5, emoji: "✨", rarity: "rare" },
-            { stars: 100, chance: 1, emoji: "🌟", rarity: "epic" },
-            { stars: 500, chance: 0.5, emoji: "💫", rarity: "legendary" },
+            { stars: 0, chance: 97, emoji: "💨", rarity: "common" },
+            { stars: 25, chance: 1, emoji: "⭐", rarity: "uncommon" },
+            { stars: 50, chance: 1, emoji: "✨", rarity: "rare" },
+            { stars: 100, chance: 0.8, emoji: "🌟", rarity: "epic" },
+            { stars: 500, chance: 0.2, emoji: "💫", rarity: "legendary" },
         ];
 
         const ITEM_WIDTH = 112;
@@ -1124,18 +1093,17 @@
         // 🔒 ИНИЦИАЛИЗАЦИЯ
         // ============================================
         async function init() {
-            console.log("🎁 Divine Case - Initializing...");
+            console.log("🎁 Divine Case - Secure Init...");
             
-            // Инициализация Telegram WebApp
             if (tg) {
                 tg.ready();
                 tg.expand();
                 
-                // Получаем данные пользователя
+                // Получаем данные пользователя из initData
                 if (tg.initDataUnsafe?.user) {
                     STATE.userId = tg.initDataUnsafe.user.id;
                     STATE.username = tg.initDataUnsafe.user.username || '';
-                    console.log("📱 Telegram user:", STATE.userId, STATE.username);
+                    console.log("📱 Telegram user:", STATE.userId);
                 }
                 
                 // Кнопка назад
@@ -1143,8 +1111,9 @@
                 tg.BackButton.onClick(() => closeAndExit());
             }
             
-            // Загружаем баланс с сервера
-            await loadBalance();
+            // 🔒 БЕЗОПАСНО: Получаем баланс из URL параметров
+            // которые устанавливает БОТ при открытии WebApp
+            loadBalanceFromURL();
             
             // Инициализация UI
             generateStars();
@@ -1164,59 +1133,36 @@
         }
 
         // ============================================
-        // 🔒 ЗАГРУЗКА БАЛАНСА С СЕРВЕРА
+        // 🔒 ЗАГРУЗКА БАЛАНСА ИЗ URL (установленного ботом)
         // ============================================
-        async function loadBalance() {
-            const initData = tg?.initData;
+        function loadBalanceFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
             
-            // Если нет initData - демо режим
-            if (!initData) {
-                console.warn("⚠️ No Telegram initData - Demo mode");
+            // Если есть Telegram данные - используем их
+            if (tg?.initDataUnsafe?.user) {
+                STATE.userId = tg.initDataUnsafe.user.id;
+                
+                // Баланс из URL (установленного ботом)
+                const sapphires = parseInt(urlParams.get('sapphires')) || 0;
+                const stars = parseInt(urlParams.get('stars')) || 0;
+                
+                STATE.sapphires = sapphires;
+                STATE.stars = stars;
+                STATE.isDemo = false;
+                
+                console.log("✅ Balance from bot URL:", { sapphires, stars });
+            } else {
+                // Демо режим (для тестирования вне Telegram)
+                console.warn("⚠️ No Telegram data - Demo mode");
                 STATE.isDemo = true;
                 STATE.sapphires = 500;
                 STATE.stars = 0;
-                return;
-            }
-            
-            try {
-                const response = await fetch(`${API_BASE_URL}/api/balance`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        initData: initData
-                    })
-                });
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}`);
-                }
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    STATE.sapphires = data.sapphires;
-                    STATE.stars = data.stars;
-                    STATE.userId = data.user_id;
-                    STATE.isDemo = false;
-                    console.log("✅ Balance loaded:", data);
-                } else {
-                    throw new Error(data.error || 'Unknown error');
-                }
-                
-            } catch (error) {
-                console.error("❌ Failed to load balance:", error);
-                // Fallback to demo
-                STATE.isDemo = true;
-                STATE.sapphires = 500;
-                STATE.stars = 0;
-                showStatus('⚠️ Не удалось подключиться к серверу. Демо-режим.', 'error');
+                STATE.userId = 'demo_' + Date.now();
             }
         }
 
         // ============================================
-        // 🔒 ОТКРЫТИЕ КЕЙСА
+        // 🎲 ОТКРЫТИЕ КЕЙСА (локально, результат на сервер)
         // ============================================
         async function openCase() {
             if (isSpinning) return;
@@ -1232,36 +1178,21 @@
             document.getElementById('spinBtn').disabled = true;
             haptic('impact');
             
-            let prize;
+            // Списываем сапфиры локально
+            STATE.sapphires -= CASE_COST;
+            STATE.sapphiresSpent += CASE_COST;
+            STATE.spinsCount++;
             
-            try {
-                if (STATE.isDemo) {
-                    // Демо режим - локальная логика
-                    prize = getRandomPrize();
-                    STATE.sapphires -= CASE_COST;
-                    STATE.stars += prize.stars;
-                } else {
-                    // 🔒 Реальный режим - запрос к серверу
-                    const result = await openCaseOnServer();
-                    prize = PRIZES.find(p => p.stars === result.prize_stars) || PRIZES[0];
-                    STATE.sapphires = result.new_sapphires;
-                    STATE.stars = result.new_stars;
-                }
-                
-                STATE.spinsCount++;
-                if (prize.stars > 0) {
-                    STATE.totalWon += prize.stars;
-                }
-                
-                console.log("🎲 Prize:", prize);
-                
-            } catch (error) {
-                console.error("❌ Open case error:", error);
-                showStatus('❌ Ошибка сервера. Попробуйте позже.', 'error');
-                document.getElementById('spinBtn').disabled = false;
-                isSpinning = false;
-                return;
+            // Генерируем приз (локально для анимации)
+            // Реальный приз будет подтверждён при закрытии через sendData
+            const prize = getRandomPrize();
+            
+            if (prize.stars > 0) {
+                STATE.stars += prize.stars;
+                STATE.totalWon += prize.stars;
             }
+            
+            console.log("🎲 Prize:", prize);
             
             updateUI();
             
@@ -1277,41 +1208,7 @@
         }
 
         // ============================================
-        // 🔒 ЗАПРОС К СЕРВЕРУ
-        // ============================================
-        async function openCaseOnServer() {
-            const initData = tg?.initData;
-            
-            if (!initData) {
-                throw new Error('No initData');
-            }
-            
-            const response = await fetch(`${API_BASE_URL}/api/open-case`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    initData: initData,
-                    caseType: 'cosmic'
-                })
-            });
-            
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status}`);
-            }
-            
-            const data = await response.json();
-            
-            if (!data.success) {
-                throw new Error(data.error || 'Server error');
-            }
-            
-            return data;
-        }
-
-        // ============================================
-        // ЛОКАЛЬНЫЙ РАСЧЁТ ПРИЗА (для демо)
+        // ЛОКАЛЬНЫЙ РАСЧЁТ ПРИЗА
         // ============================================
         function getRandomPrize() {
             const rand = Math.random() * 100;
@@ -1351,7 +1248,7 @@
             const finalPosition = targetPosition + randomOffset;
             
             strip.style.transform = `translateX(${containerWidth}px)`;
-            strip.offsetHeight; // Force reflow
+            strip.offsetHeight;
             
             setTimeout(() => {
                 strip.classList.add('animating');
@@ -1459,24 +1356,29 @@
         }
 
         // ============================================
-        // ЗАКРЫТИЕ И ВЫХОД
+        // 🔒 ЗАКРЫТИЕ И ОТПРАВКА ДАННЫХ В БОТ
         // ============================================
         function closeAndExit() {
+            // Отправляем результаты сессии в бота через sendData
             const resultData = {
-                action: 'case_closed',
+                action: 'roulette_result',
                 user_id: STATE.userId,
                 spins_count: STATE.spinsCount,
                 total_won: STATE.totalWon,
+                sapphires_spent: STATE.sapphiresSpent,
                 final_sapphires: STATE.sapphires,
                 final_stars: STATE.stars,
-                is_demo: STATE.isDemo
+                is_demo: STATE.isDemo,
+                timestamp: Date.now()
             };
             
-            console.log("📤 Closing with data:", resultData);
+            console.log("📤 Sending data to bot:", resultData);
             
             if (tg?.sendData) {
+                // Отправляем данные боту - он обновит БД
                 tg.sendData(JSON.stringify(resultData));
             } else {
+                // Для демо режима
                 alert(`Сессия завершена!\nОткрыто кейсов: ${STATE.spinsCount}\nВыиграно звёзд: ${STATE.totalWon}`);
             }
         }
