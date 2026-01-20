@@ -1008,8 +1008,8 @@
             <div class="modal-prize" id="modalPrize">+50 ⭐</div>
             <div class="modal-balance" id="modalBalance">💎 150 сапфиров | ⭐ 50 звёзд</div>
             <div class="modal-buttons">
-                <button class="modal-button gold" id="spinAgainBtn" onclick="spinAgain()">Открыть ещё</button>
-                <button class="modal-button secondary" onclick="closeAndExit()">Назад</button>
+                <button class="modal-button gold" id="spinAgainBtn" onclick="spinAgain()">🚀 Открыть ещё</button>
+                <button class="modal-button secondary" onclick="closeAndExit()">✅ Забрать и выйти</button>
             </div>
         </div>
     </div>
@@ -1018,10 +1018,7 @@
 
     <script>
         // ============================================
-        // 🔒 БЕЗОПАСНАЯ ВЕРСИЯ - ШАНСЫ НА СЕРВЕРЕ
-        // ============================================
-        // ⚠️ ВАЖНО: Шансы НЕ хранятся в этом файле!
-        // Приз определяется БОТОМ и передаётся через URL параметр "prize_index"
+        // 🔒 БЕЗОПАСНАЯ ВЕРСИЯ - БЕЗ URL ПАРАМЕТРОВ
         // ============================================
         
         const CASE_COST = 100;
@@ -1040,52 +1037,52 @@
             spinsCount: 0,
             totalWon: 0,
             sapphiresSpent: 0,
-            isModalOpen: false,
-            pendingPrizes: [] // 🔒 Массив призов от бота (до 10 спинов)
+            isModalOpen: false  // Новый флаг для отслеживания модального окна
         };
         
         let isSpinning = false;
 
         // ============================================
-        // 🔒 ВИЗУАЛЬНЫЕ ДАННЫЕ ПРИЗОВ (БЕЗ ШАНСОВ!)
-        // Шансы определяются ТОЛЬКО в боте!
+        // ПРИЗЫ С КАСТОМНЫМИ ИЗОБРАЖЕНИЯМИ
+        // Замените URL на свои изображения
         // ============================================
-        const PRIZE_VISUALS = [
+        const PRIZES = [
             { 
-                id: 0,
                 stars: 0, 
+                chance: 97, 
                 emoji: "💨", 
                 rarity: "common",
-                image: "https://i.ibb.co/gb5FSTmV/1768925232598-019bdc2a-e026-7e7c-9739-37234d1c5e87.png",
+                // Замените на свою картинку:
+                image: "https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=200&h=200&fit=crop",
                 name: "Пусто"
             },
             { 
-                id: 1,
                 stars: 25, 
+                chance: 1, 
                 emoji: "⭐", 
                 rarity: "uncommon",
-                image: "https://i.ibb.co/rfvNFsXR/1768924736444-019bdc22-de2d-7183-b0e4-53670324a942.jpg",
+                image: "https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?w=200&h=200&fit=crop",
                 name: "25 звёзд"
             },
             { 
-                id: 2,
                 stars: 50, 
+                chance: 1, 
                 emoji: "✨", 
                 rarity: "rare",
-                image: "https://i.ibb.co/8CL2Rxq/1768924439694-019bdc1e-33ba-716b-9343-17c2777cf861.jpg",
+                image: "https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?w=200&h=200&fit=crop",
                 name: "50 звёзд"
             },
             { 
-                id: 3,
                 stars: 100, 
+                chance: 0.8, 
                 emoji: "🌟", 
                 rarity: "epic",
                 image: "https://i.ibb.co/RGX1C998/1768923759742-019bdc13-a966-7740-ba75-610d49ea3c79.png",
                 name: "100 звёзд"
             },
             { 
-                id: 4,
                 stars: 500, 
+                chance: 0.2, 
                 emoji: "💫", 
                 rarity: "legendary",
                 image: "https://i.ibb.co/XrTtbMXR/1768923046045-019bdc09-a36c-7352-ba71-f5d8fe7799d4.png",
@@ -1100,7 +1097,7 @@
         // 🔒 ИНИЦИАЛИЗАЦИЯ
         // ============================================
         async function init() {
-            console.log("🎁 Divine Case - Secure Server-Side Init...");
+            console.log("🎁 Divine Case - Secure Init...");
             
             // Проверяем что открыто в Telegram
             if (!tg || !tg.initDataUnsafe?.user) {
@@ -1120,10 +1117,10 @@
             tg.BackButton.show();
             tg.BackButton.onClick(() => closeAndExit());
             
-            // 🔒 Загружаем данные из URL (установленных ботом)
-            const dataLoaded = loadDataFromURL();
+            // 🔒 БЕЗОПАСНО: Получаем баланс из URL параметров
+            const balanceLoaded = loadBalanceFromURL();
             
-            if (!dataLoaded) {
+            if (!balanceLoaded) {
                 showFatalError("Ошибка загрузки данных");
                 return;
             }
@@ -1150,7 +1147,7 @@
         // ============================================
         function generatePrizesGrid() {
             const grid = document.getElementById('prizesGrid');
-            const displayPrizes = [...PRIZE_VISUALS].reverse();
+            const displayPrizes = [...PRIZES].reverse(); // От легендарного к обычному
             
             grid.innerHTML = displayPrizes.map(prize => `
                 <div class="prize-card ${prize.rarity === 'legendary' ? 'legendary' : ''}">
@@ -1189,10 +1186,9 @@
         }
 
         // ============================================
-        // 🔒 ЗАГРУЗКА ДАННЫХ ИЗ URL (установленного ботом)
-        // Бот передаёт: sapphires, stars, и prizes (массив индексов призов)
+        // 🔒 ЗАГРУЗКА БАЛАНСА ИЗ URL (установленного ботом)
         // ============================================
-        function loadDataFromURL() {
+        function loadBalanceFromURL() {
             const urlParams = new URLSearchParams(window.location.search);
             
             const sapphires = parseInt(urlParams.get('sapphires'));
@@ -1206,26 +1202,7 @@
             STATE.sapphires = sapphires;
             STATE.stars = stars;
             
-            // 🔒 Загружаем предрасчитанные призы от бота (массив индексов)
-            // Формат: prizes=0,0,1,0,2,0,0,3,0,0 (до 10 призов)
-            const prizesParam = urlParams.get('prizes');
-            if (prizesParam) {
-                try {
-                    STATE.pendingPrizes = prizesParam.split(',').map(p => {
-                        const idx = parseInt(p.trim());
-                        if (idx >= 0 && idx < PRIZE_VISUALS.length) {
-                            return PRIZE_VISUALS[idx];
-                        }
-                        return PRIZE_VISUALS[0]; // Fallback на "пусто"
-                    });
-                    console.log("🎯 Prizes from bot:", STATE.pendingPrizes.length, "spins preloaded");
-                } catch (e) {
-                    console.error("❌ Failed to parse prizes:", e);
-                    STATE.pendingPrizes = [];
-                }
-            }
-            
-            console.log("✅ Data from bot URL:", { sapphires, stars, prizesCount: STATE.pendingPrizes.length });
+            console.log("✅ Balance from bot URL:", { sapphires, stars });
             return true;
         }
 
@@ -1233,17 +1210,11 @@
         // 🎲 ОТКРЫТИЕ КЕЙСА
         // ============================================
         async function openCase() {
+            // Блокируем если спиннинг или модалка открыта
             if (isSpinning || STATE.isModalOpen) return;
             
             if (STATE.sapphires < CASE_COST) {
                 showStatus('❌ Недостаточно сапфиров!', 'error');
-                haptic('error');
-                return;
-            }
-            
-            // 🔒 ПРОВЕРКА: Есть ли предрасчитанные призы от бота?
-            if (STATE.pendingPrizes.length === 0) {
-                showStatus('❌ Закончились попытки! Вернитесь в бота.', 'error');
                 haptic('error');
                 return;
             }
@@ -1258,15 +1229,15 @@
             STATE.sapphiresSpent += CASE_COST;
             STATE.spinsCount++;
             
-            // 🔒 БЕРЁМ ПРИЗ ИЗ ПРЕДРАСЧИТАННОГО МАССИВА (от бота)
-            const prize = STATE.pendingPrizes.shift(); // Забираем первый приз из очереди
+            // Генерируем приз
+            const prize = getRandomPrize();
             
             if (prize.stars > 0) {
                 STATE.stars += prize.stars;
                 STATE.totalWon += prize.stars;
             }
             
-            console.log("🎲 Prize from bot:", prize, "| Remaining:", STATE.pendingPrizes.length);
+            console.log("🎲 Prize:", prize);
             
             updateUI();
             
@@ -1280,16 +1251,27 @@
             updateSessionInfo();
         }
 
-        // Для отображения в анимации (без реальных шансов)
-        // Это только визуальное распределение для красивой ленты
-        // НЕ влияет на реальный выигрыш - он уже определён ботом!
+        // ============================================
+        // ЛОКАЛЬНЫЙ РАСЧЁТ ПРИЗА
+        // ============================================
+        function getRandomPrize() {
+            const rand = Math.random() * 100;
+            let cumulative = 0;
+            
+            for (const prize of PRIZES) {
+                cumulative += prize.chance;
+                if (rand <= cumulative) return prize;
+            }
+            return PRIZES[0];
+        }
+
         function getRandomPrizeForDisplay() {
             const rand = Math.random() * 100;
-            if (rand < 40) return PRIZE_VISUALS[0];
-            if (rand < 60) return PRIZE_VISUALS[1];
-            if (rand < 80) return PRIZE_VISUALS[2];
-            if (rand < 95) return PRIZE_VISUALS[3];
-            return PRIZE_VISUALS[4];
+            if (rand < 30) return PRIZES[0];
+            if (rand < 55) return PRIZES[1];
+            if (rand < 75) return PRIZES[2];
+            if (rand < 90) return PRIZES[3];
+            return PRIZES[4];
         }
 
         // ============================================
@@ -1343,6 +1325,7 @@
                 item.dataset.index = i;
                 item.dataset.stars = prize.stars;
                 
+                // Только картинка или эмодзи, без текста
                 if (prize.image) {
                     item.innerHTML = `<img src="${prize.image}" alt="" class="prize-image" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\\'prize-emoji\\'>${prize.emoji}</div>'">`;
                 } else {
@@ -1373,8 +1356,8 @@
         // РЕЗУЛЬТАТ
         // ============================================
         function showResult(prize) {
-            STATE.isModalOpen = true;
-            document.getElementById('spinBtn').disabled = true;
+            STATE.isModalOpen = true; // Устанавливаем флаг
+            document.getElementById('spinBtn').disabled = true; // Блокируем кнопку
             
             const overlay = document.getElementById('modalOverlay');
             const modal = document.getElementById('modal');
@@ -1384,6 +1367,7 @@
             const balance = document.getElementById('modalBalance');
             const spinAgainBtn = document.getElementById('spinAgainBtn');
             
+            // Показываем картинку или эмодзи
             if (prize.image) {
                 emoji.innerHTML = `<img src="${prize.image}" class="modal-prize-image" onerror="this.outerHTML='${prize.stars > 0 ? prize.emoji : '💨'}'">`;
             } else {
@@ -1406,15 +1390,7 @@
             }
             
             balance.textContent = `💎 ${STATE.sapphires} сапфиров | ⭐ ${STATE.stars} звёзд`;
-            
-            // 🔒 Показываем кнопку "Ещё" только если есть предрасчитанные призы И хватает сапфиров
-            const canSpinAgain = STATE.sapphires >= CASE_COST && STATE.pendingPrizes.length > 0;
-            spinAgainBtn.style.display = canSpinAgain ? 'block' : 'none';
-            
-            // Если призы закончились, показываем подсказку
-            if (STATE.pendingPrizes.length === 0 && STATE.sapphires >= CASE_COST) {
-                balance.textContent += '\n\n💡 Вернитесь в бота для новых спинов';
-            }
+            spinAgainBtn.style.display = STATE.sapphires >= CASE_COST ? 'block' : 'none';
             
             overlay.classList.add('show');
         }
@@ -1428,9 +1404,9 @@
         }
 
         function closeModal() {
-            STATE.isModalOpen = false;
+            STATE.isModalOpen = false; // Сбрасываем флаг
             document.getElementById('modalOverlay').classList.remove('show');
-            updateUI();
+            updateUI(); // Обновляем состояние кнопки
         }
 
         // ============================================
@@ -1470,27 +1446,13 @@
         function updateUI() {
             document.getElementById('sapphires').textContent = STATE.sapphires;
             document.getElementById('stars-balance').textContent = STATE.stars;
-            
-            // 🔒 Кнопка заблокирована если: недостаточно сапфиров, спиннинг, модалка открыта, или нет призов от бота
-            const canSpin = STATE.sapphires >= CASE_COST && 
-                           !isSpinning && 
-                           !STATE.isModalOpen && 
-                           STATE.pendingPrizes.length > 0;
-            
-            document.getElementById('spinBtn').disabled = !canSpin;
-            
-            // Обновляем текст кнопки если призы закончились
-            const btnText = document.getElementById('spinBtn').querySelector('span:first-child');
-            if (STATE.pendingPrizes.length === 0 && STATE.sapphires >= CASE_COST) {
-                btnText.textContent = 'Вернитесь в бота';
-            } else {
-                btnText.textContent = 'Открыть кейс';
-            }
+            // Кнопка заблокирована если: недостаточно сапфиров, спиннинг или модалка открыта
+            document.getElementById('spinBtn').disabled = STATE.sapphires < CASE_COST || isSpinning || STATE.isModalOpen;
         }
 
         function updateSessionInfo() {
             document.getElementById('sessionInfo').textContent = 
-                `ID:${STATE.userId || '?'} | Spins:${STATE.spinsCount}/${STATE.spinsCount + STATE.pendingPrizes.length} | Won:${STATE.totalWon}⭐`;
+                `ID:${STATE.userId || '?'} | Spins:${STATE.spinsCount} | Won:${STATE.totalWon}⭐`;
         }
 
         function showStatus(message, type = 'error') {
