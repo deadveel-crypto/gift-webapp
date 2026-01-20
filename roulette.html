@@ -1113,59 +1113,174 @@
         // ============================================
         // 🔒 ИНИЦИАЛИЗАЦИЯ
         // ============================================
-        async function init() {
-            console.log("🎁 Divine Case - Init...");
-            
-            // Проверяем Telegram WebApp
-            const hasTelegram = tg && tg.initDataUnsafe?.user;
-            
-            if (hasTelegram) {
-                tg.ready();
-                tg.expand();
-                
-                STATE.userId = tg.initDataUnsafe.user.id;
-                STATE.username = tg.initDataUnsafe.user.username || '';
-                console.log("📱 Telegram user:", STATE.userId);
-                
-                // Кнопка назад
-                tg.BackButton.show();
-                tg.BackButton.onClick(() => closeAndExit());
+        async function loadBalanceFromAPI() {
+    if (!tg?.initDataUnsafe?.user) {
+        console.log("🎮 No Telegram - using demo");
+        return false;
+    }
+    
+    try {
+        const apiUrl = 'https://твой-домен.pythonanywhere.com/api/balance/' + STATE.userId;
+        
+        console.log("📡 Fetching balance from API:", apiUrl);
+        
+        const response = await fetch(apiUrl, {
+            method: 'GET',
+            headers: {
+                'X-Telegram-Init-Data': tg.initData
             }
-            
-            // Загружаем баланс из URL
-            const balanceLoaded = loadBalanceFromURL();
-            
-            // ✅ ОПРЕДЕЛЯЕМ ДЕМО-РЕЖИМ
-            // Демо если: нет Telegram ИЛИ нет user_id в URL ИЛИ баланс не загрузился
-            STATE.isDemo = !hasTelegram || !balanceLoaded;
-            
-            if (STATE.isDemo) {
-                console.log("🎮 DEMO MODE - баланс не будет сохранён");
-                document.getElementById('demoBadge').classList.add('show');
-                
-                // В демо даём тестовый баланс
-                if (!balanceLoaded) {
-                    STATE.sapphires = 500;
-                    STATE.stars = 0;
-                }
-            }
-            
-            // Инициализация UI
-            generateStars();
-            generateItemsStrip();
-            generatePrizesGrid();
-            updateUI();
-            
-            STATE.isInitialized = true;
-            
-            // Скрываем загрузку
-            setTimeout(() => {
-                document.getElementById('loadingOverlay').classList.add('hidden');
-            }, 500);
-            
-            updateSessionInfo();
-            console.log("✅ Initialized:", STATE);
+        });
+        
+        if (!response.ok) {
+            console.error("❌ API error:", response.status);
+            return false;
         }
+        
+        const data = await response.json();
+        STATE.sapphires = data.sapphires;
+        STATE.stars = data.stars;
+        
+        console.log("✅ Balance from API:", data);
+        return true;
+    } catch (error) {
+        console.error("❌ Failed to load balance:", error);
+        return false;
+    }
+}
+
+// ============================================
+// 🔒 СОХРАНЕНИЕ РЕЗУЛЬТАТА ЧЕРЕЗ API
+// ============================================
+async function saveResultToAPI() {
+    if (!tg?.initDataUnsafe?.user) {
+        console.log("🎮 Demo mode - not saving");
+        return false;
+    }
+    
+    try {
+        const apiUrl = 'https://deadveel.pythonanywhere.com/api/roulette/result';
+        
+        const resultData = {
+            user_id: STATE.userId,
+            spins_count: STATE.spinsCount,
+            total_won: STATE.totalWon,
+            sapphires_spent: STATE.sapphiresSpent,
+            is_demo: STATE.isDemo
+        };
+        
+        console.log("📤 Saving result to API:", resultData);
+        
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Telegram-Init-Data': tg.initData
+            },
+            body: JSON.stringify(resultData)
+        });
+        
+        if (!response.ok) {
+            console.error("❌ API error:", response.status);
+            const error = await response.json();
+            console.error("Error details:", error);
+            return false;
+        }
+        
+        const data = await response.json();
+        console.log("✅ Result saved:", data);
+        
+        // Обновляем локальный баланс из ответа API
+        STATE.sapphires = data.sapphires;
+        STATE.stars = data.stars;
+        updateUI();
+        
+        return true;
+    } catch (error) {
+        console.error("❌ Failed to save result:", error);
+        return false;
+    }
+}
+
+// ============================================
+// 🔒 ИНИЦИАЛИЗАЦИЯ
+// ============================================
+async function init() {
+    console.log("🎁 Divine Case - Init...");
+    
+    // Проверяем Telegram WebApp
+    const hasTelegram = tg && tg.initDataUnsafe?.user;
+    
+    if (hasTelegram) {
+        tg.ready();
+        tg.expand();
+        
+        STATE.userId = tg.initDataUnsafe.user.id;
+        STATE.username = tg.initDataUnsafe.user.username || '';
+        console.log("📱 Telegram user:", STATE.userId);
+        
+        // Кнопка назад
+        tg.BackButton.show();
+        tg.BackButton.onClick(() => closeAndExit());
+    }
+    
+    // ✅ Загружаем баланс через API
+    const balanceLoaded = await loadBalanceFromAPI();
+    
+    // Определяем демо-режим
+    STATE.isDemo = !hasTelegram || !balanceLoaded;
+    
+    if (STATE.isDemo) {
+        console.log("🎮 DEMO MODE - баланс не будет сохранён");
+        document.getElementById('demoBadge').classList.add('show');
+        
+        // В демо даём тестовый баланс
+        if (!balanceLoaded) {
+            STATE.sapphires = 500;
+            STATE.stars = 0;
+        }
+    }
+    
+    // Инициализация UI
+    generateStars();
+    generateItemsStrip();
+    generatePrizesGrid();
+    updateUI();
+    
+    STATE.isInitialized = true;
+    
+    // Скрываем загрузку
+    setTimeout(() => {
+        document.getElementById('loadingOverlay').classList.add('hidden');
+    }, 500);
+    
+    updateSessionInfo();
+    console.log("✅ Initialized:", STATE);
+}
+
+// ============================================
+// 🔒 ЗАКРЫТИЕ И СОХРАНЕНИЕ
+// ============================================
+async function closeAndExit() {
+    closeModal();
+    
+    // Сохраняем результат если были спины
+    if (STATE.spinsCount > 0 && !STATE.isDemo) {
+        console.log("💾 Saving results...");
+        const saved = await saveResultToAPI();
+        
+        if (!saved) {
+            alert("❌ Ошибка сохранения результата. Попробуйте ещё раз.");
+            return;
+        }
+        
+        console.log("✅ Results saved successfully");
+    }
+    
+    // Закрываем WebApp
+    if (tg?.close) {
+        tg.close();
+    }
+}
         
         // ============================================
         // ГЕНЕРАЦИЯ СЕТКИ ПРИЗОВ
