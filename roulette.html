@@ -468,6 +468,15 @@
             filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
         }
 
+        .prize-image {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            margin-bottom: 6px;
+            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+            border-radius: 8px;
+        }
+
         .prize-stars {
             font-size: 0.8rem;
             font-weight: 700;
@@ -609,6 +618,14 @@
             font-size: 1.5rem; 
             margin-bottom: 6px;
         }
+
+        .prize-card-image {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            margin-bottom: 6px;
+            border-radius: 6px;
+        }
         
         .prize-card-name { 
             font-size: 0.8rem; 
@@ -719,6 +736,15 @@
         .modal-emoji {
             font-size: 4rem;
             margin-bottom: 20px;
+            animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .modal-prize-image {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            margin-bottom: 20px;
+            border-radius: 12px;
             animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
@@ -902,6 +928,7 @@
             .case-container { height: 110px; }
             .prize-item { width: 85px; height: 85px; }
             .prize-emoji { font-size: 1.7rem; }
+            .prize-image { width: 40px; height: 40px; }
             .prize-stars { font-size: 0.7rem; padding: 3px 8px; }
             .brand-text { font-size: 1.6rem; }
             .pointer-line { height: 110px; }
@@ -913,8 +940,6 @@
         <div class="loader"></div>
         <div class="loading-text">Загрузка...</div>
     </div>
-
-
 
     <div class="animated-bg">
         <div class="bg-orb bg-orb-1"></div>
@@ -975,27 +1000,8 @@
 
     <div class="info-section">
         <div class="info-title">Возможные призы</div>
-        <div class="prizes-grid">
-            <div class="prize-card legendary">
-                <div class="prize-card-emoji">⭐</div>
-                <div class="prize-card-name">500⭐</div>
-            </div>
-            <div class="prize-card">
-                <div class="prize-card-emoji">⭐</div>
-                <div class="prize-card-name">100⭐</div>
-            </div>
-            <div class="prize-card">
-                <div class="prize-card-emoji">⭐</div>
-                <div class="prize-card-name">50⭐</div>
-            </div>
-            <div class="prize-card">
-                <div class="prize-card-emoji">⭐</div>
-                <div class="prize-card-name">25⭐</div>
-            </div>
-            <div class="prize-card">
-                <div class="prize-card-emoji">💨</div>
-                <div class="prize-card-name">0⭐</div>
-            </div>
+        <div class="prizes-grid" id="prizesGrid">
+            <!-- Will be generated dynamically -->
         </div>
     </div>
 
@@ -1020,9 +1026,6 @@
         // ============================================
         // 🔒 БЕЗОПАСНАЯ ВЕРСИЯ - БЕЗ URL ПАРАМЕТРОВ
         // ============================================
-        // Баланс получается ТОЛЬКО из initData Telegram
-        // который криптографически подписан
-        // ============================================
         
         const CASE_COST = 100;
         
@@ -1039,20 +1042,63 @@
             isInitialized: false,
             spinsCount: 0,
             totalWon: 0,
-            sapphiresSpent: 0
+            sapphiresSpent: 0,
+            isModalOpen: false  // Новый флаг для отслеживания модального окна
         };
         
         let isSpinning = false;
 
         // ============================================
-        // ПРИЗЫ (шансы как в боте)
+        // ПРИЗЫ С КАСТОМНЫМИ ИЗОБРАЖЕНИЯМИ
+        // Замените URL на свои изображения
         // ============================================
         const PRIZES = [
-            { stars: 0, chance: 97, emoji: "💨", rarity: "common" },
-            { stars: 25, chance: 1, emoji: "⭐", rarity: "uncommon" },
-            { stars: 50, chance: 1, emoji: "✨", rarity: "rare" },
-            { stars: 100, chance: 0.8, emoji: "🌟", rarity: "epic" },
-            { stars: 500, chance: 0.2, emoji: "💫", rarity: "legendary" },
+            { 
+                stars: 0, 
+                chance: 97, 
+                emoji: "💨", 
+                rarity: "common",
+                // Можно указать свою картинку:
+                // image: "https://your-domain.com/images/empty.png",
+                image: null,
+                name: "Пусто"
+            },
+            { 
+                stars: 25, 
+                chance: 1, 
+                emoji: "⭐", 
+                rarity: "uncommon",
+                // image: "https://your-domain.com/images/stars-25.png",
+                image: null,
+                name: "25 звёзд"
+            },
+            { 
+                stars: 50, 
+                chance: 1, 
+                emoji: "✨", 
+                rarity: "rare",
+                // image: "https://your-domain.com/images/stars-50.png",
+                image: null,
+                name: "50 звёзд"
+            },
+            { 
+                stars: 100, 
+                chance: 0.8, 
+                emoji: "🌟", 
+                rarity: "epic",
+                // image: "https://your-domain.com/images/stars-100.png",
+                image: null,
+                name: "100 звёзд"
+            },
+            { 
+                stars: 500, 
+                chance: 0.2, 
+                emoji: "💫", 
+                rarity: "legendary",
+                // image: "https://your-domain.com/images/jackpot.png",
+                image: null,
+                name: "Джекпот!"
+            },
         ];
 
         const ITEM_WIDTH = 112;
@@ -1083,7 +1129,6 @@
             tg.BackButton.onClick(() => closeAndExit());
             
             // 🔒 БЕЗОПАСНО: Получаем баланс из URL параметров
-            // которые устанавливает БОТ при открытии WebApp
             const balanceLoaded = loadBalanceFromURL();
             
             if (!balanceLoaded) {
@@ -1094,6 +1139,7 @@
             // Инициализация UI
             generateStars();
             generateItemsStrip();
+            generatePrizesGrid();
             updateUI();
             
             STATE.isInitialized = true;
@@ -1105,6 +1151,24 @@
             
             updateSessionInfo();
             console.log("✅ Initialized:", STATE);
+        }
+        
+        // ============================================
+        // ГЕНЕРАЦИЯ СЕТКИ ПРИЗОВ
+        // ============================================
+        function generatePrizesGrid() {
+            const grid = document.getElementById('prizesGrid');
+            const displayPrizes = [...PRIZES].reverse(); // От легендарного к обычному
+            
+            grid.innerHTML = displayPrizes.map(prize => `
+                <div class="prize-card ${prize.rarity === 'legendary' ? 'legendary' : ''}">
+                    ${prize.image 
+                        ? `<img src="${prize.image}" alt="${prize.name}" class="prize-card-image" onerror="this.outerHTML='<div class=\\'prize-card-emoji\\'>${prize.emoji}</div>'">`
+                        : `<div class="prize-card-emoji">${prize.emoji}</div>`
+                    }
+                    <div class="prize-card-name">${prize.stars}⭐</div>
+                </div>
+            `).join('');
         }
         
         // ============================================
@@ -1136,11 +1200,9 @@
         function loadBalanceFromURL() {
             const urlParams = new URLSearchParams(window.location.search);
             
-            // Баланс из URL (установленного ботом)
             const sapphires = parseInt(urlParams.get('sapphires'));
             const stars = parseInt(urlParams.get('stars'));
             
-            // Проверяем что параметры валидны
             if (isNaN(sapphires) || isNaN(stars)) {
                 console.error("❌ Invalid URL parameters");
                 return false;
@@ -1154,10 +1216,11 @@
         }
 
         // ============================================
-        // 🎲 ОТКРЫТИЕ КЕЙСА (локально, результат на сервер)
+        // 🎲 ОТКРЫТИЕ КЕЙСА
         // ============================================
         async function openCase() {
-            if (isSpinning) return;
+            // Блокируем если спиннинг или модалка открыта
+            if (isSpinning || STATE.isModalOpen) return;
             
             if (STATE.sapphires < CASE_COST) {
                 showStatus('❌ Недостаточно сапфиров!', 'error');
@@ -1175,8 +1238,7 @@
             STATE.sapphiresSpent += CASE_COST;
             STATE.spinsCount++;
             
-            // Генерируем приз (локально для анимации)
-            // Реальный приз будет подтверждён при закрытии через sendData
+            // Генерируем приз
             const prize = getRandomPrize();
             
             if (prize.stars > 0) {
@@ -1194,7 +1256,6 @@
             // Результат
             setTimeout(() => showResult(prize), 500);
             
-            document.getElementById('spinBtn').disabled = false;
             isSpinning = false;
             updateSessionInfo();
         }
@@ -1213,7 +1274,6 @@
             return PRIZES[0];
         }
 
-        // Красивое отображение во время прокрутки
         function getRandomPrizeForDisplay() {
             const rand = Math.random() * 100;
             if (rand < 30) return PRIZES[0];
@@ -1273,8 +1333,13 @@
                 item.dataset.index = i;
                 item.dataset.stars = prize.stars;
                 
+                // Используем картинку или эмодзи
+                const visual = prize.image 
+                    ? `<img src="${prize.image}" alt="" class="prize-image" onerror="this.outerHTML='<div class=\\'prize-emoji\\'>${prize.emoji}</div>'">`
+                    : `<div class="prize-emoji">${prize.emoji}</div>`;
+                
                 item.innerHTML = `
-                    <div class="prize-emoji">${prize.emoji}</div>
+                    ${visual}
                     <div class="prize-stars">
                         ${prize.stars > 0 ? `<span class="star-small">⭐</span>${prize.stars}` : '—'}
                     </div>
@@ -1304,6 +1369,9 @@
         // РЕЗУЛЬТАТ
         // ============================================
         function showResult(prize) {
+            STATE.isModalOpen = true; // Устанавливаем флаг
+            document.getElementById('spinBtn').disabled = true; // Блокируем кнопку
+            
             const overlay = document.getElementById('modalOverlay');
             const modal = document.getElementById('modal');
             const emoji = document.getElementById('modalEmoji');
@@ -1312,9 +1380,15 @@
             const balance = document.getElementById('modalBalance');
             const spinAgainBtn = document.getElementById('spinAgainBtn');
             
+            // Показываем картинку или эмодзи
+            if (prize.image) {
+                emoji.innerHTML = `<img src="${prize.image}" class="modal-prize-image" onerror="this.outerHTML='${prize.emoji}'">`;
+            } else {
+                emoji.textContent = prize.stars > 0 ? prize.emoji : '💨';
+            }
+            
             if (prize.stars > 0) {
                 modal.classList.add('win');
-                emoji.textContent = prize.emoji;
                 title.textContent = prize.stars >= 100 ? 'Джекпот!' : 'Поздравляем!';
                 prizeText.textContent = `+${prize.stars} ⭐`;
                 prizeText.style.fontSize = '';
@@ -1322,7 +1396,6 @@
                 haptic('success');
             } else {
                 modal.classList.remove('win');
-                emoji.textContent = '💨';
                 title.textContent = 'Пусто...';
                 prizeText.textContent = 'Попробуй ещё!';
                 prizeText.style.fontSize = '1.2rem';
@@ -1344,17 +1417,17 @@
         }
 
         function closeModal() {
+            STATE.isModalOpen = false; // Сбрасываем флаг
             document.getElementById('modalOverlay').classList.remove('show');
+            updateUI(); // Обновляем состояние кнопки
         }
 
         // ============================================
         // 🔒 ЗАКРЫТИЕ И ОТПРАВКА ДАННЫХ В БОТ
         // ============================================
         function closeAndExit() {
-            // Закрываем модалку если открыта
             closeModal();
             
-            // Если были прокруты - отправляем данные
             if (STATE.spinsCount > 0) {
                 const resultData = {
                     action: 'roulette_result',
@@ -1370,13 +1443,11 @@
                 console.log("📤 Sending data to bot:", resultData);
                 
                 if (tg?.sendData) {
-                    // sendData автоматически закрывает WebApp
                     tg.sendData(JSON.stringify(resultData));
-                    return; // sendData закроет приложение
+                    return;
                 }
             }
             
-            // Если прокрутов не было или нет tg - просто закрываем
             if (tg?.close) {
                 tg.close();
             }
@@ -1388,7 +1459,8 @@
         function updateUI() {
             document.getElementById('sapphires').textContent = STATE.sapphires;
             document.getElementById('stars-balance').textContent = STATE.stars;
-            document.getElementById('spinBtn').disabled = STATE.sapphires < CASE_COST || isSpinning;
+            // Кнопка заблокирована если: недостаточно сапфиров, спиннинг или модалка открыта
+            document.getElementById('spinBtn').disabled = STATE.sapphires < CASE_COST || isSpinning || STATE.isModalOpen;
         }
 
         function updateSessionInfo() {
@@ -1405,10 +1477,6 @@
 
         function hideStatus() {
             document.getElementById('statusMessage').classList.remove('show');
-        }
-
-        function updateSessionInfoOld() {
-            // removed
         }
 
         function generateStars() {
@@ -1472,7 +1540,7 @@
         });
 
         document.addEventListener('keydown', (e) => {
-            if (e.code === 'Space' && !isSpinning) {
+            if (e.code === 'Space' && !isSpinning && !STATE.isModalOpen) {
                 e.preventDefault();
                 openCase();
             }
