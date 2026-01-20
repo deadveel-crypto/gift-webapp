@@ -1192,20 +1192,21 @@
         // ============================================
         function loadBalanceFromURL() {
             const urlParams = new URLSearchParams(window.location.search);
-            
+    
             const userId = urlParams.get('user_id');
             const sapphires = parseInt(urlParams.get('sapphires'));
             const stars = parseInt(urlParams.get('stars'));
-            
+    
             // Проверяем что все параметры есть и валидны
             if (!userId || isNaN(sapphires) || isNaN(stars)) {
                 console.error("❌ Invalid or missing URL parameters");
                 return false;
             }
-            
+    
             STATE.sapphires = sapphires;
             STATE.stars = stars;
-            
+            STATE.userId = userId; // ✅ ДОБАВЬ ЭТУ СТРОКУ если её нет
+    
             console.log("✅ Balance from URL:", { userId, sapphires, stars });
             return true;
         }
@@ -1415,31 +1416,28 @@
         // ============================================
         function closeAndExit() {
             closeModal();
-            
-            // ✅ ИСПРАВЛЕНО: Всегда отправляем данные если были спины
-            // Даже если 0 спинов - отправляем с is_demo
+    
             const resultData = {
                 action: 'roulette_result',
-                user_id: STATE.userId,
+                user_id: STATE.userId,  // ✅ Проверь что это есть
                 spins_count: STATE.spinsCount,
                 total_won: STATE.totalWon,
                 sapphires_spent: STATE.sapphiresSpent,
                 final_sapphires: STATE.sapphires,
                 final_stars: STATE.stars,
-                is_demo: STATE.isDemo,  // ✅ ДОБАВЛЕНО: флаг демо-режима
+                is_demo: STATE.isDemo,
                 timestamp: Date.now()
             };
-            
+    
             console.log("📤 Sending data to bot:", resultData);
-            
+    
             // Отправляем только если были спины И не демо
             if (STATE.spinsCount > 0 && !STATE.isDemo && tg?.sendData) {
                 tg.sendData(JSON.stringify(resultData));
-                // sendData автоматически закрывает WebApp
                 return;
             }
-            
-            // Просто закрываем
+    
+    // Просто закрываем
             if (tg?.close) {
                 tg.close();
             }
