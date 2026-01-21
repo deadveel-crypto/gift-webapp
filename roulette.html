@@ -395,11 +395,7 @@
             position: absolute;
             top: 0;
             left: 0;
-            transition: none;
-        }
-
-        .items-strip.animating {
-            transition: transform 5s cubic-bezier(0.15, 0.85, 0.25, 1);
+            will-change: transform;
         }
 
         .prize-item {
@@ -415,7 +411,9 @@
             position: relative;
             overflow: hidden;
             border: 2px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.3s ease;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
         }
 
         .prize-item::before {
@@ -1010,7 +1008,8 @@
         ];
 
         const ITEM_WIDTH = 112;
-        const VISIBLE_ITEMS = 50;
+        const VISIBLE_ITEMS = 70; // Больше элементов для длинной прокрутки
+        const SPIN_DURATION = 6000; // Длительность анимации в мс
 
         // ============================================
         // TELEGRAM INIT
@@ -1135,10 +1134,11 @@
         }
 
         // ============================================
-        // ANIMATION
+        // ANIMATION - Реалистичная физика рулетки
         // ============================================
         async function runAnimation(winningPrize) {
-            const winningIndex = 35 + Math.floor(Math.random() * 5);
+            // Выигрышный элемент будет примерно в середине-конце ленты
+            const winningIndex = 50 + Math.floor(Math.random() * 8);
             
             generateItemsStrip(winningPrize, winningIndex);
             
@@ -1146,38 +1146,147 @@
             const strip = document.getElementById('itemsStrip');
             const containerWidth = container.offsetWidth;
             const centerPosition = containerWidth / 2;
+            
+            // Целевая позиция - центр выигрышного элемента
             const targetPosition = (winningIndex * ITEM_WIDTH) + (ITEM_WIDTH / 2) - centerPosition;
-            const randomOffset = (Math.random() - 0.5) * 30;
+            // Небольшое случайное смещение для натуральности (не точно по центру)
+            const randomOffset = (Math.random() - 0.5) * 40;
             const finalPosition = targetPosition + randomOffset;
             
-            strip.style.transform = `translateX(${containerWidth}px)`;
+            // Начальная позиция - лента начинается так, чтобы были видны первые элементы
+            const startPosition = -centerPosition + ITEM_WIDTH;
+            strip.style.transition = 'none';
+            strip.style.transform = `translateX(${startPosition}px)`;
+            
+            // Принудительный reflow
             strip.offsetHeight;
             
-            setTimeout(() => {
-                strip.classList.add('animating');
-                strip.style.transform = `translateX(-${finalPosition}px)`;
-            }, 50);
+            // Запускаем анимацию через requestAnimationFrame для плавности
+            await new Promise(resolve => {
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        animateStrip(strip, startPosition, -finalPosition, SPIN_DURATION, resolve);
+                    });
+                });
+            });
             
-            playTickSounds();
-            
-            await new Promise(resolve => setTimeout(resolve, 5200));
-            
+            // Подсвечиваем победителя
             const winnerItem = strip.querySelector(`[data-index="${winningIndex}"]`);
             if (winnerItem) {
                 winnerItem.classList.add('winner');
+                haptic('success');
             }
+        }
+        
+        // Кастомная функция анимации с easing
+        function animateStrip(element, from, to, duration, onComplete) {
+            const startTime = performance.now();
+            let lastTickPosition = from;
+            const tickThreshold = ITEM_WIDTH; // Тик при прохождении каждого элемента
+            
+            // Easing функция - быстрый старт, долгое замедление
+            function easeOutExpo(t) {
+                return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+            }
+            
+            // Более агрессивное замедление в конце
+            function easeOutQuint(t) {
+                return 1 - Math.pow(1 - t, 5);
+            }
+            
+            // Комбинированный easing - сначала быстро, потом медленно
+            function customEase(t) {
+                if (t < 0.2) {
+                    // Быстрый разгон в первые 20%
+                    return easeOutExpo(t * 5) * 0.5;
+                } else {
+                    // Плавное замедление остальные 80%
+                    const adjustedT = (t - 0.2) / 0.8;
+                    return 0.5 + easeOutQuint(adjustedT) * 0.5;
+                }
+            }
+            
+            function animate(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // Применяем easing
+                const easedProgress = customEase(progress);
+                const currentPosition = from + (to - from) * easedProgress;
+                
+                element.style.transform = `translateX(${currentPosition}px)`;
+                
+                // Тактильная обратная связь при прохождении элементов
+                const distanceTraveled = Math.abs(currentPosition - lastTickPosition);
+                if (distanceTraveled >= tickThreshold) {
+                    // Частота тиков уменьшается по мере замедления
+                    if (progress < 0.7) {
+                        haptic('selection');
+                    } else if (progress < 0.9 && Math.random() > 0.5) {
+                        haptic('selection');
+                    }
+                    lastTickPosition = currentPosition;
+                }
+                
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    // Финальный тик
+                    haptic('impact');
+                    
+                    // Небольшой "отскок" в конце для натуральности
+                    addBounceEffect(element, to, onComplete);
+                }
+            }
+            
+            requestAnimationFrame(animate);
+        }
+        
+        // Эффект небольшого отскока в конце
+        function addBounceEffect(element, finalPos, onComplete) {
+            const bounceDistance = 8 + Math.random() * 6; // 8-14px отскок
+            const bounceDuration = 300;
+            const startTime = performance.now();
+            
+            function bounce(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / bounceDuration, 1);
+                
+                // Отскок туда-обратно
+                const bounceProgress = Math.sin(progress * Math.PI);
+                const offset = bounceDistance * bounceProgress * (1 - progress);
+                
+                element.style.transform = `translateX(${finalPos + offset}px)`;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(bounce);
+                } else {
+                    element.style.transform = `translateX(${finalPos}px)`;
+                    onComplete();
+                }
+            }
+            
+            requestAnimationFrame(bounce);
         }
 
         function generateItemsStrip(winningPrize = null, winningIndex = null) {
             const strip = document.getElementById('itemsStrip');
             strip.innerHTML = '';
-            strip.classList.remove('animating');
+            strip.style.transition = 'none';
             strip.style.transform = 'translateX(0)';
             
             for (let i = 0; i < VISIBLE_ITEMS; i++) {
-                let prize = (winningIndex !== null && i === winningIndex) 
-                    ? winningPrize 
-                    : getRandomPrizeForDisplay();
+                let prize;
+                
+                if (winningIndex !== null && i === winningIndex) {
+                    // Гарантированный выигрышный элемент
+                    prize = winningPrize;
+                } else if (winningIndex !== null && Math.abs(i - winningIndex) <= 2) {
+                    // Рядом с выигрышным - разнообразие для драматизма
+                    prize = getRandomPrizeForDisplay(true);
+                } else {
+                    prize = getRandomPrizeForDisplay();
+                }
                 
                 const item = document.createElement('div');
                 item.className = `prize-item rarity-${prize.rarity}`;
@@ -1193,8 +1302,19 @@
             }
         }
 
-        function getRandomPrizeForDisplay() {
+        function getRandomPrizeForDisplay(moreDramatic = false) {
             const rand = Math.random() * 100;
+            
+            if (moreDramatic) {
+                // Рядом с выигрышем - больше "почти выиграл" моментов
+                if (rand < 25) return PRIZES[0];
+                if (rand < 45) return PRIZES[1];
+                if (rand < 70) return PRIZES[2];
+                if (rand < 90) return PRIZES[3];
+                return PRIZES[4];
+            }
+            
+            // Обычное распределение для визуального разнообразия
             if (rand < 35) return PRIZES[0];
             if (rand < 55) return PRIZES[1];
             if (rand < 75) return PRIZES[2];
@@ -1202,21 +1322,7 @@
             return PRIZES[4];
         }
 
-        function playTickSounds() {
-            let tickCount = 0;
-            const maxTicks = 40;
-            
-            const tickInterval = setInterval(() => {
-                tickCount++;
-                if (tickCount > maxTicks) {
-                    clearInterval(tickInterval);
-                    return;
-                }
-                if (tickCount < 20) {
-                    haptic('selection');
-                }
-            }, 100);
-        }
+        // Тики теперь интегрированы в animateStrip для синхронизации с позицией
 
         // ============================================
         // RESULT MODAL
@@ -1265,7 +1371,7 @@
         function spinAgain() {
             closeModal();
             setTimeout(() => {
-                generateItemsStrip();
+                initializeStrip();
                 spinRoulette();
             }, 400);
         }
@@ -1385,12 +1491,27 @@
             console.log("🎰 Roulette Init...");
             
             generateStars();
-            generateItemsStrip();
             generatePrizesGrid();
+            
+            // Инициализируем ленту с центрированием
+            initializeStrip();
             
             if (!initTelegram()) return;
             
             await loadBalance();
+        }
+        
+        // Начальная инициализация ленты
+        function initializeStrip() {
+            generateItemsStrip();
+            const strip = document.getElementById('itemsStrip');
+            const container = document.getElementById('spinContainer');
+            const containerWidth = container.offsetWidth;
+            const centerPosition = containerWidth / 2;
+            
+            // Показываем ленту с небольшим смещением, чтобы были видны призы
+            const initialOffset = -centerPosition + ITEM_WIDTH * 2;
+            strip.style.transform = `translateX(${initialOffset}px)`;
         }
 
         // ============================================
