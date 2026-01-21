@@ -1208,24 +1208,38 @@
 
     <script>
         // ============================================
-        // 🔒 API КОНФИГУРАЦИЯ (как в рулетке)
+        // 🔒 API КОНФИГУРАЦИЯ
         // ============================================
         const API_BASE = "https://deadveel.pythonanywhere.com";
         
         const tg = window.Telegram?.WebApp;
-        
-        // ⚠️ ВАЖНО: берём initData из Telegram
         const initData = tg?.initData || '';
         
         // ============================================
-        // ДОСТУПНЫЕ КЕЙСЫ
+        // 🖼️ GITHUB IMAGE CDN - НАСТРОЙКИ
+        // ============================================
+        // Замени на свои данные:
+        const GITHUB_USER = "YOUR_USERNAME";  // Твой GitHub username
+        const GITHUB_REPO = "case-images";     // Название репозитория
+        const GITHUB_BRANCH = "main";          // Ветка (обычно main)
+        
+        // Базовый URL для картинок (jsDelivr CDN - быстрее чем raw GitHub)
+        const IMG_CDN = `https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${GITHUB_REPO}@${GITHUB_BRANCH}`;
+        
+        // Альтернатива - raw GitHub (медленнее):
+        // const IMG_CDN = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/${GITHUB_BRANCH}`;
+        
+        // ============================================
+        // ДОСТУПНЫЕ КЕЙСЫ (с GitHub картинками)
         // ============================================
         const CASES = [
             {
                 id: 'cosmic',
                 name: 'Cosmic Case',
                 emoji: '🎁',
-                image: null, // Вставьте URL картинки, например: 'https://i.ibb.co/xxx/cosmic.png'
+                // Раскомментируй когда загрузишь картинки:
+                // image: `${IMG_CDN}/cases/cosmic.png`,
+                image: null,
                 cost: 100,
                 tag: null
             },
@@ -1233,7 +1247,8 @@
                 id: 'stellar',
                 name: 'Stellar Case',
                 emoji: '✨',
-                image: null, // Вставьте URL картинки
+                // image: `${IMG_CDN}/cases/stellar.png`,
+                image: null,
                 cost: 250,
                 tag: null
             },
@@ -1241,7 +1256,8 @@
                 id: 'golden',
                 name: 'Golden Case',
                 emoji: '👑',
-                image: null, // Вставьте URL картинки
+                // image: `${IMG_CDN}/cases/golden.png`,
+                image: null,
                 cost: 500,
                 tag: 'HOT',
                 legendary: true
@@ -1250,7 +1266,8 @@
                 id: 'divine',
                 name: 'Divine Case',
                 emoji: '💎',
-                image: null, // Вставьте URL картинки
+                // image: `${IMG_CDN}/cases/divine.png`,
+                image: null,
                 cost: 1000,
                 tag: 'VIP',
                 legendary: true
@@ -1271,14 +1288,14 @@
             spinsCount: 0,
             totalWon: 0,
             isModalOpen: false,
-            currentScreen: 'menu', // 'menu' или 'case'
+            currentScreen: 'menu',
             selectedCase: null
         };
         
         let isSpinning = false;
 
         // ============================================
-        // ВИЗУАЛЬНЫЕ ДАННЫЕ ПРИЗОВ
+        // ВИЗУАЛЬНЫЕ ДАННЫЕ ПРИЗОВ (с GitHub картинками)
         // ============================================
         const PRIZE_VISUALS = [
             { 
@@ -1286,6 +1303,8 @@
                 stars: 0, 
                 emoji: "💨", 
                 rarity: "common",
+                // Раскомментируй когда загрузишь:
+                // image: `${IMG_CDN}/prizes/empty.png`,
                 image: "https://i.ibb.co/gb5FSTmV/1768925232598-019bdc2a-e026-7e7c-9739-37234d1c5e87.png",
                 name: "Пусто"
             },
@@ -1294,6 +1313,7 @@
                 stars: 25, 
                 emoji: "⭐", 
                 rarity: "uncommon",
+                // image: `${IMG_CDN}/prizes/stars-25.jpg`,
                 image: "https://i.ibb.co/rfvNFsXR/1768924736444-019bdc22-de2d-7183-b0e4-53670324a942.jpg",
                 name: "25 звёзд"
             },
@@ -1302,6 +1322,7 @@
                 stars: 50, 
                 emoji: "✨", 
                 rarity: "rare",
+                // image: `${IMG_CDN}/prizes/stars-50.jpg`,
                 image: "https://i.ibb.co/8CL2Rxq/1768924439694-019bdc1e-33ba-716b-9343-17c2777cf861.jpg",
                 name: "50 звёзд"
             },
@@ -1310,6 +1331,7 @@
                 stars: 100, 
                 emoji: "🌟", 
                 rarity: "epic",
+                // image: `${IMG_CDN}/prizes/stars-100.png`,
                 image: "https://i.ibb.co/RGX1C998/1768923759742-019bdc13-a966-7740-ba75-610d49ea3c79.png",
                 name: "100 звёзд"
             },
@@ -1318,6 +1340,7 @@
                 stars: 500, 
                 emoji: "💫", 
                 rarity: "legendary",
+                // image: `${IMG_CDN}/prizes/jackpot.png`,
                 image: "https://i.ibb.co/XrTtbMXR/1768923046045-019bdc09-a36c-7352-ba71-f5d8fe7799d4.png",
                 name: "Джекпот!"
             },
@@ -1327,7 +1350,7 @@
         const VISIBLE_ITEMS = 50;
 
         // ============================================
-        // 🔒 API ЗАПРОСЫ (как в рулетке)
+        // 🔒 API ЗАПРОСЫ
         // ============================================
         async function apiRequest(path, options = {}) {
             const res = await fetch(API_BASE + path, {
@@ -1349,7 +1372,7 @@
         }
 
         // ============================================
-        // 🔒 ЗАГРУЗКА БАЛАНСА (как в рулетке)
+        // 🔒 ЗАГРУЗКА БАЛАНСА
         // ============================================
         async function loadBalance() {
             try {
@@ -1371,12 +1394,33 @@
         }
 
         // ============================================
+        // 🖼️ ПРЕДЗАГРУЗКА КАРТИНОК
+        // ============================================
+        function preloadImages() {
+            const imageUrls = [];
+            
+            // Собираем все URL картинок
+            CASES.forEach(c => { if (c.image) imageUrls.push(c.image); });
+            PRIZE_VISUALS.forEach(p => { if (p.image) imageUrls.push(p.image); });
+            
+            // Предзагружаем
+            imageUrls.forEach(url => {
+                const img = new Image();
+                img.src = url;
+            });
+            
+            console.log(`🖼️ Preloading ${imageUrls.length} images...`);
+        }
+
+        // ============================================
         // 🔒 ИНИЦИАЛИЗАЦИЯ
         // ============================================
         async function init() {
             console.log("🎁 Divine Case - API Init...");
             
-            // Проверяем initData
+            // Предзагружаем картинки сразу
+            preloadImages();
+            
             if (!initData) {
                 showFatalError("❌ Telegram initData не получен.\nОткрой страницу только через бота.");
                 return;
@@ -1391,18 +1435,15 @@
                     STATE.username = tg.initDataUnsafe.user.username || '';
                 }
                 
-                // Кнопка назад - возвращает в меню или закрывает
                 tg.BackButton.show();
                 tg.BackButton.onClick(() => handleBackButton());
             }
             
-            // Инициализация UI
             generateStars();
             generateCasesGrid();
             generateItemsStrip();
             generatePrizesGrid();
             
-            // 🔒 Загружаем баланс с сервера
             const balanceLoaded = await loadBalance();
             
             if (!balanceLoaded) {
@@ -1411,7 +1452,6 @@
             
             STATE.isInitialized = true;
             
-            // Скрываем загрузку
             setTimeout(() => {
                 document.getElementById('loadingOverlay').classList.add('hidden');
             }, 500);
@@ -1430,7 +1470,7 @@
                 <div class="case-card ${caseItem.legendary ? 'legendary' : ''}" onclick="selectCase('${caseItem.id}')">
                     ${caseItem.tag ? `<div class="case-card-tag">${caseItem.tag}</div>` : ''}
                     ${caseItem.image 
-                        ? `<img src="${caseItem.image}" alt="${caseItem.name}" class="case-card-image" onerror="this.outerHTML='<div class=\\'case-card-emoji\\'>${caseItem.emoji}</div>'">`
+                        ? `<img src="${caseItem.image}" alt="${caseItem.name}" class="case-card-image" loading="lazy" onerror="this.outerHTML='<div class=\\'case-card-emoji\\'>${caseItem.emoji}</div>'">`
                         : `<div class="case-card-emoji">${caseItem.emoji}</div>`
                     }
                     <div class="case-card-name">${caseItem.name}</div>
@@ -1449,7 +1489,6 @@
             STATE.selectedCase = selectedCase;
             STATE.spinCost = selectedCase.cost;
             
-            // Обновляем UI кейса
             const emojiEl = document.getElementById('currentCaseEmoji');
             const imageEl = document.getElementById('currentCaseImage');
             
@@ -1471,10 +1510,7 @@
             document.getElementById('currentCaseName').textContent = selectedCase.name;
             document.getElementById('spinCost').textContent = `${selectedCase.cost} 💎`;
             
-            // Переключаем экраны
             showScreen('case');
-            
-            // Обновляем ленту
             generateItemsStrip();
             
             updateUI();
@@ -1512,7 +1548,6 @@
             } else if (STATE.currentScreen === 'case') {
                 goToMenu();
             } else {
-                // На главном экране - закрываем приложение
                 if (tg?.close) {
                     tg.close();
                 }
@@ -1530,7 +1565,7 @@
                 <div class="prize-card ${prize.rarity === 'legendary' ? 'legendary' : ''}">
                     <div class="prize-card-visual">
                         ${prize.image 
-                            ? `<img src="${prize.image}" alt="${prize.name}" class="prize-card-image" onerror="this.outerHTML='<div class=\\'prize-card-emoji\\'>${prize.emoji}</div>'">`
+                            ? `<img src="${prize.image}" alt="${prize.name}" class="prize-card-image" loading="lazy" onerror="this.outerHTML='<div class=\\'prize-card-emoji\\'>${prize.emoji}</div>'">`
                             : `<div class="prize-card-emoji">${prize.emoji}</div>`
                         }
                     </div>
@@ -1563,7 +1598,7 @@
         }
 
         // ============================================
-        // 🎲 ОТКРЫТИЕ КЕЙСА (с API как в рулетке)
+        // 🎲 ОТКРЫТИЕ КЕЙСА
         // ============================================
         async function openCase() {
             if (isSpinning || STATE.isModalOpen) return;
@@ -1579,32 +1614,32 @@
             document.getElementById('spinBtn').disabled = true;
             haptic('impact');
             
-            // 🎲 Выбираем приз с новыми шансами (98% на 500)
             const prizeStars = getRandomPrize();
             const prize = PRIZE_VISUALS.find(p => p.stars === prizeStars) || PRIZE_VISUALS[0];
             
             console.log("🎲 Prize selected:", prizeStars, "stars");
             
-            // 🚀 Мгновенно запускаем анимацию
             const animationPromise = runAnimation(prize);
             
-            // 🔒 Параллельно делаем API вызовы
             let apiSuccess = false;
             
             try {
-                // 1. Списываем сапфиры через API
-                await apiRequest("/api/spin", { method: "POST" });
-                console.log("✅ Spin success, sapphires deducted");
+                // Передаём стоимость кейса на сервер!
+                await apiRequest("/api/spin", { 
+                    method: "POST",
+                    body: JSON.stringify({ 
+                        cost: STATE.spinCost,
+                        case_id: STATE.selectedCase?.id || 'cosmic'
+                    })
+                });
+                console.log("✅ Spin success, sapphires deducted:", STATE.spinCost);
                 
-                // Обновляем локально
                 STATE.sapphires -= STATE.spinCost;
                 STATE.spinsCount++;
                 updateUI();
                 
-                // 2. Ждём завершения анимации
                 await animationPromise;
                 
-                // 3. Отправляем выигрыш на сервер
                 const claimData = await apiRequest("/api/claim", {
                     method: "POST",
                     body: JSON.stringify({ stars: prizeStars })
@@ -1612,7 +1647,6 @@
                 
                 console.log("✅ Claim success:", claimData);
                 
-                // 4. Обновляем баланс из ответа сервера
                 STATE.sapphires = claimData.new_sapphires;
                 STATE.stars = claimData.new_stars;
                 STATE.canSpin = claimData.can_spin;
@@ -1626,14 +1660,12 @@
                 
             } catch (e) {
                 console.error("❌ Spin/Claim error:", e);
-                // Ждём завершения анимации если ещё идёт
                 await animationPromise;
                 showStatus('❌ Ошибка: ' + e.message, 'error');
                 haptic('error');
                 await loadBalance();
             }
             
-            // 5. Показываем результат
             if (apiSuccess) {
                 showResult(prize);
             }
@@ -1642,21 +1674,15 @@
             updateSessionInfo();
         }
 
-        // 🎲 ШАНСЫ: 98% на "ничего", 500 только пролетает
         function getRandomPrize() {
             const rand = Math.random() * 100;
             
-            // 98% - ничего
             if (rand < 98) return 0;
-            
-            // Остальные 2% распределяем между призами (без 500)
             if (rand < 98.7) return 25;
             if (rand < 99.4) return 50;
             return 100;
-            // 500 - 0%, только для красоты в ленте
         }
 
-        // Визуальное распределение для ленты (для красоты)
         function getRandomPrizeForDisplay() {
             const rand = Math.random() * 100;
             if (rand < 30) return PRIZE_VISUALS[0];
@@ -1682,11 +1708,9 @@
             const randomOffset = (Math.random() - 0.5) * 30;
             const finalPosition = targetPosition + randomOffset;
             
-            // Начальная позиция
             strip.style.transform = `translateX(${containerWidth}px)`;
-            strip.offsetHeight; // force reflow
+            strip.offsetHeight;
             
-            // 🚀 Мгновенный старт через requestAnimationFrame
             requestAnimationFrame(() => {
                 strip.classList.add('animating');
                 strip.style.transform = `translateX(-${finalPosition}px)`;
@@ -1720,7 +1744,7 @@
                 item.dataset.stars = prize.stars;
                 
                 if (prize.image) {
-                    item.innerHTML = `<img src="${prize.image}" alt="" class="prize-image" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\\'prize-emoji\\'>${prize.emoji}</div>'">`;
+                    item.innerHTML = `<img src="${prize.image}" alt="" class="prize-image" loading="eager" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\\'prize-emoji\\'>${prize.emoji}</div>'">`;
                 } else {
                     item.innerHTML = `<div class="prize-emoji">${prize.emoji}</div>`;
                 }
@@ -1783,7 +1807,6 @@
             
             balance.textContent = `💎 ${STATE.sapphires} сапфиров | ⭐ ${STATE.stars} звёзд`;
             
-            // Показываем кнопку "Ещё" только если хватает сапфиров
             const canSpinAgain = STATE.sapphires >= STATE.spinCost && STATE.canSpin;
             spinAgainBtn.style.display = canSpinAgain ? 'block' : 'none';
             
@@ -1792,7 +1815,6 @@
 
         function spinAgain() {
             closeModal();
-            // Мгновенный старт следующего спина
             requestAnimationFrame(() => {
                 generateItemsStrip();
                 openCase();
