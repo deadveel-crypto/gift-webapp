@@ -320,6 +320,17 @@
             animation: subtleFloat 3s ease-in-out infinite;
         }
 
+        .case-card-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 16px;
+            margin-bottom: 12px;
+            filter: drop-shadow(0 5px 15px rgba(99, 102, 241, 0.4));
+            animation: subtleFloat 3s ease-in-out infinite;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
         .case-card-name {
             font-family: 'Playfair Display', serif;
             font-size: 1.1rem;
@@ -424,6 +435,25 @@
             position: relative;
             z-index: 1;
             filter: drop-shadow(0 5px 20px rgba(99, 102, 241, 0.5));
+        }
+
+        .case-emoji.hidden {
+            display: none;
+        }
+
+        .case-display-image {
+            width: 90px;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 20px;
+            position: relative;
+            z-index: 1;
+            filter: drop-shadow(0 5px 20px rgba(99, 102, 241, 0.5));
+            border: 2px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .case-display-image.hidden {
+            display: none;
         }
 
         .case-name {
@@ -1125,6 +1155,7 @@
                 <div class="case-glow"></div>
                 <div class="case-box-inner">
                     <span class="case-emoji" id="currentCaseEmoji">🎁</span>
+                    <img class="case-display-image hidden" id="currentCaseImage" src="" alt="">
                 </div>
             </div>
             <div class="case-name" id="currentCaseName">Cosmic Case</div>
@@ -1168,7 +1199,7 @@
             <div class="modal-balance" id="modalBalance">💎 150 сапфиров | ⭐ 50 звёзд</div>
             <div class="modal-buttons">
                 <button class="modal-button gold" id="spinAgainBtn" onclick="spinAgain()">Открыть ещё</button>
-                <button class="modal-button secondary" onclick="goToMenu()">К выбору кейсов</button>
+                <button class="modal-button secondary" onclick="closeModal()">Назад</button>
             </div>
         </div>
     </div>
@@ -1194,6 +1225,7 @@
                 id: 'cosmic',
                 name: 'Cosmic Case',
                 emoji: '🎁',
+                image: null, // Вставьте URL картинки, например: 'https://i.ibb.co/xxx/cosmic.png'
                 cost: 100,
                 tag: null
             },
@@ -1201,6 +1233,7 @@
                 id: 'stellar',
                 name: 'Stellar Case',
                 emoji: '✨',
+                image: null, // Вставьте URL картинки
                 cost: 250,
                 tag: null
             },
@@ -1208,6 +1241,7 @@
                 id: 'golden',
                 name: 'Golden Case',
                 emoji: '👑',
+                image: null, // Вставьте URL картинки
                 cost: 500,
                 tag: 'HOT',
                 legendary: true
@@ -1216,6 +1250,7 @@
                 id: 'divine',
                 name: 'Divine Case',
                 emoji: '💎',
+                image: null, // Вставьте URL картинки
                 cost: 1000,
                 tag: 'VIP',
                 legendary: true
@@ -1394,7 +1429,10 @@
             grid.innerHTML = CASES.map(caseItem => `
                 <div class="case-card ${caseItem.legendary ? 'legendary' : ''}" onclick="selectCase('${caseItem.id}')">
                     ${caseItem.tag ? `<div class="case-card-tag">${caseItem.tag}</div>` : ''}
-                    <div class="case-card-emoji">${caseItem.emoji}</div>
+                    ${caseItem.image 
+                        ? `<img src="${caseItem.image}" alt="${caseItem.name}" class="case-card-image" onerror="this.outerHTML='<div class=\\'case-card-emoji\\'>${caseItem.emoji}</div>'">`
+                        : `<div class="case-card-emoji">${caseItem.emoji}</div>`
+                    }
                     <div class="case-card-name">${caseItem.name}</div>
                     <div class="case-card-price">💎 ${caseItem.cost}</div>
                 </div>
@@ -1412,7 +1450,24 @@
             STATE.spinCost = selectedCase.cost;
             
             // Обновляем UI кейса
-            document.getElementById('currentCaseEmoji').textContent = selectedCase.emoji;
+            const emojiEl = document.getElementById('currentCaseEmoji');
+            const imageEl = document.getElementById('currentCaseImage');
+            
+            if (selectedCase.image) {
+                emojiEl.classList.add('hidden');
+                imageEl.classList.remove('hidden');
+                imageEl.src = selectedCase.image;
+                imageEl.onerror = () => {
+                    imageEl.classList.add('hidden');
+                    emojiEl.classList.remove('hidden');
+                    emojiEl.textContent = selectedCase.emoji;
+                };
+            } else {
+                imageEl.classList.add('hidden');
+                emojiEl.classList.remove('hidden');
+                emojiEl.textContent = selectedCase.emoji;
+            }
+            
             document.getElementById('currentCaseName').textContent = selectedCase.name;
             document.getElementById('spinCost').textContent = `${selectedCase.cost} 💎`;
             
@@ -1587,18 +1642,18 @@
             updateSessionInfo();
         }
 
-        // 🎲 ШАНСЫ: 98% на 500 звёзд
+        // 🎲 ШАНСЫ: 98% на "ничего", 500 только пролетает
         function getRandomPrize() {
             const rand = Math.random() * 100;
             
-            // 98% - джекпот 500 звёзд
-            if (rand < 98) return 500;
+            // 98% - ничего
+            if (rand < 98) return 0;
             
-            // Остальные 2% распределяем между другими призами
-            if (rand < 98.5) return 100;
-            if (rand < 99) return 50;
-            if (rand < 99.5) return 25;
-            return 0;
+            // Остальные 2% распределяем между призами (без 500)
+            if (rand < 98.7) return 25;
+            if (rand < 99.4) return 50;
+            return 100;
+            // 500 - 0%, только для красоты в ленте
         }
 
         // Визуальное распределение для ленты (для красоты)
