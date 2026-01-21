@@ -1017,560 +1017,272 @@
     <div class="confetti" id="confetti"></div>
 
     <script>
-        // ============================================
-        // 🔒 БЕЗОПАСНАЯ ВЕРСИЯ - ШАНСЫ НА СЕРВЕРЕ
-        // ============================================
-        // ⚠️ ВАЖНО: Шансы НЕ хранятся в этом файле!
-        // Приз определяется БОТОМ и передаётся через URL параметр "prize_index"
-        // ============================================
-        
-        const CASE_COST = 100;
-        
-        const tg = window.Telegram?.WebApp;
-        
-        // ============================================
-        // СОСТОЯНИЕ ПРИЛОЖЕНИЯ
-        // ============================================
-        let STATE = {
-            userId: null,
-            username: '',
-            sapphires: 0,
-            stars: 0,
-            isInitialized: false,
-            spinsCount: 0,
-            totalWon: 0,
-            sapphiresSpent: 0,
-            isModalOpen: false,
-            pendingPrizes: [] // 🔒 Массив призов от бота (до 10 спинов)
-        };
-        
-        let isSpinning = false;
+       // ============================================
+// 🔐 TELEGRAM + API (ВМЕСТО URL-ПРИЗОВ)
+// ============================================
+const tg = window.Telegram?.WebApp;
+const API_URL = "https://deadveel.pythonanywhere.com";
+const CASE_COST = 100;
 
-        // ============================================
-        // 🔒 ВИЗУАЛЬНЫЕ ДАННЫЕ ПРИЗОВ (БЕЗ ШАНСОВ!)
-        // Шансы определяются ТОЛЬКО в боте!
-        // ============================================
-        const PRIZE_VISUALS = [
-            { 
-                id: 0,
-                stars: 0, 
-                emoji: "💨", 
-                rarity: "common",
-                image: "https://i.ibb.co/gb5FSTmV/1768925232598-019bdc2a-e026-7e7c-9739-37234d1c5e87.png",
-                name: "Пусто"
-            },
-            { 
-                id: 1,
-                stars: 25, 
-                emoji: "⭐", 
-                rarity: "uncommon",
-                image: "https://i.ibb.co/rfvNFsXR/1768924736444-019bdc22-de2d-7183-b0e4-53670324a942.jpg",
-                name: "25 звёзд"
-            },
-            { 
-                id: 2,
-                stars: 50, 
-                emoji: "✨", 
-                rarity: "rare",
-                image: "https://i.ibb.co/8CL2Rxq/1768924439694-019bdc1e-33ba-716b-9343-17c2777cf861.jpg",
-                name: "50 звёзд"
-            },
-            { 
-                id: 3,
-                stars: 100, 
-                emoji: "🌟", 
-                rarity: "epic",
-                image: "https://i.ibb.co/RGX1C998/1768923759742-019bdc13-a966-7740-ba75-610d49ea3c79.png",
-                name: "100 звёзд"
-            },
-            { 
-                id: 4,
-                stars: 500, 
-                emoji: "💫", 
-                rarity: "legendary",
-                image: "https://i.ibb.co/XrTtbMXR/1768923046045-019bdc09-a36c-7352-ba71-f5d8fe7799d4.png",
-                name: "Джекпот!"
-            },
-        ];
+// ============================================
+// СОСТОЯНИЕ
+// ============================================
+let STATE = {
+    userId: null,
+    username: '',
+    sapphires: 0,
+    stars: 0,
+    isInitialized: false,
+    isModalOpen: false,
+    isSpinning: false
+};
 
-        const ITEM_WIDTH = 112;
-        const VISIBLE_ITEMS = 50;
+// ============================================
+// 🔒 ВИЗУАЛЬНЫЕ ПРИЗЫ (ТОЛЬКО ДЛЯ ОТОБРАЖЕНИЯ)
+// ============================================
+const PRIZE_VISUALS = [
+    { stars: 0, emoji: "💨", rarity: "common", name: "Пусто" },
+    { stars: 25, emoji: "⭐", rarity: "uncommon", name: "25 звёзд" },
+    { stars: 50, emoji: "✨", rarity: "rare", name: "50 звёзд" },
+    { stars: 100, emoji: "🌟", rarity: "epic", name: "100 звёзд" },
+    { stars: 500, emoji: "💫", rarity: "legendary", name: "Джекпот!" }
+];
 
-        // ============================================
-        // 🔒 ИНИЦИАЛИЗАЦИЯ
-        // ============================================
-        async function init() {
-            console.log("🎁 Divine Case - Secure Server-Side Init...");
-            
-            // Проверяем что открыто в Telegram
-            if (!tg || !tg.initDataUnsafe?.user) {
-                showFatalError("Откройте через Telegram бота");
-                return;
-            }
-            
-            tg.ready();
-            tg.expand();
-            
-            // Получаем данные пользователя из initData
-            STATE.userId = tg.initDataUnsafe.user.id;
-            STATE.username = tg.initDataUnsafe.user.username || '';
-            console.log("📱 Telegram user:", STATE.userId);
-            
-            // Кнопка назад
-            tg.BackButton.show();
-            tg.BackButton.onClick(() => closeAndExit());
-            
-            // 🔒 Загружаем данные из URL (установленных ботом)
-            const dataLoaded = loadDataFromURL();
-            
-            if (!dataLoaded) {
-                showFatalError("Ошибка загрузки данных");
-                return;
-            }
-            
-            // Инициализация UI
-            generateStars();
-            generateItemsStrip();
-            generatePrizesGrid();
-            updateUI();
-            
-            STATE.isInitialized = true;
-            
-            // Скрываем загрузку
-            setTimeout(() => {
-                document.getElementById('loadingOverlay').classList.add('hidden');
-            }, 500);
-            
-            updateSessionInfo();
-            console.log("✅ Initialized:", STATE);
-        }
-        
-        // ============================================
-        // ГЕНЕРАЦИЯ СЕТКИ ПРИЗОВ
-        // ============================================
-        function generatePrizesGrid() {
-            const grid = document.getElementById('prizesGrid');
-            const displayPrizes = [...PRIZE_VISUALS].reverse();
-            
-            grid.innerHTML = displayPrizes.map(prize => `
-                <div class="prize-card ${prize.rarity === 'legendary' ? 'legendary' : ''}">
-                    <div class="prize-card-visual">
-                        ${prize.image 
-                            ? `<img src="${prize.image}" alt="${prize.name}" class="prize-card-image" onerror="this.outerHTML='<div class=\\'prize-card-emoji\\'>${prize.emoji}</div>'">`
-                            : `<div class="prize-card-emoji">${prize.emoji}</div>`
-                        }
-                    </div>
-                    <div class="prize-card-name">${prize.stars}⭐</div>
-                </div>
-            `).join('');
-        }
-        
-        // ============================================
-        // ПОКАЗАТЬ КРИТИЧЕСКУЮ ОШИБКУ
-        // ============================================
-        function showFatalError(message) {
-            document.getElementById('loadingOverlay').innerHTML = `
-                <div style="text-align: center; padding: 20px;">
-                    <div style="font-size: 3rem; margin-bottom: 20px;">❌</div>
-                    <div style="color: #ef4444; font-size: 1.1rem; font-weight: 600; margin-bottom: 10px;">Ошибка</div>
-                    <div style="color: #a1a1aa; font-size: 0.9rem;">${message}</div>
-                    <button onclick="window.location.reload()" style="
-                        margin-top: 20px;
-                        background: linear-gradient(135deg, #6366f1, #4338ca);
-                        border: none;
-                        padding: 12px 24px;
-                        color: white;
-                        border-radius: 12px;
-                        font-weight: 600;
-                        cursor: pointer;
-                    ">Попробовать снова</button>
-                </div>
-            `;
-        }
+const ITEM_WIDTH = 112;
+const VISIBLE_ITEMS = 50;
 
-        // ============================================
-        // 🔒 ЗАГРУЗКА ДАННЫХ ИЗ URL (установленного ботом)
-        // Бот передаёт: sapphires, stars, и prizes (массив индексов призов)
-        // ============================================
-        function loadDataFromURL() {
-            const urlParams = new URLSearchParams(window.location.search);
-            
-            const sapphires = parseInt(urlParams.get('sapphires'));
-            const stars = parseInt(urlParams.get('stars'));
-            
-            if (isNaN(sapphires) || isNaN(stars)) {
-                console.error("❌ Invalid URL parameters");
-                return false;
-            }
-            
-            STATE.sapphires = sapphires;
-            STATE.stars = stars;
-            
-            // 🔒 Загружаем предрасчитанные призы от бота (массив индексов)
-            // Формат: prizes=0,0,1,0,2,0,0,3,0,0 (до 10 призов)
-            const prizesParam = urlParams.get('prizes');
-            if (prizesParam) {
-                try {
-                    STATE.pendingPrizes = prizesParam.split(',').map(p => {
-                        const idx = parseInt(p.trim());
-                        if (idx >= 0 && idx < PRIZE_VISUALS.length) {
-                            return PRIZE_VISUALS[idx];
-                        }
-                        return PRIZE_VISUALS[0]; // Fallback на "пусто"
-                    });
-                    console.log("🎯 Prizes from bot:", STATE.pendingPrizes.length, "spins preloaded");
-                } catch (e) {
-                    console.error("❌ Failed to parse prizes:", e);
-                    STATE.pendingPrizes = [];
-                }
-            }
-            
-            console.log("✅ Data from bot URL:", { sapphires, stars, prizesCount: STATE.pendingPrizes.length });
-            return true;
-        }
+// ============================================
+// API
+// ============================================
+async function getBalance() {
+    const res = await fetch(`${API_URL}/api/balance`, {
+        headers: { "X-Telegram-Init-Data": tg.initData }
+    });
+    return res.json();
+}
 
-        // ============================================
-        // 🎲 ОТКРЫТИЕ КЕЙСА
-        // ============================================
-        async function openCase() {
-            if (isSpinning || STATE.isModalOpen) return;
-            
-            if (STATE.sapphires < CASE_COST) {
-                showStatus('❌ Недостаточно сапфиров!', 'error');
-                haptic('error');
-                return;
-            }
-            
-            // 🔒 ПРОВЕРКА: Есть ли предрасчитанные призы от бота?
-            if (STATE.pendingPrizes.length === 0) {
-                showStatus('❌ Закончились попытки! Вернитесь в бота.', 'error');
-                haptic('error');
-                return;
-            }
+async function spinAPI() {
+    const res = await fetch(`${API_URL}/api/spin`, {
+        method: "POST",
+        headers: { "X-Telegram-Init-Data": tg.initData }
+    });
+    return res.json();
+}
 
-            isSpinning = true;
-            hideStatus();
-            document.getElementById('spinBtn').disabled = true;
-            haptic('impact');
-            
-            // Списываем сапфиры локально
-            STATE.sapphires -= CASE_COST;
-            STATE.sapphiresSpent += CASE_COST;
-            STATE.spinsCount++;
-            
-            // 🔒 БЕРЁМ ПРИЗ ИЗ ПРЕДРАСЧИТАННОГО МАССИВА (от бота)
-            const prize = STATE.pendingPrizes.shift(); // Забираем первый приз из очереди
-            
-            if (prize.stars > 0) {
-                STATE.stars += prize.stars;
-                STATE.totalWon += prize.stars;
-            }
-            
-            console.log("🎲 Prize from bot:", prize, "| Remaining:", STATE.pendingPrizes.length);
-            
-            updateUI();
-            
-            // Анимация
-            await runAnimation(prize);
-            
-            // Результат
-            setTimeout(() => showResult(prize), 500);
-            
-            isSpinning = false;
-            updateSessionInfo();
-        }
+async function claimPrize(stars) {
+    const res = await fetch(`${API_URL}/api/claim`, {
+        method: "POST",
+        headers: {
+            "X-Telegram-Init-Data": tg.initData,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ stars })
+    });
+    return res.json();
+}
 
-        // Для отображения в анимации (без реальных шансов)
-        // Это только визуальное распределение для красивой ленты
-        // НЕ влияет на реальный выигрыш - он уже определён ботом!
-        function getRandomPrizeForDisplay() {
-            const rand = Math.random() * 100;
-            if (rand < 40) return PRIZE_VISUALS[0];
-            if (rand < 60) return PRIZE_VISUALS[1];
-            if (rand < 80) return PRIZE_VISUALS[2];
-            if (rand < 95) return PRIZE_VISUALS[3];
-            return PRIZE_VISUALS[4];
-        }
+// ============================================
+// ИНИЦИАЛИЗАЦИЯ
+// ============================================
+async function init() {
+    if (!tg || !tg.initDataUnsafe?.user) {
+        showFatalError("Откройте через Telegram бота");
+        return;
+    }
 
-        // ============================================
-        // АНИМАЦИЯ
-        // ============================================
-        async function runAnimation(winningPrize) {
-            const winningIndex = 35 + Math.floor(Math.random() * 5);
-            
-            generateItemsStrip(winningPrize, winningIndex);
-            
-            const container = document.getElementById('caseContainer');
-            const strip = document.getElementById('itemsStrip');
-            const containerWidth = container.offsetWidth;
-            const centerPosition = containerWidth / 2;
-            const targetPosition = (winningIndex * ITEM_WIDTH) + (ITEM_WIDTH / 2) - centerPosition;
-            const randomOffset = (Math.random() - 0.5) * 30;
-            const finalPosition = targetPosition + randomOffset;
-            
-            strip.style.transform = `translateX(${containerWidth}px)`;
-            strip.offsetHeight;
-            
-            setTimeout(() => {
-                strip.classList.add('animating');
-                strip.style.transform = `translateX(-${finalPosition}px)`;
-            }, 50);
-            
-            playTickSounds();
-            
-            await new Promise(resolve => setTimeout(resolve, 5200));
-            
-            const winnerItem = strip.querySelector(`[data-index="${winningIndex}"]`);
-            if (winnerItem) {
-                winnerItem.classList.add('winner');
-            }
-        }
+    tg.ready();
+    tg.expand();
 
-        function generateItemsStrip(winningPrize = null, winningIndex = null) {
-            const strip = document.getElementById('itemsStrip');
-            strip.innerHTML = '';
-            strip.classList.remove('animating');
-            strip.style.transform = 'translateX(0)';
-            
-            for (let i = 0; i < VISIBLE_ITEMS; i++) {
-                let prize = (winningIndex !== null && i === winningIndex) 
-                    ? winningPrize 
-                    : getRandomPrizeForDisplay();
-                
-                const item = document.createElement('div');
-                item.className = `prize-item rarity-${prize.rarity}`;
-                if (prize.image) item.classList.add('has-image');
-                item.dataset.index = i;
-                item.dataset.stars = prize.stars;
-                
-                if (prize.image) {
-                    item.innerHTML = `<img src="${prize.image}" alt="" class="prize-image" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\\'prize-emoji\\'>${prize.emoji}</div>'">`;
-                } else {
-                    item.innerHTML = `<div class="prize-emoji">${prize.emoji}</div>`;
-                }
-                
-                strip.appendChild(item);
-            }
-        }
+    STATE.userId = tg.initDataUnsafe.user.id;
+    STATE.username = tg.initDataUnsafe.user.username || '';
 
-        function playTickSounds() {
-            let tickCount = 0;
-            const maxTicks = 40;
-            
-            const tickInterval = setInterval(() => {
-                tickCount++;
-                if (tickCount > maxTicks) {
-                    clearInterval(tickInterval);
-                    return;
-                }
-                if (tickCount < 20) {
-                    haptic('selection');
-                }
-            }, 100);
-        }
+    const balance = await getBalance();
+    if (!balance.success) {
+        showFatalError("Ошибка загрузки баланса");
+        return;
+    }
 
-        // ============================================
-        // РЕЗУЛЬТАТ
-        // ============================================
-        function showResult(prize) {
-            STATE.isModalOpen = true;
-            document.getElementById('spinBtn').disabled = true;
-            
-            const overlay = document.getElementById('modalOverlay');
-            const modal = document.getElementById('modal');
-            const emoji = document.getElementById('modalEmoji');
-            const title = document.getElementById('modalTitle');
-            const prizeText = document.getElementById('modalPrize');
-            const balance = document.getElementById('modalBalance');
-            const spinAgainBtn = document.getElementById('spinAgainBtn');
-            
-            if (prize.image) {
-                emoji.innerHTML = `<img src="${prize.image}" class="modal-prize-image" onerror="this.outerHTML='${prize.stars > 0 ? prize.emoji : '💨'}'">`;
-            } else {
-                emoji.innerHTML = prize.stars > 0 ? prize.emoji : '💨';
-            }
-            
-            if (prize.stars > 0) {
-                modal.classList.add('win');
-                title.textContent = prize.stars >= 100 ? 'Джекпот!' : 'Поздравляем!';
-                prizeText.textContent = `+${prize.stars} ⭐`;
-                prizeText.style.display = '';
-                createConfetti();
-                haptic('success');
-            } else {
-                modal.classList.remove('win');
-                title.textContent = 'Пусто...';
-                prizeText.textContent = 'Попробуй ещё!';
-                prizeText.style.display = '';
-                haptic('error');
-            }
-            
-            balance.textContent = `💎 ${STATE.sapphires} сапфиров | ⭐ ${STATE.stars} звёзд`;
-            
-            // 🔒 Показываем кнопку "Ещё" только если есть предрасчитанные призы И хватает сапфиров
-            const canSpinAgain = STATE.sapphires >= CASE_COST && STATE.pendingPrizes.length > 0;
-            spinAgainBtn.style.display = canSpinAgain ? 'block' : 'none';
-            
-            // Если призы закончились, показываем подсказку
-            if (STATE.pendingPrizes.length === 0 && STATE.sapphires >= CASE_COST) {
-                balance.textContent += '\n\n💡 Вернитесь в бота для новых спинов';
-            }
-            
-            overlay.classList.add('show');
-        }
+    STATE.sapphires = balance.sapphires;
+    STATE.stars = balance.stars;
 
-        function spinAgain() {
-            closeModal();
-            setTimeout(() => {
-                generateItemsStrip();
-                openCase();
-            }, 400);
-        }
+    generateStars();
+    generateItemsStrip();
+    generatePrizesGrid();
+    updateUI();
 
-        function closeModal() {
-            STATE.isModalOpen = false;
-            document.getElementById('modalOverlay').classList.remove('show');
-            updateUI();
-        }
+    STATE.isInitialized = true;
 
-        // ============================================
-        // 🔒 ЗАКРЫТИЕ И ОТПРАВКА ДАННЫХ В БОТ
-        // ============================================
-        function closeAndExit() {
-            closeModal();
-            
-            if (STATE.spinsCount > 0) {
-                const resultData = {
-                    action: 'roulette_result',
-                    user_id: STATE.userId,
-                    spins_count: STATE.spinsCount,
-                    total_won: STATE.totalWon,
-                    sapphires_spent: STATE.sapphiresSpent,
-                    final_sapphires: STATE.sapphires,
-                    final_stars: STATE.stars,
-                    timestamp: Date.now()
-                };
-                
-                console.log("📤 Sending data to bot:", resultData);
-                
-                if (tg?.sendData) {
-                    tg.sendData(JSON.stringify(resultData));
-                    return;
-                }
-            }
-            
-            if (tg?.close) {
-                tg.close();
-            }
-        }
+    setTimeout(() => {
+        document.getElementById('loadingOverlay').classList.add('hidden');
+    }, 500);
+}
 
-        // ============================================
-        // UI HELPERS
-        // ============================================
-        function updateUI() {
-            document.getElementById('sapphires').textContent = STATE.sapphires;
-            document.getElementById('stars-balance').textContent = STATE.stars;
-            
-            // 🔒 Кнопка заблокирована если: недостаточно сапфиров, спиннинг, модалка открыта, или нет призов от бота
-            const canSpin = STATE.sapphires >= CASE_COST && 
-                           !isSpinning && 
-                           !STATE.isModalOpen && 
-                           STATE.pendingPrizes.length > 0;
-            
-            document.getElementById('spinBtn').disabled = !canSpin;
-            
-            // Обновляем текст кнопки если призы закончились
-            const btnText = document.getElementById('spinBtn').querySelector('span:first-child');
-            if (STATE.pendingPrizes.length === 0 && STATE.sapphires >= CASE_COST) {
-                btnText.textContent = 'Вернитесь в бота';
-            } else {
-                btnText.textContent = 'Открыть кейс';
-            }
-        }
+// ============================================
+// 🎲 ОТКРЫТИЕ КЕЙСА (СЕРВЕР РЕШАЕТ ПРИЗ)
+// ============================================
+async function openCase() {
+    if (STATE.isSpinning || STATE.isModalOpen) return;
 
-        function updateSessionInfo() {
-            document.getElementById('sessionInfo').textContent = 
-                `ID:${STATE.userId || '?'} | Spins:${STATE.spinsCount}/${STATE.spinsCount + STATE.pendingPrizes.length} | Won:${STATE.totalWon}⭐`;
-        }
+    if (STATE.sapphires < CASE_COST) {
+        showStatus('❌ Недостаточно сапфиров!', 'error');
+        haptic('error');
+        return;
+    }
 
-        function showStatus(message, type = 'error') {
-            const el = document.getElementById('statusMessage');
-            el.innerHTML = message;
-            el.className = `status-message show ${type === 'success' ? 'success' : ''}`;
-            setTimeout(() => hideStatus(), 4000);
-        }
+    STATE.isSpinning = true;
+    document.getElementById('spinBtn').disabled = true;
+    hideStatus();
+    haptic('impact');
 
-        function hideStatus() {
-            document.getElementById('statusMessage').classList.remove('show');
-        }
+    const spinResult = await spinAPI();
 
-        function generateStars() {
-            const container = document.getElementById('bgStars');
-            for (let i = 0; i < 100; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                star.style.animationDelay = Math.random() * 3 + 's';
-                star.style.opacity = Math.random() * 0.7 + 0.3;
-                const size = Math.random() * 2 + 1;
-                star.style.width = size + 'px';
-                star.style.height = size + 'px';
-                container.appendChild(star);
-            }
-        }
+    if (!spinResult.success) {
+        showStatus(spinResult.error || 'Ошибка сервера', 'error');
+        STATE.isSpinning = false;
+        updateUI();
+        return;
+    }
 
-        function createConfetti() {
-            const container = document.getElementById('confetti');
-            container.innerHTML = '';
-            const colors = ['#fbbf24', '#f59e0b', '#6366f1', '#818cf8', '#a78bfa', '#c4b5fd', '#22c55e'];
-            
-            for (let i = 0; i < 80; i++) {
-                const piece = document.createElement('div');
-                piece.className = 'confetti-piece';
-                const size = Math.random() * 10 + 6;
-                const color = colors[Math.floor(Math.random() * colors.length)];
-                
-                piece.style.left = Math.random() * 100 + '%';
-                piece.style.width = size + 'px';
-                piece.style.height = size + 'px';
-                piece.style.backgroundColor = color;
-                piece.style.animationDelay = Math.random() * 0.6 + 's';
-                piece.style.animationDuration = (3 + Math.random() * 2) + 's';
-                piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
-                piece.style.boxShadow = `0 0 ${size/2}px ${color}`;
-                
-                container.appendChild(piece);
-            }
-            
-            setTimeout(() => container.innerHTML = '', 5000);
-        }
+    const prizeStars = spinResult.stars;
+    const prize = PRIZE_VISUALS.find(p => p.stars === prizeStars) || PRIZE_VISUALS[0];
 
-        function haptic(type) {
-            if (tg?.HapticFeedback) {
-                if (type === 'success') tg.HapticFeedback.notificationOccurred('success');
-                else if (type === 'error') tg.HapticFeedback.notificationOccurred('error');
-                else if (type === 'impact') tg.HapticFeedback.impactOccurred('heavy');
-                else if (type === 'selection') tg.HapticFeedback.selectionChanged();
-            }
-        }
+    // Запускаем анимацию
+    await runAnimation(prize);
 
-        // ============================================
-        // EVENT LISTENERS
-        // ============================================
-        document.addEventListener('DOMContentLoaded', init);
+    // Подтверждаем приз
+    const claim = await claimPrize(prizeStars);
 
-        document.getElementById('modalOverlay').addEventListener('click', (e) => {
-            if (e.target.id === 'modalOverlay') closeModal();
-        });
+    if (claim.success) {
+        STATE.sapphires = claim.sapphires;
+        STATE.stars = claim.stars;
+    }
 
-        document.addEventListener('keydown', (e) => {
-            if (e.code === 'Space' && !isSpinning && !STATE.isModalOpen) {
-                e.preventDefault();
-                openCase();
-            }
-            if (e.code === 'Escape') closeModal();
-        });
+    setTimeout(() => showResult(prize), 400);
+
+    STATE.isSpinning = false;
+    updateUI();
+}
+
+// ============================================
+// АНИМАЦИЯ (БЕЗ ШАНСОВ, ТОЛЬКО ВИЗУАЛ)
+// ============================================
+function getRandomPrizeForDisplay() {
+    const rand = Math.random() * 100;
+    if (rand < 40) return PRIZE_VISUALS[0];
+    if (rand < 60) return PRIZE_VISUALS[1];
+    if (rand < 80) return PRIZE_VISUALS[2];
+    if (rand < 95) return PRIZE_VISUALS[3];
+    return PRIZE_VISUALS[4];
+}
+
+async function runAnimation(winningPrize) {
+    const winningIndex = 35 + Math.floor(Math.random() * 5);
+
+    generateItemsStrip(winningPrize, winningIndex);
+
+    const container = document.getElementById('caseContainer');
+    const strip = document.getElementById('itemsStrip');
+    const containerWidth = container.offsetWidth;
+    const centerPosition = containerWidth / 2;
+    const targetPosition = (winningIndex * ITEM_WIDTH) + (ITEM_WIDTH / 2) - centerPosition;
+    const randomOffset = (Math.random() - 0.5) * 30;
+    const finalPosition = targetPosition + randomOffset;
+
+    strip.style.transform = `translateX(${containerWidth}px)`;
+    strip.offsetHeight;
+
+    setTimeout(() => {
+        strip.classList.add('animating');
+        strip.style.transform = `translateX(-${finalPosition}px)`;
+    }, 50);
+
+    await new Promise(resolve => setTimeout(resolve, 5200));
+
+    const winnerItem = strip.querySelector(`[data-index="${winningIndex}"]`);
+    if (winnerItem) winnerItem.classList.add('winner');
+}
+
+function generateItemsStrip(winningPrize = null, winningIndex = null) {
+    const strip = document.getElementById('itemsStrip');
+    strip.innerHTML = '';
+    strip.classList.remove('animating');
+    strip.style.transform = 'translateX(0)';
+
+    for (let i = 0; i < VISIBLE_ITEMS; i++) {
+        let prize = (winningIndex !== null && i === winningIndex)
+            ? winningPrize
+            : getRandomPrizeForDisplay();
+
+        const item = document.createElement('div');
+        item.className = `prize-item rarity-${prize.rarity}`;
+        item.dataset.index = i;
+
+        item.innerHTML = `<div class="prize-emoji">${prize.emoji}</div>`;
+        strip.appendChild(item);
+    }
+}
+
+// ============================================
+// РЕЗУЛЬТАТ
+// ============================================
+function showResult(prize) {
+    STATE.isModalOpen = true;
+
+    const overlay = document.getElementById('modalOverlay');
+    const modal = document.getElementById('modal');
+    const emoji = document.getElementById('modalEmoji');
+    const title = document.getElementById('modalTitle');
+    const prizeText = document.getElementById('modalPrize');
+    const balance = document.getElementById('modalBalance');
+
+    emoji.textContent = prize.stars > 0 ? prize.emoji : '💨';
+
+    if (prize.stars > 0) {
+        modal.classList.add('win');
+        title.textContent = prize.stars >= 100 ? 'Джекпот!' : 'Поздравляем!';
+        prizeText.textContent = `+${prize.stars} ⭐`;
+        createConfetti();
+        haptic('success');
+    } else {
+        modal.classList.remove('win');
+        title.textContent = 'Пусто...';
+        prizeText.textContent = 'Попробуй ещё!';
+        haptic('error');
+    }
+
+    balance.textContent = `💎 ${STATE.sapphires} сапфиров | ⭐ ${STATE.stars} звёзд`;
+
+    overlay.classList.add('show');
+}
+
+function closeModal() {
+    STATE.isModalOpen = false;
+    document.getElementById('modalOverlay').classList.remove('show');
+    updateUI();
+}
+
+// ============================================
+// UI
+// ============================================
+function updateUI() {
+    document.getElementById('sapphires').textContent = STATE.sapphires;
+    document.getElementById('stars-balance').textContent = STATE.stars;
+
+    const canSpin = STATE.sapphires >= CASE_COST &&
+        !STATE.isSpinning &&
+        !STATE.isModalOpen;
+
+    document.getElementById('spinBtn').disabled = !canSpin;
+}
+
+// Остальные вспомогательные функции (generateStars, generatePrizesGrid,
+// showStatus, hideStatus, haptic, createConfetti) — ОСТАВЬ КАК В ТВОЁМ ШАБЛОНЕ
+
+// ============================================
+// EVENTS
+// ============================================
+document.addEventListener('DOMContentLoaded', init);
+
     </script>
 </body>
 </html>
