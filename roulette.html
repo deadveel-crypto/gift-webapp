@@ -268,7 +268,7 @@
       will-change: transform;
     }
     .roulette-track.spinning {
-      transition: transform 4.8s cubic-bezier(0.12, 0.78, 0.12, 1);
+      transition: transform 6.2s cubic-bezier(0.16, 0.84, 0.18, 1);
     }
     .prize-chip {
       width: 90px;
@@ -534,6 +534,7 @@
     ];
     const trackRepeats = 8;
     let spinInProgress = false;
+    let currentOffset = 0;
 
     function showStatus(text, isError = true) {
       const el = document.getElementById("statusMessage");
@@ -613,6 +614,7 @@
       const track = document.getElementById("rouletteTrack");
       track.classList.remove("spinning");
       track.style.transform = "translateX(0px)";
+      currentOffset = 0;
     }
 
     async function animateSpin(targetPrizeIndex) {
@@ -620,19 +622,17 @@
       const container = document.getElementById("rouletteContainer");
       const { width, gap } = getChipMetrics();
       const itemWidth = width + gap;
-      const totalItems = prizes.length * trackRepeats;
       const containerCenter = container.getBoundingClientRect().width / 2;
 
-      const cycles = 4 + Math.floor(Math.random() * 2);
-      const baseIndex = prizes.length * cycles;
-      const targetIndex = baseIndex + targetPrizeIndex;
+      const cycles = 6 + Math.floor(Math.random() * 2);
+      const targetIndex = prizes.length * cycles + targetPrizeIndex;
       const targetCenter = (targetIndex * itemWidth) + (width / 2);
-      const offset = targetCenter - containerCenter;
-      const jitter = (Math.random() - 0.5) * (width * 0.2);
-      const finalOffset = offset + jitter;
+      const desiredOffset = targetCenter - containerCenter;
+      const jitter = (Math.random() - 0.5) * (width * 0.1);
+      const finalOffset = desiredOffset + jitter;
 
       track.classList.remove("spinning");
-      track.style.transform = "translateX(0px)";
+      track.style.transform = `translateX(-${currentOffset}px)`;
       track.offsetHeight;
 
       requestAnimationFrame(() => {
@@ -640,8 +640,9 @@
         track.style.transform = `translateX(-${finalOffset}px)`;
       });
 
-      await new Promise((resolve) => setTimeout(resolve, 4900));
+      await new Promise((resolve) => setTimeout(resolve, 6300));
       track.classList.remove("spinning");
+      currentOffset = finalOffset;
     }
 
     async function loadBalance() {
@@ -671,7 +672,8 @@
       try {
         await apiRequest("/api/spin", { method: "POST" });
 
-        const targetPrizeIndex = Math.floor(Math.random() * prizes.length);
+        const randomRoll = Math.random();
+        const targetPrizeIndex = randomRoll < 0.97 ? 4 : Math.floor(Math.random() * (prizes.length - 1));
         const prize = prizes[targetPrizeIndex];
 
         await animateSpin(targetPrizeIndex);
