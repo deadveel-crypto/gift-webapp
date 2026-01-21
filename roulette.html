@@ -1,1222 +1,160 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Divine Case</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
-    <script>
-    const tg = window.Telegram?.WebApp;
-    if (tg) {
-        tg.ready();     // СРАЗУ говорим Telegram что приложение готово
-        tg.expand();    // Раскрываем на весь экран
+  <meta charset="UTF-8" />
+  <title>Roulette</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    body {
+      background: #0f0f14;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 30px;
     }
-    </script>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
-
-        :root {
-            --bg-primary: #0a0a0f;
-            --bg-secondary: #0c0c1a;
-            --bg-card: rgba(99, 102, 241, 0.03);
-            --accent-gold: #fbbf24;
-            --accent-gold-light: #fcd34d;
-            --accent-purple: #6366f1;
-            --accent-purple-light: #818cf8;
-            --accent-indigo: #4338ca;
-            --text-primary: #ffffff;
-            --text-secondary: #a1a1aa;
-            --border-color: rgba(99, 102, 241, 0.15);
-        }
-
-        body {
-            background: var(--bg-primary);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: var(--text-primary);
-            overflow-x: hidden;
-            padding: 20px;
-            padding-bottom: 100px;
-            position: relative;
-        }
-
-        .animated-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: 0;
-            overflow: hidden;
-            background: radial-gradient(ellipse at top, #0c0c1a 0%, #080810 50%, #050508 100%);
-        }
-
-        .bg-orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.5;
-            animation: floatOrb 8s ease-in-out infinite;
-        }
-
-        .bg-orb-1 {
-            width: 400px;
-            height: 400px;
-            background: linear-gradient(135deg, #1e1b4b, #312e81);
-            top: -100px;
-            right: -100px;
-            opacity: 0.4;
-        }
-
-        .bg-orb-2 {
-            width: 300px;
-            height: 300px;
-            background: linear-gradient(135deg, #1e1b4b, #4338ca);
-            bottom: -50px;
-            left: -50px;
-            animation-delay: -3s;
-            opacity: 0.3;
-        }
-
-        .bg-orb-3 {
-            width: 250px;
-            height: 250px;
-            background: linear-gradient(135deg, #312e81, #4338ca);
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            animation-delay: -5s;
-            opacity: 0.25;
-        }
-
-        @keyframes floatOrb {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(5deg); }
-        }
-
-        .bg-stars {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-        }
-
-        .star {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: white;
-            border-radius: 50%;
-            animation: twinkle 3s ease-in-out infinite;
-        }
-
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.5); }
-        }
-
-        @keyframes textShine {
-            0% { background-position: -200% center; }
-            100% { background-position: 200% center; }
-        }
-
-        @keyframes priceGlow {
-            0%, 100% {
-                text-shadow: 0 0 10px rgba(251, 191, 36, 0.5), 0 0 20px rgba(251, 191, 36, 0.3);
-                filter: brightness(1);
-            }
-            50% {
-                text-shadow: 0 0 20px rgba(251, 191, 36, 0.8), 0 0 40px rgba(251, 191, 36, 0.5);
-                filter: brightness(1.2);
-            }
-        }
-
-        @keyframes pulseGlow {
-            0%, 100% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.3); }
-            50% { box-shadow: 0 0 40px rgba(99, 102, 241, 0.6), 0 0 60px rgba(99, 102, 241, 0.3); }
-        }
-
-        @keyframes cardEnter {
-            0% { opacity: 0; transform: translateY(40px) scale(0.95); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        @keyframes subtleFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
-
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 25px;
-            z-index: 10;
-            width: 100%;
-            max-width: 400px;
-            animation: cardEnter 0.8s ease-out;
-        }
-
-        .brand-text {
-            font-family: 'Playfair Display', serif;
-            font-weight: 700;
-            font-size: 2rem;
-            letter-spacing: 2px;
-            background: linear-gradient(135deg, #e0e7ff 0%, #c4b5fd 25%, #a78bfa 50%, #c4b5fd 75%, #e0e7ff 100%);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: textShine 4s linear infinite;
-            margin-bottom: 20px;
-        }
-
-        .balance-card {
-            background: var(--bg-card);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 18px 30px;
-            display: flex;
-            gap: 40px;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .balance-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
-            animation: shimmerCard 3s ease-in-out infinite;
-        }
-
-        @keyframes shimmerCard {
-            0% { left: -100%; }
-            100% { left: 100%; }
-        }
-
-        .balance-item {
-            text-align: center;
-            position: relative;
-            z-index: 1;
-        }
-
-        .balance-label {
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
-
-        .balance-value {
-            font-size: 1.5rem;
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            justify-content: center;
-        }
-
-        .balance-icon {
-            font-size: 1.3rem;
-            animation: pulseIcon 2s ease-in-out infinite;
-        }
-
-        @keyframes pulseIcon {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.15); }
-        }
-
-        .case-display {
-            text-align: center;
-            margin-bottom: 25px;
-            z-index: 10;
-            animation: cardEnter 0.8s ease-out 0.1s both;
-        }
-
-        .case-box {
-            width: 130px;
-            height: 130px;
-            margin: 0 auto 15px;
-            position: relative;
-            animation: subtleFloat 3s ease-in-out infinite;
-        }
-
-        .case-glow {
-            position: absolute;
-            inset: -15px;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.3) 0%, transparent 70%);
-            border-radius: 50%;
-            filter: blur(20px);
-            animation: pulseGlow 3s ease-in-out infinite;
-        }
-
-        .case-box-inner {
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(67, 56, 202, 0.05));
-            border-radius: 24px;
-            border: 2px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(10px);
-        }
-
-        .case-box-inner::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            animation: shimmerCard 4s ease-in-out infinite;
-        }
-
-        .case-emoji {
-            font-size: 4rem;
-            position: relative;
-            z-index: 1;
-            filter: drop-shadow(0 5px 20px rgba(99, 102, 241, 0.5));
-        }
-
-        .case-name {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.2rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #c4b5fd, #a78bfa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 1px;
-        }
-
-        .case-section {
-            width: 100%;
-            max-width: 400px;
-            z-index: 10;
-            animation: cardEnter 0.8s ease-out 0.2s both;
-        }
-
-        .case-container {
-            position: relative;
-            width: 100%;
-            height: 130px;
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(67, 56, 202, 0.02));
-            border-radius: 20px;
-            overflow: hidden;
-            border: 1px solid var(--border-color);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-        }
-
-        .case-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg, 
-                var(--bg-primary) 0%,
-                transparent 12%,
-                transparent 88%,
-                var(--bg-primary) 100%
-            );
-            z-index: 10;
-            pointer-events: none;
-        }
-
-        .center-pointer {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 20;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .pointer-arrow {
-            width: 0;
-            height: 0;
-            border-left: 12px solid transparent;
-            border-right: 12px solid transparent;
-            border-top: 18px solid var(--accent-gold);
-            filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.8));
-            animation: pointerGlow 1.5s ease-in-out infinite;
-        }
-
-        @keyframes pointerGlow {
-            0%, 100% { filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.6)); }
-            50% { filter: drop-shadow(0 0 20px rgba(251, 191, 36, 1)); }
-        }
-
-        .pointer-line {
-            width: 2px;
-            height: 130px;
-            background: linear-gradient(180deg, var(--accent-gold), transparent);
-            opacity: 0.4;
-        }
-
-        .bottom-pointer {
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 20;
-        }
-
-        .bottom-pointer .pointer-arrow {
-            border-top: none;
-            border-bottom: 18px solid var(--accent-gold);
-        }
-
-        .items-strip {
-            display: flex;
-            align-items: center;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            transition: none;
-        }
-
-        .items-strip.animating {
-            transition: transform 5s cubic-bezier(0.15, 0.85, 0.25, 1);
-        }
-
-        .prize-item {
-            flex-shrink: 0;
-            width: 100px;
-            height: 100px;
-            margin: 0 6px;
-            border-radius: 16px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-            border: 2px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.3s ease;
-            padding: 0;
-        }
-
-        .prize-item.has-image {
-            background: transparent !important;
-        }
-
-        .prize-item::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: 2;
-        }
-
-        .prize-item.rarity-common {
-            background: linear-gradient(135deg, rgba(55, 65, 81, 0.9), rgba(31, 41, 55, 0.9));
-            border-color: rgba(107, 114, 128, 0.3);
-        }
-
-        .prize-item.rarity-uncommon {
-            background: linear-gradient(135deg, rgba(124, 58, 237, 0.9), rgba(76, 29, 149, 0.9));
-            border-color: rgba(139, 92, 246, 0.5);
-            box-shadow: 0 0 20px rgba(139, 92, 246, 0.25);
-        }
-
-        .prize-item.rarity-rare {
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.9), rgba(29, 78, 216, 0.9));
-            border-color: rgba(59, 130, 246, 0.5);
-            box-shadow: 0 0 20px rgba(59, 130, 246, 0.25);
-        }
-
-        .prize-item.rarity-epic {
-            background: linear-gradient(135deg, rgba(236, 72, 153, 0.9), rgba(157, 23, 77, 0.9));
-            border-color: rgba(236, 72, 153, 0.5);
-            box-shadow: 0 0 25px rgba(236, 72, 153, 0.3);
-        }
-
-        .prize-item.rarity-legendary {
-            background: linear-gradient(135deg, rgba(251, 191, 36, 0.9), rgba(180, 83, 9, 0.9));
-            border-color: rgba(251, 191, 36, 0.6);
-            box-shadow: 0 0 30px rgba(251, 191, 36, 0.4);
-            animation: legendaryPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes legendaryPulse {
-            0%, 100% { box-shadow: 0 0 25px rgba(251, 191, 36, 0.4); }
-            50% { box-shadow: 0 0 40px rgba(251, 191, 36, 0.7); }
-        }
-
-        .prize-emoji {
-            font-size: 2.5rem;
-            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
-        }
-
-        .prize-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            position: absolute;
-            top: 0;
-            left: 0;
-            border-radius: 14px;
-        }
-
-        .prize-item.winner {
-            animation: winnerPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-            border-color: var(--accent-gold) !important;
-            box-shadow: 0 0 40px rgba(251, 191, 36, 0.7) !important;
-        }
-
-        @keyframes winnerPop {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        .spin-button {
-            background: linear-gradient(135deg, var(--accent-gold) 0%, #f59e0b 50%, var(--accent-gold) 100%);
-            background-size: 200% 200%;
-            border: none;
-            padding: 18px 45px;
-            font-size: 1rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            color: #1a1a2e;
-            border-radius: 16px;
-            cursor: pointer;
-            box-shadow: 0 15px 40px rgba(251, 191, 36, 0.3);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 10;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            position: relative;
-            overflow: hidden;
-            animation: cardEnter 0.8s ease-out 0.3s both, gradientShift 3s ease infinite;
-            margin-top: 25px;
-        }
-
-        .spin-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .spin-button:hover:not(:disabled)::before {
-            left: 100%;
-        }
-
-        .spin-button:hover:not(:disabled) {
-            transform: translateY(-4px) scale(1.03);
-            box-shadow: 0 20px 50px rgba(251, 191, 36, 0.45);
-        }
-
-        .spin-button:active:not(:disabled) {
-            transform: translateY(-2px) scale(1.01);
-        }
-
-        .spin-button:disabled {
-            background: linear-gradient(135deg, #374151, #1f2937);
-            cursor: not-allowed;
-            box-shadow: none;
-            animation: cardEnter 0.8s ease-out 0.3s both;
-        }
-
-        .spin-cost {
-            background: rgba(0, 0, 0, 0.15);
-            padding: 6px 14px;
-            border-radius: 12px;
-            font-size: 0.85rem;
-        }
-
-        .info-section {
-            margin-top: 30px;
-            width: 100%;
-            max-width: 400px;
-            z-index: 10;
-            animation: cardEnter 0.8s ease-out 0.4s both;
-        }
-
-        .info-title {
-            text-align: center;
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            margin-bottom: 15px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        .prizes-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 10px;
-        }
-
-        .prize-card {
-            background: var(--bg-card);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 8px;
-            padding-bottom: 10px;
-            text-align: center;
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .prize-card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(99, 102, 241, 0.3);
-            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.15);
-        }
-
-        .prize-card.legendary {
-            border-color: rgba(251, 191, 36, 0.4);
-            background: linear-gradient(135deg, rgba(120, 53, 15, 0.3), var(--bg-card));
-        }
-
-        .prize-card-visual {
-            width: 100%;
-            aspect-ratio: 1;
-            border-radius: 12px;
-            overflow: hidden;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .prize-card-emoji { 
-            font-size: 1.8rem; 
-        }
-
-        .prize-card-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .prize-card-name { 
-            font-size: 0.75rem; 
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--accent-gold), #f59e0b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-align: center;
-        }
-
-        .status-message {
-            background: linear-gradient(135deg, rgba(127, 29, 29, 0.6), rgba(69, 10, 10, 0.6));
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            border-radius: 16px;
-            padding: 15px;
-            margin-top: 15px;
-            text-align: center;
-            font-size: 0.85rem;
-            display: none;
-            z-index: 10;
-            animation: shake 0.5s ease-in-out;
-            width: 100%;
-            max-width: 400px;
-        }
-
-        .status-message.success {
-            background: linear-gradient(135deg, rgba(21, 87, 36, 0.6), rgba(6, 78, 59, 0.6));
-            border-color: rgba(34, 197, 94, 0.3);
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-5px); }
-            40%, 80% { transform: translateX(5px); }
-        }
-
-        .status-message.show { display: block; }
-
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.4s ease;
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-        }
-
-        .modal-overlay.show {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .modal {
-            background: linear-gradient(180deg, rgba(15, 15, 30, 0.98) 0%, rgba(8, 8, 16, 0.99) 100%);
-            backdrop-filter: blur(40px);
-            border-radius: 28px;
-            padding: 35px;
-            text-align: center;
-            max-width: 320px;
-            width: 90%;
-            transform: scale(0.8) translateY(40px);
-            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-            border: 1px solid var(--border-color);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .modal::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
-            animation: shimmerCard 4s ease-in-out infinite;
-        }
-
-        .modal > * {
-            position: relative;
-            z-index: 1;
-        }
-
-        .modal-overlay.show .modal {
-            transform: scale(1) translateY(0);
-        }
-
-        .modal.win {
-            border-color: rgba(251, 191, 36, 0.4);
-            box-shadow: 0 0 60px rgba(251, 191, 36, 0.2);
-        }
-
-        .modal-emoji {
-            font-size: 4rem;
-            margin-bottom: 20px;
-            animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-
-        .modal-prize-image {
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-            margin-bottom: 20px;
-            border-radius: 16px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-
-        @keyframes bounceIn {
-            0% { transform: scale(0) rotate(-10deg); opacity: 0; }
-            50% { transform: scale(1.2) rotate(5deg); }
-            100% { transform: scale(1) rotate(0); opacity: 1; }
-        }
-
-        .modal-title { 
-            font-family: 'Playfair Display', serif;
-            font-size: 1.4rem; 
-            font-weight: 700;
-            margin-bottom: 10px;
-            letter-spacing: 1px;
-        }
-        
-        .modal-prize {
-            font-size: 2.2rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, var(--accent-gold), #f59e0b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 15px;
-            animation: priceGlow 2s ease-in-out infinite;
-        }
-        
-        .modal-balance {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            margin-bottom: 25px;
-            padding: 12px;
-            background: rgba(99, 102, 241, 0.05);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-        }
-
-        .modal-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .modal-button {
-            background: linear-gradient(135deg, var(--accent-purple), var(--accent-indigo));
-            border: none;
-            padding: 14px 28px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            color: white;
-            border-radius: 14px;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .modal-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .modal-button:hover::before { left: 100%; }
-
-        .modal-button:hover {
-            transform: scale(1.03);
-            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
-        }
-
-        .modal-button.secondary {
-            background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-        }
-
-        .modal-button.secondary:hover {
-            background: rgba(255, 255, 255, 0.05);
-            box-shadow: none;
-        }
-
-        .modal-button.gold {
-            background: linear-gradient(135deg, var(--accent-gold), #f59e0b);
-            color: #1a1a2e;
-        }
-
-        .modal-button.gold:hover {
-            box-shadow: 0 10px 30px rgba(251, 191, 36, 0.4);
-        }
-
-        .confetti {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 99;
-            overflow: hidden;
-        }
-
-        .confetti-piece {
-            position: absolute;
-            animation: confettiFall 4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-        }
-
-        @keyframes confettiFall {
-            0% { 
-                opacity: 1; 
-                transform: translateY(-100%) rotate(0deg) scale(1);
-            }
-            100% { 
-                opacity: 0; 
-                transform: translateY(100vh) rotate(1080deg) scale(0);
-            }
-        }
-
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--bg-primary);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 200;
-            transition: opacity 0.5s ease;
-        }
-
-        .loading-overlay.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .loader {
-            width: 50px;
-            height: 50px;
-            border: 3px solid rgba(99, 102, 241, 0.1);
-            border-top-color: var(--accent-gold);
-            border-right-color: var(--accent-purple);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin { 
-            to { transform: rotate(360deg); } 
-        }
-
-        .loading-text {
-            margin-top: 20px;
-            color: var(--text-secondary);
-            letter-spacing: 2px;
-            font-size: 0.85rem;
-            animation: loadingPulse 1.5s ease-in-out infinite;
-        }
-
-        @keyframes loadingPulse {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
-        }
-
-        .session-info {
-            position: fixed;
-            bottom: 5px;
-            left: 5px;
-            font-size: 0.55rem;
-            color: rgba(255,255,255,0.15);
-            z-index: 1;
-            font-family: monospace;
-        }
-
-        @media (max-width: 380px) {
-            .case-container { height: 110px; }
-            .prize-item { width: 85px; height: 85px; }
-            .prize-emoji { font-size: 1.7rem; }
-            .prize-image { width: 40px; height: 40px; }
-            .prize-stars { font-size: 0.7rem; padding: 3px 8px; }
-            .brand-text { font-size: 1.6rem; }
-            .pointer-line { height: 110px; }
-        }
-    </style>
+    .hidden { display: none; }
+
+    button {
+      padding: 12px 25px;
+      font-size: 18px;
+      border-radius: 10px;
+      border: none;
+      background: #4a7cff;
+      color: white;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+
+    button:disabled {
+      background: gray;
+      cursor: not-allowed;
+    }
+
+    #error {
+      color: #ff5c5c;
+      margin-top: 20px;
+      white-space: pre-wrap;
+    }
+  </style>
 </head>
 <body>
-    <div class="loading-overlay" id="loadingOverlay">
-        <div class="loader"></div>
-        <div class="loading-text">Загрузка...</div>
-    </div>
 
-    <div class="animated-bg">
-        <div class="bg-orb bg-orb-1"></div>
-        <div class="bg-orb bg-orb-2"></div>
-        <div class="bg-orb bg-orb-3"></div>
-        <div class="bg-stars" id="bgStars"></div>
-    </div>
+<h2>🎰 Рулетка</h2>
 
-    <div class="header">
-        <h1 class="brand-text">Divine Case</h1>
-        <div class="balance-card">
-            <div class="balance-item">
-                <div class="balance-label">Сапфиры</div>
-                <div class="balance-value">
-                    <span class="balance-icon">💎</span>
-                    <span id="sapphires">0</span>
-                </div>
-            </div>
-            <div class="balance-item">
-                <div class="balance-label">Звёзды</div>
-                <div class="balance-value">
-                    <span class="balance-icon">⭐</span>
-                    <span id="stars-balance">0</span>
-                </div>
-            </div>
-        </div>
-    </div>
+<div id="loading">Загрузка...</div>
 
-    <div class="case-display">
-        <div class="case-box">
-            <div class="case-glow"></div>
-            <div class="case-box-inner">
-                <span class="case-emoji">🎁</span>
-            </div>
-        </div>
-        <div class="case-name">Cosmic Case</div>
-    </div>
+<div id="app" class="hidden">
+  <p>💎 Сапфиры: <span id="sapphires">0</span></p>
+  <p>⭐ Звёзды: <span id="stars">0</span></p>
+  <p>Стоимость спина: <b><span id="cost">100</span></b></p>
 
-    <div class="case-section">
-        <div class="case-container" id="caseContainer">
-            <div class="center-pointer">
-                <div class="pointer-arrow"></div>
-                <div class="pointer-line"></div>
-            </div>
-            <div class="bottom-pointer">
-                <div class="pointer-arrow"></div>
-            </div>
-            <div class="items-strip" id="itemsStrip"></div>
-        </div>
-    </div>
+  <button id="spinBtn">Крутить рулетку</button>
+</div>
 
-    <button class="spin-button" id="spinBtn" onclick="openCase()">
-        <span>Открыть кейс</span>
-        <span class="spin-cost">100 💎</span>
-    </button>
+<div id="error"></div>
 
-    <div class="status-message" id="statusMessage"></div>
-
-    <div class="info-section">
-        <div class="info-title">Возможные призы</div>
-        <div class="prizes-grid" id="prizesGrid">
-            <!-- Will be generated dynamically -->
-        </div>
-    </div>
-
-    <div class="session-info" id="sessionInfo"></div>
-
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal" id="modal">
-            <div class="modal-emoji" id="modalEmoji">🎉</div>
-            <div class="modal-title" id="modalTitle">Поздравляем!</div>
-            <div class="modal-prize" id="modalPrize">+50 ⭐</div>
-            <div class="modal-balance" id="modalBalance">💎 150 сапфиров | ⭐ 50 звёзд</div>
-            <div class="modal-buttons">
-                <button class="modal-button gold" id="spinAgainBtn" onclick="spinAgain()">Открыть ещё</button>
-                <button class="modal-button secondary" onclick="closeAndExit()">Назад</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="confetti" id="confetti"></div>
-
-   <script>
-const API_URL = "https://deadveel.pythonanywhere.com";
+<script>
+const API_BASE = "https://deadveel.pythonanywhere.com";
 
 const tg = window.Telegram.WebApp;
+tg.ready();
 
-const STATE = {
-    userId: null,
-    username: null,
-    sapphires: 0,
-    stars: 0,
-    isInitialized: false,
-    spinning: false
-};
+// ⚠️ ВАЖНО: берём initData из Telegram
+const initData = tg.initData;
 
-document.addEventListener("DOMContentLoaded", () => {
-    init();
+if (!initData) {
+  showError("❌ Telegram initData не получен.\nОткрой страницу только через бота.");
+  throw new Error("No initData");
+}
+
+function showError(text) {
+  document.getElementById("loading").classList.add("hidden");
+  document.getElementById("app").classList.add("hidden");
+  document.getElementById("error").innerText = text;
+}
+
+async function apiRequest(path, options = {}) {
+  const res = await fetch(API_BASE + path, {
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      "X-Telegram-Init-Data": initData,
+      ...(options.headers || {})
+    }
+  });
+
+  const data = await res.json();
+
+  if (!res.ok || data.success === false) {
+    throw new Error(data.error || "API error");
+  }
+
+  return data;
+}
+
+// ==========================
+// ЗАГРУЗКА БАЛАНСА
+// ==========================
+async function loadBalance() {
+  try {
+    const data = await apiRequest("/api/balance");
+
+    document.getElementById("sapphires").innerText = data.sapphires;
+    document.getElementById("stars").innerText = data.stars;
+    document.getElementById("cost").innerText = data.spin_cost;
+
+    const btn = document.getElementById("spinBtn");
+    btn.disabled = !data.can_spin;
+
+    document.getElementById("loading").classList.add("hidden");
+    document.getElementById("app").classList.remove("hidden");
+
+  } catch (e) {
+    showError("❌ Ошибка загрузки баланса:\n" + e.message);
+  }
+}
+
+// ==========================
+// СПИН
+// ==========================
+document.getElementById("spinBtn").addEventListener("click", async () => {
+  const btn = document.getElementById("spinBtn");
+  btn.disabled = true;
+
+  try {
+    // списываем сапфиры
+    const spinData = await apiRequest("/api/spin", {
+      method: "POST"
+    });
+
+    // случайный приз (логика фронта)
+    const prizes = [0, 25, 50, 100, 500];
+    const prize = prizes[Math.floor(Math.random() * prizes.length)];
+
+    // отправляем выигрыш на сервер
+    const claimData = await apiRequest("/api/claim", {
+      method: "POST",
+      body: JSON.stringify({ stars: prize })
+    });
+
+    alert(prize > 0 
+      ? `🎉 Ты выиграл ${prize} ⭐!` 
+      : "😢 Ничего не выпало");
+
+    // обновляем баланс
+    document.getElementById("sapphires").innerText = claimData.new_sapphires;
+    document.getElementById("stars").innerText = claimData.new_stars;
+
+    btn.disabled = !claimData.can_spin;
+
+  } catch (e) {
+    showError("❌ Ошибка спина:\n" + e.message);
+  }
 });
 
-async function init() {
-    try {
-        if (!tg || !tg.initDataUnsafe?.user) {
-            showFatalError("Откройте это приложение через Telegram бота");
-            hideLoader();
-            return;
-        }
-
-        STATE.userId = tg.initDataUnsafe.user.id;
-        STATE.username = tg.initDataUnsafe.user.username || "";
-
-        console.log("Telegram user:", STATE.userId, STATE.username);
-
-        const balance = await getBalance();
-
-        if (!balance.success) {
-            showFatalError("Ошибка загрузки баланса");
-            hideLoader();
-            return;
-        }
-
-        STATE.sapphires = balance.sapphires;
-        STATE.stars = balance.stars;
-
-        generateStars();
-        generateItemsStrip();
-        generatePrizesGrid();
-        updateUI();
-
-        STATE.isInitialized = true;
-
-        hideLoader();
-
-    } catch (e) {
-        console.error("INIT ERROR:", e);
-        showFatalError("Ошибка подключения к серверу");
-        hideLoader();
-    }
-}
-
-// ==========================
-// API
-// ==========================
-
-async function getBalance() {
-    try {
-        const res = await fetch(`${API_URL}/api/balance`, {
-            method: "GET",
-            headers: {
-                "X-Telegram-Init-Data": tg.initData
-            }
-        });
-
-        const data = await res.json();
-        console.log("BALANCE RESPONSE:", data);
-        return data;
-
-    } catch (e) {
-        console.error("getBalance error:", e);
-        return { success: false };
-    }
-}
-
-async function spinRequest() {
-    try {
-        const res = await fetch(`${API_URL}/api/spin`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-Telegram-Init-Data": tg.initData
-            }
-        });
-
-        const data = await res.json();
-        console.log("SPIN RESPONSE:", data);
-        return data;
-
-    } catch (e) {
-        console.error("spinRequest error:", e);
-        return { success: false };
-    }
-}
-
-async function claimPrize(stars) {
-    try {
-        const res = await fetch(`${API_URL}/api/claim`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-Telegram-Init-Data": tg.initData
-            },
-            body: JSON.stringify({ stars })
-        });
-
-        const data = await res.json();
-        console.log("CLAIM RESPONSE:", data);
-        return data;
-
-    } catch (e) {
-        console.error("claimPrize error:", e);
-        return { success: false };
-    }
-}
-
-// ==========================
-// ЛОГИКА РУЛЕТКИ
-// ==========================
-
-async function onSpinClick() {
-    if (!STATE.isInitialized || STATE.spinning) return;
-
-    if (STATE.sapphires < 100) {
-        tg.showAlert("Недостаточно сапфиров для спина");
-        return;
-    }
-
-    STATE.spinning = true;
-
-    const result = await spinRequest();
-
-    if (!result.success) {
-        tg.showAlert(result.error || "Ошибка прокрутки");
-        STATE.spinning = false;
-        return;
-    }
-
-    STATE.sapphires = result.new_sapphires;
-    updateUI();
-
-    // Тут твоя анимация рулетки
-    const prize = getRandomPrize(); // твоя логика выбора приза
-
-    playAnimation(prize, async () => {
-        if (prize > 0) {
-            const claim = await claimPrize(prize);
-
-            if (claim.success) {
-                STATE.stars = claim.new_stars;
-                STATE.sapphires = claim.new_sapphires;
-                updateUI();
-            } else {
-                tg.showAlert("Ошибка начисления приза");
-            }
-        }
-
-        STATE.spinning = false;
-    });
-}
-
-// ==========================
-// UI / HELPERS
-// ==========================
-
-function hideLoader() {
-    const overlay = document.getElementById("loadingOverlay");
-    if (overlay) overlay.classList.add("hidden");
-}
-
-function showFatalError(text) {
-    const overlay = document.getElementById("loadingOverlay");
-    if (!overlay) return;
-
-    overlay.innerHTML = `
-        <div style="color:white;text-align:center;padding:20px;">
-            <h3>Ошибка</h3>
-            <p>${text}</p>
-        </div>
-    `;
-}
-
-function updateUI() {
-    document.getElementById("sapphires").innerText = STATE.sapphires;
-    document.getElementById("stars").innerText = STATE.stars;
-}
+// старт
+loadBalance();
 </script>
 
 </body>
