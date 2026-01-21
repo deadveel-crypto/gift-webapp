@@ -1603,7 +1603,10 @@
         async function openCase() {
             if (isSpinning || STATE.isModalOpen) return;
             
-            if (STATE.sapphires < STATE.spinCost) {
+            // Получаем актуальную стоимость выбранного кейса
+            const currentCost = STATE.selectedCase?.cost || STATE.spinCost;
+            
+            if (STATE.sapphires < currentCost) {
                 showStatus('❌ Недостаточно сапфиров!', 'error');
                 haptic('error');
                 return;
@@ -1617,24 +1620,25 @@
             const prizeStars = getRandomPrize();
             const prize = PRIZE_VISUALS.find(p => p.stars === prizeStars) || PRIZE_VISUALS[0];
             
-            console.log("🎲 Prize selected:", prizeStars, "stars");
+            console.log("🎲 Prize selected:", prizeStars, "stars, case cost:", currentCost);
             
             const animationPromise = runAnimation(prize);
             
             let apiSuccess = false;
             
             try {
-                // Передаём стоимость кейса на сервер!
-                await apiRequest("/api/spin", { 
+                // ✅ Передаём стоимость кейса на сервер!
+                const spinResult = await apiRequest("/api/spin", { 
                     method: "POST",
                     body: JSON.stringify({ 
-                        cost: STATE.spinCost,
+                        cost: currentCost,
                         case_id: STATE.selectedCase?.id || 'cosmic'
                     })
                 });
-                console.log("✅ Spin success, sapphires deducted:", STATE.spinCost);
+                console.log("✅ Spin success, sapphires deducted:", spinResult.cost_spent);
                 
-                STATE.sapphires -= STATE.spinCost;
+                // ✅ Используем стоимость из ответа сервера или текущую
+                STATE.sapphires = spinResult.new_sapphires;
                 STATE.spinsCount++;
                 updateUI();
                 
