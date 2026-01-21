@@ -8,14 +8,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        * { font-family: 'Inter', sans-serif; }
+        * {
+            font-family: 'Inter', sans-serif;
+            box-sizing: border-box;
+        }
 
         body {
             min-height: 100vh;
-            background: #0a0a0f;
+            background: linear-gradient(135deg, #0f0a1e 0%, #1a0a2e 50%, #0d0618 100%);
             overflow-x: hidden;
         }
 
+        /* Animated Background */
         .animated-bg {
             position: fixed;
             top: 0;
@@ -23,79 +27,49 @@
             right: 0;
             bottom: 0;
             z-index: 0;
-            background: radial-gradient(ellipse at top, #0c0c1a 0%, #080810 50%, #050508 100%);
+            overflow: hidden;
         }
 
         .bg-orb {
             position: absolute;
             border-radius: 50%;
-            filter: blur(80px);
-            animation: float 8s ease-in-out infinite;
+            filter: blur(100px);
+            animation: float 10s ease-in-out infinite;
         }
 
         .bg-orb-1 {
-            width: 300px;
-            height: 300px;
-            background: linear-gradient(135deg, #1e1b4b, #312e81);
-            top: -100px;
-            right: -100px;
+            width: 500px;
+            height: 500px;
+            background: linear-gradient(135deg, #7c3aed, #4c1d95);
+            top: -200px;
+            right: -150px;
             opacity: 0.4;
         }
 
         .bg-orb-2 {
-            width: 250px;
-            height: 250px;
-            background: linear-gradient(135deg, #312e81, #4338ca);
-            bottom: -50px;
-            left: -50px;
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(135deg, #ec4899, #8b5cf6);
+            bottom: -150px;
+            left: -100px;
             opacity: 0.3;
-            animation-delay: -3s;
+            animation-delay: -4s;
+        }
+
+        .bg-orb-3 {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.2;
+            animation-delay: -7s;
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
-        }
-
-        @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 0 30px rgba(99, 102, 241, 0.3); }
-            50% { box-shadow: 0 0 60px rgba(99, 102, 241, 0.6); }
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0) rotate(0deg); }
-            20% { transform: translateX(-8px) rotate(-2deg); }
-            40% { transform: translateX(8px) rotate(2deg); }
-            60% { transform: translateX(-5px) rotate(-1deg); }
-            80% { transform: translateX(5px) rotate(1deg); }
-        }
-
-        @keyframes case-open {
-            0% { transform: scale(1) rotateY(0deg); opacity: 1; }
-            50% { transform: scale(1.2) rotateY(90deg); }
-            100% { transform: scale(0) rotateY(180deg); opacity: 0; }
-        }
-
-        @keyframes prize-appear {
-            0% { transform: scale(0) rotate(-180deg); opacity: 0; }
-            60% { transform: scale(1.2) rotate(10deg); }
-            100% { transform: scale(1) rotate(0deg); opacity: 1; }
-        }
-
-        @keyframes confetti {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
-        }
-
-        @keyframes balance-pop {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-30px) scale(1.05); }
         }
 
         .star {
@@ -107,96 +81,307 @@
             animation: twinkle 3s ease-in-out infinite;
         }
 
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.5); }
+        }
+
+        /* Balance Cards */
         .balance-card {
-            background: rgba(99, 102, 241, 0.1);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            border-radius: 16px;
-            padding: 12px 20px;
-            backdrop-filter: blur(10px);
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(236, 72, 153, 0.1));
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 20px;
+            padding: 16px 28px;
+            backdrop-filter: blur(20px);
+            transition: all 0.3s ease;
+        }
+
+        .balance-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(139, 92, 246, 0.5);
+            box-shadow: 0 10px 40px rgba(139, 92, 246, 0.2);
+        }
+
+        .balance-value {
+            transition: all 0.3s ease;
         }
 
         .balance-value.updating {
-            animation: balance-pop 0.4s ease;
+            animation: pop 0.4s ease;
         }
 
-        .case-container {
+        @keyframes pop {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+
+        /* Case Container */
+        .case-section {
             position: relative;
-            width: 240px;
-            height: 240px;
-            margin: 0 auto;
-            perspective: 1000px;
+            background: linear-gradient(180deg, rgba(139, 92, 246, 0.08) 0%, transparent 100%);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 32px;
+            padding: 40px 20px;
+            backdrop-filter: blur(20px);
+            overflow: hidden;
         }
 
-        .case-glow {
+        .case-section::before {
+            content: '';
             position: absolute;
-            inset: -40px;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.4) 0%, transparent 70%);
-            border-radius: 50%;
-            filter: blur(30px);
-            animation: pulse-glow 3s ease-in-out infinite;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #8b5cf6, transparent);
+            border-radius: 2px;
         }
 
-        .case-box {
+        /* Roulette */
+        .roulette-wrapper {
+            position: relative;
             width: 100%;
-            height: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            overflow: hidden;
+            border-radius: 20px;
+            background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.2) 100%);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+
+        /* Pointer */
+        .roulette-pointer {
+            position: absolute;
+            top: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 20;
             display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .pointer-arrow {
+            width: 0;
+            height: 0;
+            border-left: 14px solid transparent;
+            border-right: 14px solid transparent;
+            border-top: 20px solid #fbbf24;
+            filter: drop-shadow(0 4px 15px rgba(251, 191, 36, 0.6));
+            animation: pointer-glow 2s ease-in-out infinite;
+        }
+
+        .pointer-line {
+            width: 3px;
+            height: 120px;
+            background: linear-gradient(180deg, #fbbf24 0%, transparent 100%);
+            border-radius: 2px;
+        }
+
+        @keyframes pointer-glow {
+            0%, 100% { filter: drop-shadow(0 4px 15px rgba(251, 191, 36, 0.6)); }
+            50% { filter: drop-shadow(0 4px 25px rgba(251, 191, 36, 1)); }
+        }
+
+        /* Fade edges */
+        .roulette-fade-left,
+        .roulette-fade-right {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 80px;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .roulette-fade-left {
+            left: 0;
+            background: linear-gradient(90deg, rgba(15, 10, 30, 1) 0%, transparent 100%);
+        }
+
+        .roulette-fade-right {
+            right: 0;
+            background: linear-gradient(-90deg, rgba(15, 10, 30, 1) 0%, transparent 100%);
+        }
+
+        /* Roulette Track */
+        .roulette-track {
+            display: flex;
+            transition: transform 5s cubic-bezier(0.15, 0.85, 0.3, 1);
+        }
+
+        .roulette-track.spinning {
+            transition: transform 5s cubic-bezier(0.15, 0.85, 0.3, 1);
+        }
+
+        .roulette-track.instant {
+            transition: none !important;
+        }
+
+        /* Prize Items */
+        .prize-item {
+            flex-shrink: 0;
+            width: 110px;
+            height: 120px;
+            margin: 10px 6px;
+            background: linear-gradient(180deg, rgba(139, 92, 246, 0.2) 0%, rgba(139, 92, 246, 0.05) 100%);
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            transition: transform 0.3s ease;
+            gap: 8px;
+            transition: all 0.3s ease;
         }
 
-        .case-box:hover { transform: scale(1.05); }
-        .case-box.shaking { animation: shake 0.6s ease-in-out; }
-        .case-box.opening { animation: case-open 0.8s ease-in-out forwards; }
-
-        .case-image {
-            width: 180px;
-            height: 180px;
-            object-fit: contain;
-            filter: drop-shadow(0 20px 40px rgba(99, 102, 241, 0.5));
+        .prize-item.common {
+            background: linear-gradient(180deg, rgba(100, 116, 139, 0.2) 0%, rgba(100, 116, 139, 0.05) 100%);
+            border-color: rgba(100, 116, 139, 0.4);
         }
 
-        .spin-btn {
-            background: linear-gradient(135deg, #4338ca, #6366f1);
-            border: none;
-            border-radius: 16px;
-            padding: 18px 50px;
+        .prize-item.uncommon {
+            background: linear-gradient(180deg, rgba(34, 197, 94, 0.2) 0%, rgba(34, 197, 94, 0.05) 100%);
+            border-color: rgba(34, 197, 94, 0.4);
+        }
+
+        .prize-item.rare {
+            background: linear-gradient(180deg, rgba(59, 130, 246, 0.2) 0%, rgba(59, 130, 246, 0.05) 100%);
+            border-color: rgba(59, 130, 246, 0.4);
+        }
+
+        .prize-item.epic {
+            background: linear-gradient(180deg, rgba(168, 85, 247, 0.2) 0%, rgba(168, 85, 247, 0.05) 100%);
+            border-color: rgba(168, 85, 247, 0.4);
+        }
+
+        .prize-item.legendary {
+            background: linear-gradient(180deg, rgba(251, 191, 36, 0.25) 0%, rgba(245, 158, 11, 0.1) 100%);
+            border-color: rgba(251, 191, 36, 0.6);
+            box-shadow: 0 0 30px rgba(251, 191, 36, 0.3);
+            animation: legendary-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes legendary-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(251, 191, 36, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(251, 191, 36, 0.5); }
+        }
+
+        .prize-icon {
+            font-size: 36px;
+        }
+
+        .prize-value {
             font-size: 18px;
-            font-weight: 700;
+            font-weight: 800;
+        }
+
+        .prize-item.common .prize-value { color: #94a3b8; }
+        .prize-item.uncommon .prize-value { color: #22c55e; }
+        .prize-item.rare .prize-value { color: #3b82f6; }
+        .prize-item.epic .prize-value { color: #a855f7; }
+        .prize-item.legendary .prize-value { 
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Spin Button */
+        .spin-btn {
+            position: relative;
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 50%, #6d28d9 100%);
+            border: none;
+            border-radius: 20px;
+            padding: 20px 60px;
+            font-size: 20px;
+            font-weight: 800;
             color: white;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 40px rgba(99, 102, 241, 0.4);
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 15px 50px rgba(139, 92, 246, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
-        .spin-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 20px 50px rgba(99, 102, 241, 0.5);
+        .spin-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .spin-btn:hover:not(:disabled)::before {
+            left: 100%;
+        }
+
+        .spin-btn:hover:not(:disabled) {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 25px 60px rgba(139, 92, 246, 0.5);
+        }
+
+        .spin-btn:active:not(:disabled) {
+            transform: scale(0.98);
         }
 
         .spin-btn:disabled {
-            background: #374151;
+            background: linear-gradient(135deg, #374151, #1f2937);
             cursor: not-allowed;
             box-shadow: none;
             transform: none;
         }
 
-        .prizes-grid {
+        .spin-btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Cost Badge */
+        .cost-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .cost-badge strong {
+            color: #c4b5fd;
+            font-weight: 700;
+        }
+
+        /* Prizes Display */
+        .prizes-showcase {
             display: flex;
             justify-content: center;
-            gap: 10px;
+            gap: 12px;
             flex-wrap: wrap;
         }
 
         .prize-chip {
-            background: rgba(99, 102, 241, 0.1);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            border-radius: 12px;
-            padding: 8px 14px;
-            font-size: 14px;
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 14px;
+            padding: 10px 18px;
+            font-size: 15px;
             font-weight: 600;
-            color: white;
+            color: rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+        }
+
+        .prize-chip:hover {
+            transform: translateY(-2px);
+            border-color: rgba(139, 92, 246, 0.4);
         }
 
         .prize-chip.legendary {
@@ -214,69 +399,139 @@
             display: none;
             align-items: center;
             justify-content: center;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(20px);
+            opacity: 0;
+            transition: opacity 0.4s ease;
         }
 
-        .modal-overlay.show { display: flex; }
+        .modal-overlay.show {
+            display: flex;
+            opacity: 1;
+        }
 
         .modal-content {
-            background: linear-gradient(180deg, rgba(15, 15, 30, 0.98) 0%, rgba(8, 8, 16, 0.99) 100%);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            border-radius: 24px;
-            padding: 40px;
+            background: linear-gradient(180deg, rgba(30, 20, 50, 0.98) 0%, rgba(15, 10, 30, 0.99) 100%);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 32px;
+            padding: 50px 40px;
             text-align: center;
-            max-width: 320px;
+            max-width: 360px;
             width: 90%;
+            transform: scale(0.8);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .modal-overlay.show .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .result-icon-wrapper {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .result-ring {
+            position: absolute;
+            inset: 0;
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            border-radius: 50%;
+            animation: ring-pulse 2s ease-out infinite;
+        }
+
+        .result-ring:nth-child(2) { animation-delay: 0.5s; }
+        .result-ring:nth-child(3) { animation-delay: 1s; }
+
+        @keyframes ring-pulse {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { opacity: 0.6; }
+            100% { transform: scale(2); opacity: 0; }
         }
 
         .result-icon {
-            font-size: 80px;
-            margin-bottom: 20px;
-            animation: prize-appear 0.6s ease-out;
+            font-size: 70px;
+            animation: bounce-in 0.6s ease;
+        }
+
+        @keyframes bounce-in {
+            0% { transform: scale(0) rotate(-20deg); opacity: 0; }
+            60% { transform: scale(1.2) rotate(10deg); }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
         }
 
         .result-title {
-            font-size: 24px;
+            font-size: 28px;
             font-weight: 800;
             margin-bottom: 8px;
         }
 
-        .result-title.win { color: #fbbf24; }
-        .result-title.lose { color: rgba(255,255,255,0.6); }
+        .result-title.win {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .result-title.lose {
+            color: rgba(255, 255, 255, 0.5);
+        }
 
         .result-amount {
-            font-size: 48px;
+            font-size: 52px;
             font-weight: 900;
-            color: #fbbf24;
-            margin-bottom: 24px;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 30px;
+            text-shadow: 0 0 60px rgba(251, 191, 36, 0.5);
         }
 
         .modal-btn {
-            background: linear-gradient(135deg, #4338ca, #6366f1);
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
             border: none;
-            border-radius: 14px;
-            padding: 14px 40px;
-            font-size: 16px;
-            font-weight: 600;
+            border-radius: 16px;
+            padding: 16px 50px;
+            font-size: 17px;
+            font-weight: 700;
             color: white;
             cursor: pointer;
+            transition: all 0.3s ease;
             width: 100%;
         }
 
+        .modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(139, 92, 246, 0.4);
+        }
+
+        /* Confetti */
         .confetti {
             position: fixed;
             width: 10px;
             height: 10px;
             top: -10px;
-            animation: confetti 3s linear forwards;
             z-index: 300;
+            animation: confetti-fall 3s linear forwards;
         }
 
+        @keyframes confetti-fall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* Loading & Error States */
         .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid rgba(99, 102, 241, 0.2);
-            border-top-color: #6366f1;
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(139, 92, 246, 0.2);
+            border-top-color: #8b5cf6;
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
@@ -288,13 +543,32 @@
         .error-box {
             background: rgba(239, 68, 68, 0.1);
             border: 1px solid rgba(239, 68, 68, 0.3);
-            border-radius: 16px;
-            padding: 24px;
+            border-radius: 20px;
+            padding: 30px;
             max-width: 400px;
             margin: 0 auto;
         }
 
         .hidden { display: none !important; }
+
+        /* Title Styling */
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #c4b5fd, #8b5cf6, #ec4899);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shine 4s linear infinite;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        @keyframes shine {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
     </style>
 </head>
 
@@ -302,74 +576,108 @@
     <div class="animated-bg">
         <div class="bg-orb bg-orb-1"></div>
         <div class="bg-orb bg-orb-2"></div>
+        <div class="bg-orb bg-orb-3"></div>
         <div id="stars"></div>
     </div>
 
     <main class="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 py-8">
         
-        <!-- Loading -->
-        <div id="loadingState" class="flex flex-col items-center gap-4">
+        <!-- Loading State -->
+        <div id="loadingState" class="flex flex-col items-center gap-6">
             <div class="loading-spinner"></div>
-            <p class="text-white/60">Загрузка...</p>
+            <p class="text-white/60 text-lg">Загрузка...</p>
         </div>
 
-        <!-- Error -->
+        <!-- Error State -->
         <div id="errorState" class="hidden">
             <div class="error-box text-center">
-                <div class="text-4xl mb-4">❌</div>
-                <h3 class="text-xl font-bold text-red-400 mb-2">Ошибка</h3>
-                <p class="text-white/60 text-sm" id="errorMessage"></p>
+                <div class="text-5xl mb-4">❌</div>
+                <h3 class="text-xl font-bold text-red-400 mb-3">Ошибка</h3>
+                <p class="text-white/60" id="errorMessage"></p>
             </div>
         </div>
 
-        <!-- App -->
-        <div id="appContent" class="hidden w-full max-w-md">
+        <!-- Main App -->
+        <div id="appContent" class="hidden w-full max-w-2xl">
             
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <h1 class="page-title mb-2">Divine Case</h1>
+                <p class="text-white/50">Испытай удачу!</p>
+            </div>
+
             <!-- Balance -->
-            <div class="flex justify-center gap-4 mb-10">
-                <div class="balance-card flex items-center gap-2">
-                    <span class="text-xl">💎</span>
-                    <span class="text-xl font-bold text-blue-400" id="sapphiresDisplay">0</span>
+            <div class="flex justify-center gap-5 mb-10">
+                <div class="balance-card flex items-center gap-3">
+                    <span class="text-2xl">💎</span>
+                    <div>
+                        <div class="text-xs text-white/50 uppercase tracking-wider">Сапфиры</div>
+                        <span class="text-2xl font-bold text-purple-300 balance-value" id="sapphiresDisplay">0</span>
+                    </div>
                 </div>
-                <div class="balance-card flex items-center gap-2">
-                    <span class="text-xl">⭐</span>
-                    <span class="text-xl font-bold text-yellow-400" id="starsDisplay">0</span>
+                <div class="balance-card flex items-center gap-3">
+                    <span class="text-2xl">⭐</span>
+                    <div>
+                        <div class="text-xs text-white/50 uppercase tracking-wider">Звёзды</div>
+                        <span class="text-2xl font-bold text-yellow-400 balance-value" id="starsDisplay">0</span>
+                    </div>
                 </div>
             </div>
 
-            <!-- Case -->
-            <div class="case-container mb-8">
-                <div class="case-glow"></div>
-                <div class="case-box" id="caseBox">
-                    <img src="https://i.ibb.co/35hxFf7G/rounded-in-photoretrica-19.png" alt="Case" class="case-image">
+            <!-- Case Section -->
+            <div class="case-section mb-8">
+                
+                <!-- Roulette -->
+                <div class="roulette-wrapper">
+                    <div class="roulette-pointer">
+                        <div class="pointer-arrow"></div>
+                        <div class="pointer-line"></div>
+                    </div>
+                    <div class="roulette-fade-left"></div>
+                    <div class="roulette-fade-right"></div>
+                    <div class="roulette-track" id="rouletteTrack"></div>
                 </div>
+
             </div>
 
             <!-- Cost -->
-            <p class="text-center text-white/60 mb-6">
-                Стоимость: <span class="text-blue-400 font-bold">💎 <span id="spinCost">100</span></span>
-            </p>
+            <div class="text-center mb-6">
+                <div class="cost-badge">
+                    Стоимость открытия: <strong>💎 <span id="spinCost">100</span></strong>
+                </div>
+            </div>
 
-            <!-- Button -->
+            <!-- Spin Button -->
             <div class="text-center mb-10">
-                <button class="spin-btn" id="spinBtn">🎲 Открыть</button>
+                <button class="spin-btn" id="spinBtn">
+                    <span>🎰 Открыть кейс</span>
+                </button>
             </div>
 
-            <!-- Prizes -->
-            <div class="prizes-grid">
-                <div class="prize-chip">😢 0</div>
-                <div class="prize-chip">⭐ 25</div>
-                <div class="prize-chip">⭐ 50</div>
-                <div class="prize-chip">⭐ 100</div>
-                <div class="prize-chip legendary">🌟 500</div>
+            <!-- Prizes Showcase -->
+            <div class="text-center">
+                <p class="text-white/40 text-sm mb-4 uppercase tracking-wider">Возможные призы</p>
+                <div class="prizes-showcase">
+                    <div class="prize-chip">😢 0</div>
+                    <div class="prize-chip">⭐ 25</div>
+                    <div class="prize-chip">⭐ 50</div>
+                    <div class="prize-chip">⭐ 100</div>
+                    <div class="prize-chip legendary">🌟 500</div>
+                </div>
             </div>
+
         </div>
     </main>
 
     <!-- Result Modal -->
     <div id="resultModal" class="modal-overlay">
         <div class="modal-content">
-            <div class="result-icon" id="resultIcon">⭐</div>
+            <div class="result-icon-wrapper">
+                <div class="result-ring"></div>
+                <div class="result-ring"></div>
+                <div class="result-ring"></div>
+                <div class="result-icon" id="resultIcon">⭐</div>
+            </div>
             <h3 class="result-title" id="resultTitle">Поздравляем!</h3>
             <div class="result-amount" id="resultAmount">⭐ 100</div>
             <button class="modal-btn" onclick="closeModal()">Отлично!</button>
@@ -382,6 +690,15 @@
         if (tg) { tg.ready(); tg.expand(); }
         const initData = tg?.initData || "";
 
+        // Prize configuration
+        const PRIZES = [
+            { value: 0, icon: '😢', rarity: 'common', weight: 35 },
+            { value: 25, icon: '⭐', rarity: 'uncommon', weight: 30 },
+            { value: 50, icon: '⭐', rarity: 'rare', weight: 20 },
+            { value: 100, icon: '⭐', rarity: 'epic', weight: 12 },
+            { value: 500, icon: '🌟', rarity: 'legendary', weight: 3 }
+        ];
+
         // Elements
         const loadingState = document.getElementById('loadingState');
         const errorState = document.getElementById('errorState');
@@ -390,18 +707,21 @@
         const starsDisplay = document.getElementById('starsDisplay');
         const spinCost = document.getElementById('spinCost');
         const spinBtn = document.getElementById('spinBtn');
-        const caseBox = document.getElementById('caseBox');
+        const rouletteTrack = document.getElementById('rouletteTrack');
         const resultModal = document.getElementById('resultModal');
 
-        // Generate stars
-        (function() {
+        let isSpinning = false;
+
+        // Generate background stars
+        (function generateStars() {
             const container = document.getElementById('stars');
-            for (let i = 0; i < 50; i++) {
+            for (let i = 0; i < 80; i++) {
                 const star = document.createElement('div');
                 star.className = 'star';
                 star.style.left = Math.random() * 100 + '%';
                 star.style.top = Math.random() * 100 + '%';
                 star.style.animationDelay = Math.random() * 3 + 's';
+                star.style.opacity = Math.random() * 0.5 + 0.3;
                 container.appendChild(star);
             }
         })();
@@ -427,6 +747,48 @@
             return data;
         }
 
+        function getRandomPrize() {
+            const totalWeight = PRIZES.reduce((sum, p) => sum + p.weight, 0);
+            let random = Math.random() * totalWeight;
+            for (const prize of PRIZES) {
+                random -= prize.weight;
+                if (random <= 0) return prize;
+            }
+            return PRIZES[0];
+        }
+
+        function createPrizeElement(prize) {
+            const div = document.createElement('div');
+            div.className = `prize-item ${prize.rarity}`;
+            div.innerHTML = `
+                <span class="prize-icon">${prize.icon}</span>
+                <span class="prize-value">${prize.value > 0 ? prize.value : 'Пусто'}</span>
+            `;
+            return div;
+        }
+
+        function generateRouletteItems(winningPrize, totalItems = 60) {
+            const items = [];
+            const winIndex = Math.floor(totalItems * 0.75); // Win position at 75%
+
+            for (let i = 0; i < totalItems; i++) {
+                if (i === winIndex) {
+                    items.push(winningPrize);
+                } else {
+                    items.push(getRandomPrize());
+                }
+            }
+            return { items, winIndex };
+        }
+
+        function initRoulette() {
+            rouletteTrack.innerHTML = '';
+            const { items } = generateRouletteItems(getRandomPrize(), 15);
+            items.forEach(prize => {
+                rouletteTrack.appendChild(createPrizeElement(prize));
+            });
+        }
+
         async function loadBalance() {
             try {
                 const data = await apiRequest("/api/balance");
@@ -436,6 +798,7 @@
                 spinBtn.disabled = !data.can_spin;
                 loadingState.classList.add('hidden');
                 appContent.classList.remove('hidden');
+                initRoulette();
             } catch (e) {
                 showError("Ошибка загрузки: " + e.message);
             }
@@ -453,29 +816,35 @@
         }
 
         function createConfetti() {
-            const colors = ['#fbbf24', '#6366f1', '#22c55e', '#ec4899'];
-            for (let i = 0; i < 30; i++) {
+            const colors = ['#fbbf24', '#8b5cf6', '#ec4899', '#22c55e', '#3b82f6'];
+            for (let i = 0; i < 50; i++) {
                 const conf = document.createElement('div');
                 conf.className = 'confetti';
                 conf.style.left = Math.random() * 100 + '%';
                 conf.style.background = colors[Math.floor(Math.random() * colors.length)];
                 conf.style.animationDelay = Math.random() * 0.5 + 's';
+                conf.style.width = (Math.random() * 8 + 6) + 'px';
+                conf.style.height = (Math.random() * 8 + 6) + 'px';
                 if (Math.random() > 0.5) conf.style.borderRadius = '50%';
                 document.body.appendChild(conf);
-                setTimeout(() => conf.remove(), 3000);
+                setTimeout(() => conf.remove(), 3500);
             }
         }
 
         function showResult(prize) {
-            const isWin = prize > 0;
-            document.getElementById('resultIcon').textContent = isWin ? (prize >= 500 ? '🌟' : '⭐') : '😢';
+            const isWin = prize.value > 0;
+            document.getElementById('resultIcon').textContent = prize.icon;
             document.getElementById('resultTitle').textContent = isWin ? 'Поздравляем!' : 'Не повезло...';
             document.getElementById('resultTitle').className = 'result-title ' + (isWin ? 'win' : 'lose');
-            document.getElementById('resultAmount').textContent = isWin ? `⭐ ${prize}` : 'Попробуй ещё!';
+            document.getElementById('resultAmount').textContent = isWin ? `⭐ ${prize.value}` : 'Попробуй ещё!';
             document.getElementById('resultAmount').style.display = isWin ? 'block' : 'none';
+            
             resultModal.classList.add('show');
+            
             if (isWin) createConfetti();
-            if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred(isWin ? 'success' : 'error');
+            if (tg?.HapticFeedback) {
+                tg.HapticFeedback.notificationOccurred(isWin ? 'success' : 'error');
+            }
         }
 
         function closeModal() {
@@ -483,34 +852,73 @@
         }
 
         async function spin() {
+            if (isSpinning) return;
+            isSpinning = true;
             spinBtn.disabled = true;
-            caseBox.classList.add('shaking');
 
             try {
+                // Call spin API to deduct sapphires
                 await apiRequest("/api/spin", { method: "POST" });
-                await new Promise(r => setTimeout(r, 600));
 
-                caseBox.classList.remove('shaking');
-                caseBox.classList.add('opening');
-
-                const prizes = [0, 25, 50, 100, 500];
-                const prize = prizes[Math.floor(Math.random() * prizes.length)];
-
-                await new Promise(r => setTimeout(r, 800));
-
-                const data = await apiRequest("/api/claim", {
-                    method: "POST",
-                    body: JSON.stringify({ stars: prize })
+                // Determine winning prize
+                const winningPrize = getRandomPrize();
+                
+                // Generate roulette items
+                const { items, winIndex } = generateRouletteItems(winningPrize, 60);
+                
+                // Build roulette track
+                rouletteTrack.classList.add('instant');
+                rouletteTrack.style.transform = 'translateX(0)';
+                rouletteTrack.innerHTML = '';
+                items.forEach(prize => {
+                    rouletteTrack.appendChild(createPrizeElement(prize));
                 });
 
-                caseBox.classList.remove('opening');
+                // Calculate spin distance
+                await new Promise(r => setTimeout(r, 50));
+                rouletteTrack.classList.remove('instant');
+
+                const itemWidth = 122; // 110px + 12px margin
+                const containerWidth = rouletteTrack.parentElement.offsetWidth;
+                const centerOffset = containerWidth / 2 - itemWidth / 2;
+                const spinDistance = (winIndex * itemWidth) - centerOffset + (Math.random() * 40 - 20);
+
+                // Start spinning
+                rouletteTrack.classList.add('spinning');
+                rouletteTrack.style.transform = `translateX(-${spinDistance}px)`;
+
+                // Play tick sounds effect via haptic
+                if (tg?.HapticFeedback) {
+                    let ticks = 0;
+                    const tickInterval = setInterval(() => {
+                        tg.HapticFeedback.impactOccurred('light');
+                        ticks++;
+                        if (ticks > 30) clearInterval(tickInterval);
+                    }, 100);
+                    setTimeout(() => clearInterval(tickInterval), 4500);
+                }
+
+                // Wait for spin to complete
+                await new Promise(r => setTimeout(r, 5200));
+
+                // Claim prize
+                const data = await apiRequest("/api/claim", {
+                    method: "POST",
+                    body: JSON.stringify({ stars: winningPrize.value })
+                });
+
                 updateBalance(data.new_sapphires, data.new_stars);
-                showResult(prize);
+                showResult(winningPrize);
                 spinBtn.disabled = !data.can_spin;
 
             } catch (e) {
-                caseBox.classList.remove('shaking', 'opening');
                 showError("Ошибка: " + e.message);
+            } finally {
+                isSpinning = false;
+                // Reset roulette after a delay
+                setTimeout(() => {
+                    if (!isSpinning) initRoulette();
+                }, 1000);
             }
         }
 
