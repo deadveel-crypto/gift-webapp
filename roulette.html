@@ -1060,7 +1060,7 @@
                 stars: 25, 
                 emoji: "⭐", 
                 rarity: "uncommon",
-                image: "https://i.ibb.co/HfKw4XNq/1768924736444-019bdc22-de2d-7183-b0e4-53670324a942.jpg",
+                image: "https://i.ibb.co/rfvNFsXR/1768924736444-019bdc22-de2d-7183-b0e4-53670324a942.jpg",
                 name: "25 звёзд"
             },
             { 
@@ -1249,32 +1249,33 @@
             document.getElementById('spinBtn').disabled = true;
             haptic('impact');
             
+            // 🎲 Сразу выбираем приз и запускаем анимацию
+            const prizes = [0, 25, 50, 100, 500];
+            const prizeStars = prizes[Math.floor(Math.random() * prizes.length)];
+            const prize = PRIZE_VISUALS.find(p => p.stars === prizeStars) || PRIZE_VISUALS[0];
+            
+            console.log("🎲 Prize selected:", prizeStars, "stars");
+            
+            // 🚀 Мгновенно запускаем анимацию
+            const animationPromise = runAnimation(prize);
+            
+            // 🔒 Параллельно делаем API вызовы
+            let apiSuccess = false;
+            
             try {
-                // 🔒 1. Списываем сапфиры через API (как в рулетке)
-                const spinData = await apiRequest("/api/spin", {
-                    method: "POST"
-                });
-                
+                // 1. Списываем сапфиры через API
+                await apiRequest("/api/spin", { method: "POST" });
                 console.log("✅ Spin success, sapphires deducted");
                 
-                // Обновляем локально (сервер уже списал)
+                // Обновляем локально
                 STATE.sapphires -= STATE.spinCost;
                 STATE.spinsCount++;
                 updateUI();
                 
-                // 🎲 2. Случайный приз (логика фронта, как в рулетке)
-                const prizes = [0, 25, 50, 100, 500];
-                const prizeStars = prizes[Math.floor(Math.random() * prizes.length)];
+                // 2. Ждём завершения анимации
+                await animationPromise;
                 
-                // Находим визуальные данные приза
-                const prize = PRIZE_VISUALS.find(p => p.stars === prizeStars) || PRIZE_VISUALS[0];
-                
-                console.log("🎲 Prize selected:", prizeStars, "stars");
-                
-                // 🎬 3. Запускаем анимацию
-                await runAnimation(prize);
-                
-                // 🔒 4. Отправляем выигрыш на сервер (как в рулетке)
+                // 3. Отправляем выигрыш на сервер
                 const claimData = await apiRequest("/api/claim", {
                     method: "POST",
                     body: JSON.stringify({ stars: prizeStars })
@@ -1282,7 +1283,7 @@
                 
                 console.log("✅ Claim success:", claimData);
                 
-                // 5. Обновляем баланс из ответа сервера
+                // 4. Обновляем баланс из ответа сервера
                 STATE.sapphires = claimData.new_sapphires;
                 STATE.stars = claimData.new_stars;
                 STATE.canSpin = claimData.can_spin;
@@ -1291,18 +1292,21 @@
                     STATE.totalWon += prizeStars;
                 }
                 
+                apiSuccess = true;
                 updateUI();
-                
-                // 6. Показываем результат
-                setTimeout(() => showResult(prize), 500);
                 
             } catch (e) {
                 console.error("❌ Spin/Claim error:", e);
+                // Ждём завершения анимации если ещё идёт
+                await animationPromise;
                 showStatus('❌ Ошибка: ' + e.message, 'error');
                 haptic('error');
-                
-                // Пробуем перезагрузить баланс
                 await loadBalance();
+            }
+            
+            // 5. Показываем результат
+            if (apiSuccess) {
+                showResult(prize);
             }
             
             isSpinning = false;
@@ -1335,17 +1339,19 @@
             const randomOffset = (Math.random() - 0.5) * 30;
             const finalPosition = targetPosition + randomOffset;
             
+            // Начальная позиция
             strip.style.transform = `translateX(${containerWidth}px)`;
-            strip.offsetHeight;
+            strip.offsetHeight; // force reflow
             
-            setTimeout(() => {
+            // 🚀 Мгновенный старт через requestAnimationFrame
+            requestAnimationFrame(() => {
                 strip.classList.add('animating');
                 strip.style.transform = `translateX(-${finalPosition}px)`;
-            }, 50);
+            });
             
             playTickSounds();
             
-            await new Promise(resolve => setTimeout(resolve, 5200));
+            await new Promise(resolve => setTimeout(resolve, 5100));
             
             const winnerItem = strip.querySelector(`[data-index="${winningIndex}"]`);
             if (winnerItem) {
@@ -1443,10 +1449,11 @@
 
         function spinAgain() {
             closeModal();
-            setTimeout(() => {
+            // Мгновенный старт следующего спина
+            requestAnimationFrame(() => {
                 generateItemsStrip();
                 openCase();
-            }, 400);
+            });
         }
 
         function closeModal() {
