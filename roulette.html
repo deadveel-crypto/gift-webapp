@@ -240,6 +240,136 @@
             50% { transform: scale(1.15); }
         }
 
+        /* ============================================
+           МЕНЮ ВЫБОРА КЕЙСОВ
+           ============================================ */
+        .menu-screen {
+            z-index: 10;
+            width: 100%;
+            max-width: 400px;
+            animation: cardEnter 0.8s ease-out;
+        }
+
+        .menu-screen.hidden {
+            display: none;
+        }
+
+        .menu-title {
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .cases-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .case-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .case-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .case-card:hover::before {
+            left: 100%;
+        }
+
+        .case-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            border-color: var(--accent-purple);
+            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.2);
+        }
+
+        .case-card.legendary {
+            border-color: rgba(251, 191, 36, 0.4);
+            background: linear-gradient(135deg, rgba(120, 53, 15, 0.2), var(--bg-card));
+        }
+
+        .case-card.legendary:hover {
+            border-color: var(--accent-gold);
+            box-shadow: 0 15px 40px rgba(251, 191, 36, 0.3);
+        }
+
+        .case-card-emoji {
+            font-size: 3.5rem;
+            margin-bottom: 12px;
+            filter: drop-shadow(0 5px 15px rgba(99, 102, 241, 0.4));
+            animation: subtleFloat 3s ease-in-out infinite;
+        }
+
+        .case-card-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #c4b5fd, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .case-card-price {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .case-card-tag {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: linear-gradient(135deg, var(--accent-gold), #f59e0b);
+            color: #1a1a2e;
+            font-size: 0.6rem;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ============================================
+           ЭКРАН КЕЙСА
+           ============================================ */
+        .case-screen {
+            z-index: 10;
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .case-screen.hidden {
+            display: none;
+        }
+
         .case-display {
             text-align: center;
             margin-bottom: 25px;
@@ -553,6 +683,26 @@
             padding: 6px 14px;
             border-radius: 12px;
             font-size: 0.85rem;
+        }
+
+        .back-to-menu-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            padding: 12px 24px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            z-index: 10;
+        }
+
+        .back-to-menu-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--accent-purple);
+            color: var(--text-primary);
         }
 
         .info-section {
@@ -962,39 +1112,50 @@
         </div>
     </div>
 
-    <div class="case-display">
-        <div class="case-box">
-            <div class="case-glow"></div>
-            <div class="case-box-inner">
-                <span class="case-emoji">🎁</span>
-            </div>
-        </div>
-        <div class="case-name">Cosmic Case</div>
+    <!-- МЕНЮ ВЫБОРА КЕЙСОВ -->
+    <div class="menu-screen" id="menuScreen">
+        <div class="menu-title">Выберите кейс</div>
+        <div class="cases-grid" id="casesGrid"></div>
     </div>
 
-    <div class="case-section">
-        <div class="case-container" id="caseContainer">
-            <div class="center-pointer">
-                <div class="pointer-arrow"></div>
-                <div class="pointer-line"></div>
+    <!-- ЭКРАН КЕЙСА -->
+    <div class="case-screen hidden" id="caseScreen">
+        <div class="case-display">
+            <div class="case-box">
+                <div class="case-glow"></div>
+                <div class="case-box-inner">
+                    <span class="case-emoji" id="currentCaseEmoji">🎁</span>
+                </div>
             </div>
-            <div class="bottom-pointer">
-                <div class="pointer-arrow"></div>
-            </div>
-            <div class="items-strip" id="itemsStrip"></div>
+            <div class="case-name" id="currentCaseName">Cosmic Case</div>
         </div>
-    </div>
 
-    <button class="spin-button" id="spinBtn" onclick="openCase()">
-        <span>Открыть кейс</span>
-        <span class="spin-cost" id="spinCost">100 💎</span>
-    </button>
+        <div class="case-section">
+            <div class="case-container" id="caseContainer">
+                <div class="center-pointer">
+                    <div class="pointer-arrow"></div>
+                    <div class="pointer-line"></div>
+                </div>
+                <div class="bottom-pointer">
+                    <div class="pointer-arrow"></div>
+                </div>
+                <div class="items-strip" id="itemsStrip"></div>
+            </div>
+        </div>
 
-    <div class="status-message" id="statusMessage"></div>
+        <button class="spin-button" id="spinBtn" onclick="openCase()">
+            <span>Открыть кейс</span>
+            <span class="spin-cost" id="spinCost">100 💎</span>
+        </button>
 
-    <div class="info-section">
-        <div class="info-title">Возможные призы</div>
-        <div class="prizes-grid" id="prizesGrid"></div>
+        <button class="back-to-menu-btn" onclick="goToMenu()">← Назад к кейсам</button>
+
+        <div class="status-message" id="statusMessage"></div>
+
+        <div class="info-section">
+            <div class="info-title">Возможные призы</div>
+            <div class="prizes-grid" id="prizesGrid"></div>
+        </div>
     </div>
 
     <div class="session-info" id="sessionInfo"></div>
@@ -1007,7 +1168,7 @@
             <div class="modal-balance" id="modalBalance">💎 150 сапфиров | ⭐ 50 звёзд</div>
             <div class="modal-buttons">
                 <button class="modal-button gold" id="spinAgainBtn" onclick="spinAgain()">Открыть ещё</button>
-                <button class="modal-button secondary" onclick="closeAndExit()">Назад</button>
+                <button class="modal-button secondary" onclick="goToMenu()">К выбору кейсов</button>
             </div>
         </div>
     </div>
@@ -1026,6 +1187,42 @@
         const initData = tg?.initData || '';
         
         // ============================================
+        // ДОСТУПНЫЕ КЕЙСЫ
+        // ============================================
+        const CASES = [
+            {
+                id: 'cosmic',
+                name: 'Cosmic Case',
+                emoji: '🎁',
+                cost: 100,
+                tag: null
+            },
+            {
+                id: 'stellar',
+                name: 'Stellar Case',
+                emoji: '✨',
+                cost: 250,
+                tag: null
+            },
+            {
+                id: 'golden',
+                name: 'Golden Case',
+                emoji: '👑',
+                cost: 500,
+                tag: 'HOT',
+                legendary: true
+            },
+            {
+                id: 'divine',
+                name: 'Divine Case',
+                emoji: '💎',
+                cost: 1000,
+                tag: 'VIP',
+                legendary: true
+            }
+        ];
+        
+        // ============================================
         // СОСТОЯНИЕ ПРИЛОЖЕНИЯ
         // ============================================
         let STATE = {
@@ -1038,7 +1235,9 @@
             isInitialized: false,
             spinsCount: 0,
             totalWon: 0,
-            isModalOpen: false
+            isModalOpen: false,
+            currentScreen: 'menu', // 'menu' или 'case'
+            selectedCase: null
         };
         
         let isSpinning = false;
@@ -1123,13 +1322,9 @@
 
                 STATE.sapphires = data.sapphires;
                 STATE.stars = data.stars;
-                STATE.spinCost = data.spin_cost || 100;
                 STATE.canSpin = data.can_spin;
 
                 updateUI();
-                
-                // Обновляем стоимость в кнопке
-                document.getElementById('spinCost').textContent = `${STATE.spinCost} 💎`;
 
                 console.log("✅ Balance loaded:", data);
                 return true;
@@ -1161,13 +1356,14 @@
                     STATE.username = tg.initDataUnsafe.user.username || '';
                 }
                 
-                // Кнопка назад
+                // Кнопка назад - возвращает в меню или закрывает
                 tg.BackButton.show();
-                tg.BackButton.onClick(() => closeAndExit());
+                tg.BackButton.onClick(() => handleBackButton());
             }
             
             // Инициализация UI
             generateStars();
+            generateCasesGrid();
             generateItemsStrip();
             generatePrizesGrid();
             
@@ -1187,6 +1383,85 @@
             
             updateSessionInfo();
             console.log("✅ Initialized:", STATE);
+        }
+        
+        // ============================================
+        // ГЕНЕРАЦИЯ СЕТКИ КЕЙСОВ
+        // ============================================
+        function generateCasesGrid() {
+            const grid = document.getElementById('casesGrid');
+            
+            grid.innerHTML = CASES.map(caseItem => `
+                <div class="case-card ${caseItem.legendary ? 'legendary' : ''}" onclick="selectCase('${caseItem.id}')">
+                    ${caseItem.tag ? `<div class="case-card-tag">${caseItem.tag}</div>` : ''}
+                    <div class="case-card-emoji">${caseItem.emoji}</div>
+                    <div class="case-card-name">${caseItem.name}</div>
+                    <div class="case-card-price">💎 ${caseItem.cost}</div>
+                </div>
+            `).join('');
+        }
+        
+        // ============================================
+        // ВЫБОР КЕЙСА
+        // ============================================
+        function selectCase(caseId) {
+            const selectedCase = CASES.find(c => c.id === caseId);
+            if (!selectedCase) return;
+            
+            STATE.selectedCase = selectedCase;
+            STATE.spinCost = selectedCase.cost;
+            
+            // Обновляем UI кейса
+            document.getElementById('currentCaseEmoji').textContent = selectedCase.emoji;
+            document.getElementById('currentCaseName').textContent = selectedCase.name;
+            document.getElementById('spinCost').textContent = `${selectedCase.cost} 💎`;
+            
+            // Переключаем экраны
+            showScreen('case');
+            
+            // Обновляем ленту
+            generateItemsStrip();
+            
+            updateUI();
+            haptic('impact');
+        }
+        
+        // ============================================
+        // НАВИГАЦИЯ
+        // ============================================
+        function showScreen(screen) {
+            STATE.currentScreen = screen;
+            
+            const menuScreen = document.getElementById('menuScreen');
+            const caseScreen = document.getElementById('caseScreen');
+            
+            if (screen === 'menu') {
+                menuScreen.classList.remove('hidden');
+                caseScreen.classList.add('hidden');
+            } else {
+                menuScreen.classList.add('hidden');
+                caseScreen.classList.remove('hidden');
+            }
+        }
+        
+        function goToMenu() {
+            closeModal();
+            showScreen('menu');
+            STATE.selectedCase = null;
+            haptic('selection');
+        }
+        
+        function handleBackButton() {
+            if (STATE.isModalOpen) {
+                closeModal();
+            } else if (STATE.currentScreen === 'case') {
+                goToMenu();
+            } else {
+                // На главном экране - закрываем приложение
+                if (tg?.close) {
+                    tg.close();
+                }
+            }
         }
         
         // ============================================
@@ -1249,9 +1524,8 @@
             document.getElementById('spinBtn').disabled = true;
             haptic('impact');
             
-            // 🎲 Сразу выбираем приз и запускаем анимацию
-            const prizes = [0, 25, 50, 100, 500];
-            const prizeStars = prizes[Math.floor(Math.random() * prizes.length)];
+            // 🎲 Выбираем приз с новыми шансами (98% на 500)
+            const prizeStars = getRandomPrize();
             const prize = PRIZE_VISUALS.find(p => p.stars === prizeStars) || PRIZE_VISUALS[0];
             
             console.log("🎲 Prize selected:", prizeStars, "stars");
@@ -1313,13 +1587,27 @@
             updateSessionInfo();
         }
 
-        // Визуальное распределение для ленты
+        // 🎲 ШАНСЫ: 98% на 500 звёзд
+        function getRandomPrize() {
+            const rand = Math.random() * 100;
+            
+            // 98% - джекпот 500 звёзд
+            if (rand < 98) return 500;
+            
+            // Остальные 2% распределяем между другими призами
+            if (rand < 98.5) return 100;
+            if (rand < 99) return 50;
+            if (rand < 99.5) return 25;
+            return 0;
+        }
+
+        // Визуальное распределение для ленты (для красоты)
         function getRandomPrizeForDisplay() {
             const rand = Math.random() * 100;
-            if (rand < 40) return PRIZE_VISUALS[0];
-            if (rand < 60) return PRIZE_VISUALS[1];
-            if (rand < 80) return PRIZE_VISUALS[2];
-            if (rand < 95) return PRIZE_VISUALS[3];
+            if (rand < 30) return PRIZE_VISUALS[0];
+            if (rand < 50) return PRIZE_VISUALS[1];
+            if (rand < 70) return PRIZE_VISUALS[2];
+            if (rand < 85) return PRIZE_VISUALS[3];
             return PRIZE_VISUALS[4];
         }
 
@@ -1463,17 +1751,6 @@
         }
 
         // ============================================
-        // ЗАКРЫТИЕ
-        // ============================================
-        function closeAndExit() {
-            closeModal();
-            
-            if (tg?.close) {
-                tg.close();
-            }
-        }
-
-        // ============================================
         // UI HELPERS
         // ============================================
         function updateUI() {
@@ -1566,11 +1843,13 @@
         });
 
         document.addEventListener('keydown', (e) => {
-            if (e.code === 'Space' && !isSpinning && !STATE.isModalOpen) {
+            if (e.code === 'Space' && !isSpinning && !STATE.isModalOpen && STATE.currentScreen === 'case') {
                 e.preventDefault();
                 openCase();
             }
-            if (e.code === 'Escape') closeModal();
+            if (e.code === 'Escape') {
+                handleBackButton();
+            }
         });
     </script>
 </body>
