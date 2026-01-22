@@ -630,9 +630,21 @@
             animation: legendaryPulse 2s ease-in-out infinite;
         }
 
+        .prize-item.rarity-mythic {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.9), rgba(127, 29, 29, 0.9));
+            border-color: rgba(239, 68, 68, 0.6);
+            box-shadow: 0 0 35px rgba(239, 68, 68, 0.5);
+            animation: mythicPulse 1.5s ease-in-out infinite;
+        }
+
         @keyframes legendaryPulse {
             0%, 100% { box-shadow: 0 0 25px rgba(251, 191, 36, 0.4); }
             50% { box-shadow: 0 0 40px rgba(251, 191, 36, 0.7); }
+        }
+
+        @keyframes mythicPulse {
+            0%, 100% { box-shadow: 0 0 30px rgba(239, 68, 68, 0.5); }
+            50% { box-shadow: 0 0 50px rgba(239, 68, 68, 0.8); }
         }
 
         .prize-emoji {
@@ -782,6 +794,14 @@
             gap: 10px;
         }
 
+        .prizes-grid.cols-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .prizes-grid.cols-4 {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
         .prize-card {
             background: var(--bg-card);
             backdrop-filter: blur(10px);
@@ -804,6 +824,11 @@
         .prize-card.legendary {
             border-color: rgba(251, 191, 36, 0.4);
             background: linear-gradient(135deg, rgba(120, 53, 15, 0.3), var(--bg-card));
+        }
+
+        .prize-card.mythic {
+            border-color: rgba(239, 68, 68, 0.4);
+            background: linear-gradient(135deg, rgba(127, 29, 29, 0.3), var(--bg-card));
         }
 
         .prize-card-visual {
@@ -1278,27 +1303,21 @@
         // ============================================
         // 🖼️ GITHUB IMAGE CDN - НАСТРОЙКИ
         // ============================================
-        const GITHUB_USER = "deadveel-crypto";      // Твой GitHub username
-        const GITHUB_REPO = "divine-case-assets";   // Название репозитория
-        const GITHUB_BRANCH = "main";               // Ветка
+        const GITHUB_USER = "deadveel-crypto";
+        const GITHUB_REPO = "divine-case-assets";
+        const GITHUB_BRANCH = "main";
         
-        // Базовый URL для картинок (jsDelivr CDN - быстрее чем raw GitHub)
         const IMG_CDN = `https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${GITHUB_REPO}@${GITHUB_BRANCH}`;
         
-        // Альтернатива - raw GitHub (медленнее):
-        // const IMG_CDN = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/${GITHUB_BRANCH}`;
-        
         // ============================================
-        // ДОСТУПНЫЕ КЕЙСЫ (с GitHub картинками)
+        // ДОСТУПНЫЕ КЕЙСЫ
         // ============================================
         const CASES = [
             {
                 id: 'cosmic',
                 name: 'Cosmic Case',
                 emoji: '🎁',
-                // Раскомментируй когда загрузишь картинки:
                 image: `${IMG_CDN}/cases/cosmic.png`,
-                //image: null,
                 cost: 100,
                 tag: null
             },
@@ -1307,7 +1326,6 @@
                 name: 'Stellar Case',
                 emoji: '✨',
                 image: `${IMG_CDN}/cases/stellar.png`,
-                //image: null,
                 cost: 250,
                 tag: null
             },
@@ -1316,7 +1334,6 @@
                 name: 'Golden Case',
                 emoji: '👑',
                 image: `${IMG_CDN}/cases/golden.png`,
-                //image: null,
                 cost: 500,
                 tag: 'HOT',
                 legendary: true
@@ -1326,7 +1343,6 @@
                 name: 'Divine Case',
                 emoji: '💎',
                 image: `${IMG_CDN}/cases/divine.png`,
-                //image: null,
                 cost: 1000,
                 tag: 'VIP',
                 legendary: true
@@ -1354,83 +1370,142 @@
         let isSpinning = false;
 
         // ============================================
-        // ВИЗУАЛЬНЫЕ ДАННЫЕ ПРИЗОВ (с GitHub картинками)
+        // 🎁 ВСЕ ПРИЗЫ (визуалы)
         // ============================================
-        // ============================================
-        // 🎁 ПРИЗЫ - переключи на GitHub когда загрузишь картинки
-        // ============================================
-        const USE_GITHUB_IMAGES = false; // Поставь true когда загрузишь картинки
+        const USE_GITHUB_IMAGES = false;
         
-        const PRIZE_VISUALS = [
-            { 
-                id: 0,
+        const PRIZE_VISUALS = {
+            0: { 
                 stars: 0, 
                 emoji: "💨", 
                 rarity: "common",
-                // GitHub: void.png (Пустота)
                 image: USE_GITHUB_IMAGES 
                     ? `${IMG_CDN}/prizes/void.png`
                     : "https://i.ibb.co/gb5FSTmV/1768925232598-019bdc2a-e026-7e7c-9739-37234d1c5e87.png",
                 name: "Void"
             },
-            { 
-                id: 1,
+            25: { 
                 stars: 25, 
                 emoji: "⭐", 
                 rarity: "uncommon",
-                // GitHub: spark.png (Искра)
                 image: USE_GITHUB_IMAGES 
                     ? `${IMG_CDN}/prizes/spark.png`
                     : "https://i.ibb.co/rfvNFsXR/1768924736444-019bdc22-de2d-7183-b0e4-53670324a942.jpg",
                 name: "Spark"
             },
-            { 
-                id: 2,
+            50: { 
                 stars: 50, 
                 emoji: "✨", 
                 rarity: "rare",
-                // GitHub: radiance.png (Сияние)
                 image: USE_GITHUB_IMAGES 
                     ? `${IMG_CDN}/prizes/radiance.png`
                     : "https://i.ibb.co/8CL2Rxq/1768924439694-019bdc1e-33ba-716b-9343-17c2777cf861.jpg",
                 name: "Radiance"
             },
-            { 
-                id: 3,
+            100: { 
                 stars: 100, 
                 emoji: "🌟", 
                 rarity: "epic",
-                // GitHub: aurora.png (Аврора)
                 image: USE_GITHUB_IMAGES 
                     ? `${IMG_CDN}/prizes/aurora.png`
                     : "https://i.ibb.co/RGX1C998/1768923759742-019bdc13-a966-7740-ba75-610d49ea3c79.png",
                 name: "Aurora"
             },
-            { 
-                id: 4,
+            500: { 
                 stars: 500, 
                 emoji: "💫", 
                 rarity: "legendary",
-                // GitHub: supernova.png (Сверхновая)
                 image: USE_GITHUB_IMAGES 
                     ? `${IMG_CDN}/prizes/supernova.png`
                     : "https://i.ibb.co/XrTtbMXR/1768923046045-019bdc09-a36c-7352-ba71-f5d8fe7799d4.png",
                 name: "Supernova"
             },
-        ];
+            // ============================================
+            // 🆕 НОВЫЕ ПРИЗЫ ДЛЯ DIVINE КЕЙСА
+            // ============================================
+            // Загрузи картинки на ImgBB или GitHub и замени null на URL:
+            // GitHub: ${IMG_CDN}/prizes/galaxy.png
+            // ImgBB: https://i.ibb.co/XXXXXXX/galaxy.png
+            1000: { 
+                stars: 1000, 
+                emoji: "🌌", 
+                rarity: "legendary",
+                image: USE_GITHUB_IMAGES 
+                    ? `${IMG_CDN}/prizes/galaxy.png`
+                    : null, // ← ЗАГРУЗИ КАРТИНКУ И ВСТАВЬ ССЫЛКУ СЮДА
+                name: "Galaxy"
+            },
+            // GitHub: ${IMG_CDN}/prizes/divine_star.png
+            // ImgBB: https://i.ibb.co/XXXXXXX/divine_star.png
+            9999: { 
+                stars: 9999, 
+                emoji: "👑", 
+                rarity: "mythic",
+                image: USE_GITHUB_IMAGES 
+                    ? `${IMG_CDN}/prizes/divine_star.png`
+                    : null, // ← ЗАГРУЗИ КАРТИНКУ И ВСТАВЬ ССЫЛКУ СЮДА
+                name: "Divine Star"
+            }
+        };
+
+        // ============================================
+        // 🎲 ШАНСЫ ДЛЯ КАЖДОГО КЕЙСА
+        // ============================================
+        const CASE_CONFIG = {
+            // Cosmic: 0, 25, 50 (90% пусто, 5% на 25, 5% на 50)
+            cosmic: {
+                prizes: [0, 25, 50],
+                // Кумулятивные шансы: 0-90 = 0⭐, 90-95 = 25⭐, 95-100 = 50⭐
+                getRandomPrize: () => {
+                    const rand = Math.random() * 100;
+                    if (rand < 90) return 0;
+                    if (rand < 95) return 25;
+                    return 50;
+                }
+            },
+            // Stellar: 0, 50, 100 (90% пусто, 5% на 50, 5% на 100)
+            stellar: {
+                prizes: [0, 50, 100],
+                getRandomPrize: () => {
+                    const rand = Math.random() * 100;
+                    if (rand < 90) return 0;
+                    if (rand < 95) return 50;
+                    return 100;
+                }
+            },
+            // Golden: 0, 100 (99% пусто, 1% на 100)
+            golden: {
+                prizes: [0, 100],
+                getRandomPrize: () => {
+                    const rand = Math.random() * 100;
+                    if (rand < 99) return 0;
+                    return 100;
+                }
+            },
+            // Divine: 0, 500, 1000, 9999 (90% пусто, 9% на 500, 0.8% на 1000, 0.2% на 9999)
+            divine: {
+                prizes: [0, 500, 1000, 9999],
+                getRandomPrize: () => {
+                    const rand = Math.random() * 100;
+                    if (rand < 90) return 0;      // 90%
+                    if (rand < 99) return 500;    // 9%
+                    if (rand < 99.8) return 1000; // 0.8%
+                    return 9999;                   // 0.2%
+                }
+            }
+        };
 
         // ✅ Динамический размер ячейки в зависимости от экрана
         function getItemWidth() {
             const screenWidth = window.innerWidth;
-            if (screenWidth <= 380) return 97;  // 85px + 12px margin
-            if (screenWidth <= 390) return 102; // 90px + 12px margin
-            return 112; // 100px + 12px margin
+            if (screenWidth <= 380) return 97;
+            if (screenWidth <= 390) return 102;
+            return 112;
         }
         
         let ITEM_WIDTH = getItemWidth();
         const VISIBLE_ITEMS = 50;
         
-        // Обновляем при ресайзе
         window.addEventListener('resize', () => {
             ITEM_WIDTH = getItemWidth();
         });
@@ -1485,11 +1560,9 @@
         function preloadImages() {
             const imageUrls = [];
             
-            // Собираем все URL картинок
             CASES.forEach(c => { if (c.image) imageUrls.push(c.image); });
-            PRIZE_VISUALS.forEach(p => { if (p.image) imageUrls.push(p.image); });
+            Object.values(PRIZE_VISUALS).forEach(p => { if (p.image) imageUrls.push(p.image); });
             
-            // Предзагружаем
             imageUrls.forEach(url => {
                 const img = new Image();
                 img.src = url;
@@ -1504,7 +1577,6 @@
         async function init() {
             console.log("🎁 Divine Case - API Init...");
             
-            // Предзагружаем картинки сразу
             preloadImages();
             
             if (!initData) {
@@ -1527,8 +1599,6 @@
             
             generateStars();
             generateCasesGrid();
-            generateItemsStrip();
-            generatePrizesGrid();
             
             const balanceLoaded = await loadBalance();
             
@@ -1598,6 +1668,7 @@
             
             showScreen('case');
             generateItemsStrip();
+            generatePrizesGrid();
             
             updateUI();
             haptic('impact');
@@ -1641,14 +1712,29 @@
         }
         
         // ============================================
-        // ГЕНЕРАЦИЯ СЕТКИ ПРИЗОВ
+        // ГЕНЕРАЦИЯ СЕТКИ ПРИЗОВ (для текущего кейса)
         // ============================================
         function generatePrizesGrid() {
             const grid = document.getElementById('prizesGrid');
-            const displayPrizes = [...PRIZE_VISUALS].reverse();
+            const caseId = STATE.selectedCase?.id || 'cosmic';
+            const config = CASE_CONFIG[caseId];
+            
+            // Получаем призы для текущего кейса (без 0) и сортируем по убыванию
+            const displayPrizes = config.prizes
+                .filter(stars => stars > 0)
+                .sort((a, b) => b - a)
+                .map(stars => PRIZE_VISUALS[stars]);
+            
+            // Настраиваем колонки в зависимости от количества призов
+            grid.className = 'prizes-grid';
+            if (displayPrizes.length <= 2) {
+                grid.classList.add('cols-' + displayPrizes.length);
+            } else if (displayPrizes.length <= 4) {
+                grid.classList.add('cols-' + displayPrizes.length);
+            }
             
             grid.innerHTML = displayPrizes.map(prize => `
-                <div class="prize-card ${prize.rarity === 'legendary' ? 'legendary' : ''}">
+                <div class="prize-card ${prize.rarity === 'legendary' ? 'legendary' : ''} ${prize.rarity === 'mythic' ? 'mythic' : ''}">
                     <div class="prize-card-visual">
                         ${prize.image 
                             ? `<img src="${prize.image}" alt="${prize.name}" class="prize-card-image" loading="lazy" onerror="this.outerHTML='<div class=\\'prize-card-emoji\\'>${prize.emoji}</div>'">`
@@ -1684,12 +1770,63 @@
         }
 
         // ============================================
+        // 🎲 ПОЛУЧЕНИЕ СЛУЧАЙНОГО ПРИЗА (для текущего кейса)
+        // ============================================
+        function getRandomPrize() {
+            const caseId = STATE.selectedCase?.id || 'cosmic';
+            const config = CASE_CONFIG[caseId];
+            return config.getRandomPrize();
+        }
+
+        // ============================================
+        // 🎲 СЛУЧАЙНЫЙ ПРИЗ ДЛЯ ОТОБРАЖЕНИЯ В ЛЕНТЕ
+        // ============================================
+        function getRandomPrizeForDisplay() {
+            const caseId = STATE.selectedCase?.id || 'cosmic';
+            const config = CASE_CONFIG[caseId];
+            const prizes = config.prizes;
+            
+            // Взвешенный выбор для отображения (показываем больше "красивых" призов)
+            const rand = Math.random() * 100;
+            
+            if (caseId === 'cosmic') {
+                // 50% void, 25% 25⭐, 25% 50⭐
+                if (rand < 50) return PRIZE_VISUALS[0];
+                if (rand < 75) return PRIZE_VISUALS[25];
+                return PRIZE_VISUALS[50];
+            }
+            
+            if (caseId === 'stellar') {
+                // 50% void, 25% 50⭐, 25% 100⭐
+                if (rand < 50) return PRIZE_VISUALS[0];
+                if (rand < 75) return PRIZE_VISUALS[50];
+                return PRIZE_VISUALS[100];
+            }
+            
+            if (caseId === 'golden') {
+                // 70% void, 30% 100⭐
+                if (rand < 70) return PRIZE_VISUALS[0];
+                return PRIZE_VISUALS[100];
+            }
+            
+            if (caseId === 'divine') {
+                // 40% void, 35% 500⭐, 20% 1000⭐, 5% 9999⭐
+                if (rand < 40) return PRIZE_VISUALS[0];
+                if (rand < 75) return PRIZE_VISUALS[500];
+                if (rand < 95) return PRIZE_VISUALS[1000];
+                return PRIZE_VISUALS[9999];
+            }
+            
+            // Fallback
+            return PRIZE_VISUALS[0];
+        }
+
+        // ============================================
         // 🎲 ОТКРЫТИЕ КЕЙСА
         // ============================================
         async function openCase() {
             if (isSpinning || STATE.isModalOpen) return;
             
-            // Получаем актуальную стоимость выбранного кейса
             const currentCost = STATE.selectedCase?.cost || STATE.spinCost;
             
             if (STATE.sapphires < currentCost) {
@@ -1703,17 +1840,17 @@
             document.getElementById('spinBtn').disabled = true;
             haptic('impact');
             
+            // Получаем приз с учётом текущего кейса
             const prizeStars = getRandomPrize();
-            const prize = PRIZE_VISUALS.find(p => p.stars === prizeStars) || PRIZE_VISUALS[0];
+            const prize = PRIZE_VISUALS[prizeStars] || PRIZE_VISUALS[0];
             
-            console.log("🎲 Prize selected:", prizeStars, "stars, case cost:", currentCost);
+            console.log("🎲 Prize selected:", prizeStars, "stars, case:", STATE.selectedCase?.id);
             
             const animationPromise = runAnimation(prize);
             
             let apiSuccess = false;
             
             try {
-                // ✅ Передаём стоимость кейса на сервер!
                 const spinResult = await apiRequest("/api/spin", { 
                     method: "POST",
                     body: JSON.stringify({ 
@@ -1723,7 +1860,6 @@
                 });
                 console.log("✅ Spin success, sapphires deducted:", spinResult.cost_spent);
                 
-                // ✅ Используем стоимость из ответа сервера или текущую
                 STATE.sapphires = spinResult.new_sapphires;
                 STATE.spinsCount++;
                 updateUI();
@@ -1762,24 +1898,6 @@
             
             isSpinning = false;
             updateSessionInfo();
-        }
-
-        function getRandomPrize() {
-            const rand = Math.random() * 100;
-            
-            if (rand < 98) return 0;
-            if (rand < 98.7) return 25;
-            if (rand < 99.4) return 50;
-            return 100;
-        }
-
-        function getRandomPrizeForDisplay() {
-            const rand = Math.random() * 100;
-            if (rand < 30) return PRIZE_VISUALS[0];
-            if (rand < 50) return PRIZE_VISUALS[1];
-            if (rand < 70) return PRIZE_VISUALS[2];
-            if (rand < 85) return PRIZE_VISUALS[3];
-            return PRIZE_VISUALS[4];
         }
 
         // ============================================
@@ -1882,7 +2000,15 @@
             
             if (prize.stars > 0) {
                 modal.classList.add('win');
-                title.textContent = prize.stars >= 100 ? 'Джекпот!' : 'Поздравляем!';
+                if (prize.stars >= 9999) {
+                    title.textContent = '🎉 МЕГА ДЖЕКПОТ! 🎉';
+                } else if (prize.stars >= 1000) {
+                    title.textContent = 'ДЖЕКПОТ!';
+                } else if (prize.stars >= 100) {
+                    title.textContent = 'Отлично!';
+                } else {
+                    title.textContent = 'Поздравляем!';
+                }
                 prizeText.textContent = `+${prize.stars} ⭐`;
                 prizeText.style.display = '';
                 createConfetti();
