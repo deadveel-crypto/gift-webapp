@@ -577,6 +577,11 @@
             border: 2px solid rgba(255, 255, 255, 0.08);
             transition: all 0.3s ease;
             padding: 0;
+            /* ✅ Фиксы для iOS */
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            contain: layout style paint;
+            isolation: isolate;
         }
 
         .prize-item.has-image {
@@ -586,7 +591,10 @@
         .prize-item::before {
             content: '';
             position: absolute;
-            inset: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 50%);
             pointer-events: none;
             z-index: 2;
@@ -630,16 +638,32 @@
         .prize-emoji {
             font-size: 2.5rem;
             filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+            position: relative;
+            z-index: 1;
         }
 
         .prize-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            /* ✅ Улучшенное позиционирование для всех iOS устройств */
             position: absolute;
             top: 0;
             left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            -webkit-object-fit: cover;
+            object-position: center center;
+            -webkit-object-position: center center;
             border-radius: 14px;
+            /* ✅ GPU ускорение */
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            /* ✅ Предотвращаем искажения */
+            image-rendering: -webkit-optimize-contrast;
+            z-index: 1;
         }
 
         .prize-item.winner {
@@ -803,6 +827,11 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            -webkit-object-fit: cover;
+            object-position: center center;
+            -webkit-object-position: center center;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
         }
         
         .prize-card-name { 
@@ -1098,14 +1127,45 @@
             font-family: monospace;
         }
 
+        /* ✅ iPhone 11 Pro и подобные (375px ширина) */
+        @media (max-width: 390px) {
+            .case-container { height: 115px; }
+            .prize-item { 
+                width: 90px; 
+                height: 90px; 
+            }
+            .prize-emoji { font-size: 2.2rem; }
+            .pointer-line { height: 115px; }
+        }
+
+        /* ✅ Маленькие экраны (SE и подобные) */
         @media (max-width: 380px) {
             .case-container { height: 110px; }
-            .prize-item { width: 85px; height: 85px; }
+            .prize-item { 
+                width: 85px; 
+                height: 85px; 
+            }
             .prize-emoji { font-size: 1.7rem; }
-            .prize-image { width: 40px; height: 40px; }
             .prize-stars { font-size: 0.7rem; padding: 3px 8px; }
             .brand-text { font-size: 1.6rem; }
             .pointer-line { height: 110px; }
+        }
+        
+        /* ✅ Ретина-специфичные фиксы */
+        @media (-webkit-min-device-pixel-ratio: 3) {
+            .prize-image {
+                image-rendering: -webkit-optimize-contrast;
+                image-rendering: crisp-edges;
+            }
+        }
+        
+        /* ✅ iOS Safe Area */
+        @supports (padding: max(0px)) {
+            body {
+                padding-left: max(20px, env(safe-area-inset-left));
+                padding-right: max(20px, env(safe-area-inset-right));
+                padding-bottom: max(100px, env(safe-area-inset-bottom));
+            }
         }
     </style>
 </head>
@@ -1346,8 +1406,21 @@
             },
         ];
 
-        const ITEM_WIDTH = 112;
+        // ✅ Динамический размер ячейки в зависимости от экрана
+        function getItemWidth() {
+            const screenWidth = window.innerWidth;
+            if (screenWidth <= 380) return 97;  // 85px + 12px margin
+            if (screenWidth <= 390) return 102; // 90px + 12px margin
+            return 112; // 100px + 12px margin
+        }
+        
+        let ITEM_WIDTH = getItemWidth();
         const VISIBLE_ITEMS = 50;
+        
+        // Обновляем при ресайзе
+        window.addEventListener('resize', () => {
+            ITEM_WIDTH = getItemWidth();
+        });
 
         // ============================================
         // 🔒 API ЗАПРОСЫ
