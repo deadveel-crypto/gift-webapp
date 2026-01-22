@@ -1278,10 +1278,9 @@
         // ============================================
         // 🖼️ GITHUB IMAGE CDN - НАСТРОЙКИ
         // ============================================
-        // Замени на свои данные:
-        const GITHUB_USER = "YOUR_USERNAME";  // Твой GitHub username
-        const GITHUB_REPO = "case-images";     // Название репозитория
-        const GITHUB_BRANCH = "main";          // Ветка (обычно main)
+        const GITHUB_USER = "deadveel-crypto";      // Твой GitHub username
+        const GITHUB_REPO = "divine-case-assets";   // Название репозитория
+        const GITHUB_BRANCH = "main";               // Ветка
         
         // Базовый URL для картинок (jsDelivr CDN - быстрее чем raw GitHub)
         const IMG_CDN = `https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${GITHUB_REPO}@${GITHUB_BRANCH}`;
@@ -1298,7 +1297,7 @@
                 name: 'Cosmic Case',
                 emoji: '🎁',
                 // Раскомментируй когда загрузишь картинки:
-                // image: `${IMG_CDN}/cases/cosmic.png`,
+                //image: `${IMG_CDN}/cases/cosmic.png`,
                 image: null,
                 cost: 100,
                 tag: null
@@ -1357,52 +1356,66 @@
         // ============================================
         // ВИЗУАЛЬНЫЕ ДАННЫЕ ПРИЗОВ (с GitHub картинками)
         // ============================================
+        // ============================================
+        // 🎁 ПРИЗЫ - переключи на GitHub когда загрузишь картинки
+        // ============================================
+        const USE_GITHUB_IMAGES = false; // Поставь true когда загрузишь картинки
+        
         const PRIZE_VISUALS = [
             { 
                 id: 0,
                 stars: 0, 
                 emoji: "💨", 
                 rarity: "common",
-                // Раскомментируй когда загрузишь:
-                // image: `${IMG_CDN}/prizes/empty.png`,
-                image: "https://i.ibb.co/gb5FSTmV/1768925232598-019bdc2a-e026-7e7c-9739-37234d1c5e87.png",
-                name: "Пусто"
+                // GitHub: void.png (Пустота)
+                image: USE_GITHUB_IMAGES 
+                    ? `${IMG_CDN}/prizes/void.png`
+                    : "https://i.ibb.co/gb5FSTmV/1768925232598-019bdc2a-e026-7e7c-9739-37234d1c5e87.png",
+                name: "Void"
             },
             { 
                 id: 1,
                 stars: 25, 
                 emoji: "⭐", 
                 rarity: "uncommon",
-                // image: `${IMG_CDN}/prizes/stars-25.jpg`,
-                image: "https://i.ibb.co/rfvNFsXR/1768924736444-019bdc22-de2d-7183-b0e4-53670324a942.jpg",
-                name: "25 звёзд"
+                // GitHub: spark.png (Искра)
+                image: USE_GITHUB_IMAGES 
+                    ? `${IMG_CDN}/prizes/spark.png`
+                    : "https://i.ibb.co/rfvNFsXR/1768924736444-019bdc22-de2d-7183-b0e4-53670324a942.jpg",
+                name: "Spark"
             },
             { 
                 id: 2,
                 stars: 50, 
                 emoji: "✨", 
                 rarity: "rare",
-                // image: `${IMG_CDN}/prizes/stars-50.jpg`,
-                image: "https://i.ibb.co/8CL2Rxq/1768924439694-019bdc1e-33ba-716b-9343-17c2777cf861.jpg",
-                name: "50 звёзд"
+                // GitHub: radiance.png (Сияние)
+                image: USE_GITHUB_IMAGES 
+                    ? `${IMG_CDN}/prizes/radiance.png`
+                    : "https://i.ibb.co/8CL2Rxq/1768924439694-019bdc1e-33ba-716b-9343-17c2777cf861.jpg",
+                name: "Radiance"
             },
             { 
                 id: 3,
                 stars: 100, 
                 emoji: "🌟", 
                 rarity: "epic",
-                // image: `${IMG_CDN}/prizes/stars-100.png`,
-                image: "https://i.ibb.co/RGX1C998/1768923759742-019bdc13-a966-7740-ba75-610d49ea3c79.png",
-                name: "100 звёзд"
+                // GitHub: aurora.png (Аврора)
+                image: USE_GITHUB_IMAGES 
+                    ? `${IMG_CDN}/prizes/aurora.png`
+                    : "https://i.ibb.co/RGX1C998/1768923759742-019bdc13-a966-7740-ba75-610d49ea3c79.png",
+                name: "Aurora"
             },
             { 
                 id: 4,
                 stars: 500, 
                 emoji: "💫", 
                 rarity: "legendary",
-                // image: `${IMG_CDN}/prizes/jackpot.png`,
-                image: "https://i.ibb.co/XrTtbMXR/1768923046045-019bdc09-a36c-7352-ba71-f5d8fe7799d4.png",
-                name: "Джекпот!"
+                // GitHub: supernova.png (Сверхновая)
+                image: USE_GITHUB_IMAGES 
+                    ? `${IMG_CDN}/prizes/supernova.png`
+                    : "https://i.ibb.co/XrTtbMXR/1768923046045-019bdc09-a36c-7352-ba71-f5d8fe7799d4.png",
+                name: "Supernova"
             },
         ];
 
