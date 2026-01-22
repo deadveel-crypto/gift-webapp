@@ -1411,7 +1411,9 @@
                 stars: 15, 
                 emoji: "✧", 
                 rarity: "uncommon",
-                image: `${IMG_CDN}/prizes/glimmer.png`
+                image: USE_GITHUB_IMAGES 
+                    ? `${IMG_CDN}/prizes/glimmer.png`
+                    : "prizes/glimmer.png",
                 name: "Glimmer"
             },
             25: { 
@@ -1440,7 +1442,9 @@
                 stars: 75, 
                 emoji: "💫", 
                 rarity: "rare",
-                image: `${IMG_CDN}/prizes/stardust.png`
+                image: USE_GITHUB_IMAGES 
+                    ? `${IMG_CDN}/prizes/stardust.png`
+                    : "prizes/stardust.png",
                 name: "Stardust"
             },
             100: { 
