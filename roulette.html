@@ -831,6 +831,22 @@
             background: linear-gradient(135deg, rgba(127, 29, 29, 0.3), var(--bg-card));
         }
 
+        .prize-card.empty {
+            border-color: rgba(107, 114, 128, 0.3);
+            background: linear-gradient(135deg, rgba(55, 65, 81, 0.2), var(--bg-card));
+            opacity: 0.7;
+        }
+
+        .prize-card.empty .prize-card-name {
+            background: linear-gradient(135deg, #6b7280, #9ca3af);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .prizes-grid.cols-5 {
+            grid-template-columns: repeat(5, 1fr);
+        }
+
         .prize-card-visual {
             width: 100%;
             aspect-ratio: 1;
@@ -1375,6 +1391,9 @@
         const USE_GITHUB_IMAGES = false;
         
         const PRIZE_VISUALS = {
+            // ============================================
+            // 🎁 БАЗОВЫЕ ПРИЗЫ
+            // ============================================
             0: { 
                 stars: 0, 
                 emoji: "💨", 
@@ -1383,6 +1402,19 @@
                     ? `${IMG_CDN}/prizes/void.png`
                     : "https://i.ibb.co/gb5FSTmV/1768925232598-019bdc2a-e026-7e7c-9739-37234d1c5e87.png",
                 name: "Void"
+            },
+            
+            // ============================================
+            // 🆕 COSMIC CASE - новый приз 15⭐
+            // ============================================
+            15: { 
+                stars: 15, 
+                emoji: "✧", 
+                rarity: "uncommon",
+                image: USE_GITHUB_IMAGES 
+                    ? `${IMG_CDN}/prizes/glimmer.png`
+                    : null, // ← ЗАГРУЗИ: prizes/glimmer.png (15 звезд)
+                name: "Glimmer"
             },
             25: { 
                 stars: 25, 
@@ -1402,6 +1434,19 @@
                     : "https://i.ibb.co/8CL2Rxq/1768924439694-019bdc1e-33ba-716b-9343-17c2777cf861.jpg",
                 name: "Radiance"
             },
+            
+            // ============================================
+            // 🆕 STELLAR CASE - новый приз 75⭐
+            // ============================================
+            75: { 
+                stars: 75, 
+                emoji: "💫", 
+                rarity: "rare",
+                image: USE_GITHUB_IMAGES 
+                    ? `${IMG_CDN}/prizes/stardust.png`
+                    : null, // ← ЗАГРУЗИ: prizes/stardust.png (75 звезд)
+                name: "Stardust"
+            },
             100: { 
                 stars: 100, 
                 emoji: "🌟", 
@@ -1410,6 +1455,28 @@
                     ? `${IMG_CDN}/prizes/aurora.png`
                     : "https://i.ibb.co/RGX1C998/1768923759742-019bdc13-a966-7740-ba75-610d49ea3c79.png",
                 name: "Aurora"
+            },
+            
+            // ============================================
+            // 🆕 GOLDEN CASE - новые призы 150⭐ и 250⭐
+            // ============================================
+            150: { 
+                stars: 150, 
+                emoji: "🔥", 
+                rarity: "epic",
+                image: USE_GITHUB_IMAGES 
+                    ? `${IMG_CDN}/prizes/ember.png`
+                    : null, // ← ЗАГРУЗИ: prizes/ember.png (150 звезд)
+                name: "Ember"
+            },
+            250: { 
+                stars: 250, 
+                emoji: "⚡", 
+                rarity: "legendary",
+                image: USE_GITHUB_IMAGES 
+                    ? `${IMG_CDN}/prizes/lightning.png`
+                    : null, // ← ЗАГРУЗИ: prizes/lightning.png (250 звезд)
+                name: "Lightning"
             },
             500: { 
                 stars: 500, 
@@ -1420,30 +1487,26 @@
                     : "https://i.ibb.co/XrTtbMXR/1768923046045-019bdc09-a36c-7352-ba71-f5d8fe7799d4.png",
                 name: "Supernova"
             },
+            
             // ============================================
-            // 🆕 НОВЫЕ ПРИЗЫ ДЛЯ DIVINE КЕЙСА
+            // 🆕 DIVINE CASE - призы 1000⭐ и 9999⭐
             // ============================================
-            // Загрузи картинки на ImgBB или GitHub и замени null на URL:
-            // GitHub: ${IMG_CDN}/prizes/galaxy.png
-            // ImgBB: https://i.ibb.co/XXXXXXX/galaxy.png
             1000: { 
                 stars: 1000, 
                 emoji: "🌌", 
                 rarity: "legendary",
                 image: USE_GITHUB_IMAGES 
                     ? `${IMG_CDN}/prizes/galaxy.png`
-                    : null, // ← ЗАГРУЗИ КАРТИНКУ И ВСТАВЬ ССЫЛКУ СЮДА
+                    : null, // ← ЗАГРУЗИ: prizes/galaxy.png (1000 звезд)
                 name: "Galaxy"
             },
-            // GitHub: ${IMG_CDN}/prizes/divine_star.png
-            // ImgBB: https://i.ibb.co/XXXXXXX/divine_star.png
             9999: { 
                 stars: 9999, 
                 emoji: "👑", 
                 rarity: "mythic",
                 image: USE_GITHUB_IMAGES 
                     ? `${IMG_CDN}/prizes/divine_star.png`
-                    : null, // ← ЗАГРУЗИ КАРТИНКУ И ВСТАВЬ ССЫЛКУ СЮДА
+                    : null, // ← ЗАГРУЗИ: prizes/divine_star.png (9999 звезд)
                 name: "Divine Star"
             }
         };
@@ -1452,37 +1515,59 @@
         // 🎲 ШАНСЫ ДЛЯ КАЖДОГО КЕЙСА
         // ============================================
         const CASE_CONFIG = {
-            // Cosmic: 0, 25, 50 (90% пусто, 5% на 25, 5% на 50)
+            // ============================================
+            // 🎁 COSMIC CASE (100💎)
+            // Призы: 0, 15, 25, 50
+            // Шансы: 90% пусто, 4% на 15, 3% на 25, 3% на 50
+            // ============================================
             cosmic: {
-                prizes: [0, 25, 50],
-                // Кумулятивные шансы: 0-90 = 0⭐, 90-95 = 25⭐, 95-100 = 50⭐
+                prizes: [0, 15, 25, 50],
                 getRandomPrize: () => {
                     const rand = Math.random() * 100;
-                    if (rand < 90) return 0;
-                    if (rand < 95) return 25;
-                    return 50;
+                    if (rand < 90) return 0;      // 90%
+                    if (rand < 94) return 15;     // 4%
+                    if (rand < 97) return 25;     // 3%
+                    return 50;                     // 3%
                 }
             },
-            // Stellar: 0, 50, 100 (90% пусто, 5% на 50, 5% на 100)
+            
+            // ============================================
+            // ✨ STELLAR CASE (250💎)
+            // Призы: 0, 50, 75, 100
+            // Шансы: 90% пусто, 4% на 50, 3% на 75, 3% на 100
+            // ============================================
             stellar: {
-                prizes: [0, 50, 100],
+                prizes: [0, 50, 75, 100],
                 getRandomPrize: () => {
                     const rand = Math.random() * 100;
-                    if (rand < 90) return 0;
-                    if (rand < 95) return 50;
-                    return 100;
+                    if (rand < 90) return 0;      // 90%
+                    if (rand < 94) return 50;     // 4%
+                    if (rand < 97) return 75;     // 3%
+                    return 100;                    // 3%
                 }
             },
-            // Golden: 0, 100 (99% пусто, 1% на 100)
+            
+            // ============================================
+            // 👑 GOLDEN CASE (500💎)
+            // Призы: 0, 100, 150, 250
+            // Шансы: 99% пусто, 0.5% на 100, 0.3% на 150, 0.2% на 250
+            // ============================================
             golden: {
-                prizes: [0, 100],
+                prizes: [0, 100, 150, 250],
                 getRandomPrize: () => {
                     const rand = Math.random() * 100;
-                    if (rand < 99) return 0;
-                    return 100;
+                    if (rand < 99) return 0;       // 99%
+                    if (rand < 99.5) return 100;   // 0.5%
+                    if (rand < 99.8) return 150;   // 0.3%
+                    return 250;                     // 0.2%
                 }
             },
-            // Divine: 0, 500, 1000, 9999 (90% пусто, 9% на 500, 0.8% на 1000, 0.2% на 9999)
+            
+            // ============================================
+            // 💎 DIVINE CASE (1000💎)
+            // Призы: 0, 500, 1000, 9999
+            // Шансы: 90% пусто, 9% на 500, 0.8% на 1000, 0.2% на 9999
+            // ============================================
             divine: {
                 prizes: [0, 500, 1000, 9999],
                 getRandomPrize: () => {
@@ -1719,9 +1804,8 @@
             const caseId = STATE.selectedCase?.id || 'cosmic';
             const config = CASE_CONFIG[caseId];
             
-            // Получаем призы для текущего кейса (без 0) и сортируем по убыванию
+            // Получаем ВСЕ призы для текущего кейса (включая 0) и сортируем по убыванию
             const displayPrizes = config.prizes
-                .filter(stars => stars > 0)
                 .sort((a, b) => b - a)
                 .map(stars => PRIZE_VISUALS[stars]);
             
@@ -1731,17 +1815,19 @@
                 grid.classList.add('cols-' + displayPrizes.length);
             } else if (displayPrizes.length <= 4) {
                 grid.classList.add('cols-' + displayPrizes.length);
+            } else if (displayPrizes.length === 5) {
+                grid.classList.add('cols-5');
             }
             
             grid.innerHTML = displayPrizes.map(prize => `
-                <div class="prize-card ${prize.rarity === 'legendary' ? 'legendary' : ''} ${prize.rarity === 'mythic' ? 'mythic' : ''}">
+                <div class="prize-card ${prize.rarity === 'legendary' ? 'legendary' : ''} ${prize.rarity === 'mythic' ? 'mythic' : ''} ${prize.stars === 0 ? 'empty' : ''}">
                     <div class="prize-card-visual">
                         ${prize.image 
                             ? `<img src="${prize.image}" alt="${prize.name}" class="prize-card-image" loading="lazy" onerror="this.outerHTML='<div class=\\'prize-card-emoji\\'>${prize.emoji}</div>'">`
                             : `<div class="prize-card-emoji">${prize.emoji}</div>`
                         }
                     </div>
-                    <div class="prize-card-name">${prize.stars}⭐</div>
+                    <div class="prize-card-name">${prize.stars === 0 ? 'Пусто' : prize.stars + '⭐'}</div>
                 </div>
             `).join('');
         }
@@ -1783,37 +1869,37 @@
         // ============================================
         function getRandomPrizeForDisplay() {
             const caseId = STATE.selectedCase?.id || 'cosmic';
-            const config = CASE_CONFIG[caseId];
-            const prizes = config.prizes;
-            
-            // Взвешенный выбор для отображения (показываем больше "красивых" призов)
             const rand = Math.random() * 100;
             
             if (caseId === 'cosmic') {
-                // 50% void, 25% 25⭐, 25% 50⭐
-                if (rand < 50) return PRIZE_VISUALS[0];
-                if (rand < 75) return PRIZE_VISUALS[25];
+                // 40% void, 20% 15⭐, 20% 25⭐, 20% 50⭐
+                if (rand < 40) return PRIZE_VISUALS[0];
+                if (rand < 60) return PRIZE_VISUALS[15];
+                if (rand < 80) return PRIZE_VISUALS[25];
                 return PRIZE_VISUALS[50];
             }
             
             if (caseId === 'stellar') {
-                // 50% void, 25% 50⭐, 25% 100⭐
-                if (rand < 50) return PRIZE_VISUALS[0];
-                if (rand < 75) return PRIZE_VISUALS[50];
+                // 40% void, 20% 50⭐, 20% 75⭐, 20% 100⭐
+                if (rand < 40) return PRIZE_VISUALS[0];
+                if (rand < 60) return PRIZE_VISUALS[50];
+                if (rand < 80) return PRIZE_VISUALS[75];
                 return PRIZE_VISUALS[100];
             }
             
             if (caseId === 'golden') {
-                // 70% void, 30% 100⭐
-                if (rand < 70) return PRIZE_VISUALS[0];
-                return PRIZE_VISUALS[100];
+                // 50% void, 20% 100⭐, 15% 150⭐, 15% 250⭐
+                if (rand < 50) return PRIZE_VISUALS[0];
+                if (rand < 70) return PRIZE_VISUALS[100];
+                if (rand < 85) return PRIZE_VISUALS[150];
+                return PRIZE_VISUALS[250];
             }
             
             if (caseId === 'divine') {
-                // 40% void, 35% 500⭐, 20% 1000⭐, 5% 9999⭐
-                if (rand < 40) return PRIZE_VISUALS[0];
-                if (rand < 75) return PRIZE_VISUALS[500];
-                if (rand < 95) return PRIZE_VISUALS[1000];
+                // 35% void, 30% 500⭐, 25% 1000⭐, 10% 9999⭐
+                if (rand < 35) return PRIZE_VISUALS[0];
+                if (rand < 65) return PRIZE_VISUALS[500];
+                if (rand < 90) return PRIZE_VISUALS[1000];
                 return PRIZE_VISUALS[9999];
             }
             
