@@ -1,3 +1,8 @@
+# Оптимизированная версия Divine Case
+
+Вот оптимизированная версия с отключенной анимацией сканирования на мобильных и улучшенной производительностью:
+
+```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -5,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Divine Case</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -18,20 +23,13 @@
             --bg-primary: #05050a;
             --bg-secondary: #0a0a14;
             --accent-gold: #fbbf24;
-            --accent-gold-light: #fcd34d;
             --accent-purple: #6366f1;
             --accent-purple-light: #818cf8;
-            --accent-indigo: #4338ca;
             --accent-pink: #ec4899;
-            --accent-pink-light: #f472b6;
             --accent-aqua: #22d3ee;
-            --accent-aqua-light: #67e8f9;
-            --accent-emerald: #10b981;
             --text-primary: #ffffff;
             --text-secondary: #71717a;
             --border-color: rgba(99, 102, 241, 0.12);
-            
-            /* Динамические цвета темы кейса */
             --theme-color: #6366f1;
             --theme-color-light: #818cf8;
             --theme-glow: rgba(99, 102, 241, 0.4);
@@ -51,7 +49,7 @@
         }
 
         /* ============================================
-           ANIMATED BACKGROUND
+           ANIMATED BACKGROUND - OPTIMIZED
            ============================================ */
         .animated-bg {
             position: fixed;
@@ -62,60 +60,50 @@
             z-index: 0;
             overflow: hidden;
             background: radial-gradient(ellipse at top, #0a0a18 0%, #050508 50%, #020203 100%);
+            will-change: auto;
         }
 
         .bg-orb {
             position: absolute;
             border-radius: 50%;
-            filter: blur(100px);
-            opacity: 0.4;
-            animation: floatOrb 12s ease-in-out infinite;
+            filter: blur(80px);
+            opacity: 0.35;
+            will-change: transform;
+            contain: layout style paint;
         }
 
         .bg-orb-1 {
-            width: 500px;
-            height: 500px;
-            background: conic-gradient(from 0deg, #1e1b4b, #312e81, #4338ca, #1e1b4b);
-            top: -150px;
-            right: -150px;
-            animation: rotateOrb 20s linear infinite;
+            width: 400px;
+            height: 400px;
+            background: #1e1b4b;
+            top: -100px;
+            right: -100px;
+            animation: floatOrb 15s ease-in-out infinite;
         }
 
         .bg-orb-2 {
-            width: 400px;
-            height: 400px;
-            background: conic-gradient(from 180deg, #0f172a, #1e1b4b, #312e81, #0f172a);
-            bottom: -100px;
-            left: -100px;
-            animation: rotateOrb 25s linear infinite reverse;
+            width: 350px;
+            height: 350px;
+            background: #0f172a;
+            bottom: -80px;
+            left: -80px;
+            animation: floatOrb 18s ease-in-out infinite reverse;
         }
 
-        /* Тематический туман - меняется в зависимости от кейса */
         .bg-orb-3 {
-            width: 600px;
-            height: 600px;
+            width: 500px;
+            height: 500px;
             background: radial-gradient(circle, var(--theme-glow), transparent 70%);
             top: 30%;
             left: 50%;
             transform: translate(-50%, -50%);
-            animation: pulseOrb 4s ease-in-out infinite;
-            opacity: 0.3;
+            opacity: 0.25;
             transition: background 0.5s ease;
         }
 
         @keyframes floatOrb {
-            0%, 100% { transform: translateY(0px) scale(1); }
-            50% { transform: translateY(-30px) scale(1.05); }
-        }
-
-        @keyframes rotateOrb {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        @keyframes pulseOrb {
-            0%, 100% { opacity: 0.2; transform: translate(-50%, -50%) scale(1); }
-            50% { opacity: 0.4; transform: translate(-50%, -50%) scale(1.2); }
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-20px) scale(1.03); }
         }
 
         .bg-grid {
@@ -125,15 +113,10 @@
             right: 0;
             bottom: 0;
             background-image: 
-                linear-gradient(rgba(99, 102, 241, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(99, 102, 241, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
-            animation: gridMove 20s linear infinite;
-        }
-
-        @keyframes gridMove {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(50px); }
+                linear-gradient(rgba(99, 102, 241, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(99, 102, 241, 0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
         }
 
         .bg-stars {
@@ -142,6 +125,7 @@
             left: 0;
             right: 0;
             bottom: 0;
+            pointer-events: none;
         }
 
         .star {
@@ -150,76 +134,37 @@
             height: 2px;
             background: white;
             border-radius: 50%;
-            animation: twinkle 3s ease-in-out infinite;
+            opacity: 0.3;
+        }
+
+        /* Анимация звезд только на десктопе */
+        @media (min-width: 769px) {
+            .star {
+                animation: twinkle 4s ease-in-out infinite;
+            }
         }
 
         @keyframes twinkle {
-            0%, 100% { opacity: 0.2; transform: scale(1); }
-            50% { opacity: 0.8; transform: scale(1.5); }
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 0.6; }
         }
 
         /* ============================================
-           ANIMATIONS
+           ANIMATIONS - OPTIMIZED
            ============================================ */
         @keyframes textShine {
             0% { background-position: -200% center; }
             100% { background-position: 200% center; }
         }
 
-        @keyframes neonPulse {
-            0%, 100% { 
-                filter: brightness(1) drop-shadow(0 0 5px currentColor);
-            }
-            50% { 
-                filter: brightness(1.3) drop-shadow(0 0 20px currentColor);
-            }
-        }
-
-        @keyframes borderGlow {
-            0%, 100% { 
-                border-color: rgba(99, 102, 241, 0.3);
-                box-shadow: 0 0 20px rgba(99, 102, 241, 0.1);
-            }
-            50% { 
-                border-color: rgba(99, 102, 241, 0.6);
-                box-shadow: 0 0 40px rgba(99, 102, 241, 0.2);
-            }
-        }
-
         @keyframes cardEnter {
-            0% { opacity: 0; transform: translateY(40px) scale(0.95); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes subtleFloat {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        @keyframes shimmerCard {
-            0% { left: -100%; }
-            100% { left: 200%; }
-        }
-
-        @keyframes holographic {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        @keyframes scanLine {
-            0% { top: -100%; }
-            100% { top: 200%; }
-        }
-
-        @keyframes rotate3d {
-            0% { transform: rotateY(0deg); }
-            100% { transform: rotateY(360deg); }
-        }
-
-        @keyframes orbitalRotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+            50% { transform: translateY(-8px); }
         }
 
         /* ============================================
@@ -231,11 +176,10 @@
             z-index: 10;
             width: 100%;
             max-width: 400px;
-            animation: cardEnter 0.8s ease-out;
+            animation: cardEnter 0.6s ease-out;
         }
 
         .brand-container {
-            position: relative;
             margin-bottom: 25px;
         }
 
@@ -245,20 +189,12 @@
             font-size: 2rem;
             letter-spacing: 4px;
             text-transform: uppercase;
-            background: linear-gradient(90deg, 
-                #818cf8 0%, 
-                #c4b5fd 20%, 
-                #f0abfc 40%, 
-                #c4b5fd 60%, 
-                #818cf8 80%,
-                #c4b5fd 100%
-            );
+            background: linear-gradient(90deg, #818cf8, #c4b5fd, #f0abfc, #c4b5fd, #818cf8);
             background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: textShine 3s linear infinite;
-            position: relative;
+            animation: textShine 4s linear infinite;
         }
 
         .brand-subtitle {
@@ -271,13 +207,12 @@
         }
 
         /* ============================================
-           BALANCE DISPLAY - Orbital Style
+           BALANCE DISPLAY - Simplified
            ============================================ */
         .balance-container {
             display: flex;
             justify-content: center;
             gap: 30px;
-            position: relative;
         }
 
         .balance-orb {
@@ -295,7 +230,13 @@
             inset: 0;
             border-radius: 50%;
             border: 2px solid transparent;
-            animation: orbitalRotate 8s linear infinite;
+        }
+
+        /* Анимация кольца только на десктопе */
+        @media (min-width: 769px) {
+            .balance-ring {
+                animation: orbitalRotate 10s linear infinite;
+            }
         }
 
         .balance-ring::before {
@@ -316,18 +257,23 @@
 
         .balance-orb.sapphires .balance-ring::before {
             background: #818cf8;
-            box-shadow: 0 0 10px #818cf8;
+            box-shadow: 0 0 8px #818cf8;
         }
 
         .balance-orb.stars .balance-ring {
             border-color: rgba(251, 191, 36, 0.3);
             border-top-color: #fbbf24;
-            animation-direction: reverse;
+        }
+
+        @media (min-width: 769px) {
+            .balance-orb.stars .balance-ring {
+                animation-direction: reverse;
+            }
         }
 
         .balance-orb.stars .balance-ring::before {
             background: #fbbf24;
-            box-shadow: 0 0 10px #fbbf24;
+            box-shadow: 0 0 8px #fbbf24;
         }
 
         .balance-inner {
@@ -340,56 +286,25 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .balance-inner::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: conic-gradient(from 0deg, transparent, rgba(255,255,255,0.03), transparent);
-            animation: orbitalRotate 4s linear infinite;
         }
 
         .balance-icon {
             font-size: 1.5rem;
             margin-bottom: 2px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .balance-orb.sapphires .balance-icon {
-            animation: neonPulse 2s ease-in-out infinite;
-            color: #818cf8;
-        }
-
-        .balance-orb.stars .balance-icon {
-            animation: neonPulse 2s ease-in-out infinite 0.5s;
-            color: #fbbf24;
         }
 
         .balance-value {
             font-family: 'Orbitron', sans-serif;
             font-size: 1.1rem;
             font-weight: 700;
-            position: relative;
-            z-index: 1;
         }
 
         .balance-orb.sapphires .balance-value {
-            background: linear-gradient(135deg, #c4b5fd, #818cf8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #c4b5fd;
         }
 
         .balance-orb.stars .balance-value {
-            background: linear-gradient(135deg, #fef3c7, #fbbf24);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #fcd34d;
         }
 
         .balance-label {
@@ -399,8 +314,11 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             margin-top: 2px;
-            position: relative;
-            z-index: 1;
+        }
+
+        @keyframes orbitalRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         /* ============================================
@@ -410,7 +328,7 @@
             z-index: 10;
             width: 100%;
             max-width: 400px;
-            animation: cardEnter 0.8s ease-out;
+            animation: cardEnter 0.6s ease-out;
         }
 
         .menu-screen.hidden {
@@ -448,58 +366,30 @@
         }
 
         /* ============================================
-           CASE CARDS
+           CASE CARDS - OPTIMIZED
            ============================================ */
         .case-card {
             background: linear-gradient(145deg, rgba(20, 20, 40, 0.9), rgba(10, 10, 25, 0.95));
-            backdrop-filter: blur(20px);
             border: 2px solid rgba(99, 102, 241, 0.2);
             border-radius: 24px;
             padding: 24px 16px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
             position: relative;
             overflow: hidden;
+            contain: layout style paint;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .case-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
-            transition: left 0.6s ease;
+        .case-card:active {
+            transform: scale(0.97);
         }
 
-        .case-card::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 24px;
-            padding: 2px;
-            background: linear-gradient(135deg, transparent, rgba(255,255,255,0.1), transparent);
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .case-card:hover::before {
-            left: 100%;
-        }
-
-        .case-card:hover::after {
-            opacity: 1;
-        }
-
-        .case-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        @media (min-width: 769px) {
+            .case-card:hover {
+                transform: translateY(-8px) scale(1.02);
+            }
         }
 
         /* Cosmic - фиолетовый */
@@ -508,31 +398,28 @@
             background: linear-gradient(145deg, rgba(99, 102, 241, 0.12), rgba(15, 15, 35, 0.95));
         }
 
-        .case-card.cosmic-style:hover {
+        .case-card.cosmic-style:hover,
+        .case-card.cosmic-style:active {
             border-color: rgba(99, 102, 241, 0.7);
-            box-shadow: 0 25px 60px rgba(99, 102, 241, 0.25), 0 0 40px rgba(99, 102, 241, 0.15);
+            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.2);
         }
 
         .case-card.cosmic-style .case-card-name {
             background: linear-gradient(135deg, #e0e7ff, #a78bfa, #818cf8);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: none;
-        }
-
-        .case-card.cosmic-style .case-card-glow {
-            background: radial-gradient(circle at center, rgba(99, 102, 241, 0.4), transparent 70%);
         }
 
         /* Stellar - розовый */
         .case-card.stellar-style {
             border-color: rgba(236, 72, 153, 0.4);
-            background: linear-gradient(145deg, rgba(236, 72, 153, 0.15), rgba(157, 23, 77, 0.1), rgba(15, 15, 35, 0.95));
+            background: linear-gradient(145deg, rgba(236, 72, 153, 0.15), rgba(15, 15, 35, 0.95));
         }
 
-        .case-card.stellar-style:hover {
+        .case-card.stellar-style:hover,
+        .case-card.stellar-style:active {
             border-color: rgba(236, 72, 153, 0.8);
-            box-shadow: 0 25px 60px rgba(236, 72, 153, 0.3), 0 0 40px rgba(236, 72, 153, 0.2);
+            box-shadow: 0 15px 40px rgba(236, 72, 153, 0.25);
         }
 
         .case-card.stellar-style .case-card-name {
@@ -541,19 +428,16 @@
             -webkit-text-fill-color: transparent;
         }
 
-        .case-card.stellar-style .case-card-glow {
-            background: radial-gradient(circle at center, rgba(236, 72, 153, 0.4), transparent 70%);
-        }
-
         /* Golden - золотой */
         .case-card.golden-style {
             border-color: rgba(251, 191, 36, 0.45);
-            background: linear-gradient(145deg, rgba(251, 191, 36, 0.12), rgba(180, 83, 9, 0.1), rgba(15, 15, 35, 0.95));
+            background: linear-gradient(145deg, rgba(251, 191, 36, 0.12), rgba(15, 15, 35, 0.95));
         }
 
-        .case-card.golden-style:hover {
+        .case-card.golden-style:hover,
+        .case-card.golden-style:active {
             border-color: rgba(251, 191, 36, 0.9);
-            box-shadow: 0 25px 60px rgba(251, 191, 36, 0.3), 0 0 40px rgba(251, 191, 36, 0.2);
+            box-shadow: 0 15px 40px rgba(251, 191, 36, 0.25);
         }
 
         .case-card.golden-style .case-card-name {
@@ -562,44 +446,22 @@
             -webkit-text-fill-color: transparent;
         }
 
-        .case-card.golden-style .case-card-glow {
-            background: radial-gradient(circle at center, rgba(251, 191, 36, 0.4), transparent 70%);
-        }
-
         /* Divine - аква */
         .case-card.divine-style {
             border-color: rgba(34, 211, 238, 0.5);
-            background: linear-gradient(145deg, rgba(34, 211, 238, 0.15), rgba(6, 182, 212, 0.1), rgba(15, 15, 35, 0.95));
+            background: linear-gradient(145deg, rgba(34, 211, 238, 0.15), rgba(15, 15, 35, 0.95));
         }
 
-        .case-card.divine-style:hover {
+        .case-card.divine-style:hover,
+        .case-card.divine-style:active {
             border-color: rgba(34, 211, 238, 0.9);
-            box-shadow: 0 25px 60px rgba(34, 211, 238, 0.35), 0 0 40px rgba(34, 211, 238, 0.25);
+            box-shadow: 0 15px 40px rgba(34, 211, 238, 0.3);
         }
 
         .case-card.divine-style .case-card-name {
             background: linear-gradient(135deg, #cffafe, #22d3ee, #06b6d4);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-        }
-
-        .case-card.divine-style .case-card-glow {
-            background: radial-gradient(circle at center, rgba(34, 211, 238, 0.4), transparent 70%);
-        }
-
-        .case-card-glow {
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-            pointer-events: none;
-        }
-
-        .case-card:hover .case-card-glow {
-            opacity: 1;
         }
 
         .case-card-image-container {
@@ -614,15 +476,18 @@
             inset: -8px;
             border-radius: 50%;
             border: 2px dashed rgba(255, 255, 255, 0.1);
-            animation: rotate3d 10s linear infinite;
+        }
+
+        @media (min-width: 769px) {
+            .case-card-ring {
+                animation: orbitalRotate 12s linear infinite;
+            }
         }
 
         .case-card-emoji {
             font-size: 3.5rem;
-            filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.5));
-            animation: subtleFloat 4s ease-in-out infinite;
-            position: relative;
-            z-index: 1;
+            filter: drop-shadow(0 6px 15px rgba(0, 0, 0, 0.4));
+            animation: subtleFloat 5s ease-in-out infinite;
         }
 
         .case-card-image {
@@ -630,11 +495,9 @@
             height: 80px;
             object-fit: cover;
             border-radius: 20px;
-            filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.6));
-            animation: subtleFloat 4s ease-in-out infinite;
+            filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.5));
+            animation: subtleFloat 5s ease-in-out infinite;
             border: 2px solid rgba(255, 255, 255, 0.1);
-            position: relative;
-            z-index: 1;
         }
 
         .case-card-name {
@@ -654,32 +517,11 @@
             align-items: center;
             justify-content: center;
             gap: 6px;
-            position: relative;
-        }
-
-        .case-card-price-glow {
-            position: absolute;
-            inset: -8px -16px;
-            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.2), transparent);
-            border-radius: 20px;
-            filter: blur(8px);
         }
 
         .case-card-price-text {
-            position: relative;
-            z-index: 1;
             color: #c4b5fd;
-            text-shadow: 0 0 20px rgba(139, 92, 246, 0.8);
-            animation: pricePulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pricePulse {
-            0%, 100% { 
-                text-shadow: 0 0 10px rgba(139, 92, 246, 0.6);
-            }
-            50% { 
-                text-shadow: 0 0 25px rgba(139, 92, 246, 1), 0 0 40px rgba(139, 92, 246, 0.5);
-            }
+            text-shadow: 0 0 15px rgba(139, 92, 246, 0.6);
         }
 
         .case-card-tag {
@@ -693,24 +535,18 @@
             border-radius: 10px;
             text-transform: uppercase;
             letter-spacing: 1px;
-            animation: tagPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes tagPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
         }
 
         .case-card.golden-style .case-card-tag {
             background: linear-gradient(135deg, #fbbf24, #f59e0b);
             color: #1a1a2e;
-            box-shadow: 0 0 20px rgba(251, 191, 36, 0.5);
+            box-shadow: 0 0 15px rgba(251, 191, 36, 0.4);
         }
 
         .case-card.divine-style .case-card-tag {
             background: linear-gradient(135deg, #22d3ee, #06b6d4);
             color: #042f2e;
-            box-shadow: 0 0 20px rgba(34, 211, 238, 0.5);
+            box-shadow: 0 0 15px rgba(34, 211, 238, 0.4);
         }
 
         /* ============================================
@@ -729,7 +565,6 @@
             display: none;
         }
 
-        /* Тема для экрана кейса */
         body.theme-cosmic {
             --theme-color: #6366f1;
             --theme-color-light: #818cf8;
@@ -758,7 +593,7 @@
             text-align: center;
             margin-bottom: 25px;
             z-index: 10;
-            animation: cardEnter 0.8s ease-out 0.1s both;
+            animation: cardEnter 0.6s ease-out 0.1s both;
         }
 
         .case-box {
@@ -766,26 +601,31 @@
             height: 140px;
             margin: 0 auto 15px;
             position: relative;
-            animation: subtleFloat 4s ease-in-out infinite;
+            animation: subtleFloat 5s ease-in-out infinite;
         }
 
         .case-glow {
             position: absolute;
-            inset: -25px;
+            inset: -20px;
             background: radial-gradient(circle, var(--theme-glow) 0%, transparent 70%);
             border-radius: 50%;
-            filter: blur(25px);
-            animation: pulseOrb 3s ease-in-out infinite;
+            filter: blur(20px);
+            opacity: 0.4;
             transition: background 0.5s ease;
         }
 
         .case-box-ring {
             position: absolute;
-            inset: -15px;
+            inset: -12px;
             border: 2px solid var(--theme-color);
             opacity: 0.3;
             border-radius: 50%;
-            animation: rotate3d 15s linear infinite;
+        }
+
+        @media (min-width: 769px) {
+            .case-box-ring {
+                animation: orbitalRotate 18s linear infinite;
+            }
         }
 
         .case-box-ring::before {
@@ -797,40 +637,24 @@
             height: 8px;
             background: var(--theme-color);
             border-radius: 50%;
-            box-shadow: 0 0 15px var(--theme-color);
+            box-shadow: 0 0 12px var(--theme-color);
         }
 
         .case-box-inner {
             width: 100%;
             height: 100%;
-            background: linear-gradient(145deg, rgba(var(--theme-color), 0.12), rgba(15, 15, 35, 0.95));
+            background: linear-gradient(145deg, rgba(20, 20, 45, 0.9), rgba(10, 10, 25, 0.95));
             border-radius: 28px;
-            border: 2px solid var(--theme-color);
-            border-color: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.15);
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
             overflow: hidden;
-            backdrop-filter: blur(10px);
-        }
-
-        .case-box-inner::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 50%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
-            animation: shimmerCard 3s ease-in-out infinite;
         }
 
         .case-emoji {
             font-size: 4.5rem;
-            position: relative;
-            z-index: 1;
-            filter: drop-shadow(0 8px 25px var(--theme-glow));
+            filter: drop-shadow(0 6px 20px var(--theme-glow));
         }
 
         .case-emoji.hidden {
@@ -842,9 +666,7 @@
             height: 95px;
             object-fit: cover;
             border-radius: 22px;
-            position: relative;
-            z-index: 1;
-            filter: drop-shadow(0 8px 25px var(--theme-glow));
+            filter: drop-shadow(0 6px 20px var(--theme-glow));
             border: 2px solid rgba(255, 255, 255, 0.15);
         }
 
@@ -870,7 +692,7 @@
             width: 100%;
             max-width: 400px;
             z-index: 10;
-            animation: cardEnter 0.8s ease-out 0.2s both;
+            animation: cardEnter 0.6s ease-out 0.2s both;
         }
 
         .case-container {
@@ -881,12 +703,9 @@
             border-radius: 24px;
             overflow: hidden;
             border: 2px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            box-shadow: 
-                0 0 40px var(--theme-glow),
-                inset 0 0 60px rgba(0, 0, 0, 0.3);
-            transition: box-shadow 0.5s ease, border-color 0.5s ease;
+            box-shadow: 0 0 30px var(--theme-glow);
+            transition: box-shadow 0.5s ease;
+            contain: layout style;
         }
 
         .case-container::before {
@@ -923,27 +742,15 @@
             border-left: 14px solid transparent;
             border-right: 14px solid transparent;
             border-top: 22px solid var(--theme-color);
-            filter: drop-shadow(0 0 15px var(--theme-color));
-            animation: pointerGlow 1.5s ease-in-out infinite;
-            transition: border-color 0.5s ease, filter 0.5s ease;
-        }
-
-        @keyframes pointerGlow {
-            0%, 100% { 
-                filter: drop-shadow(0 0 10px var(--theme-color));
-                transform: scaleY(1);
-            }
-            50% { 
-                filter: drop-shadow(0 0 25px var(--theme-color));
-                transform: scaleY(1.1);
-            }
+            filter: drop-shadow(0 0 10px var(--theme-color));
+            transition: border-color 0.5s ease;
         }
 
         .pointer-line {
             width: 3px;
             height: 130px;
             background: linear-gradient(180deg, var(--theme-color), transparent);
-            opacity: 0.5;
+            opacity: 0.4;
             transition: background 0.5s ease;
         }
 
@@ -967,7 +774,7 @@
             position: absolute;
             top: 0;
             left: 0;
-            transition: none;
+            will-change: transform;
         }
 
         .items-strip.animating {
@@ -987,28 +794,13 @@
             position: relative;
             overflow: hidden;
             border: 2px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
-            padding: 0;
+            contain: layout style paint;
             -webkit-transform: translateZ(0);
             transform: translateZ(0);
-            contain: layout style paint;
-            isolation: isolate;
         }
 
         .prize-item.has-image {
             background: transparent !important;
-        }
-
-        .prize-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: 2;
         }
 
         .prize-item.rarity-common {
@@ -1019,50 +811,36 @@
         .prize-item.rarity-uncommon {
             background: linear-gradient(145deg, rgba(124, 58, 237, 0.9), rgba(76, 29, 149, 0.9));
             border-color: rgba(139, 92, 246, 0.5);
-            box-shadow: 0 0 25px rgba(139, 92, 246, 0.3);
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.25);
         }
 
         .prize-item.rarity-rare {
             background: linear-gradient(145deg, rgba(59, 130, 246, 0.9), rgba(29, 78, 216, 0.9));
             border-color: rgba(59, 130, 246, 0.5);
-            box-shadow: 0 0 25px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.25);
         }
 
         .prize-item.rarity-epic {
             background: linear-gradient(145deg, rgba(236, 72, 153, 0.9), rgba(157, 23, 77, 0.9));
             border-color: rgba(236, 72, 153, 0.5);
-            box-shadow: 0 0 30px rgba(236, 72, 153, 0.35);
+            box-shadow: 0 0 25px rgba(236, 72, 153, 0.3);
         }
 
         .prize-item.rarity-legendary {
             background: linear-gradient(145deg, rgba(251, 191, 36, 0.9), rgba(180, 83, 9, 0.9));
             border-color: rgba(251, 191, 36, 0.6);
-            box-shadow: 0 0 35px rgba(251, 191, 36, 0.45);
-            animation: legendaryPulse 2s ease-in-out infinite;
+            box-shadow: 0 0 30px rgba(251, 191, 36, 0.4);
         }
 
         .prize-item.rarity-mythic {
             background: linear-gradient(145deg, rgba(239, 68, 68, 0.9), rgba(127, 29, 29, 0.9));
             border-color: rgba(239, 68, 68, 0.7);
-            box-shadow: 0 0 40px rgba(239, 68, 68, 0.5);
-            animation: mythicPulse 1.5s ease-in-out infinite;
-        }
-
-        @keyframes legendaryPulse {
-            0%, 100% { box-shadow: 0 0 30px rgba(251, 191, 36, 0.4); }
-            50% { box-shadow: 0 0 50px rgba(251, 191, 36, 0.7); }
-        }
-
-        @keyframes mythicPulse {
-            0%, 100% { box-shadow: 0 0 35px rgba(239, 68, 68, 0.5); }
-            50% { box-shadow: 0 0 60px rgba(239, 68, 68, 0.9); }
+            box-shadow: 0 0 35px rgba(239, 68, 68, 0.45);
         }
 
         .prize-emoji {
             font-size: 2.5rem;
-            filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.4));
-            position: relative;
-            z-index: 1;
+            filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.3));
         }
 
         .prize-image {
@@ -1074,36 +852,28 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            -webkit-object-fit: cover;
-            object-position: center center;
-            -webkit-object-position: center center;
             border-radius: 16px;
             -webkit-transform: translateZ(0);
             transform: translateZ(0);
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            image-rendering: -webkit-optimize-contrast;
-            z-index: 1;
         }
 
         .prize-item.winner {
-            animation: winnerPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            animation: winnerPop 0.5s ease-out;
             border-color: var(--theme-color) !important;
-            box-shadow: 0 0 50px var(--theme-glow) !important;
+            box-shadow: 0 0 40px var(--theme-glow) !important;
         }
 
         @keyframes winnerPop {
             0% { transform: scale(1); }
-            50% { transform: scale(1.15); }
+            50% { transform: scale(1.12); }
             100% { transform: scale(1); }
         }
 
         /* ============================================
-           SPIN BUTTON - Themed
+           SPIN BUTTON
            ============================================ */
         .spin-button {
-            background: linear-gradient(135deg, var(--theme-color) 0%, var(--theme-color-light) 50%, var(--theme-color) 100%);
-            background-size: 200% 200%;
+            background: linear-gradient(135deg, var(--theme-color), var(--theme-color-light));
             border: none;
             padding: 20px 50px;
             font-family: 'Orbitron', sans-serif;
@@ -1113,52 +883,35 @@
             color: #0a0a14;
             border-radius: 18px;
             cursor: pointer;
-            box-shadow: 
-                0 15px 40px var(--theme-glow),
-                0 0 0 1px rgba(255, 255, 255, 0.1) inset;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 12px 35px var(--theme-glow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             z-index: 10;
             display: flex;
             align-items: center;
             gap: 14px;
             position: relative;
             overflow: hidden;
-            animation: cardEnter 0.8s ease-out 0.3s both, holographic 4s ease infinite;
+            animation: cardEnter 0.6s ease-out 0.3s both;
             margin-top: 25px;
             text-transform: uppercase;
-        }
-
-        .spin-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
-            transition: left 0.6s ease;
-        }
-
-        .spin-button:hover:not(:disabled)::before {
-            left: 100%;
-        }
-
-        .spin-button:hover:not(:disabled) {
-            transform: translateY(-5px) scale(1.03);
-            box-shadow: 
-                0 25px 60px var(--theme-glow),
-                0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .spin-button:active:not(:disabled) {
-            transform: translateY(-2px) scale(1.01);
+            transform: scale(0.97);
+        }
+
+        @media (min-width: 769px) {
+            .spin-button:hover:not(:disabled) {
+                transform: translateY(-4px) scale(1.02);
+                box-shadow: 0 20px 50px var(--theme-glow);
+            }
         }
 
         .spin-button:disabled {
             background: linear-gradient(135deg, #374151, #1f2937);
             cursor: not-allowed;
             box-shadow: none;
-            animation: cardEnter 0.8s ease-out 0.3s both;
         }
 
         .spin-cost {
@@ -1182,42 +935,29 @@
             color: var(--text-secondary);
             border-radius: 14px;
             cursor: pointer;
-            transition: all 0.4s ease;
+            transition: all 0.3s ease;
             margin-top: 15px;
             z-index: 10;
             letter-spacing: 1px;
-            position: relative;
-            overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .back-to-menu-btn::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, var(--theme-glow), transparent);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .back-to-menu-btn:hover {
+        .back-to-menu-btn:hover,
+        .back-to-menu-btn:active {
             border-color: var(--theme-color);
             color: var(--text-primary);
-            box-shadow: 0 0 30px var(--theme-glow);
-        }
-
-        .back-to-menu-btn:hover::before {
-            opacity: 0.1;
+            box-shadow: 0 0 20px var(--theme-glow);
         }
 
         /* ============================================
-           INFO SECTION (PRIZES GRID)
+           INFO SECTION (PRIZES GRID) - NO SCAN ANIMATION
            ============================================ */
         .info-section {
             margin-top: 35px;
             width: 100%;
             max-width: 400px;
             z-index: 10;
-            animation: cardEnter 0.8s ease-out 0.4s both;
+            animation: cardEnter 0.6s ease-out 0.4s both;
         }
 
         .info-title {
@@ -1228,7 +968,6 @@
             margin-bottom: 18px;
             letter-spacing: 3px;
             text-transform: uppercase;
-            position: relative;
         }
 
         .info-title::before,
@@ -1259,32 +998,25 @@
 
         .prize-card {
             background: linear-gradient(145deg, rgba(20, 20, 40, 0.9), rgba(10, 10, 25, 0.95));
-            backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 16px;
             padding: 10px;
             padding-bottom: 12px;
             text-align: center;
-            transition: all 0.4s ease;
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
             position: relative;
             overflow: hidden;
+            contain: layout style paint;
         }
 
-        .prize-card::before {
-            content: '';
-            position: absolute;
-            top: -100%;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--theme-color), transparent);
-            animation: scanLine 4s linear infinite;
-        }
+        /* Убрана анимация сканирования */
 
-        .prize-card:hover {
-            transform: translateY(-5px) scale(1.02);
-            border-color: var(--theme-color);
-            box-shadow: 0 15px 35px var(--theme-glow);
+        @media (min-width: 769px) {
+            .prize-card:hover {
+                transform: translateY(-4px) scale(1.02);
+                border-color: var(--theme-color);
+                box-shadow: 0 12px 30px var(--theme-glow);
+            }
         }
 
         .prize-card.legendary {
@@ -1292,17 +1024,9 @@
             background: linear-gradient(145deg, rgba(251, 191, 36, 0.1), rgba(15, 15, 35, 0.95));
         }
 
-        .prize-card.legendary:hover {
-            box-shadow: 0 15px 35px rgba(251, 191, 36, 0.25);
-        }
-
         .prize-card.mythic {
             border-color: rgba(239, 68, 68, 0.4);
             background: linear-gradient(145deg, rgba(239, 68, 68, 0.1), rgba(15, 15, 35, 0.95));
-        }
-
-        .prize-card.mythic:hover {
-            box-shadow: 0 15px 35px rgba(239, 68, 68, 0.25);
         }
 
         .prize-card.empty {
@@ -1328,29 +1052,17 @@
             justify-content: center;
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            position: relative;
-        }
-
-        .prize-card-visual::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.05), transparent);
-            pointer-events: none;
         }
 
         .prize-card-emoji { 
             font-size: 2rem;
-            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+            filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.25));
         }
 
         .prize-card-image {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            -webkit-object-fit: cover;
-            object-position: center center;
-            -webkit-object-position: center center;
             -webkit-transform: translateZ(0);
             transform: translateZ(0);
         }
@@ -1371,7 +1083,6 @@
            ============================================ */
         .status-message {
             background: linear-gradient(135deg, rgba(127, 29, 29, 0.7), rgba(69, 10, 10, 0.7));
-            backdrop-filter: blur(10px);
             border: 1px solid rgba(239, 68, 68, 0.4);
             border-radius: 16px;
             padding: 16px;
@@ -1380,7 +1091,6 @@
             font-size: 0.85rem;
             display: none;
             z-index: 10;
-            animation: shake 0.5s ease-in-out;
             width: 100%;
             max-width: 400px;
         }
@@ -1390,16 +1100,10 @@
             border-color: rgba(34, 197, 94, 0.4);
         }
 
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-6px); }
-            40%, 80% { transform: translateX(6px); }
-        }
-
         .status-message.show { display: block; }
 
         /* ============================================
-           MODAL
+           MODAL - OPTIMIZED
            ============================================ */
         .modal-overlay {
             position: fixed;
@@ -1407,16 +1111,16 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.92);
+            background: rgba(0, 0, 0, 0.9);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 100;
             opacity: 0;
             visibility: hidden;
-            transition: all 0.4s ease;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
         }
 
         .modal-overlay.show {
@@ -1426,47 +1130,17 @@
 
         .modal {
             background: linear-gradient(180deg, rgba(18, 18, 40, 0.98) 0%, rgba(8, 8, 18, 0.99) 100%);
-            backdrop-filter: blur(40px);
             border-radius: 32px;
             padding: 40px;
             text-align: center;
             max-width: 340px;
             width: 90%;
-            transform: scale(0.8) translateY(50px);
-            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform: scale(0.85) translateY(40px);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             border: 2px solid rgba(255, 255, 255, 0.1);
             position: relative;
             overflow: hidden;
-            box-shadow: 
-                0 0 80px var(--theme-glow),
-                inset 0 0 60px rgba(0, 0, 0, 0.3);
-        }
-
-        .modal::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 50%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
-            animation: shimmerCard 5s ease-in-out infinite;
-        }
-
-        .modal::after {
-            content: '';
-            position: absolute;
-            top: -100%;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, var(--theme-color), transparent);
-            animation: scanLine 2.5s linear infinite;
-        }
-
-        .modal > * {
-            position: relative;
-            z-index: 1;
+            box-shadow: 0 0 60px var(--theme-glow);
         }
 
         .modal-overlay.show .modal {
@@ -1475,20 +1149,14 @@
 
         .modal.win {
             border-color: rgba(251, 191, 36, 0.5);
-            box-shadow: 
-                0 0 100px rgba(251, 191, 36, 0.25),
-                inset 0 0 60px rgba(251, 191, 36, 0.05);
-        }
-
-        .modal.win::after {
-            background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.8), transparent);
+            box-shadow: 0 0 80px rgba(251, 191, 36, 0.2);
         }
 
         .modal-emoji {
             font-size: 5rem;
             margin-bottom: 25px;
-            animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5));
+            animation: bounceIn 0.5s ease-out;
+            filter: drop-shadow(0 8px 25px rgba(0, 0, 0, 0.4));
         }
 
         .modal-prize-image {
@@ -1498,14 +1166,14 @@
             margin-bottom: 25px;
             border-radius: 20px;
             border: 3px solid rgba(255, 255, 255, 0.2);
-            animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            animation: bounceIn 0.5s ease-out;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35);
         }
 
         @keyframes bounceIn {
-            0% { transform: scale(0) rotate(-15deg); opacity: 0; }
-            50% { transform: scale(1.2) rotate(8deg); }
-            100% { transform: scale(1) rotate(0); opacity: 1; }
+            0% { transform: scale(0); opacity: 0; }
+            60% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
         }
 
         .modal-title { 
@@ -1525,13 +1193,6 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 20px;
-            text-shadow: none;
-            animation: modalPrizeGlow 2s ease-in-out infinite;
-        }
-
-        @keyframes modalPrizeGlow {
-            0%, 100% { filter: brightness(1) drop-shadow(0 0 10px rgba(251, 191, 36, 0.3)); }
-            50% { filter: brightness(1.2) drop-shadow(0 0 25px rgba(251, 191, 36, 0.6)); }
         }
         
         .modal-balance {
@@ -1563,28 +1224,20 @@
             color: #0a0a14;
             border-radius: 16px;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             text-transform: uppercase;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .modal-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
-            transition: left 0.5s ease;
+        .modal-button:active {
+            transform: scale(0.97);
         }
 
-        .modal-button:hover::before { left: 100%; }
-
-        .modal-button:hover {
-            transform: scale(1.03);
-            box-shadow: 0 12px 35px var(--theme-glow);
+        @media (min-width: 769px) {
+            .modal-button:hover {
+                transform: scale(1.02);
+                box-shadow: 0 10px 30px var(--theme-glow);
+            }
         }
 
         .modal-button.secondary {
@@ -1593,25 +1246,24 @@
             color: var(--text-secondary);
         }
 
-        .modal-button.secondary:hover {
+        .modal-button.secondary:hover,
+        .modal-button.secondary:active {
             background: rgba(255, 255, 255, 0.05);
             color: white;
             box-shadow: none;
         }
 
         .modal-button.gold {
-            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #fbbf24 100%);
-            background-size: 200% 200%;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
             color: #1a1a2e;
-            animation: holographic 3s ease infinite;
         }
 
         .modal-button.gold:hover {
-            box-shadow: 0 12px 35px rgba(251, 191, 36, 0.45);
+            box-shadow: 0 10px 30px rgba(251, 191, 36, 0.4);
         }
 
         /* ============================================
-           CONFETTI
+           CONFETTI - OPTIMIZED
            ============================================ */
         .confetti {
             position: fixed;
@@ -1626,17 +1278,18 @@
 
         .confetti-piece {
             position: absolute;
-            animation: confettiFall 4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            animation: confettiFall 3.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            will-change: transform, opacity;
         }
 
         @keyframes confettiFall {
             0% { 
                 opacity: 1; 
-                transform: translateY(-100%) rotate(0deg) scale(1);
+                transform: translateY(-50px) rotate(0deg);
             }
             100% { 
                 opacity: 0; 
-                transform: translateY(100vh) rotate(1080deg) scale(0);
+                transform: translateY(100vh) rotate(720deg);
             }
         }
 
@@ -1655,7 +1308,7 @@
             align-items: center;
             justify-content: center;
             z-index: 200;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.4s ease;
         }
 
         .loading-overlay.hidden {
@@ -1664,15 +1317,13 @@
         }
 
         .loader {
-            width: 60px;
-            height: 60px;
-            border: 3px solid rgba(99, 102, 241, 0.1);
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(99, 102, 241, 0.15);
             border-top-color: var(--accent-gold);
             border-right-color: var(--accent-purple);
-            border-bottom-color: var(--accent-pink);
             border-radius: 50%;
-            animation: spin 1s linear infinite;
-            box-shadow: 0 0 30px rgba(99, 102, 241, 0.2);
+            animation: spin 0.8s linear infinite;
         }
 
         @keyframes spin { 
@@ -1680,18 +1331,12 @@
         }
 
         .loading-text {
-            margin-top: 25px;
+            margin-top: 20px;
             font-family: 'Orbitron', sans-serif;
             color: var(--text-secondary);
             letter-spacing: 4px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             text-transform: uppercase;
-            animation: loadingPulse 1.5s ease-in-out infinite;
-        }
-
-        @keyframes loadingPulse {
-            0%, 100% { opacity: 0.4; }
-            50% { opacity: 1; }
         }
 
         .session-info {
@@ -1709,10 +1354,7 @@
            ============================================ */
         @media (max-width: 390px) {
             .case-container { height: 115px; }
-            .prize-item { 
-                width: 90px; 
-                height: 90px; 
-            }
+            .prize-item { width: 90px; height: 90px; }
             .prize-emoji { font-size: 2.2rem; }
             .pointer-line { height: 115px; }
             .brand-text { font-size: 1.7rem; }
@@ -1724,10 +1366,7 @@
 
         @media (max-width: 380px) {
             .case-container { height: 110px; }
-            .prize-item { 
-                width: 85px; 
-                height: 85px; 
-            }
+            .prize-item { width: 85px; height: 85px; }
             .prize-emoji { font-size: 1.8rem; }
             .brand-text { font-size: 1.5rem; }
             .pointer-line { height: 110px; }
@@ -1738,18 +1377,35 @@
             .balance-value { font-size: 0.85rem; }
         }
         
-        @media (-webkit-min-device-pixel-ratio: 3) {
-            .prize-image {
-                image-rendering: -webkit-optimize-contrast;
-                image-rendering: crisp-edges;
-            }
-        }
-        
         @supports (padding: max(0px)) {
             body {
                 padding-left: max(20px, env(safe-area-inset-left));
                 padding-right: max(20px, env(safe-area-inset-right));
                 padding-bottom: max(100px, env(safe-area-inset-bottom));
+            }
+        }
+
+        /* Отключаем тяжелые анимации на мобильных */
+        @media (max-width: 768px) {
+            .bg-orb-1,
+            .bg-orb-2 {
+                animation: none;
+            }
+            
+            .case-card-emoji,
+            .case-card-image {
+                animation: none;
+            }
+            
+            .case-box {
+                animation: none;
+            }
+        }
+
+        /* Уменьшаем количество конфетти на мобильных */
+        @media (max-width: 768px) {
+            .confetti-piece {
+                animation-duration: 3s;
             }
         }
     </style>
@@ -1868,59 +1524,25 @@
         const tg = window.Telegram?.WebApp;
         const initData = tg?.initData || '';
         
+        // Определяем мобильное устройство
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 769;
+        
         // ============================================
-        // 🖼️ GITHUB IMAGE CDN - НАСТРОЙКИ
+        // 🖼️ GITHUB IMAGE CDN
         // ============================================
         const GITHUB_USER = "deadveel-crypto";
         const GITHUB_REPO = "divine-case-assets";
         const GITHUB_BRANCH = "main";
-        
         const IMG_CDN = `https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${GITHUB_REPO}@${GITHUB_BRANCH}`;
         
         // ============================================
         // ДОСТУПНЫЕ КЕЙСЫ
         // ============================================
         const CASES = [
-            {
-                id: 'cosmic',
-                name: 'Cosmic Case',
-                emoji: '🎁',
-                image: `${IMG_CDN}/cases/cosmic.png`,
-                cost: 100,
-                tag: null,
-                style: 'cosmic-style',
-                theme: 'theme-cosmic'
-            },
-            {
-                id: 'stellar',
-                name: 'Stellar Case',
-                emoji: '✨',
-                image: `${IMG_CDN}/cases/stellar.png`,
-                cost: 250,
-                tag: null,
-                style: 'stellar-style',
-                theme: 'theme-stellar'
-            },
-            {
-                id: 'golden',
-                name: 'Golden Case',
-                emoji: '👑',
-                image: `${IMG_CDN}/cases/golden.png`,
-                cost: 500,
-                tag: 'HOT',
-                style: 'golden-style',
-                theme: 'theme-golden'
-            },
-            {
-                id: 'divine',
-                name: 'Divine Case',
-                emoji: '💎',
-                image: `${IMG_CDN}/cases/divine.png`,
-                cost: 1000,
-                tag: 'VIP',
-                style: 'divine-style',
-                theme: 'theme-divine'
-            }
+            { id: 'cosmic', name: 'Cosmic Case', emoji: '🎁', image: `${IMG_CDN}/cases/cosmic.png`, cost: 100, tag: null, style: 'cosmic-style', theme: 'theme-cosmic' },
+            { id: 'stellar', name: 'Stellar Case', emoji: '✨', image: `${IMG_CDN}/cases/stellar.png`, cost: 250, tag: null, style: 'stellar-style', theme: 'theme-stellar' },
+            { id: 'golden', name: 'Golden Case', emoji: '👑', image: `${IMG_CDN}/cases/golden.png`, cost: 500, tag: 'HOT', style: 'golden-style', theme: 'theme-golden' },
+            { id: 'divine', name: 'Divine Case', emoji: '💎', image: `${IMG_CDN}/cases/divine.png`, cost: 1000, tag: 'VIP', style: 'divine-style', theme: 'theme-divine' }
         ];
         
         // ============================================
@@ -1944,88 +1566,20 @@
         let isSpinning = false;
 
         // ============================================
-        // 🎁 ВСЕ ПРИЗЫ (визуалы)
+        // 🎁 ВСЕ ПРИЗЫ
         // ============================================
-        const USE_GITHUB_IMAGES = true;
-        
         const PRIZE_VISUALS = {
-            0: { 
-                stars: 0, 
-                emoji: "💨", 
-                rarity: "common",
-                image: `${IMG_CDN}/prizes/void.png`,
-                name: "Void"
-            },
-            15: { 
-                stars: 15, 
-                emoji: "✧", 
-                rarity: "uncommon",
-                image: `${IMG_CDN}/prizes/glimmer.png`,
-                name: "Glimmer"
-            },
-            25: { 
-                stars: 25, 
-                emoji: "⭐", 
-                rarity: "uncommon",
-                image: `${IMG_CDN}/prizes/spark.png`,
-                name: "Spark"
-            },
-            50: { 
-                stars: 50, 
-                emoji: "✨", 
-                rarity: "rare",
-                image: `${IMG_CDN}/prizes/radiance.png`,
-                name: "Radiance"
-            },
-            75: { 
-                stars: 75, 
-                emoji: "💫", 
-                rarity: "rare",
-                image: `${IMG_CDN}/prizes/stardust.png`,
-                name: "Stardust"
-            },
-            100: { 
-                stars: 100, 
-                emoji: "🌟", 
-                rarity: "epic",
-                image: `${IMG_CDN}/prizes/aurora.png`,
-                name: "Aurora"
-            },
-            150: { 
-                stars: 150, 
-                emoji: "🔥", 
-                rarity: "epic",
-                image: `${IMG_CDN}/prizes/ember.png`,
-                name: "Ember"
-            },
-            250: { 
-                stars: 250, 
-                emoji: "⚡", 
-                rarity: "legendary",
-                image: `${IMG_CDN}/prizes/lightning.jpeg`,
-                name: "Lightning"
-            },
-            500: { 
-                stars: 500, 
-                emoji: "💫", 
-                rarity: "legendary",
-                image: `${IMG_CDN}/prizes/supernova.png`,
-                name: "Supernova"
-            },
-            1000: { 
-                stars: 1000, 
-                emoji: "🌌", 
-                rarity: "legendary",
-                image: `${IMG_CDN}/prizes/galaxy.png`,
-                name: "Galaxy"
-            },
-            9999: { 
-                stars: 9999, 
-                emoji: "👑", 
-                rarity: "mythic",
-                image: `${IMG_CDN}/prizes/divine_star.png`,
-                name: "Divine Star"
-            }
+            0: { stars: 0, emoji: "💨", rarity: "common", image: `${IMG_CDN}/prizes/void.png`, name: "Void" },
+            15: { stars: 15, emoji: "✧", rarity: "uncommon", image: `${IMG_CDN}/prizes/glimmer.png`, name: "Glimmer" },
+            25: { stars: 25, emoji: "⭐", rarity: "uncommon", image: `${IMG_CDN}/prizes/spark.png`, name: "Spark" },
+            50: { stars: 50, emoji: "✨", rarity: "rare", image: `${IMG_CDN}/prizes/radiance.png`, name: "Radiance" },
+            75: { stars: 75, emoji: "💫", rarity: "rare", image: `${IMG_CDN}/prizes/stardust.png`, name: "Stardust" },
+            100: { stars: 100, emoji: "🌟", rarity: "epic", image: `${IMG_CDN}/prizes/aurora.png`, name: "Aurora" },
+            150: { stars: 150, emoji: "🔥", rarity: "epic", image: `${IMG_CDN}/prizes/ember.png`, name: "Ember" },
+            250: { stars: 250, emoji: "⚡", rarity: "legendary", image: `${IMG_CDN}/prizes/lightning.jpeg`, name: "Lightning" },
+            500: { stars: 500, emoji: "💫", rarity: "legendary", image: `${IMG_CDN}/prizes/supernova.png`, name: "Supernova" },
+            1000: { stars: 1000, emoji: "🌌", rarity: "legendary", image: `${IMG_CDN}/prizes/galaxy.png`, name: "Galaxy" },
+            9999: { stars: 9999, emoji: "👑", rarity: "mythic", image: `${IMG_CDN}/prizes/divine_star.png`, name: "Divine Star" }
         };
 
         // ============================================
@@ -2082,7 +1636,7 @@
         }
         
         let ITEM_WIDTH = getItemWidth();
-        const VISIBLE_ITEMS = 50;
+        const VISIBLE_ITEMS = isMobile ? 40 : 50; // Меньше элементов на мобильных
         
         window.addEventListener('resize', () => {
             ITEM_WIDTH = getItemWidth();
@@ -2100,13 +1654,10 @@
                     ...(options.headers || {})
                 }
             });
-
             const data = await res.json();
-
             if (!res.ok || data.success === false) {
                 throw new Error(data.error || "API error");
             }
-
             return data;
         }
 
@@ -2117,7 +1668,6 @@
                 STATE.stars = data.stars;
                 STATE.canSpin = data.can_spin;
                 updateUI();
-                console.log("✅ Balance loaded:", data);
                 return true;
             } catch (e) {
                 console.error("❌ Balance error:", e);
@@ -2130,17 +1680,24 @@
             const imageUrls = [];
             CASES.forEach(c => { if (c.image) imageUrls.push(c.image); });
             Object.values(PRIZE_VISUALS).forEach(p => { if (p.image) imageUrls.push(p.image); });
-            imageUrls.forEach(url => {
+            
+            // Используем requestIdleCallback для фоновой загрузки
+            const loadImage = (url) => {
                 const img = new Image();
                 img.src = url;
-            });
-            console.log(`🖼️ Preloading ${imageUrls.length} images...`);
+            };
+            
+            if ('requestIdleCallback' in window) {
+                imageUrls.forEach((url, i) => {
+                    requestIdleCallback(() => loadImage(url), { timeout: 2000 + i * 100 });
+                });
+            } else {
+                imageUrls.forEach(loadImage);
+            }
         }
 
         async function init() {
-            console.log("🎁 Divine Case - API Init...");
-            
-            preloadImages();
+            console.log("🎁 Divine Case - Init...");
             
             if (!initData) {
                 showFatalError("❌ Telegram initData не получен.\nОткрой страницу только через бота.");
@@ -2150,41 +1707,34 @@
             if (tg) {
                 tg.ready();
                 tg.expand();
-                
                 if (tg.initDataUnsafe?.user) {
                     STATE.userId = tg.initDataUnsafe.user.id;
                     STATE.username = tg.initDataUnsafe.user.username || '';
                 }
-                
                 tg.BackButton.show();
                 tg.BackButton.onClick(() => handleBackButton());
             }
             
             generateStars();
             generateCasesGrid();
+            preloadImages();
             
             const balanceLoaded = await loadBalance();
-            
-            if (!balanceLoaded) {
-                return;
-            }
+            if (!balanceLoaded) return;
             
             STATE.isInitialized = true;
             
             setTimeout(() => {
                 document.getElementById('loadingOverlay').classList.add('hidden');
-            }, 600);
+            }, 400);
             
             updateSessionInfo();
-            console.log("✅ Initialized:", STATE);
         }
         
         function generateCasesGrid() {
             const grid = document.getElementById('casesGrid');
-            
             grid.innerHTML = CASES.map(caseItem => `
                 <div class="case-card ${caseItem.style}" onclick="selectCase('${caseItem.id}')">
-                    <div class="case-card-glow"></div>
                     ${caseItem.tag ? `<div class="case-card-tag">${caseItem.tag}</div>` : ''}
                     <div class="case-card-image-container">
                         <div class="case-card-ring"></div>
@@ -2195,7 +1745,6 @@
                     </div>
                     <div class="case-card-name">${caseItem.name}</div>
                     <div class="case-card-price">
-                        <div class="case-card-price-glow"></div>
                         <span class="case-card-price-text">💎 ${caseItem.cost}</span>
                     </div>
                 </div>
@@ -2209,7 +1758,6 @@
             STATE.selectedCase = selectedCase;
             STATE.spinCost = selectedCase.cost;
             
-            // Применяем тему
             document.body.className = selectedCase.theme;
             
             const emojiEl = document.getElementById('currentCaseEmoji');
@@ -2236,21 +1784,18 @@
             showScreen('case');
             generateItemsStrip();
             generatePrizesGrid();
-            
             updateUI();
             haptic('impact');
         }
         
         function showScreen(screen) {
             STATE.currentScreen = screen;
-            
             const menuScreen = document.getElementById('menuScreen');
             const caseScreen = document.getElementById('caseScreen');
             
             if (screen === 'menu') {
                 menuScreen.classList.remove('hidden');
                 caseScreen.classList.add('hidden');
-                // Сбрасываем тему на дефолтную
                 document.body.className = '';
             } else {
                 menuScreen.classList.add('hidden');
@@ -2270,10 +1815,8 @@
                 closeModal();
             } else if (STATE.currentScreen === 'case') {
                 goToMenu();
-            } else {
-                if (tg?.close) {
-                    tg.close();
-                }
+            } else if (tg?.close) {
+                tg.close();
             }
         }
         
@@ -2282,17 +1825,11 @@
             const caseId = STATE.selectedCase?.id || 'cosmic';
             const config = CASE_CONFIG[caseId];
             
-            const displayPrizes = config.prizes
-                .sort((a, b) => b - a)
-                .map(stars => PRIZE_VISUALS[stars]);
+            const displayPrizes = config.prizes.sort((a, b) => b - a).map(stars => PRIZE_VISUALS[stars]);
             
             grid.className = 'prizes-grid';
-            if (displayPrizes.length <= 2) {
+            if (displayPrizes.length <= 4) {
                 grid.classList.add('cols-' + displayPrizes.length);
-            } else if (displayPrizes.length <= 4) {
-                grid.classList.add('cols-' + displayPrizes.length);
-            } else if (displayPrizes.length === 5) {
-                grid.classList.add('cols-5');
             }
             
             grid.innerHTML = displayPrizes.map(prize => `
@@ -2314,24 +1851,14 @@
                     <div style="font-size: 3rem; margin-bottom: 20px;">❌</div>
                     <div style="color: #ef4444; font-size: 1.1rem; font-weight: 600; margin-bottom: 10px;">Ошибка</div>
                     <div style="color: #a1a1aa; font-size: 0.9rem; white-space: pre-wrap;">${message}</div>
-                    <button onclick="window.location.reload()" style="
-                        margin-top: 20px;
-                        background: linear-gradient(135deg, #6366f1, #4338ca);
-                        border: none;
-                        padding: 12px 24px;
-                        color: white;
-                        border-radius: 12px;
-                        font-weight: 600;
-                        cursor: pointer;
-                    ">Попробовать снова</button>
+                    <button onclick="window.location.reload()" style="margin-top: 20px; background: linear-gradient(135deg, #6366f1, #4338ca); border: none; padding: 12px 24px; color: white; border-radius: 12px; font-weight: 600; cursor: pointer;">Попробовать снова</button>
                 </div>
             `;
         }
 
         function getRandomPrize() {
             const caseId = STATE.selectedCase?.id || 'cosmic';
-            const config = CASE_CONFIG[caseId];
-            return config.getRandomPrize();
+            return CASE_CONFIG[caseId].getRandomPrize();
         }
 
         function getRandomPrizeForDisplay() {
@@ -2344,28 +1871,24 @@
                 if (rand < 80) return PRIZE_VISUALS[25];
                 return PRIZE_VISUALS[50];
             }
-            
             if (caseId === 'stellar') {
                 if (rand < 40) return PRIZE_VISUALS[0];
                 if (rand < 60) return PRIZE_VISUALS[50];
                 if (rand < 80) return PRIZE_VISUALS[75];
                 return PRIZE_VISUALS[100];
             }
-            
             if (caseId === 'golden') {
                 if (rand < 50) return PRIZE_VISUALS[0];
                 if (rand < 70) return PRIZE_VISUALS[100];
                 if (rand < 85) return PRIZE_VISUALS[150];
                 return PRIZE_VISUALS[250];
             }
-            
             if (caseId === 'divine') {
                 if (rand < 35) return PRIZE_VISUALS[0];
                 if (rand < 65) return PRIZE_VISUALS[500];
                 if (rand < 90) return PRIZE_VISUALS[1000];
                 return PRIZE_VISUALS[9999];
             }
-            
             return PRIZE_VISUALS[0];
         }
 
@@ -2388,8 +1911,6 @@
             const prizeStars = getRandomPrize();
             const prize = PRIZE_VISUALS[prizeStars] || PRIZE_VISUALS[0];
             
-            console.log("🎲 Prize selected:", prizeStars, "stars, case:", STATE.selectedCase?.id);
-            
             const animationPromise = runAnimation(prize);
             
             let apiSuccess = false;
@@ -2397,12 +1918,8 @@
             try {
                 const spinResult = await apiRequest("/api/spin", { 
                     method: "POST",
-                    body: JSON.stringify({ 
-                        cost: currentCost,
-                        case_id: STATE.selectedCase?.id || 'cosmic'
-                    })
+                    body: JSON.stringify({ cost: currentCost, case_id: STATE.selectedCase?.id || 'cosmic' })
                 });
-                console.log("✅ Spin success, sapphires deducted:", spinResult.cost_spent);
                 
                 STATE.sapphires = spinResult.new_sapphires;
                 STATE.spinsCount++;
@@ -2415,15 +1932,11 @@
                     body: JSON.stringify({ stars: prizeStars })
                 });
                 
-                console.log("✅ Claim success:", claimData);
-                
                 STATE.sapphires = claimData.new_sapphires;
                 STATE.stars = claimData.new_stars;
                 STATE.canSpin = claimData.can_spin;
                 
-                if (prizeStars > 0) {
-                    STATE.totalWon += prizeStars;
-                }
+                if (prizeStars > 0) STATE.totalWon += prizeStars;
                 
                 apiSuccess = true;
                 updateUI();
@@ -2436,16 +1949,14 @@
                 await loadBalance();
             }
             
-            if (apiSuccess) {
-                showResult(prize);
-            }
+            if (apiSuccess) showResult(prize);
             
             isSpinning = false;
             updateSessionInfo();
         }
 
         async function runAnimation(winningPrize) {
-            const winningIndex = 35 + Math.floor(Math.random() * 5);
+            const winningIndex = 30 + Math.floor(Math.random() * 5);
             
             generateItemsStrip(winningPrize, winningIndex);
             
@@ -2453,19 +1964,27 @@
             const strip = document.getElementById('itemsStrip');
             const containerWidth = container.offsetWidth;
             const centerPosition = containerWidth / 2;
-            const targetPosition = (winningIndex * ITEM_WIDTH) + (ITEM_WIDTH / 2) - centerPosition;
+                        const targetPosition = (winningIndex * ITEM_WIDTH) + (ITEM_WIDTH / 2) - centerPosition;
             const randomOffset = (Math.random() - 0.5) * 30;
             const finalPosition = targetPosition + randomOffset;
             
             strip.style.transform = `translateX(${containerWidth}px)`;
-            strip.offsetHeight;
+            strip.offsetHeight; // Force reflow
             
             requestAnimationFrame(() => {
                 strip.classList.add('animating');
                 strip.style.transform = `translateX(-${finalPosition}px)`;
             });
             
-            playTickSounds();
+            // Уменьшаем частоту haptic на мобильных
+            if (!isMobile) {
+                playTickSounds();
+            } else {
+                // На мобильных только несколько вибраций
+                setTimeout(() => haptic('selection'), 500);
+                setTimeout(() => haptic('selection'), 2000);
+                setTimeout(() => haptic('selection'), 4000);
+            }
             
             await new Promise(resolve => setTimeout(resolve, 5100));
             
@@ -2481,6 +2000,9 @@
             strip.classList.remove('animating');
             strip.style.transform = 'translateX(0)';
             
+            // Используем DocumentFragment для лучшей производительности
+            const fragment = document.createDocumentFragment();
+            
             for (let i = 0; i < VISIBLE_ITEMS; i++) {
                 let prize = (winningIndex !== null && i === winningIndex) 
                     ? winningPrize 
@@ -2493,18 +2015,29 @@
                 item.dataset.stars = prize.stars;
                 
                 if (prize.image) {
-                    item.innerHTML = `<img src="${prize.image}" alt="" class="prize-image" loading="eager" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\\'prize-emoji\\'>${prize.emoji}</div>'">`;
+                    const img = document.createElement('img');
+                    img.src = prize.image;
+                    img.alt = '';
+                    img.className = 'prize-image';
+                    img.loading = 'eager';
+                    img.onerror = function() {
+                        this.style.display = 'none';
+                        this.parentElement.innerHTML = `<div class="prize-emoji">${prize.emoji}</div>`;
+                    };
+                    item.appendChild(img);
                 } else {
                     item.innerHTML = `<div class="prize-emoji">${prize.emoji}</div>`;
                 }
                 
-                strip.appendChild(item);
+                fragment.appendChild(item);
             }
+            
+            strip.appendChild(fragment);
         }
 
         function playTickSounds() {
             let tickCount = 0;
-            const maxTicks = 40;
+            const maxTicks = 35;
             
             const tickInterval = setInterval(() => {
                 tickCount++;
@@ -2512,10 +2045,10 @@
                     clearInterval(tickInterval);
                     return;
                 }
-                if (tickCount < 20) {
+                if (tickCount < 18) {
                     haptic('selection');
                 }
-            }, 100);
+            }, 120);
         }
 
         function showResult(prize) {
@@ -2578,6 +2111,7 @@
         function closeModal() {
             STATE.isModalOpen = false;
             document.getElementById('modalOverlay').classList.remove('show');
+            document.getElementById('modal').classList.remove('win');
             updateUI();
         }
 
@@ -2611,68 +2145,113 @@
 
         function generateStars() {
             const container = document.getElementById('bgStars');
-            for (let i = 0; i < 80; i++) {
+            const starCount = isMobile ? 40 : 70; // Меньше звезд на мобильных
+            const fragment = document.createDocumentFragment();
+            
+            for (let i = 0; i < starCount; i++) {
                 const star = document.createElement('div');
                 star.className = 'star';
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                star.style.animationDelay = Math.random() * 3 + 's';
-                star.style.opacity = Math.random() * 0.5 + 0.2;
-                const size = Math.random() * 2 + 1;
-                star.style.width = size + 'px';
-                star.style.height = size + 'px';
-                container.appendChild(star);
+                star.style.cssText = `
+                    left: ${Math.random() * 100}%;
+                    top: ${Math.random() * 100}%;
+                    opacity: ${Math.random() * 0.4 + 0.15};
+                    width: ${Math.random() * 2 + 1}px;
+                    height: ${Math.random() * 2 + 1}px;
+                    animation-delay: ${Math.random() * 4}s;
+                `;
+                fragment.appendChild(star);
             }
+            
+            container.appendChild(fragment);
         }
 
         function createConfetti() {
             const container = document.getElementById('confetti');
             container.innerHTML = '';
-            const colors = ['#fbbf24', '#f59e0b', '#6366f1', '#818cf8', '#ec4899', '#22d3ee', '#10b981'];
             
-            for (let i = 0; i < 100; i++) {
+            const colors = ['#fbbf24', '#f59e0b', '#6366f1', '#818cf8', '#ec4899', '#22d3ee', '#10b981'];
+            const confettiCount = isMobile ? 50 : 80; // Меньше конфетти на мобильных
+            const fragment = document.createDocumentFragment();
+            
+            for (let i = 0; i < confettiCount; i++) {
                 const piece = document.createElement('div');
                 piece.className = 'confetti-piece';
-                const size = Math.random() * 12 + 6;
+                const size = Math.random() * 10 + 5;
                 const color = colors[Math.floor(Math.random() * colors.length)];
                 
-                piece.style.left = Math.random() * 100 + '%';
-                piece.style.width = size + 'px';
-                piece.style.height = size + 'px';
-                piece.style.backgroundColor = color;
-                piece.style.animationDelay = Math.random() * 0.8 + 's';
-                piece.style.animationDuration = (3.5 + Math.random() * 2) + 's';
-                piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '3px';
-                piece.style.boxShadow = `0 0 ${size/2}px ${color}`;
+                piece.style.cssText = `
+                    left: ${Math.random() * 100}%;
+                    width: ${size}px;
+                    height: ${size}px;
+                    background-color: ${color};
+                    animation-delay: ${Math.random() * 0.6}s;
+                    animation-duration: ${3 + Math.random() * 1.5}s;
+                    border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
+                    box-shadow: 0 0 ${size / 2}px ${color};
+                `;
                 
-                container.appendChild(piece);
+                fragment.appendChild(piece);
             }
             
-            setTimeout(() => container.innerHTML = '', 5500);
+            container.appendChild(fragment);
+            
+            // Очищаем конфетти после анимации
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 4500);
         }
 
         function haptic(type) {
             if (tg?.HapticFeedback) {
-                if (type === 'success') tg.HapticFeedback.notificationOccurred('success');
-                else if (type === 'error') tg.HapticFeedback.notificationOccurred('error');
-                else if (type === 'impact') tg.HapticFeedback.impactOccurred('heavy');
-                else if (type === 'selection') tg.HapticFeedback.selectionChanged();
+                try {
+                    if (type === 'success') tg.HapticFeedback.notificationOccurred('success');
+                    else if (type === 'error') tg.HapticFeedback.notificationOccurred('error');
+                    else if (type === 'impact') tg.HapticFeedback.impactOccurred('heavy');
+                    else if (type === 'selection') tg.HapticFeedback.selectionChanged();
+                } catch (e) {
+                    // Ignore haptic errors
+                }
             }
         }
 
+        // Инициализация
         document.addEventListener('DOMContentLoaded', init);
 
+        // Закрытие модалки по клику на оверлей
         document.getElementById('modalOverlay').addEventListener('click', (e) => {
             if (e.target.id === 'modalOverlay') closeModal();
         });
 
-        document.addEventListener('keydown', (e) => {
-            if (e.code === 'Space' && !isSpinning && !STATE.isModalOpen && STATE.currentScreen === 'case') {
+        // Горячие клавиши (только для десктопа)
+        if (!isMobile) {
+            document.addEventListener('keydown', (e) => {
+                if (e.code === 'Space' && !isSpinning && !STATE.isModalOpen && STATE.currentScreen === 'case') {
+                    e.preventDefault();
+                    openCase();
+                }
+                if (e.code === 'Escape') {
+                    handleBackButton();
+                }
+            });
+        }
+
+        // Предотвращаем зум на мобильных при двойном тапе
+        document.addEventListener('touchend', (e) => {
+            const now = Date.now();
+            if (now - lastTouchEnd <= 300) {
                 e.preventDefault();
-                openCase();
             }
-            if (e.code === 'Escape') {
-                handleBackButton();
+            lastTouchEnd = now;
+        }, { passive: false });
+
+        let lastTouchEnd = 0;
+
+        // Оптимизация: приостанавливаем анимации при скрытии страницы
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                document.body.classList.add('paused');
+            } else {
+                document.body.classList.remove('paused');
             }
         });
     </script>
