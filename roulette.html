@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Divine Case</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -23,6 +23,10 @@
             --accent-purple: #6366f1;
             --accent-purple-light: #818cf8;
             --accent-indigo: #4338ca;
+            --accent-pink: #ec4899;
+            --accent-pink-light: #f472b6;
+            --accent-aqua: #22d3ee;
+            --accent-aqua-light: #67e8f9;
             --text-primary: #ffffff;
             --text-secondary: #a1a1aa;
             --border-color: rgba(99, 102, 241, 0.15);
@@ -151,6 +155,15 @@
         @keyframes gradientShift {
             0%, 100% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
+        }
+
+        @keyframes sapphireGlow {
+            0%, 100% {
+                text-shadow: 0 0 8px rgba(139, 92, 246, 0.6), 0 0 16px rgba(139, 92, 246, 0.4);
+            }
+            50% {
+                text-shadow: 0 0 16px rgba(139, 92, 246, 0.9), 0 0 32px rgba(139, 92, 246, 0.6), 0 0 48px rgba(139, 92, 246, 0.3);
+            }
         }
 
         .header {
@@ -303,14 +316,72 @@
             box-shadow: 0 15px 40px rgba(99, 102, 241, 0.2);
         }
 
-        .case-card.legendary {
+        /* Cosmic - стандартный фиолетовый */
+        .case-card.cosmic-style {
+            border-color: rgba(99, 102, 241, 0.3);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), var(--bg-card));
+        }
+
+        .case-card.cosmic-style:hover {
+            border-color: var(--accent-purple);
+            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.3);
+        }
+
+        .case-card.cosmic-style .case-card-name {
+            background: linear-gradient(135deg, #c4b5fd, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Stellar - розовый стиль */
+        .case-card.stellar-style {
+            border-color: rgba(236, 72, 153, 0.4);
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.12), rgba(157, 23, 77, 0.08), var(--bg-card));
+        }
+
+        .case-card.stellar-style:hover {
+            border-color: var(--accent-pink);
+            box-shadow: 0 15px 40px rgba(236, 72, 153, 0.35);
+        }
+
+        .case-card.stellar-style .case-card-name {
+            background: linear-gradient(135deg, #f9a8d4, #ec4899, #db2777);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Golden - желтый стиль */
+        .case-card.golden-style {
             border-color: rgba(251, 191, 36, 0.4);
             background: linear-gradient(135deg, rgba(120, 53, 15, 0.2), var(--bg-card));
         }
 
-        .case-card.legendary:hover {
+        .case-card.golden-style:hover {
             border-color: var(--accent-gold);
             box-shadow: 0 15px 40px rgba(251, 191, 36, 0.3);
+        }
+
+        .case-card.golden-style .case-card-name {
+            background: linear-gradient(135deg, #fde68a, #fbbf24, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Divine - аква/голубой стиль */
+        .case-card.divine-style {
+            border-color: rgba(34, 211, 238, 0.5);
+            background: linear-gradient(135deg, rgba(34, 211, 238, 0.15), rgba(6, 182, 212, 0.1), var(--bg-card));
+        }
+
+        .case-card.divine-style:hover {
+            border-color: var(--accent-aqua);
+            box-shadow: 0 15px 40px rgba(34, 211, 238, 0.4);
+        }
+
+        .case-card.divine-style .case-card-name {
+            background: linear-gradient(135deg, #a5f3fc, #22d3ee, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .case-card-emoji {
@@ -332,23 +403,24 @@
         }
 
         .case-card-name {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.1rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.95rem;
             font-weight: 700;
-            margin-bottom: 8px;
-            background: linear-gradient(135deg, #c4b5fd, #a78bfa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
         .case-card-price {
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: var(--accent-gold);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #a78bfa;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 6px;
+            animation: sapphireGlow 2s ease-in-out infinite;
         }
 
         .case-card-tag {
@@ -363,6 +435,10 @@
             border-radius: 8px;
             text-transform: uppercase;
             letter-spacing: 1px;
+        }
+
+        .case-card.divine-style .case-card-tag {
+            background: linear-gradient(135deg, #22d3ee, #06b6d4);
         }
 
         /* ============================================
@@ -1335,7 +1411,8 @@
                 emoji: '🎁',
                 image: `${IMG_CDN}/cases/cosmic.png`,
                 cost: 100,
-                tag: null
+                tag: null,
+                style: 'cosmic-style'
             },
             {
                 id: 'stellar',
@@ -1343,7 +1420,8 @@
                 emoji: '✨',
                 image: `${IMG_CDN}/cases/stellar.png`,
                 cost: 250,
-                tag: null
+                tag: null,
+                style: 'stellar-style'
             },
             {
                 id: 'golden',
@@ -1352,7 +1430,7 @@
                 image: `${IMG_CDN}/cases/golden.png`,
                 cost: 500,
                 tag: 'HOT',
-                legendary: true
+                style: 'golden-style'
             },
             {
                 id: 'divine',
@@ -1361,7 +1439,7 @@
                 image: `${IMG_CDN}/cases/divine.png`,
                 cost: 1000,
                 tag: 'VIP',
-                legendary: true
+                style: 'divine-style'
             }
         ];
         
@@ -1667,7 +1745,7 @@
             const grid = document.getElementById('casesGrid');
             
             grid.innerHTML = CASES.map(caseItem => `
-                <div class="case-card ${caseItem.legendary ? 'legendary' : ''}" onclick="selectCase('${caseItem.id}')">
+                <div class="case-card ${caseItem.style}" onclick="selectCase('${caseItem.id}')">
                     ${caseItem.tag ? `<div class="case-card-tag">${caseItem.tag}</div>` : ''}
                     ${caseItem.image 
                         ? `<img src="${caseItem.image}" alt="${caseItem.name}" class="case-card-image" loading="lazy" onerror="this.outerHTML='<div class=\\'case-card-emoji\\'>${caseItem.emoji}</div>'">`
