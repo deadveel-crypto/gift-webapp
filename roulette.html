@@ -1391,121 +1391,84 @@
         const USE_GITHUB_IMAGES = true;
         
         const PRIZE_VISUALS = {
-            // ============================================
-            // 🎁 БАЗОВЫЕ ПРИЗЫ
-            // ============================================
-            0: { 
-                stars: 0, 
-                emoji: "💨", 
-                rarity: "common",
-                image: `https://cdn.jsdelivr.net/gh/deadveel-crypto/divine-case-assets@main/prizes/void.png`
-                name: "Void"
-            },
-            
-            // ============================================
-            // 🆕 COSMIC CASE - новый приз 15⭐
-            // ============================================
-            15: { 
-                stars: 15, 
-                emoji: "✧", 
-                rarity: "uncommon",
-                image: `${IMG_CDN}/prizes/glimmer.png`
-                name: "Glimmer"
-            },
-            25: { 
-                stars: 25, 
-                emoji: "⭐", 
-                rarity: "uncommon",
-                image: USE_GITHUB_IMAGES 
-                    ? `${IMG_CDN}/prizes/spark.png`
-                    : "https://i.ibb.co/rfvNFsXR/1768924736444-019bdc22-de2d-7183-b0e4-53670324a942.jpg",
-                name: "Spark"
-            },
-            50: { 
-                stars: 50, 
-                emoji: "✨", 
-                rarity: "rare",
-                image: USE_GITHUB_IMAGES 
-                    ? `${IMG_CDN}/prizes/radiance.png`
-                    : "https://i.ibb.co/8CL2Rxq/1768924439694-019bdc1e-33ba-716b-9343-17c2777cf861.jpg",
-                name: "Radiance"
-            },
-            
-            // ============================================
-            // 🆕 STELLAR CASE - новый приз 75⭐
-            // ============================================
-            75: { 
-                stars: 75, 
-                emoji: "💫", 
-                rarity: "rare",
-                image: USE_GITHUB_IMAGES 
-                    ? `${IMG_CDN}/prizes/stardust.png`
-                    : null, // ← ЗАГРУЗИ: prizes/stardust.png (75 звезд)
-                name: "Stardust"
-            },
-            100: { 
-                stars: 100, 
-                emoji: "🌟", 
-                rarity: "epic",
-                image: USE_GITHUB_IMAGES 
-                    ? `${IMG_CDN}/prizes/aurora.png`
-                    : "https://i.ibb.co/RGX1C998/1768923759742-019bdc13-a966-7740-ba75-610d49ea3c79.png",
-                name: "Aurora"
-            },
-            
-            // ============================================
-            // 🆕 GOLDEN CASE - новые призы 150⭐ и 250⭐
-            // ============================================
-            150: { 
-                stars: 150, 
-                emoji: "🔥", 
-                rarity: "epic",
-                image: USE_GITHUB_IMAGES 
-                    ? `${IMG_CDN}/prizes/ember.png`
-                    : null, // ← ЗАГРУЗИ: prizes/ember.png (150 звезд)
-                name: "Ember"
-            },
-            250: { 
-                stars: 250, 
-                emoji: "⚡", 
-                rarity: "legendary",
-                image: USE_GITHUB_IMAGES 
-                    ? `${IMG_CDN}/prizes/lightning.png`
-                    : null, // ← ЗАГРУЗИ: prizes/lightning.png (250 звезд)
-                name: "Lightning"
-            },
-            500: { 
-                stars: 500, 
-                emoji: "💫", 
-                rarity: "legendary",
-                image: USE_GITHUB_IMAGES 
-                    ? `${IMG_CDN}/prizes/supernova.png`
-                    : "https://i.ibb.co/XrTtbMXR/1768923046045-019bdc09-a36c-7352-ba71-f5d8fe7799d4.png",
-                name: "Supernova"
-            },
-            
-            // ============================================
-            // 🆕 DIVINE CASE - призы 1000⭐ и 9999⭐
-            // ============================================
-            1000: { 
-                stars: 1000, 
-                emoji: "🌌", 
-                rarity: "legendary",
-                image: USE_GITHUB_IMAGES 
-                    ? `${IMG_CDN}/prizes/galaxy.png`
-                    : null, // ← ЗАГРУЗИ: prizes/galaxy.png (1000 звезд)
-                name: "Galaxy"
-            },
-            9999: { 
-                stars: 9999, 
-                emoji: "👑", 
-                rarity: "mythic",
-                image: USE_GITHUB_IMAGES 
-                    ? `${IMG_CDN}/prizes/divine_star.png`
-                    : null, // ← ЗАГРУЗИ: prizes/divine_star.png (9999 звезд)
-                name: "Divine Star"
-            }
-        };
+    0: { 
+        stars: 0, 
+        emoji: "💨", 
+        rarity: "common",
+        image: `${IMG_CDN}/prizes/void.png`,
+        name: "Void"
+    },
+    15: { 
+        stars: 15, 
+        emoji: "✧", 
+        rarity: "uncommon",
+        image: `${IMG_CDN}/prizes/glimmer.png`,
+        name: "Glimmer"
+    },
+    25: { 
+        stars: 25, 
+        emoji: "⭐", 
+        rarity: "uncommon",
+        image: `${IMG_CDN}/prizes/spark.png`,
+        name: "Spark"
+    },
+    50: { 
+        stars: 50, 
+        emoji: "✨", 
+        rarity: "rare",
+        image: `${IMG_CDN}/prizes/radiance.png`,
+        name: "Radiance"
+    },
+    75: { 
+        stars: 75, 
+        emoji: "💫", 
+        rarity: "rare",
+        image: `${IMG_CDN}/prizes/stardust.png`,
+        name: "Stardust"
+    },
+    100: { 
+        stars: 100, 
+        emoji: "🌟", 
+        rarity: "epic",
+        image: `${IMG_CDN}/prizes/aurora.png`,
+        name: "Aurora"
+    },
+    150: { 
+        stars: 150, 
+        emoji: "🔥", 
+        rarity: "epic",
+        image: `${IMG_CDN}/prizes/ember.png`,
+        name: "Ember"
+    },
+    250: { 
+        stars: 250, 
+        emoji: "⚡", 
+        rarity: "legendary",
+        image: `${IMG_CDN}/prizes/lightning.png`,
+        name: "Lightning"
+    },
+    500: { 
+        stars: 500, 
+        emoji: "💫", 
+        rarity: "legendary",
+        image: `${IMG_CDN}/prizes/supernova.png`,
+        name: "Supernova"
+    },
+    1000: { 
+        stars: 1000, 
+        emoji: "🌌", 
+        rarity: "legendary",
+        image: `${IMG_CDN}/prizes/galaxy.png`,
+        name: "Galaxy"
+    },
+    9999: { 
+        stars: 9999, 
+        emoji: "👑", 
+        rarity: "mythic",
+        image: `${IMG_CDN}/prizes/divine_star.png`,
+        name: "Divine Star"
+    }
+};
 
         // ============================================
         // 🎲 ШАНСЫ ДЛЯ КАЖДОГО КЕЙСА
