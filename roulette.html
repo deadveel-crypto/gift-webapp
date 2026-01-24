@@ -1613,13 +1613,13 @@
             },
             // ✅ 
             divine: {
-                prizes: [0, 250, 500, 1000, 9999],  
+                
+                prizes: [0, 250, 500, 1000, 9999],
                 getRandomPrize: () => {
                     const rand = Math.random() * 100;
-                    if (rand < 90) return 0;      
-                    if (rand < 96) return 250;    
-                    return 500;                  
-        
+                    if (rand < 90) return 0;
+                    if (rand < 96) return 250;
+                    return 500;
                 }
             }
         };
@@ -1883,7 +1883,7 @@
                 if (rand < 30) return PRIZE_VISUALS[0];
                 if (rand < 50) return PRIZE_VISUALS[250];
                 if (rand < 70) return PRIZE_VISUALS[500];
-                if (rand < 90) return PRIZE_VISUALS[1000];   т
+                if (rand < 90) return PRIZE_VISUALS[1000];
                 return PRIZE_VISUALS[9999];                                   
             }
             return PRIZE_VISUALS[0];
