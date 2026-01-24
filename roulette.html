@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -1612,14 +1611,15 @@
                     return 250;
                 }
             },
+            // ✅ 
             divine: {
-                prizes: [0, 500, 1000, 9999],
+                prizes: [0, 250, 500, 1000, 9999],  
                 getRandomPrize: () => {
                     const rand = Math.random() * 100;
-                    if (rand < 90) return 0;
-                    if (rand < 99) return 500;
-                    if (rand < 99.8) return 1000;
-                    return 9999;
+                    if (rand < 90) return 0;      
+                    if (rand < 96) return 250;    
+                    return 500;                  
+        
                 }
             }
         };
@@ -1632,7 +1632,7 @@
         }
         
         let ITEM_WIDTH = getItemWidth();
-        const VISIBLE_ITEMS = isMobile ? 40 : 50; // Меньше элементов на мобильных
+        const VISIBLE_ITEMS = isMobile ? 40 : 50; 
         
         window.addEventListener('resize', () => {
             ITEM_WIDTH = getItemWidth();
@@ -1880,10 +1880,11 @@
                 return PRIZE_VISUALS[250];
             }
             if (caseId === 'divine') {
-                if (rand < 35) return PRIZE_VISUALS[0];
-                if (rand < 65) return PRIZE_VISUALS[500];
-                if (rand < 90) return PRIZE_VISUALS[1000];
-                return PRIZE_VISUALS[9999];
+                if (rand < 30) return PRIZE_VISUALS[0];
+                if (rand < 50) return PRIZE_VISUALS[250];
+                if (rand < 70) return PRIZE_VISUALS[500];
+                if (rand < 90) return PRIZE_VISUALS[1000];   т
+                return PRIZE_VISUALS[9999];                                   
             }
             return PRIZE_VISUALS[0];
         }
