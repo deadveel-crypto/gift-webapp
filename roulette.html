@@ -1925,9 +1925,12 @@
                 await animationPromise;
                 
                 const claimData = await apiRequest("/api/claim", {
-                    method: "POST",
-                    body: JSON.stringify({ stars: prizeStars })
-                });
+                        method: "POST",
+                        body: JSON.stringify({ 
+                            stars: prizeStars,
+                            case_id: STATE.selectedCase?.id || 'cosmic'
+                        })
+                    });
                 
                 STATE.sapphires = claimData.new_sapphires;
                 STATE.stars = claimData.new_stars;
