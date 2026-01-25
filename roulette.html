@@ -1450,54 +1450,57 @@
             }
         };
 
-        const VISUAL_DISPLAY_CONFIG = {
-            cosmic: {
-                getVisualPrize: () => {
-                    const rand = Math.random() * 100;
-                    if (rand < 12) return PRIZE_VISUALS[0];
-                    if (rand < 30) return PRIZE_VISUALS[15];
-                    if (rand < 50) return PRIZE_VISUALS[25];
-                    if (rand < 70) return PRIZE_VISUALS[50];
-                    if (rand < 88) return PRIZE_VISUALS[75];
-                    return PRIZE_VISUALS[100];
-                }
-            },
-            stellar: {
-                getVisualPrize: () => {
-                    const rand = Math.random() * 100;
-                    if (rand < 10) return PRIZE_VISUALS[0];
-                    if (rand < 25) return PRIZE_VISUALS[25];
-                    if (rand < 40) return PRIZE_VISUALS[50];
-                    if (rand < 55) return PRIZE_VISUALS[75];
-                    if (rand < 72) return PRIZE_VISUALS[100];
-                    if (rand < 88) return PRIZE_VISUALS[150];
-                    return PRIZE_VISUALS[250];
-                }
-            },
-            golden: {
-                getVisualPrize: () => {
-                    const rand = Math.random() * 100;
-                    if (rand < 8) return PRIZE_VISUALS[0];
-                    if (rand < 25) return PRIZE_VISUALS[75];
-                    if (rand < 45) return PRIZE_VISUALS[100];
-                    if (rand < 65) return PRIZE_VISUALS[150];
-                    if (rand < 85) return PRIZE_VISUALS[250];
-                    return PRIZE_VISUALS[500];
-                }
-            },
-            divine: {
-                getVisualPrize: () => {
-                    const rand = Math.random() * 100;
-                    if (rand < 6) return PRIZE_VISUALS[0];
-                    if (rand < 22) return PRIZE_VISUALS[100];
-                    if (rand < 38) return PRIZE_VISUALS[150];
-                    if (rand < 55) return PRIZE_VISUALS[250];
-                    if (rand < 75) return PRIZE_VISUALS[500];
-                    if (rand < 92) return PRIZE_VISUALS[1000];
-                    return PRIZE_VISUALS[9999];
-                }
-            }
-        };
+        // ============================================
+// 🎰 ВИЗУАЛЬНЫЕ ШАНСЫ ДЛЯ БАРАБАНА
+// ============================================
+const VISUAL_DISPLAY_CONFIG = {
+    cosmic: {
+        getVisualPrize: () => {
+            const rand = Math.random() * 100;
+            if (rand < 25) return PRIZE_VISUALS[0];   // 25% пусто
+            if (rand < 45) return PRIZE_VISUALS[15];  // 20%
+            if (rand < 65) return PRIZE_VISUALS[25];  // 20%
+            if (rand < 80) return PRIZE_VISUALS[50];  // 15%
+            if (rand < 92) return PRIZE_VISUALS[75];  // 12%
+            return PRIZE_VISUALS[100];                 // 8%
+        }
+    },
+    stellar: {
+        getVisualPrize: () => {
+            const rand = Math.random() * 100;
+            if (rand < 22) return PRIZE_VISUALS[0];   // 22% пусто
+            if (rand < 38) return PRIZE_VISUALS[25];  // 16%
+            if (rand < 52) return PRIZE_VISUALS[50];  // 14%
+            if (rand < 66) return PRIZE_VISUALS[75];  // 14%
+            if (rand < 80) return PRIZE_VISUALS[100]; // 14%
+            if (rand < 92) return PRIZE_VISUALS[150]; // 12%
+            return PRIZE_VISUALS[250];                 // 8%
+        }
+    },
+    golden: {
+        getVisualPrize: () => {
+            const rand = Math.random() * 100;
+            if (rand < 20) return PRIZE_VISUALS[0];   // 20% пусто
+            if (rand < 38) return PRIZE_VISUALS[75];  // 18%
+            if (rand < 55) return PRIZE_VISUALS[100]; // 17%
+            if (rand < 72) return PRIZE_VISUALS[150]; // 17%
+            if (rand < 88) return PRIZE_VISUALS[250]; // 16%
+            return PRIZE_VISUALS[500];                 // 12%
+        }
+    },
+    divine: {
+        getVisualPrize: () => {
+            const rand = Math.random() * 100;
+            if (rand < 18) return PRIZE_VISUALS[0];    // 18% пусто
+            if (rand < 33) return PRIZE_VISUALS[100];  // 15%
+            if (rand < 48) return PRIZE_VISUALS[150];  // 15%
+            if (rand < 63) return PRIZE_VISUALS[250];  // 15%
+            if (rand < 78) return PRIZE_VISUALS[500];  // 15%
+            if (rand < 92) return PRIZE_VISUALS[1000]; // 14%
+            return PRIZE_VISUALS[9999];                 // 8%
+        }
+    }
+};
 
         function getItemWidth() {
             const screenWidth = window.innerWidth;
