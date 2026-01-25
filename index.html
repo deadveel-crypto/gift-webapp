@@ -127,6 +127,22 @@
             0%, 100% { opacity: 0.3; transform: scale(1); }
             50% { opacity: 1; transform: scale(1.5); }
         }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .loading-spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            display: inline-block;
+            margin-right: 8px;
+        }
 
         body {
             min-height: 100vh;
@@ -485,6 +501,12 @@
         }
 
         .buy-btn:active { animation: button-press 0.3s ease forwards; }
+        
+        .buy-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none !important;
+        }
 
         .view-btn {
             position: relative;
@@ -776,6 +798,12 @@
         }
 
         .btn-confirm:active { transform: scale(0.98); }
+        
+        .btn-confirm:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none !important;
+        }
 
         .variants-modal-inner { padding: 32px; }
 
@@ -968,6 +996,41 @@
         ::-webkit-scrollbar-thumb:hover { background: rgba(99, 102, 241, 0.5); }
 
         .gift-card.hidden-by-filter { display: none !important; }
+        
+        /* Toast notifications */
+        .toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(15, 15, 30, 0.95);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 16px;
+            padding: 16px 24px;
+            color: white;
+            font-weight: 500;
+            z-index: 1000;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            backdrop-filter: blur(20px);
+            max-width: 90%;
+            text-align: center;
+        }
+        
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        .toast.success {
+            border-color: rgba(34, 197, 94, 0.5);
+            background: rgba(34, 197, 94, 0.15);
+        }
+        
+        .toast.error {
+            border-color: rgba(239, 68, 68, 0.5);
+            background: rgba(239, 68, 68, 0.15);
+        }
 
         @media (max-width: 640px) {
             .gifts-grid { grid-template-columns: 1fr; }
@@ -986,21 +1049,6 @@
     </style>
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script>
-        const BOT_USERNAME = "divinemarketshop_bot";
-        const tg = window.Telegram?.WebApp || null;
-        if (tg) { try { tg.ready(); tg.expand(); } catch(e) {} }
-
-        function buy(itemId) {
-            const url = `https://t.me/${BOT_USERNAME}?start=buy_${encodeURIComponent(itemId)}`;
-            if (tg && typeof tg.openTelegramLink === "function") {
-                tg.openTelegramLink(url);
-                setTimeout(() => { try { tg.close(); } catch(_) {} }, 150);
-            } else {
-                window.location.href = url;
-            }
-        }
-    </script>
 </head>
 
 <body class="text-white">
@@ -1095,7 +1143,7 @@
                 <div class="flex items-center gap-5">
                     <div class="gift-image-container">
                         <div class="gift-image-glow"></div>
-                        <img src="https://i.ibb.co/tFCQB8c/IMG-3333.png" alt="Electric Skull" class="gift-image">
+                                                <img src="https://i.ibb.co/tFCQB8c/IMG-3333.png" alt="Electric Skull" class="gift-image">
                     </div>
                     <div class="flex-1 min-w-0">
                         <h3 class="text-lg font-bold mb-1 gift-title">Electric Skull</h3>
@@ -1396,8 +1444,39 @@
             </div>
         </div>
     </div>
+    
+    <!-- Toast container -->
+    <div id="toast" class="toast"></div>
 
     <script>
+        // ============================================
+        // КОНФИГУРАЦИЯ
+        // ============================================
+        const API_URL = "https://deadveel.pythonanywhere.com"; // Замените на ваш URL PythonAnywhere
+        const BOT_USERNAME = "divinemarketshop_bot";
+        
+        // Telegram WebApp
+        const tg = window.Telegram?.WebApp || null;
+        let initData = "";
+        
+        if (tg) {
+            try {
+                tg.ready();
+                tg.expand();
+                initData = tg.initData || "";
+                
+                // Устанавливаем цвета темы
+                if (tg.themeParams) {
+                    document.documentElement.style.setProperty('--tg-theme-bg-color', tg.themeParams.bg_color || '#0a0a0f');
+                }
+            } catch(e) {
+                console.error("Telegram WebApp init error:", e);
+            }
+        }
+
+        // ============================================
+        // ЛОКАЛИЗАЦИЯ
+        // ============================================
         const I18N = {
             ru: {
                 top_sub: "Premium Telegram Gifts",
@@ -1415,7 +1494,14 @@
                 confirm_sub: "Проверьте детали заказа",
                 total: "Итого к оплате",
                 confirm_btn: "✓ Подтвердить покупку",
-                type_nft: "NFT Подарок"
+                type_nft: "NFT Подарок",
+                loading: "Загрузка...",
+                payment_success: "✅ Оплата успешна! Мы скоро свяжемся с вами.",
+                payment_failed: "❌ Оплата не прошла. Попробуйте снова.",
+                payment_cancelled: "Оплата отменена",
+                error_creating_invoice: "Ошибка создания счёта. Попробуйте позже.",
+                error_no_webapp: "Откройте магазин через Telegram",
+                processing: "Обработка..."
             },
             en: {
                 top_sub: "Premium Telegram Gifts",
@@ -1433,10 +1519,20 @@
                 confirm_sub: "Check your order details",
                 total: "Total to pay",
                 confirm_btn: "✓ Confirm purchase",
-                type_nft: "NFT Gift"
+                type_nft: "NFT Gift",
+                loading: "Loading...",
+                payment_success: "✅ Payment successful! We'll contact you soon.",
+                payment_failed: "❌ Payment failed. Please try again.",
+                payment_cancelled: "Payment cancelled",
+                error_creating_invoice: "Error creating invoice. Try again later.",
+                error_no_webapp: "Please open the store via Telegram",
+                processing: "Processing..."
             }
         };
 
+        // ============================================
+        // ДАННЫЕ О ВАРИАНТАХ
+        // ============================================
         const GIFT_VARIANTS = {
             'snoop_dogg': {
                 title: 'Snoop Dogg',
@@ -1476,15 +1572,163 @@
             }
         };
 
+        // ============================================
+        // СОСТОЯНИЕ
+        // ============================================
         let currentLang = "ru";
         let currentGiftId = null;
         let selectedVariantId = null;
+        let isProcessing = false;
         window.pendingPurchase = null;
 
+        // ============================================
+        // TOAST УВЕДОМЛЕНИЯ
+        // ============================================
+        function showToast(message, type = 'info', duration = 3000) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type}`;
+            
+            // Показываем
+            setTimeout(() => toast.classList.add('show'), 10);
+            
+            // Скрываем
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, duration);
+        }
+
+        // ============================================
+        // API ЗАПРОСЫ
+        // ============================================
+        async function createInvoice(itemId) {
+            try {
+                const response = await fetch(`${API_URL}/api/create-invoice`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Telegram-Init-Data': initData
+                    },
+                    body: JSON.stringify({ item_id: itemId })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success && data.invoice_link) {
+                    return data.invoice_link;
+                } else {
+                    console.error("Create invoice error:", data);
+                    return null;
+                }
+            } catch (error) {
+                console.error("Create invoice fetch error:", error);
+                return null;
+            }
+        }
+
+        // ============================================
+        // ОПЛАТА ЧЕРЕЗ TELEGRAM WEBAPP
+        // ============================================
+        async function processPayment(itemId) {
+            const t = I18N[currentLang];
+            
+            // Проверяем, что мы в Telegram WebApp
+            if (!tg || !tg.openInvoice) {
+                showToast(t.error_no_webapp, 'error');
+                // Fallback - открываем бота
+                fallbackToBotPayment(itemId);
+                return;
+            }
+            
+            if (isProcessing) return;
+            isProcessing = true;
+            
+            // Показываем загрузку на кнопке
+            const confirmBtn = document.getElementById('confirmOkBtn');
+            const originalText = confirmBtn.innerHTML;
+            confirmBtn.innerHTML = `<span class="loading-spinner"></span>${t.processing}`;
+            confirmBtn.disabled = true;
+            
+            try {
+                // Создаём инвойс через API
+                const invoiceLink = await createInvoice(itemId);
+                
+                if (!invoiceLink) {
+                    showToast(t.error_creating_invoice, 'error');
+                    return;
+                }
+                
+                console.log("Opening invoice:", invoiceLink);
+                
+                // Открываем инвойс в Telegram
+                tg.openInvoice(invoiceLink, (status) => {
+                    console.log("Invoice status:", status);
+                    
+                    switch (status) {
+                        case 'paid':
+                            showToast(t.payment_success, 'success', 5000);
+                            closeConfirmModal();
+                            
+                            // Вибрация при успехе
+                            if (tg.HapticFeedback) {
+                                tg.HapticFeedback.notificationOccurred('success');
+                            }
+                            break;
+                            
+                        case 'cancelled':
+                            showToast(t.payment_cancelled, 'info');
+                            break;
+                            
+                        case 'failed':
+                            showToast(t.payment_failed, 'error');
+                            break;
+                            
+                        case 'pending':
+                            // Ожидаем подтверждения
+                            break;
+                            
+                        default:
+                            console.log("Unknown invoice status:", status);
+                    }
+                });
+                
+            } catch (error) {
+                console.error("Payment error:", error);
+                showToast(t.error_creating_invoice, 'error');
+            } finally {
+                // Восстанавливаем кнопку
+                confirmBtn.innerHTML = originalText;
+                confirmBtn.disabled = false;
+                isProcessing = false;
+            }
+        }
+
+        // Fallback - переход в бота
+        function fallbackToBotPayment(itemId) {
+            const url = `https://t.me/${BOT_USERNAME}?start=buy_${encodeURIComponent(itemId)}`;
+            
+            if (tg && typeof tg.openTelegramLink === "function") {
+                tg.openTelegramLink(url);
+                setTimeout(() => { 
+                    try { tg.close(); } catch(_) {} 
+                }, 150);
+            } else {
+                window.location.href = url;
+            }
+        }
+
+        // ============================================
+        // ЛОКАЛИЗАЦИЯ
+        // ============================================
         function detectDefaultLang() {
             const saved = localStorage.getItem("lang");
             if (saved === "ru" || saved === "en") return saved;
-            const code = (tg?.initDataUnsafe?.user?.language_code || "").toLowerCase();
+            
+            // Получаем язык из Telegram
+            const tgLang = tg?.initDataUnsafe?.user?.language_code || "";
+            if (tgLang.startsWith("ru")) return "ru";
+            
+            const code = (navigator.language || "").toLowerCase();
             return code.startsWith("ru") ? "ru" : "en";
         }
 
@@ -1508,10 +1752,12 @@
             document.querySelectorAll(".fromText").forEach(el => el.textContent = t.from);
             document.getElementById("variantsTitle").textContent = t.variants_title;
             document.getElementById("variantsCancelBtn").textContent = t.cancel;
+            
             const buyVariantBtn = document.getElementById("buyVariantBtn");
             if (buyVariantBtn && buyVariantBtn.disabled) {
                 buyVariantBtn.textContent = t.choose_variant;
             }
+            
             document.getElementById("confirmTitle").textContent = t.confirm_title;
             document.getElementById("confirmSubtitle").textContent = t.confirm_sub;
             document.getElementById("priceLabel").textContent = t.total;
@@ -1520,6 +1766,9 @@
             document.getElementById("confirmItemType").textContent = t.type_nft;
         }
 
+        // ============================================
+        // ВИЗУАЛЬНЫЕ ЭФФЕКТЫ
+        // ============================================
         function generateStars() {
             const starsContainer = document.getElementById('bgStars');
             for (let i = 0; i < 120; i++) {
@@ -1551,12 +1800,16 @@
             cards.forEach(card => observer.observe(card));
         }
 
+        // ============================================
+        // ФИЛЬТРАЦИЯ КАТЕГОРИЙ
+        // ============================================
         document.querySelectorAll('.category-pill').forEach(btn => {
             btn.addEventListener('click', function() {
                 document.querySelectorAll('.category-pill').forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
                 const category = this.dataset.category;
                 const allCards = document.querySelectorAll('.gift-card');
+                
                 if (category === 'all') {
                     allCards.forEach(card => card.classList.remove('hidden-by-filter'));
                 } else if (category === 'nft') {
@@ -1571,12 +1824,18 @@
             });
         });
 
+        // ============================================
+        // МОДАЛЬНЫЕ ОКНА - ВАРИАНТЫ
+        // ============================================
         function openVariantsModal(giftId) {
             const gift = GIFT_VARIANTS[giftId];
             if (!gift) return;
+            
             currentGiftId = giftId;
             selectedVariantId = null;
+            
             document.getElementById('variantsTitle').textContent = gift.title;
+            
             const grid = document.getElementById('variantsGrid');
             grid.innerHTML = gift.variants.map(v => {
                 if (v.soldOut) {
@@ -1598,31 +1857,47 @@
                     </div>
                 `;
             }).join('');
+            
             const buyBtn = document.getElementById('buyVariantBtn');
             buyBtn.disabled = true;
             buyBtn.style.opacity = '0.5';
             buyBtn.textContent = I18N[currentLang].choose_variant;
+            
             document.getElementById('variantsModal').classList.add('show');
             document.body.style.overflow = 'hidden';
+            
+            // Вибрация
+            if (tg?.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('light');
+            }
         }
 
         function selectVariant(variantId, element) {
             selectedVariantId = variantId;
             document.querySelectorAll('.variant-card').forEach(c => c.classList.remove('selected'));
             element.classList.add('selected');
+            
             const gift = GIFT_VARIANTS[currentGiftId];
             const variant = gift.variants.find(v => v.id === variantId);
+            
             const buyBtn = document.getElementById('buyVariantBtn');
             buyBtn.disabled = false;
             buyBtn.style.opacity = '1';
             buyBtn.textContent = `${I18N[currentLang].buy} ⭐ ${variant.price}`;
+            
+            // Вибрация
+            if (tg?.HapticFeedback) {
+                tg.HapticFeedback.selectionChanged();
+            }
         }
 
         function buySelectedVariant() {
             if (!selectedVariantId || !currentGiftId) return;
+            
             const gift = GIFT_VARIANTS[currentGiftId];
             const variant = gift.variants.find(v => v.id === selectedVariantId);
             if (!variant) return;
+            
             window.pendingPurchase = {
                 id: selectedVariantId,
                 title: gift.title,
@@ -1631,6 +1906,7 @@
                 price: variant.price,
                 image: variant.image
             };
+            
             closeVariantsModal();
             showConfirmModal();
         }
@@ -1642,6 +1918,9 @@
             selectedVariantId = null;
         }
 
+        // ============================================
+        // МОДАЛЬНЫЕ ОКНА - ПОДТВЕРЖДЕНИЕ
+        // ============================================
         function showBuyModal(itemId, title, price, image, details) {
             window.pendingPurchase = {
                 id: itemId,
@@ -1656,7 +1935,9 @@
 
         function showConfirmModal() {
             if (!window.pendingPurchase) return;
+            
             const t = I18N[currentLang];
+            
             document.getElementById('confirmImage').src = window.pendingPurchase.image;
             document.getElementById('confirmTitle').textContent = t.confirm_title;
             document.getElementById('confirmSubtitle').textContent = t.confirm_sub;
@@ -1667,8 +1948,14 @@
             document.getElementById('priceLabel').textContent = t.total;
             document.getElementById('confirmCancelBtn').textContent = t.cancel;
             document.getElementById('confirmOkBtn').textContent = t.confirm_btn;
+            
             document.getElementById('confirmModal').classList.add('show');
             document.body.style.overflow = 'hidden';
+            
+            // Вибрация
+            if (tg?.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('medium');
+            }
         }
 
         function closeConfirmModal() {
@@ -1677,13 +1964,21 @@
             window.pendingPurchase = null;
         }
 
-        function confirmPurchase() {
-            if (!window.pendingPurchase) return;
+        // ============================================
+        // ПОДТВЕРЖДЕНИЕ ПОКУПКИ
+        // ============================================
+        async function confirmPurchase() {
+            if (!window.pendingPurchase || isProcessing) return;
+            
             const itemId = window.pendingPurchase.id;
-            closeConfirmModal();
-            buy(itemId);
+            
+            // Используем оплату через Telegram WebApp
+            await processPayment(itemId);
         }
 
+        // ============================================
+        // ОБРАБОТЧИКИ СОБЫТИЙ
+        // ============================================
         document.getElementById('variantsModal').addEventListener('click', function(e) {
             if (e.target === this) closeVariantsModal();
         });
@@ -1699,13 +1994,18 @@
             }
         });
 
+        // ============================================
+        // ИНИЦИАЛИЗАЦИЯ
+        // ============================================
         document.addEventListener('DOMContentLoaded', () => {
             setLang(detectDefaultLang());
             generateStars();
             initScrollAnimation();
+            
+            console.log("Divine Shop initialized");
+            console.log("Telegram WebApp available:", !!tg);
+            console.log("initData length:", initData.length);
         });
     </script>
 </body>
 </html>
-
-
