@@ -1256,7 +1256,7 @@
             filter: none;
         }
 
-        /* Balance display in modal - COMPLETELY STATIC */
+        /* Balance display in modal - NO ANIMATIONS */
         .modal-balance {
             display: flex;
             justify-content: center;
@@ -1275,10 +1275,7 @@
             border-radius: 16px;
             border: 2px solid rgba(255, 255, 255, 0.1);
             position: relative;
-            /* STATIC - no animations, no transforms, no transitions */
-            animation: none !important;
-            transform: none !important;
-            transition: none !important;
+            /* NO animations, NO transforms */
         }
 
         .modal-balance-item::before {
@@ -1289,17 +1286,16 @@
             right: 0;
             height: 1px;
             background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
-            animation: none !important;
         }
 
         .modal-balance-item.sapphire {
             border-color: rgba(99, 102, 241, 0.5);
-            box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.3), inset 0 0 15px rgba(99, 102, 241, 0.1);
         }
 
         .modal-balance-item.star {
             border-color: rgba(251, 191, 36, 0.5);
-            box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.3), inset 0 0 15px rgba(251, 191, 36, 0.1);
         }
 
         .modal-balance-icon {
@@ -1682,10 +1678,8 @@
                 prizes: [0, 15, 25, 50, 75, 100],
                 getRandomPrize: () => {
                     const rand = Math.random() * 100;
-                    // 93% - пусто, 5% - 15 звёзд, 2% - 25 звёзд
-                    // 50, 75, 100 - отображаются но никогда не выпадают
-                    if (rand < 93) return 0;
-                    if (rand < 98) return 15;
+                    if (rand < 90) return 0;
+                    if (rand < 95) return 15;
                     return 25;
                 }
             },
@@ -1693,10 +1687,8 @@
                 prizes: [0, 25, 50, 75, 100, 150, 250],
                 getRandomPrize: () => {
                     const rand = Math.random() * 100;
-                    // 93% - пусто, 5% - 25 звёзд, 2% - 50 звёзд
-                    // 75, 100, 150, 250 - отображаются но никогда не выпадают
-                    if (rand < 93) return 0;
-                    if (rand < 98) return 25;
+                    if (rand < 88) return 0;
+                    if (rand < 94) return 25;
                     return 50;
                 }
             },
@@ -1704,22 +1696,16 @@
                 prizes: [0, 75, 100, 150, 250, 500],
                 getRandomPrize: () => {
                     const rand = Math.random() * 100;
-                    // 93% - пусто, 5% - 75 звёзд, 2% - 100 звёзд
-                    // 150, 250, 500 - отображаются но никогда не выпадают
-                    if (rand < 93) return 0;
-                    if (rand < 98) return 75;
-                    return 100;
+                    if (rand < 92) return 0;
+                    return 75;
                 }
             },
             divine: {
                 prizes: [0, 100, 150, 250, 500, 1000, 9999],
                 getRandomPrize: () => {
                     const rand = Math.random() * 100;
-                    // 93% - пусто, 5% - 100 звёзд, 2% - 150 звёзд
-                    // 250, 500, 1000, 9999 - отображаются но никогда не выпадают
-                    if (rand < 93) return 0;
-                    if (rand < 98) return 100;
-                    return 150;
+                    if (rand < 90) return 0;
+                    return 100;
                 }
             }
         };
@@ -2277,7 +2263,7 @@
 
             function createConfettiBatch() {
                 const fragment = document.createDocumentFragment();
-                const batchSize = 8;
+                const batchSize = 12;
 
                 for (let i = 0; i < batchSize; i++) {
                     const piece = document.createElement('div');
@@ -2311,7 +2297,7 @@
             }
 
             createConfettiBatch();
-            confettiInterval = setInterval(createConfettiBatch, 600);
+            confettiInterval = setInterval(createConfettiBatch, 400);
         }
 
         function stopConfetti() {
