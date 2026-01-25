@@ -1122,11 +1122,11 @@
             max-width: 320px;
             width: 90%;
             transform: scale(0.8) translateY(40px);
-            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+            border: 2px solid var(--theme-color);
             position: relative;
             overflow: hidden;
-            box-shadow: 0 0 80px var(--theme-glow), 0 25px 80px rgba(0, 0, 0, 0.8);
+            box-shadow: 0 0 80px var(--theme-glow), 0 0 120px var(--theme-glow), 0 25px 80px rgba(0, 0, 0, 0.8);
         }
 
         .modal::before {
@@ -1136,19 +1136,19 @@
             left: 0;
             right: 0;
             height: 2px;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            background: linear-gradient(90deg, transparent, var(--theme-color-light), transparent);
         }
 
         .modal-overlay.show .modal { transform: scale(1) translateY(0); }
 
         .modal.win {
-            border-color: rgba(251, 191, 36, 0.5);
-            box-shadow: 0 0 100px rgba(251, 191, 36, 0.4), 0 25px 80px rgba(0, 0, 0, 0.8);
+            border-color: rgba(251, 191, 36, 0.6);
+            box-shadow: 0 0 100px rgba(251, 191, 36, 0.5), 0 0 150px rgba(251, 191, 36, 0.3), 0 25px 80px rgba(0, 0, 0, 0.8);
         }
 
         .modal.lose {
-            border-color: rgba(107, 114, 128, 0.4);
-            box-shadow: 0 0 60px rgba(107, 114, 128, 0.3), 0 25px 80px rgba(0, 0, 0, 0.8);
+            border-color: rgba(107, 114, 128, 0.5);
+            box-shadow: 0 0 60px rgba(107, 114, 128, 0.4), 0 25px 80px rgba(0, 0, 0, 0.8);
         }
 
         .confetti-modal {
@@ -1256,11 +1256,11 @@
             filter: none;
         }
 
-        /* Balance display in modal */
+        /* Balance display in modal - NO ANIMATIONS */
         .modal-balance {
             display: flex;
             justify-content: center;
-            gap: 10px;
+            gap: 12px;
             margin-bottom: 20px;
             position: relative;
             z-index: 2;
@@ -1270,12 +1270,12 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 10px 16px;
-            background: linear-gradient(145deg, rgba(30, 30, 60, 0.9), rgba(15, 15, 35, 0.95));
-            border-radius: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px 18px;
+            background: linear-gradient(145deg, rgba(25, 25, 55, 0.95), rgba(12, 12, 30, 0.98));
+            border-radius: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
             position: relative;
-            overflow: hidden;
+            /* NO animations, NO transforms */
         }
 
         .modal-balance-item::before {
@@ -1285,25 +1285,27 @@
             left: 0;
             right: 0;
             height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
         }
 
         .modal-balance-item.sapphire {
-            border-color: rgba(99, 102, 241, 0.35);
-            box-shadow: 0 0 25px rgba(99, 102, 241, 0.25);
+            border-color: rgba(99, 102, 241, 0.5);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.3), inset 0 0 15px rgba(99, 102, 241, 0.1);
         }
 
         .modal-balance-item.star {
-            border-color: rgba(251, 191, 36, 0.35);
-            box-shadow: 0 0 25px rgba(251, 191, 36, 0.25);
+            border-color: rgba(251, 191, 36, 0.5);
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.3), inset 0 0 15px rgba(251, 191, 36, 0.1);
         }
 
         .modal-balance-icon {
-            width: 24px;
-            height: 24px;
+            width: 22px;
+            height: 22px;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
         }
 
         .modal-balance-icon img {
@@ -1314,20 +1316,23 @@
 
         .modal-balance-value {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: 700;
+            line-height: 1;
         }
 
         .modal-balance-item.sapphire .modal-balance-value {
             background: linear-gradient(135deg, #c4b5fd, #818cf8);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .modal-balance-item.star .modal-balance-value {
             background: linear-gradient(135deg, #fef3c7, #fbbf24);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .modal-buttons {
@@ -1469,7 +1474,7 @@
             .case-hero { width: 120px; height: 120px; }
             .case-emoji { font-size: 4rem; }
             .case-display-image { width: 85px; height: 85px; }
-            .modal-balance { flex-direction: column; gap: 8px; }
+            .modal-balance { flex-direction: column; gap: 10px; }
         }
 
         @supports (padding: max(0px)) {
