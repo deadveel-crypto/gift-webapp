@@ -1936,11 +1936,10 @@
             const prizeStars = getRandomPrize();
             const prize = PRIZE_VISUALS[prizeStars] || PRIZE_VISUALS[0];
 
-            const animationPromise = runAnimation(prize);
-
             let apiSuccess = false;
 
             try {
+                // Сначала делаем spin запрос
                 const spinResult = await apiRequest("/api/spin", {
                     method: "POST",
                     body: JSON.stringify({ cost: currentCost, case_id: STATE.selectedCase?.id || 'cosmic' })
@@ -1950,15 +1949,18 @@
                 STATE.spinsCount++;
                 updateUI();
 
-                await animationPromise;
-
-                const claimData = await apiRequest("/api/claim", {
+                // Запускаем анимацию и claim ПАРАЛЛЕЛЬНО
+                const animationPromise = runAnimation(prize);
+                const claimPromise = apiRequest("/api/claim", {
                     method: "POST",
                     body: JSON.stringify({
                         stars: prizeStars,
                         case_id: STATE.selectedCase?.id || 'cosmic'
                     })
                 });
+
+                // Ждём обоих одновременно
+                const [, claimData] = await Promise.all([animationPromise, claimPromise]);
 
                 STATE.sapphires = claimData.new_sapphires;
                 STATE.stars = claimData.new_stars;
@@ -1971,7 +1973,6 @@
 
             } catch (e) {
                 console.error("Spin/Claim error:", e);
-                await animationPromise;
                 showStatus('❌ Ошибка: ' + e.message, 'error');
                 haptic('error');
                 await loadBalance();
