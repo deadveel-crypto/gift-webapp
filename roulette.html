@@ -43,9 +43,6 @@
             position: relative;
         }
 
-        /* ============================================
-           ANIMATED BACKGROUND - OPTIMIZED
-           ============================================ */
         .animated-bg {
             position: fixed;
             top: 0;
@@ -132,7 +129,6 @@
             opacity: 0.3;
         }
 
-        /* Анимация звезд только на десктопе */
         @media (min-width: 769px) {
             .star {
                 animation: twinkle 4s ease-in-out infinite;
@@ -144,9 +140,6 @@
             50% { opacity: 0.6; }
         }
 
-        /* ============================================
-           ANIMATIONS - OPTIMIZED
-           ============================================ */
         @keyframes textShine {
             0% { background-position: -200% center; }
             100% { background-position: 200% center; }
@@ -162,9 +155,6 @@
             50% { transform: translateY(-8px); }
         }
 
-        /* ============================================
-           HEADER
-           ============================================ */
         .header {
             text-align: center;
             margin-bottom: 25px;
@@ -201,9 +191,6 @@
             margin-top: 5px;
         }
 
-        /* ============================================
-           BALANCE DISPLAY - Simplified
-           ============================================ */
         .balance-container {
             display: flex;
             justify-content: center;
@@ -227,7 +214,6 @@
             border: 2px solid transparent;
         }
 
-        /* Анимация кольца только на десктопе */
         @media (min-width: 769px) {
             .balance-ring {
                 animation: orbitalRotate 10s linear infinite;
@@ -316,9 +302,6 @@
             to { transform: rotate(360deg); }
         }
 
-        /* ============================================
-           MENU SCREEN
-           ============================================ */
         .menu-screen {
             z-index: 10;
             width: 100%;
@@ -360,9 +343,6 @@
             gap: 16px;
         }
 
-        /* ============================================
-           CASE CARDS - OPTIMIZED
-           ============================================ */
         .case-card {
             background: linear-gradient(145deg, rgba(20, 20, 40, 0.9), rgba(10, 10, 25, 0.95));
             border: 2px solid rgba(99, 102, 241, 0.2);
@@ -387,7 +367,6 @@
             }
         }
 
-        /* Cosmic - фиолетовый */
         .case-card.cosmic-style {
             border-color: rgba(99, 102, 241, 0.35);
             background: linear-gradient(145deg, rgba(99, 102, 241, 0.12), rgba(15, 15, 35, 0.95));
@@ -405,7 +384,6 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* Stellar - розовый */
         .case-card.stellar-style {
             border-color: rgba(236, 72, 153, 0.4);
             background: linear-gradient(145deg, rgba(236, 72, 153, 0.15), rgba(15, 15, 35, 0.95));
@@ -423,7 +401,6 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* Golden - золотой */
         .case-card.golden-style {
             border-color: rgba(251, 191, 36, 0.45);
             background: linear-gradient(145deg, rgba(251, 191, 36, 0.12), rgba(15, 15, 35, 0.95));
@@ -441,7 +418,6 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* Divine - аква */
         .case-card.divine-style {
             border-color: rgba(34, 211, 238, 0.5);
             background: linear-gradient(145deg, rgba(34, 211, 238, 0.15), rgba(15, 15, 35, 0.95));
@@ -544,9 +520,6 @@
             box-shadow: 0 0 15px rgba(34, 211, 238, 0.4);
         }
 
-        /* ============================================
-           CASE SCREEN - Themed
-           ============================================ */
         .case-screen {
             z-index: 10;
             width: 100%;
@@ -680,9 +653,6 @@
             text-transform: uppercase;
         }
 
-        /* ============================================
-           CASE CONTAINER (SPINNING AREA)
-           ============================================ */
         .case-section {
             width: 100%;
             max-width: 400px;
@@ -798,39 +768,84 @@
             background: transparent !important;
         }
 
-        .prize-item.rarity-common {
-            background: linear-gradient(145deg, rgba(55, 65, 81, 0.9), rgba(31, 41, 55, 0.9));
-            border-color: rgba(107, 114, 128, 0.3);
+        /* ============================================
+           УНИКАЛЬНЫЕ СТИЛИ ДЛЯ КАЖДОГО ПРИЗА
+           ============================================ */
+        
+        /* 0 звёзд - Серый/Пустой */
+        .prize-item.rarity-empty {
+            background: linear-gradient(145deg, rgba(55, 65, 81, 0.7), rgba(31, 41, 55, 0.8));
+            border-color: rgba(107, 114, 128, 0.4);
         }
 
-        .prize-item.rarity-uncommon {
-            background: linear-gradient(145deg, rgba(124, 58, 237, 0.9), rgba(76, 29, 149, 0.9));
-            border-color: rgba(139, 92, 246, 0.5);
-            box-shadow: 0 0 20px rgba(139, 92, 246, 0.25);
+        /* 15 звёзд - Бледно-зелёный */
+        .prize-item.rarity-stars-15 {
+            background: linear-gradient(145deg, rgba(52, 211, 153, 0.8), rgba(16, 185, 129, 0.85));
+            border-color: rgba(52, 211, 153, 0.6);
+            box-shadow: 0 0 18px rgba(52, 211, 153, 0.3);
         }
 
-        .prize-item.rarity-rare {
-            background: linear-gradient(145deg, rgba(59, 130, 246, 0.9), rgba(29, 78, 216, 0.9));
-            border-color: rgba(59, 130, 246, 0.5);
-            box-shadow: 0 0 20px rgba(59, 130, 246, 0.25);
+        /* 25 звёзд - Бирюзовый */
+        .prize-item.rarity-stars-25 {
+            background: linear-gradient(145deg, rgba(45, 212, 191, 0.8), rgba(20, 184, 166, 0.85));
+            border-color: rgba(45, 212, 191, 0.6);
+            box-shadow: 0 0 18px rgba(45, 212, 191, 0.3);
         }
 
-        .prize-item.rarity-epic {
-            background: linear-gradient(145deg, rgba(236, 72, 153, 0.9), rgba(157, 23, 77, 0.9));
-            border-color: rgba(236, 72, 153, 0.5);
-            box-shadow: 0 0 25px rgba(236, 72, 153, 0.3);
+        /* 50 звёзд - Синий */
+        .prize-item.rarity-stars-50 {
+            background: linear-gradient(145deg, rgba(59, 130, 246, 0.85), rgba(37, 99, 235, 0.9));
+            border-color: rgba(59, 130, 246, 0.6);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.35);
         }
 
-        .prize-item.rarity-legendary {
-            background: linear-gradient(145deg, rgba(251, 191, 36, 0.9), rgba(180, 83, 9, 0.9));
-            border-color: rgba(251, 191, 36, 0.6);
-            box-shadow: 0 0 30px rgba(251, 191, 36, 0.4);
+        /* 75 звёзд - Индиго */
+        .prize-item.rarity-stars-75 {
+            background: linear-gradient(145deg, rgba(99, 102, 241, 0.85), rgba(79, 70, 229, 0.9));
+            border-color: rgba(99, 102, 241, 0.6);
+            box-shadow: 0 0 22px rgba(99, 102, 241, 0.35);
         }
 
-        .prize-item.rarity-mythic {
-            background: linear-gradient(145deg, rgba(239, 68, 68, 0.9), rgba(127, 29, 29, 0.9));
-            border-color: rgba(239, 68, 68, 0.7);
-            box-shadow: 0 0 35px rgba(239, 68, 68, 0.45);
+        /* 100 звёзд - Фиолетовый */
+        .prize-item.rarity-stars-100 {
+            background: linear-gradient(145deg, rgba(139, 92, 246, 0.85), rgba(124, 58, 237, 0.9));
+            border-color: rgba(139, 92, 246, 0.6);
+            box-shadow: 0 0 24px rgba(139, 92, 246, 0.4);
+        }
+
+        /* 150 звёзд - Пурпурный */
+        .prize-item.rarity-stars-150 {
+            background: linear-gradient(145deg, rgba(168, 85, 247, 0.85), rgba(147, 51, 234, 0.9));
+            border-color: rgba(168, 85, 247, 0.65);
+            box-shadow: 0 0 26px rgba(168, 85, 247, 0.4);
+        }
+
+        /* 250 звёзд - Розовый */
+        .prize-item.rarity-stars-250 {
+            background: linear-gradient(145deg, rgba(236, 72, 153, 0.85), rgba(219, 39, 119, 0.9));
+            border-color: rgba(236, 72, 153, 0.65);
+            box-shadow: 0 0 28px rgba(236, 72, 153, 0.45);
+        }
+
+        /* 500 звёзд - Оранжевый */
+        .prize-item.rarity-stars-500 {
+            background: linear-gradient(145deg, rgba(251, 146, 60, 0.9), rgba(249, 115, 22, 0.92));
+            border-color: rgba(251, 146, 60, 0.7);
+            box-shadow: 0 0 30px rgba(251, 146, 60, 0.5);
+        }
+
+        /* 1000 звёзд - Золотой */
+        .prize-item.rarity-stars-1000 {
+            background: linear-gradient(145deg, rgba(251, 191, 36, 0.9), rgba(245, 158, 11, 0.92));
+            border-color: rgba(251, 191, 36, 0.75);
+            box-shadow: 0 0 35px rgba(251, 191, 36, 0.55);
+        }
+
+        /* 9999 звёзд - Красно-золотой (Мифический) */
+        .prize-item.rarity-stars-9999 {
+            background: linear-gradient(145deg, rgba(239, 68, 68, 0.9), rgba(220, 38, 38, 0.92));
+            border-color: rgba(239, 68, 68, 0.8);
+            box-shadow: 0 0 40px rgba(239, 68, 68, 0.6), 0 0 60px rgba(251, 191, 36, 0.3);
         }
 
         .prize-emoji {
@@ -864,9 +879,6 @@
             100% { transform: scale(1); }
         }
 
-        /* ============================================
-           SPIN BUTTON
-           ============================================ */
         .spin-button {
             background: linear-gradient(135deg, var(--theme-color), var(--theme-color-light));
             border: none;
@@ -917,9 +929,6 @@
             letter-spacing: 1px;
         }
 
-        /* ============================================
-           BACK BUTTON
-           ============================================ */
         .back-to-menu-btn {
             background: transparent;
             border: 1px solid rgba(255, 255, 255, 0.15);
@@ -944,9 +953,6 @@
             box-shadow: 0 0 20px var(--theme-glow);
         }
 
-        /* ============================================
-           INFO SECTION (PRIZES GRID) - NO SCAN ANIMATION
-           ============================================ */
         .info-section {
             margin-top: 35px;
             width: 100%;
@@ -991,6 +997,14 @@
             grid-template-columns: repeat(5, 1fr);
         }
 
+        .prizes-grid.cols-6 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .prizes-grid.cols-7 {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
         .prize-card {
             background: linear-gradient(145deg, rgba(20, 20, 40, 0.9), rgba(10, 10, 25, 0.95));
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -1004,8 +1018,6 @@
             contain: layout style paint;
         }
 
-        /* Убрана анимация сканирования */
-
         @media (min-width: 769px) {
             .prize-card:hover {
                 transform: translateY(-4px) scale(1.02);
@@ -1014,14 +1026,55 @@
             }
         }
 
-        .prize-card.legendary {
-            border-color: rgba(251, 191, 36, 0.4);
-            background: linear-gradient(145deg, rgba(251, 191, 36, 0.1), rgba(15, 15, 35, 0.95));
+        /* Стили карточек призов в сетке */
+        .prize-card.stars-15 {
+            border-color: rgba(52, 211, 153, 0.4);
+            background: linear-gradient(145deg, rgba(52, 211, 153, 0.1), rgba(15, 15, 35, 0.95));
         }
 
-        .prize-card.mythic {
-            border-color: rgba(239, 68, 68, 0.4);
-            background: linear-gradient(145deg, rgba(239, 68, 68, 0.1), rgba(15, 15, 35, 0.95));
+        .prize-card.stars-25 {
+            border-color: rgba(45, 212, 191, 0.4);
+            background: linear-gradient(145deg, rgba(45, 212, 191, 0.1), rgba(15, 15, 35, 0.95));
+        }
+
+        .prize-card.stars-50 {
+            border-color: rgba(59, 130, 246, 0.4);
+            background: linear-gradient(145deg, rgba(59, 130, 246, 0.1), rgba(15, 15, 35, 0.95));
+        }
+
+        .prize-card.stars-75 {
+            border-color: rgba(99, 102, 241, 0.4);
+            background: linear-gradient(145deg, rgba(99, 102, 241, 0.1), rgba(15, 15, 35, 0.95));
+        }
+
+        .prize-card.stars-100 {
+            border-color: rgba(139, 92, 246, 0.4);
+            background: linear-gradient(145deg, rgba(139, 92, 246, 0.1), rgba(15, 15, 35, 0.95));
+        }
+
+        .prize-card.stars-150 {
+            border-color: rgba(168, 85, 247, 0.45);
+            background: linear-gradient(145deg, rgba(168, 85, 247, 0.1), rgba(15, 15, 35, 0.95));
+        }
+
+        .prize-card.stars-250 {
+            border-color: rgba(236, 72, 153, 0.45);
+            background: linear-gradient(145deg, rgba(236, 72, 153, 0.1), rgba(15, 15, 35, 0.95));
+        }
+
+        .prize-card.stars-500 {
+            border-color: rgba(251, 146, 60, 0.5);
+            background: linear-gradient(145deg, rgba(251, 146, 60, 0.12), rgba(15, 15, 35, 0.95));
+        }
+
+        .prize-card.stars-1000 {
+            border-color: rgba(251, 191, 36, 0.5);
+            background: linear-gradient(145deg, rgba(251, 191, 36, 0.12), rgba(15, 15, 35, 0.95));
+        }
+
+        .prize-card.stars-9999 {
+            border-color: rgba(239, 68, 68, 0.5);
+            background: linear-gradient(145deg, rgba(239, 68, 68, 0.12), rgba(15, 15, 35, 0.95));
         }
 
         .prize-card.empty {
@@ -1073,9 +1126,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* ============================================
-           STATUS MESSAGE
-           ============================================ */
         .status-message {
             background: linear-gradient(135deg, rgba(127, 29, 29, 0.7), rgba(69, 10, 10, 0.7));
             border: 1px solid rgba(239, 68, 68, 0.4);
@@ -1097,9 +1147,6 @@
 
         .status-message.show { display: block; }
 
-        /* ============================================
-           MODAL - OPTIMIZED
-           ============================================ */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -1257,9 +1304,6 @@
             box-shadow: 0 10px 30px rgba(251, 191, 36, 0.4);
         }
 
-        /* ============================================
-           CONFETTI - OPTIMIZED
-           ============================================ */
         .confetti {
             position: fixed;
             top: 0;
@@ -1288,9 +1332,6 @@
             }
         }
 
-        /* ============================================
-           LOADING OVERLAY
-           ============================================ */
         .loading-overlay {
             position: fixed;
             top: 0;
@@ -1344,9 +1385,6 @@
             font-family: monospace;
         }
 
-        /* ============================================
-           RESPONSIVE
-           ============================================ */
         @media (max-width: 390px) {
             .case-container { height: 115px; }
             .prize-item { width: 90px; height: 90px; }
@@ -1380,7 +1418,6 @@
             }
         }
 
-        /* Отключаем тяжелые анимации на мобильных */
         @media (max-width: 768px) {
             .bg-orb-1,
             .bg-orb-2 {
@@ -1397,7 +1434,6 @@
             }
         }
 
-        /* Уменьшаем количество конфетти на мобильных */
         @media (max-width: 768px) {
             .confetti-piece {
                 animation-duration: 3s;
@@ -1445,13 +1481,11 @@
         </div>
     </div>
 
-    <!-- МЕНЮ ВЫБОРА КЕЙСОВ -->
     <div class="menu-screen" id="menuScreen">
         <div class="menu-title">Выберите кейс</div>
         <div class="cases-grid" id="casesGrid"></div>
     </div>
 
-    <!-- ЭКРАН КЕЙСА -->
     <div class="case-screen hidden" id="caseScreen">
         <div class="case-display">
             <div class="case-box">
@@ -1511,28 +1545,18 @@
     <div class="confetti" id="confetti"></div>
 
     <script>
-        // ============================================
-        // 🔒 API КОНФИГУРАЦИЯ
-        // ============================================
         const API_BASE = "https://deadveel.pythonanywhere.com";
         
         const tg = window.Telegram?.WebApp;
         const initData = tg?.initData || '';
         
-        // Определяем мобильное устройство
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 769;
         
-        // ============================================
-        // 🖼️ GITHUB IMAGE CDN
-        // ============================================
         const GITHUB_USER = "deadveel-crypto";
         const GITHUB_REPO = "divine-case-assets";
         const GITHUB_BRANCH = "main";
         const IMG_CDN = `https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${GITHUB_REPO}@${GITHUB_BRANCH}`;
         
-        // ============================================
-        // ДОСТУПНЫЕ КЕЙСЫ
-        // ============================================
         const CASES = [
             { id: 'cosmic', name: 'Cosmic Case', emoji: '🎁', image: `${IMG_CDN}/cases/cosmic.png`, cost: 100, tag: null, style: 'cosmic-style', theme: 'theme-cosmic' },
             { id: 'stellar', name: 'Stellar Case', emoji: '✨', image: `${IMG_CDN}/cases/stellar.png`, cost: 250, tag: null, style: 'stellar-style', theme: 'theme-stellar' },
@@ -1540,9 +1564,6 @@
             { id: 'divine', name: 'Divine Case', emoji: '💎', image: `${IMG_CDN}/cases/divine.png`, cost: 1000, tag: 'VIP', style: 'divine-style', theme: 'theme-divine' }
         ];
         
-        // ============================================
-        // СОСТОЯНИЕ ПРИЛОЖЕНИЯ
-        // ============================================
         let STATE = {
             userId: null,
             username: '',
@@ -1561,109 +1582,130 @@
         let isSpinning = false;
 
         // ============================================
-        // 🎁 ВСЕ ПРИЗЫ
+        // 🎁 ВСЕ ПРИЗЫ С УНИКАЛЬНЫМИ СТИЛЯМИ
         // ============================================
         const PRIZE_VISUALS = {
-            0: { stars: 0, emoji: "💨", rarity: "common", image: `${IMG_CDN}/prizes/void.png`, name: "Void" },
-            15: { stars: 15, emoji: "✧", rarity: "uncommon", image: `${IMG_CDN}/prizes/glimmer.png`, name: "Glimmer" },
-            25: { stars: 25, emoji: "⭐", rarity: "uncommon", image: `${IMG_CDN}/prizes/spark.png`, name: "Spark" },
-            50: { stars: 50, emoji: "✨", rarity: "rare", image: `${IMG_CDN}/prizes/radiance.png`, name: "Radiance" },
-            75: { stars: 75, emoji: "💫", rarity: "rare", image: `${IMG_CDN}/prizes/stardust.png`, name: "Stardust" },
-            100: { stars: 100, emoji: "🌟", rarity: "epic", image: `${IMG_CDN}/prizes/aurora.png`, name: "Aurora" },
-            150: { stars: 150, emoji: "🔥", rarity: "epic", image: `${IMG_CDN}/prizes/ember.png`, name: "Ember" },
-            250: { stars: 250, emoji: "⚡", rarity: "legendary", image: `${IMG_CDN}/prizes/lightning.jpeg`, name: "Lightning" },
-            500: { stars: 500, emoji: "💫", rarity: "legendary", image: `${IMG_CDN}/prizes/supernova.png`, name: "Supernova" },
-            1000: { stars: 1000, emoji: "🌌", rarity: "legendary", image: `${IMG_CDN}/prizes/galaxy.png`, name: "Galaxy" },
-            9999: { stars: 9999, emoji: "👑", rarity: "mythic", image: `${IMG_CDN}/prizes/divine_star.png`, name: "Divine Star" }
+            0: { stars: 0, emoji: "💨", rarity: "empty", image: `${IMG_CDN}/prizes/void.png`, name: "Void" },
+            15: { stars: 15, emoji: "✧", rarity: "stars-15", image: `${IMG_CDN}/prizes/glimmer.png`, name: "Glimmer" },
+            25: { stars: 25, emoji: "⭐", rarity: "stars-25", image: `${IMG_CDN}/prizes/spark.png`, name: "Spark" },
+            50: { stars: 50, emoji: "✨", rarity: "stars-50", image: `${IMG_CDN}/prizes/radiance.png`, name: "Radiance" },
+            75: { stars: 75, emoji: "💫", rarity: "stars-75", image: `${IMG_CDN}/prizes/stardust.png`, name: "Stardust" },
+            100: { stars: 100, emoji: "🌟", rarity: "stars-100", image: `${IMG_CDN}/prizes/aurora.png`, name: "Aurora" },
+            150: { stars: 150, emoji: "🔥", rarity: "stars-150", image: `${IMG_CDN}/prizes/ember.png`, name: "Ember" },
+            250: { stars: 250, emoji: "⚡", rarity: "stars-250", image: `${IMG_CDN}/prizes/lightning.jpeg`, name: "Lightning" },
+            500: { stars: 500, emoji: "💫", rarity: "stars-500", image: `${IMG_CDN}/prizes/supernova.png`, name: "Supernova" },
+            1000: { stars: 1000, emoji: "🌌", rarity: "stars-1000", image: `${IMG_CDN}/prizes/galaxy.png`, name: "Galaxy" },
+            9999: { stars: 9999, emoji: "👑", rarity: "stars-9999", image: `${IMG_CDN}/prizes/divine_star.png`, name: "Divine Star" }
         };
 
         // ============================================
-        // 🎲 ШАНСЫ ДЛЯ КАЖДОГО КЕЙСА (РЕАЛЬНЫЕ - НЕ ТРОГАЕМ!)
+        // 🎲 ОБНОВЛЁННЫЕ ШАНСЫ ДЛЯ КАЖДОГО КЕЙСА
         // ============================================
         const CASE_CONFIG = {
+            // COSMIC: 0, 15, 25, 50, 75, 100
             cosmic: {
-                prizes: [0, 15, 25, 50],
+                prizes: [0, 15, 25, 50, 75, 100],
                 getRandomPrize: () => {
                     const rand = Math.random() * 100;
-                    if (rand < 90) return 0;
-                    if (rand < 94) return 15;
-                    if (rand < 97) return 25;
-                    return 50;
+                    if (rand < 85) return 0;      // 85%
+                    if (rand < 90) return 15;     // 5%
+                    if (rand < 94) return 25;     // 4%
+                    if (rand < 97) return 50;     // 3%
+                    if (rand < 99) return 75;     // 2%
+                    return 100;                    // 1%
                 }
             },
+            // STELLAR: 0, 25, 50, 75, 100, 150, 250
             stellar: {
-                prizes: [0, 50, 75, 100],
+                prizes: [0, 25, 50, 75, 100, 150, 250],
                 getRandomPrize: () => {
                     const rand = Math.random() * 100;
-                    if (rand < 90) return 0;
-                    if (rand < 94) return 50;
-                    if (rand < 97) return 75;
-                    return 100;
+                    if (rand < 82) return 0;      // 82%
+                    if (rand < 88) return 25;     // 6%
+                    if (rand < 93) return 50;     // 5%
+                    if (rand < 96) return 75;     // 3%
+                    if (rand < 98) return 100;    // 2%
+                    if (rand < 99.3) return 150;  // 1.3%
+                    return 250;                    // 0.7%
                 }
             },
+            // GOLDEN: 0, 75, 100, 150, 250, 500
             golden: {
-                prizes: [0, 100, 150, 250],
+                prizes: [0, 75, 100, 150, 250, 500],
                 getRandomPrize: () => {
                     const rand = Math.random() * 100;
-                    if (rand < 99) return 0;
-                    if (rand < 99.5) return 100;
-                    if (rand < 99.8) return 150;
-                    return 250;
+                    if (rand < 80) return 0;      // 80%
+                    if (rand < 88) return 75;     // 8%
+                    if (rand < 94) return 100;    // 6%
+                    if (rand < 97.5) return 150;  // 3.5%
+                    if (rand < 99.3) return 250;  // 1.8%
+                    return 500;                    // 0.7%
                 }
             },
+            // DIVINE: 0, 100, 150, 250, 500, 1000, 9999
             divine: {
-                prizes: [0, 250, 500, 1000, 9999],
+                prizes: [0, 100, 150, 250, 500, 1000, 9999],
                 getRandomPrize: () => {
                     const rand = Math.random() * 100;
-                    if (rand < 90) return 0;
-                    if (rand < 96) return 250;
-                    return 500;
+                    if (rand < 75) return 0;      // 75%
+                    if (rand < 85) return 100;    // 10%
+                    if (rand < 92) return 150;    // 7%
+                    if (rand < 96) return 250;    // 4%
+                    if (rand < 98.5) return 500;  // 2.5%
+                    if (rand < 99.8) return 1000; // 1.3%
+                    return 9999;                   // 0.2%
                 }
             }
         };
 
         // ============================================
-        // 🎰 ВИЗУАЛЬНЫЕ ШАНСЫ ДЛЯ БАРАБАНА (ОТДЕЛЬНО!)
-        // Здесь настраиваем как часто показывать каждый приз в барабане
-        // Это НЕ влияет на реальные шансы выигрыша!
+        // 🎰 ВИЗУАЛЬНЫЕ ШАНСЫ ДЛЯ БАРАБАНА
         // ============================================
         const VISUAL_DISPLAY_CONFIG = {
             cosmic: {
-                // Показываем мало нулей (15%), много других призов
                 getVisualPrize: () => {
                     const rand = Math.random() * 100;
-                    if (rand < 15) return PRIZE_VISUALS[0];   // 15% - пусто (вместо 40%)
-                    if (rand < 45) return PRIZE_VISUALS[15];  // 30% - 15 звёзд
-                    if (rand < 75) return PRIZE_VISUALS[25];  // 30% - 25 звёзд
-                    return PRIZE_VISUALS[50];                  // 25% - 50 звёзд
+                    if (rand < 12) return PRIZE_VISUALS[0];
+                    if (rand < 30) return PRIZE_VISUALS[15];
+                    if (rand < 50) return PRIZE_VISUALS[25];
+                    if (rand < 70) return PRIZE_VISUALS[50];
+                    if (rand < 88) return PRIZE_VISUALS[75];
+                    return PRIZE_VISUALS[100];
                 }
             },
             stellar: {
                 getVisualPrize: () => {
                     const rand = Math.random() * 100;
-                    if (rand < 12) return PRIZE_VISUALS[0];   // 12% - пусто
-                    if (rand < 40) return PRIZE_VISUALS[50];  // 28% - 50 звёзд
-                    if (rand < 70) return PRIZE_VISUALS[75];  // 30% - 75 звёзд
-                    return PRIZE_VISUALS[100];                 // 30% - 100 звёзд
+                    if (rand < 10) return PRIZE_VISUALS[0];
+                    if (rand < 25) return PRIZE_VISUALS[25];
+                    if (rand < 40) return PRIZE_VISUALS[50];
+                    if (rand < 55) return PRIZE_VISUALS[75];
+                    if (rand < 72) return PRIZE_VISUALS[100];
+                    if (rand < 88) return PRIZE_VISUALS[150];
+                    return PRIZE_VISUALS[250];
                 }
             },
             golden: {
                 getVisualPrize: () => {
                     const rand = Math.random() * 100;
-                    if (rand < 10) return PRIZE_VISUALS[0];   // 10% - пусто (вместо 50%)
-                    if (rand < 40) return PRIZE_VISUALS[100]; // 30% - 100 звёзд
-                    if (rand < 70) return PRIZE_VISUALS[150]; // 30% - 150 звёзд
-                    return PRIZE_VISUALS[250];                 // 30% - 250 звёзд
+                    if (rand < 8) return PRIZE_VISUALS[0];
+                    if (rand < 25) return PRIZE_VISUALS[75];
+                    if (rand < 45) return PRIZE_VISUALS[100];
+                    if (rand < 65) return PRIZE_VISUALS[150];
+                    if (rand < 85) return PRIZE_VISUALS[250];
+                    return PRIZE_VISUALS[500];
                 }
             },
             divine: {
                 getVisualPrize: () => {
                     const rand = Math.random() * 100;
-                    if (rand < 8) return PRIZE_VISUALS[0];     // 8% - пусто (вместо 30%)
-                    if (rand < 35) return PRIZE_VISUALS[250];  // 27% - 250 звёзд
-                    if (rand < 60) return PRIZE_VISUALS[500];  // 25% - 500 звёзд
-                    if (rand < 85) return PRIZE_VISUALS[1000]; // 25% - 1000 звёзд
-                    return PRIZE_VISUALS[9999];                 // 15% - Divine Star
+                    if (rand < 6) return PRIZE_VISUALS[0];
+                    if (rand < 22) return PRIZE_VISUALS[100];
+                    if (rand < 38) return PRIZE_VISUALS[150];
+                    if (rand < 55) return PRIZE_VISUALS[250];
+                    if (rand < 75) return PRIZE_VISUALS[500];
+                    if (rand < 92) return PRIZE_VISUALS[1000];
+                    return PRIZE_VISUALS[9999];
                 }
             }
         };
@@ -1682,9 +1724,6 @@
             ITEM_WIDTH = getItemWidth();
         });
 
-        // ============================================
-        // 🔒 API ЗАПРОСЫ
-        // ============================================
         async function apiRequest(path, options = {}) {
             const res = await fetch(API_BASE + path, {
                 ...options,
@@ -1721,7 +1760,6 @@
             CASES.forEach(c => { if (c.image) imageUrls.push(c.image); });
             Object.values(PRIZE_VISUALS).forEach(p => { if (p.image) imageUrls.push(p.image); });
             
-            // Используем requestIdleCallback для фоновой загрузки
             const loadImage = (url) => {
                 const img = new Image();
                 img.src = url;
@@ -1828,7 +1866,7 @@
             haptic('impact');
         }
         
-        function showScreen(screen) {
+                function showScreen(screen) {
             STATE.currentScreen = screen;
             const menuScreen = document.getElementById('menuScreen');
             const caseScreen = document.getElementById('caseScreen');
@@ -1865,15 +1903,27 @@
             const caseId = STATE.selectedCase?.id || 'cosmic';
             const config = CASE_CONFIG[caseId];
             
-            const displayPrizes = config.prizes.sort((a, b) => b - a).map(stars => PRIZE_VISUALS[stars]);
+            // Сортируем призы по убыванию (без нуля в начале)
+            const displayPrizes = config.prizes
+                .filter(s => s > 0)
+                .sort((a, b) => b - a)
+                .map(stars => PRIZE_VISUALS[stars]);
+            
+            // Добавляем пустой приз в конец
+            displayPrizes.push(PRIZE_VISUALS[0]);
             
             grid.className = 'prizes-grid';
-            if (displayPrizes.length <= 4) {
-                grid.classList.add('cols-' + displayPrizes.length);
+            const count = displayPrizes.length;
+            if (count <= 5) {
+                grid.classList.add('cols-' + count);
+            } else if (count === 6) {
+                grid.classList.add('cols-6');
+            } else {
+                grid.classList.add('cols-7');
             }
             
             grid.innerHTML = displayPrizes.map(prize => `
-                <div class="prize-card ${prize.rarity === 'legendary' ? 'legendary' : ''} ${prize.rarity === 'mythic' ? 'mythic' : ''} ${prize.stars === 0 ? 'empty' : ''}">
+                <div class="prize-card ${prize.stars === 0 ? 'empty' : 'stars-' + prize.stars}">
                     <div class="prize-card-visual">
                         ${prize.image 
                             ? `<img src="${prize.image}" alt="${prize.name}" class="prize-card-image" loading="lazy" onerror="this.outerHTML='<div class=\\'prize-card-emoji\\'>${prize.emoji}</div>'">`
@@ -1896,13 +1946,11 @@
             `;
         }
 
-        // ✅ РЕАЛЬНЫЙ приз - используется для определения выигрыша
         function getRandomPrize() {
             const caseId = STATE.selectedCase?.id || 'cosmic';
             return CASE_CONFIG[caseId].getRandomPrize();
         }
 
-        // ✅ ВИЗУАЛЬНЫЙ приз - используется только для барабана (мало нулей!)
         function getRandomPrizeForDisplay() {
             const caseId = STATE.selectedCase?.id || 'cosmic';
             const visualConfig = VISUAL_DISPLAY_CONFIG[caseId];
@@ -1911,8 +1959,6 @@
                 return visualConfig.getVisualPrize();
             }
             
-            // Fallback на старую логику если конфиг не найден
-                        // Fallback на старую логику если конфиг не найден
             return PRIZE_VISUALS[0];
         }
 
@@ -1932,7 +1978,6 @@
             document.getElementById('spinBtn').disabled = true;
             haptic('impact');
             
-            // ✅ РЕАЛЬНЫЙ приз определяется здесь (с настоящими шансами)
             const prizeStars = getRandomPrize();
             const prize = PRIZE_VISUALS[prizeStars] || PRIZE_VISUALS[0];
             
@@ -1953,12 +1998,12 @@
                 await animationPromise;
                 
                 const claimData = await apiRequest("/api/claim", {
-                        method: "POST",
-                        body: JSON.stringify({ 
-                            stars: prizeStars,
-                            case_id: STATE.selectedCase?.id || 'cosmic'
-                        })
-                    });
+                    method: "POST",
+                    body: JSON.stringify({ 
+                        stars: prizeStars,
+                        case_id: STATE.selectedCase?.id || 'cosmic'
+                    })
+                });
                 
                 STATE.sapphires = claimData.new_sapphires;
                 STATE.stars = claimData.new_stars;
@@ -1986,8 +2031,6 @@
         async function runAnimation(winningPrize) {
             const winningIndex = 30 + Math.floor(Math.random() * 5);
             
-            // ✅ Генерируем барабан с ВИЗУАЛЬНЫМИ призами (мало нулей)
-            // но выигрышный приз ставим РЕАЛЬНЫЙ
             generateItemsStrip(winningPrize, winningIndex);
             
             const container = document.getElementById('caseContainer');
@@ -1999,18 +2042,16 @@
             const finalPosition = targetPosition + randomOffset;
             
             strip.style.transform = `translateX(${containerWidth}px)`;
-            strip.offsetHeight; // Force reflow
+            strip.offsetHeight;
             
             requestAnimationFrame(() => {
                 strip.classList.add('animating');
                 strip.style.transform = `translateX(-${finalPosition}px)`;
             });
             
-            // Уменьшаем частоту haptic на мобильных
             if (!isMobile) {
                 playTickSounds();
             } else {
-                // На мобильных только несколько вибраций
                 setTimeout(() => haptic('selection'), 500);
                 setTimeout(() => haptic('selection'), 2000);
                 setTimeout(() => haptic('selection'), 4000);
@@ -2030,17 +2071,14 @@
             strip.classList.remove('animating');
             strip.style.transform = 'translateX(0)';
             
-            // Используем DocumentFragment для лучшей производительности
             const fragment = document.createDocumentFragment();
             
             for (let i = 0; i < VISIBLE_ITEMS; i++) {
                 let prize;
                 
                 if (winningIndex !== null && i === winningIndex) {
-                    // ✅ На позиции выигрыша ставим РЕАЛЬНЫЙ приз
                     prize = winningPrize;
                 } else {
-                    // ✅ На остальных позициях - ВИЗУАЛЬНЫЕ призы (мало нулей!)
                     prize = getRandomPrizeForDisplay();
                 }
                 
@@ -2111,6 +2149,8 @@
                     title.textContent = '🎉 МЕГА ДЖЕКПОТ! 🎉';
                 } else if (prize.stars >= 1000) {
                     title.textContent = 'ДЖЕКПОТ!';
+                } else if (prize.stars >= 500) {
+                    title.textContent = 'Невероятно!';
                 } else if (prize.stars >= 100) {
                     title.textContent = 'Отлично!';
                 } else {
@@ -2181,7 +2221,7 @@
 
         function generateStars() {
             const container = document.getElementById('bgStars');
-            const starCount = isMobile ? 40 : 70; // Меньше звезд на мобильных
+            const starCount = isMobile ? 40 : 70;
             const fragment = document.createDocumentFragment();
             
             for (let i = 0; i < starCount; i++) {
@@ -2205,8 +2245,8 @@
             const container = document.getElementById('confetti');
             container.innerHTML = '';
             
-            const colors = ['#fbbf24', '#f59e0b', '#6366f1', '#818cf8', '#ec4899', '#22d3ee', '#10b981'];
-            const confettiCount = isMobile ? 50 : 80; // Меньше конфетти на мобильных
+            const colors = ['#fbbf24', '#f59e0b', '#6366f1', '#818cf8', '#ec4899', '#22d3ee', '#10b981', '#34d399', '#a855f7'];
+            const confettiCount = isMobile ? 50 : 80;
             const fragment = document.createDocumentFragment();
             
             for (let i = 0; i < confettiCount; i++) {
@@ -2231,7 +2271,6 @@
             
             container.appendChild(fragment);
             
-            // Очищаем конфетти после анимации
             setTimeout(() => {
                 container.innerHTML = '';
             }, 4500);
@@ -2244,21 +2283,16 @@
                     else if (type === 'error') tg.HapticFeedback.notificationOccurred('error');
                     else if (type === 'impact') tg.HapticFeedback.impactOccurred('heavy');
                     else if (type === 'selection') tg.HapticFeedback.selectionChanged();
-                } catch (e) {
-                    // Ignore haptic errors
-                }
+                } catch (e) {}
             }
         }
 
-        // Инициализация
         document.addEventListener('DOMContentLoaded', init);
 
-        // Закрытие модалки по клику на оверлей
         document.getElementById('modalOverlay').addEventListener('click', (e) => {
             if (e.target.id === 'modalOverlay') closeModal();
         });
 
-        // Горячие клавиши (только для десктопа)
         if (!isMobile) {
             document.addEventListener('keydown', (e) => {
                 if (e.code === 'Space' && !isSpinning && !STATE.isModalOpen && STATE.currentScreen === 'case') {
@@ -2271,7 +2305,6 @@
             });
         }
 
-        // Предотвращаем зум на мобильных при двойном тапе
         document.addEventListener('touchend', (e) => {
             const now = Date.now();
             if (now - lastTouchEnd <= 300) {
@@ -2282,7 +2315,6 @@
 
         let lastTouchEnd = 0;
 
-        // Оптимизация: приостанавливаем анимации при скрытии страницы
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
                 document.body.classList.add('paused');
