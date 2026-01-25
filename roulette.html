@@ -165,6 +165,41 @@
             100% { background-position: 200% 0; }
         }
 
+        @keyframes glowPulse {
+            0%, 100% { box-shadow: 0 0 20px var(--glow-color), 0 0 40px var(--glow-color); }
+            50% { box-shadow: 0 0 30px var(--glow-color), 0 0 60px var(--glow-color), 0 0 80px var(--glow-color); }
+        }
+
+        @keyframes buttonGlow {
+            0%, 100% { box-shadow: 0 8px 30px rgba(251, 191, 36, 0.4), 0 0 40px rgba(251, 191, 36, 0.2); }
+            50% { box-shadow: 0 8px 40px rgba(251, 191, 36, 0.6), 0 0 60px rgba(251, 191, 36, 0.4), 0 0 80px rgba(251, 191, 36, 0.2); }
+        }
+
+        @keyframes emptyTextGlow {
+            0%, 100% { 
+                text-shadow: 0 0 10px rgba(107, 114, 128, 0.5), 0 0 20px rgba(107, 114, 128, 0.3);
+                opacity: 0.8;
+            }
+            50% { 
+                text-shadow: 0 0 20px rgba(107, 114, 128, 0.8), 0 0 40px rgba(107, 114, 128, 0.5), 0 0 60px rgba(107, 114, 128, 0.3);
+                opacity: 1;
+            }
+        }
+
+        @keyframes confettiLoop {
+            0% { 
+                opacity: 1; 
+                transform: translateY(-20px) rotate(0deg) scale(1);
+            }
+            80% {
+                opacity: 1;
+            }
+            100% { 
+                opacity: 0; 
+                transform: translateY(400px) rotate(720deg) scale(0.5);
+            }
+        }
+
         .header {
             text-align: center;
             margin-bottom: 25px;
@@ -283,6 +318,14 @@
             z-index: 1;
         }
 
+        /* Custom icon images */
+        .balance-icon-img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+
         .balance-info {
             display: flex;
             flex-direction: column;
@@ -358,7 +401,6 @@
             gap: 16px;
         }
 
-        /* ENHANCED CASE CARDS */
         .case-card {
             position: relative;
             border-radius: 28px;
@@ -589,7 +631,6 @@
             --theme-glow: rgba(34, 211, 238, 0.5);
         }
 
-        /* NEW CASE DISPLAY - NO BOX, JUST GLOW */
         .case-display {
             text-align: center;
             margin-bottom: 25px;
@@ -621,23 +662,6 @@
             border-radius: 50%;
             filter: blur(25px);
             opacity: 0.4;
-        }
-
-        .case-hero-particles {
-            position: absolute;
-            inset: -20px;
-            border-radius: 50%;
-            overflow: hidden;
-            pointer-events: none;
-        }
-
-        .case-particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: var(--theme-color-light);
-            border-radius: 50%;
-            opacity: 0.6;
         }
 
         .case-hero-content {
@@ -1074,53 +1098,65 @@
 
         .status-message.show { display: block; }
 
+        /* ========== BEAUTIFUL MODAL ========== */
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.88);
+            background: rgba(0, 0, 0, 0.85);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 100;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
         }
 
         .modal-overlay.show { opacity: 1; visibility: visible; }
 
         .modal {
-            background: linear-gradient(180deg, rgba(18, 18, 40, 0.97) 0%, rgba(8, 8, 20, 0.98) 100%);
-            border-radius: 28px;
-            padding: 35px 30px;
+            background: linear-gradient(180deg, rgba(20, 20, 50, 0.98) 0%, rgba(10, 10, 25, 0.99) 100%);
+            border-radius: 32px;
+            padding: 40px 35px;
             text-align: center;
-            max-width: 320px;
-            width: 90%;
-            transform: scale(0.85) translateY(30px);
-            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 340px;
+            width: 92%;
+            transform: scale(0.8) translateY(40px);
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 2px solid rgba(255, 255, 255, 0.1);
             position: relative;
             overflow: hidden;
-            box-shadow: 0 0 60px var(--theme-glow), 0 20px 60px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 0 80px var(--theme-glow), 0 25px 80px rgba(0, 0, 0, 0.8);
+        }
+
+        .modal::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
         }
 
         .modal-overlay.show .modal { transform: scale(1) translateY(0); }
 
         .modal.win {
-            border-color: rgba(251, 191, 36, 0.4);
-            box-shadow: 0 0 80px rgba(251, 191, 36, 0.3), 0 20px 60px rgba(0, 0, 0, 0.7);
+            border-color: rgba(251, 191, 36, 0.5);
+            box-shadow: 0 0 100px rgba(251, 191, 36, 0.4), 0 25px 80px rgba(0, 0, 0, 0.8);
         }
 
         .modal.lose {
-            border-color: rgba(107, 114, 128, 0.3);
+            border-color: rgba(107, 114, 128, 0.4);
+            box-shadow: 0 0 60px rgba(107, 114, 128, 0.2), 0 25px 80px rgba(0, 0, 0, 0.8);
         }
 
-        /* Confetti Container */
+        /* Continuous Confetti */
         .confetti-modal {
             position: absolute;
             top: 0;
@@ -1130,107 +1166,171 @@
             pointer-events: none;
             z-index: 0;
             overflow: hidden;
-            border-radius: 28px;
+            border-radius: 32px;
         }
 
-        .confetti-modal .confetti-piece {
+        .confetti-piece {
             position: absolute;
             will-change: transform, opacity;
+            animation: confettiLoop linear infinite;
         }
 
-        @keyframes confettiFall {
-            0% { 
-                opacity: 1; 
-                transform: translateY(-20px) rotate(0deg);
-            }
-            100% { 
-                opacity: 0; 
-                transform: translateY(350px) rotate(720deg);
-            }
-        }
-
+        /* Modal Prize Image/Emoji */
         .modal-emoji {
-            font-size: 4.5rem;
+            font-size: 5rem;
             margin-bottom: 20px;
-            animation: bounceIn 0.5s ease-out;
-            filter: drop-shadow(0 8px 25px rgba(0, 0, 0, 0.4));
+            animation: bounceIn 0.6s ease-out;
+            filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5));
             position: relative;
             z-index: 2;
         }
 
         .modal-prize-image {
-            width: 100px;
-            height: 100px;
+            width: 110px;
+            height: 110px;
             object-fit: cover;
             margin-bottom: 20px;
-            border-radius: 20px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            animation: bounceIn 0.5s ease-out;
-            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
+            border-radius: 24px;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            animation: bounceIn 0.6s ease-out;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
             position: relative;
             z-index: 2;
         }
 
         .modal.win .modal-prize-image {
-            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4), 0 0 40px rgba(251, 191, 36, 0.4);
-            border-color: rgba(251, 191, 36, 0.3);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5), 0 0 60px rgba(251, 191, 36, 0.5);
+            border-color: rgba(251, 191, 36, 0.4);
         }
 
         @keyframes bounceIn {
-            0% { transform: scale(0); opacity: 0; }
-            60% { transform: scale(1.1); }
-            100% { transform: scale(1); opacity: 1; }
+            0% { transform: scale(0) rotate(-10deg); opacity: 0; }
+            50% { transform: scale(1.15) rotate(5deg); }
+            70% { transform: scale(0.95) rotate(-2deg); }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
         }
 
+        /* Modal Title */
         .modal-title {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             font-weight: 700;
-            margin-bottom: 12px;
-            letter-spacing: 2px;
+            margin-bottom: 15px;
+            letter-spacing: 3px;
             text-transform: uppercase;
             position: relative;
             z-index: 2;
         }
 
         .modal.win .modal-title {
-            background: linear-gradient(135deg, #fff, #fbbf24);
+            background: linear-gradient(135deg, #fff, #fbbf24, #fff);
+            background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            animation: textShine 3s linear infinite;
+            text-shadow: none;
         }
 
+        .modal.lose .modal-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.6rem;
+            background: linear-gradient(135deg, #9ca3af, #6b7280, #9ca3af);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textShine 4s linear infinite, emptyTextGlow 2s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px rgba(107, 114, 128, 0.5));
+        }
+
+        /* Modal Prize Text */
         .modal-prize {
             font-family: 'Orbitron', sans-serif;
-            font-size: 2.2rem;
+            font-size: 2.5rem;
             font-weight: 900;
             background: linear-gradient(135deg, #fef3c7, #fbbf24, #f59e0b);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 18px;
+            margin-bottom: 20px;
             position: relative;
             z-index: 2;
+            text-shadow: none;
+            filter: drop-shadow(0 4px 15px rgba(251, 191, 36, 0.5));
         }
 
         .modal.lose .modal-prize {
             font-size: 1rem;
-            background: linear-gradient(135deg, #9ca3af, #6b7280);
+            font-weight: 600;
+            background: linear-gradient(135deg, #a1a1aa, #71717a);
             -webkit-background-clip: text;
+            filter: none;
         }
 
+        /* Modal Balance Display */
         .modal-balance {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-bottom: 24px;
-            padding: 12px 16px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
-            letter-spacing: 1px;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 25px;
             position: relative;
             z-index: 2;
         }
 
+        .modal-balance-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 18px;
+            background: linear-gradient(145deg, rgba(30, 30, 60, 0.9), rgba(15, 15, 35, 0.95));
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modal-balance-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        }
+
+        .modal-balance-item.sapphire {
+            border-color: rgba(99, 102, 241, 0.3);
+            box-shadow: 0 0 25px rgba(99, 102, 241, 0.2), inset 0 0 20px rgba(99, 102, 241, 0.05);
+        }
+
+        .modal-balance-item.star {
+            border-color: rgba(251, 191, 36, 0.3);
+            box-shadow: 0 0 25px rgba(251, 191, 36, 0.2), inset 0 0 20px rgba(251, 191, 36, 0.05);
+        }
+
+        .modal-balance-icon {
+            font-size: 1.3rem;
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3));
+        }
+
+        .modal-balance-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .modal-balance-item.sapphire .modal-balance-value {
+            background: linear-gradient(135deg, #c4b5fd, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .modal-balance-item.star .modal-balance-value {
+            background: linear-gradient(135deg, #fef3c7, #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Modal Buttons */
         .modal-buttons {
             display: flex;
             flex-direction: column;
@@ -1242,47 +1342,69 @@
         .modal-button {
             background: linear-gradient(135deg, var(--theme-color), var(--theme-color-light));
             border: none;
-            padding: 16px 32px;
+            padding: 18px 36px;
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 600;
-            letter-spacing: 1px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 2px;
             color: #0a0a14;
-            border-radius: 14px;
+            border-radius: 16px;
             cursor: pointer;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             text-transform: uppercase;
             -webkit-tap-highlight-color: transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modal-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .modal-button:hover::before {
+            left: 100%;
         }
 
         .modal-button:active { transform: scale(0.97); }
 
         @media (min-width: 769px) {
             .modal-button:hover { 
-                transform: scale(1.02); 
-                box-shadow: 0 10px 30px var(--theme-glow); 
+                transform: scale(1.03); 
+                box-shadow: 0 12px 40px var(--theme-glow); 
             }
         }
 
         .modal-button.secondary {
             background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.12);
+            border: 2px solid rgba(255, 255, 255, 0.15);
             color: var(--text-secondary);
+            padding: 16px 36px;
         }
 
         .modal-button.secondary:hover, .modal-button.secondary:active {
             background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.3);
             color: white;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
         }
 
         .modal-button.gold { 
             background: linear-gradient(135deg, #fbbf24, #f59e0b); 
             color: #1a1a2e;
-            box-shadow: 0 6px 25px rgba(251, 191, 36, 0.35);
+            box-shadow: 0 8px 30px rgba(251, 191, 36, 0.4);
+            animation: buttonGlow 2s ease-in-out infinite;
         }
 
         .modal-button.gold:hover { 
-            box-shadow: 0 10px 35px rgba(251, 191, 36, 0.5); 
+            box-shadow: 0 12px 50px rgba(251, 191, 36, 0.6); 
+            animation: none;
         }
 
         .loading-overlay {
@@ -1345,6 +1467,9 @@
             .case-hero { width: 140px; height: 140px; }
             .case-emoji { font-size: 4.5rem; }
             .case-display-image { width: 100px; height: 100px; }
+            .modal { padding: 35px 25px; }
+            .modal-balance { gap: 8px; }
+            .modal-balance-item { padding: 10px 14px; }
         }
 
         @media (max-width: 380px) {
@@ -1361,6 +1486,7 @@
             .case-hero { width: 120px; height: 120px; }
             .case-emoji { font-size: 4rem; }
             .case-display-image { width: 85px; height: 85px; }
+            .modal-balance { flex-direction: column; gap: 10px; }
         }
 
         @supports (padding: max(0px)) {
@@ -1398,7 +1524,7 @@
         <div class="balance-container">
             <div class="balance-card sapphires">
                 <div class="balance-icon-wrap">
-                    <span class="balance-icon">💎</span>
+                    <span class="balance-icon" id="sapphireIcon">💎</span>
                 </div>
                 <div class="balance-info">
                     <span class="balance-value" id="sapphires">0</span>
@@ -1407,7 +1533,7 @@
             </div>
             <div class="balance-card stars">
                 <div class="balance-icon-wrap">
-                    <span class="balance-icon">⭐</span>
+                    <span class="balance-icon" id="starIcon">⭐</span>
                 </div>
                 <div class="balance-info">
                     <span class="balance-value" id="stars-balance">0</span>
@@ -1471,9 +1597,18 @@
             <div class="modal-emoji" id="modalEmoji">🎉</div>
             <div class="modal-title" id="modalTitle">Поздравляем!</div>
             <div class="modal-prize" id="modalPrize">+50 ⭐</div>
-            <div class="modal-balance" id="modalBalance">💎 150 сапфиров | ⭐ 50 звёзд</div>
+            <div class="modal-balance" id="modalBalance">
+                <div class="modal-balance-item sapphire">
+                    <span class="modal-balance-icon">💎</span>
+                    <span class="modal-balance-value" id="modalSapphires">0</span>
+                </div>
+                <div class="modal-balance-item star">
+                    <span class="modal-balance-icon">⭐</span>
+                    <span class="modal-balance-value" id="modalStars">0</span>
+                </div>
+            </div>
             <div class="modal-buttons">
-                <button class="modal-button gold" id="spinAgainBtn" onclick="spinAgain()">Открыть ещё</button>
+                <button class="modal-button gold" id="spinAgainBtn" onclick="spinAgain()">✨ Открыть ещё ✨</button>
                 <button class="modal-button secondary" onclick="closeModal()">Закрыть</button>
             </div>
         </div>
@@ -1489,6 +1624,14 @@
         const GITHUB_REPO = "divine-case-assets";
         const GITHUB_BRANCH = "main";
         const IMG_CDN = `https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${GITHUB_REPO}@${GITHUB_BRANCH}`;
+
+        // Custom icons config - you can add your own images here!
+        // Recommended size: 56x56 pixels (or 112x112 for retina)
+        // Format: PNG with transparency
+        const CUSTOM_ICONS = {
+            sapphire: null, // Set to `${IMG_CDN}/icons/sapphire.png` to use custom image
+            star: null      // Set to `${IMG_CDN}/icons/star.png` to use custom image
+        };
 
         const CASES = [
             { id: 'cosmic', name: 'Cosmic Case', emoji: '🎁', image: `${IMG_CDN}/cases/cosmic.png`, cost: 100, tag: null, style: 'cosmic-style', theme: 'theme-cosmic' },
@@ -1513,6 +1656,7 @@
         };
 
         let isSpinning = false;
+        let confettiInterval = null;
 
         const PRIZE_VISUALS = {
             0: { stars: 0, emoji: "💨", rarity: "empty", image: `${IMG_CDN}/prizes/void.png`, name: "Void" },
@@ -1667,10 +1811,23 @@
             }
         }
 
+        function setupCustomIcons() {
+            if (CUSTOM_ICONS.sapphire) {
+                document.getElementById('sapphireIcon').innerHTML = 
+                    `<img src="${CUSTOM_ICONS.sapphire}" class="balance-icon-img" alt="💎" onerror="this.outerHTML='💎'">`;
+            }
+            if (CUSTOM_ICONS.star) {
+                document.getElementById('starIcon').innerHTML = 
+                    `<img src="${CUSTOM_ICONS.star}" class="balance-icon-img" alt="⭐" onerror="this.outerHTML='⭐'">`;
+            }
+        }
+
         function preloadImages() {
             const imageUrls = [];
             CASES.forEach(c => { if (c.image) imageUrls.push(c.image); });
             Object.values(PRIZE_VISUALS).forEach(p => { if (p.image) imageUrls.push(p.image); });
+            if (CUSTOM_ICONS.sapphire) imageUrls.push(CUSTOM_ICONS.sapphire);
+            if (CUSTOM_ICONS.star) imageUrls.push(CUSTOM_ICONS.star);
             imageUrls.forEach(url => { const img = new Image(); img.src = url; });
         }
 
@@ -1693,6 +1850,7 @@
 
             generateStars();
             generateCasesGrid();
+            setupCustomIcons();
             preloadImages();
 
             const balanceLoaded = await loadBalance();
@@ -1961,12 +2119,10 @@
             const prizeStars = getRandomPrize();
             const prize = PRIZE_VISUALS[prizeStars] || PRIZE_VISUALS[0];
 
-            // Оптимистичное обновление UI
             STATE.sapphires -= currentCost;
             STATE.spinsCount++;
             updateUI();
 
-            // Запускаем анимацию И spin запрос параллельно
             const animationPromise = runAnimation(prize);
             
             let spinSuccess = false;
@@ -1985,10 +2141,8 @@
                 }
             })();
 
-            // Ждём завершения ОБОИХ - анимации и spin
             await Promise.all([animationPromise, spinPromise]);
 
-            // Только ПОСЛЕ анимации вызываем claim (чтобы бот не присылал раньше)
             let apiSuccess = false;
             if (spinSuccess) {
                 try {
@@ -2044,11 +2198,9 @@
             const emoji = document.getElementById('modalEmoji');
             const title = document.getElementById('modalTitle');
             const prizeText = document.getElementById('modalPrize');
-            const balance = document.getElementById('modalBalance');
             const spinAgainBtn = document.getElementById('spinAgainBtn');
-            const confettiModal = document.getElementById('confettiModal');
 
-            if (confettiModal) confettiModal.innerHTML = '';
+            stopConfetti();
             modal.classList.remove('win', 'lose');
 
             if (prize.image) {
@@ -2061,7 +2213,7 @@
                 modal.classList.add('win');
                 
                 if (prize.stars >= 9999) {
-                    title.textContent = '🎉 ДЖЕКПОТ!';
+                    title.textContent = '🎉 ДЖЕКПОТ! 🎉';
                 } else if (prize.stars >= 1000) {
                     title.textContent = 'ДЖЕКПОТ!';
                 } else if (prize.stars >= 500) {
@@ -2074,15 +2226,16 @@
                 
                 prizeText.textContent = `+${prize.stars} ⭐`;
                 haptic('success');
-                setTimeout(() => createConfettiInModal(), 100);
+                startContinuousConfetti();
             } else {
                 modal.classList.add('lose');
                 title.textContent = 'Пусто...';
-                prizeText.textContent = 'Попробуй ещё!';
+                prizeText.textContent = 'Попробуй ещё раз!';
                 haptic('error');
             }
 
-            balance.textContent = `💎 ${STATE.sapphires} сапфиров | ⭐ ${STATE.stars} звёзд`;
+            document.getElementById('modalSapphires').textContent = STATE.sapphires;
+            document.getElementById('modalStars').textContent = STATE.stars;
 
             const canSpinAgain = STATE.sapphires >= STATE.spinCost && STATE.canSpin;
             spinAgainBtn.style.display = canSpinAgain ? 'block' : 'none';
@@ -2090,36 +2243,65 @@
             overlay.classList.add('show');
         }
 
-        function createConfettiInModal() {
+        function startContinuousConfetti() {
             const container = document.getElementById('confettiModal');
             if (!container) return;
 
-            const colors = ['#fbbf24', '#f59e0b', '#6366f1', '#818cf8', '#ec4899', '#22d3ee', '#10b981', '#a855f7'];
-            const confettiCount = 50;
-            const fragment = document.createDocumentFragment();
+            const colors = [
+                '#fbbf24', '#f59e0b', '#fcd34d',
+                '#6366f1', '#818cf8', '#a78bfa',
+                '#ec4899', '#f472b6',
+                '#22d3ee', '#67e8f9',
+                '#10b981', '#34d399',
+                '#ef4444', '#f87171'
+            ];
 
-            for (let i = 0; i < confettiCount; i++) {
-                const piece = document.createElement('div');
-                piece.className = 'confetti-piece';
-                
-                const size = Math.random() * 8 + 4;
-                const color = colors[Math.floor(Math.random() * colors.length)];
+            function createConfettiBatch() {
+                const fragment = document.createDocumentFragment();
+                const batchSize = 15;
 
-                piece.style.cssText = `
-                    left: ${Math.random() * 100}%;
-                    width: ${size}px;
-                    height: ${size}px;
-                    background: ${color};
-                    animation: confettiFall ${2.5 + Math.random() * 1.5}s ease-out ${Math.random() * 0.5}s forwards;
-                    border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
-                    box-shadow: 0 0 ${size/2}px ${color};
-                `;
+                for (let i = 0; i < batchSize; i++) {
+                    const piece = document.createElement('div');
+                    piece.className = 'confetti-piece';
+                    
+                    const size = Math.random() * 10 + 5;
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    const duration = 3 + Math.random() * 2;
+                    const delay = Math.random() * 0.5;
+                    const left = Math.random() * 100;
+                    const rotation = Math.random() * 360;
 
-                fragment.appendChild(piece);
+                    piece.style.cssText = `
+                        left: ${left}%;
+                        top: -20px;
+                        width: ${size}px;
+                        height: ${size * (Math.random() * 0.5 + 0.5)}px;
+                        background: ${color};
+                        animation-duration: ${duration}s;
+                        animation-delay: ${delay}s;
+                        border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
+                        box-shadow: 0 0 ${size}px ${color};
+                        transform: rotate(${rotation}deg);
+                    `;
+
+                    piece.addEventListener('animationend', () => piece.remove());
+                    fragment.appendChild(piece);
+                }
+
+                container.appendChild(fragment);
             }
 
-            container.appendChild(fragment);
-            setTimeout(() => { container.innerHTML = ''; }, 4000);
+            createConfettiBatch();
+            confettiInterval = setInterval(createConfettiBatch, 400);
+        }
+
+        function stopConfetti() {
+            if (confettiInterval) {
+                clearInterval(confettiInterval);
+                confettiInterval = null;
+            }
+            const container = document.getElementById('confettiModal');
+            if (container) container.innerHTML = '';
         }
 
         function spinAgain() {
@@ -2132,12 +2314,9 @@
 
         function closeModal() {
             STATE.isModalOpen = false;
+            stopConfetti();
             document.getElementById('modalOverlay').classList.remove('show');
             document.getElementById('modal').classList.remove('win', 'lose');
-
-            const confettiModal = document.getElementById('confettiModal');
-            if (confettiModal) confettiModal.innerHTML = '';
-
             updateUI();
         }
 
@@ -2227,8 +2406,15 @@
         let lastTouchEnd = 0;
 
         document.addEventListener('visibilitychange', () => {
-            if (document.hidden) document.body.classList.add('paused');
-            else document.body.classList.remove('paused');
+            if (document.hidden) {
+                document.body.classList.add('paused');
+                if (STATE.isModalOpen) stopConfetti();
+            } else {
+                document.body.classList.remove('paused');
+                if (STATE.isModalOpen && document.getElementById('modal').classList.contains('win')) {
+                    startContinuousConfetti();
+                }
+            }
         });
     </script>
 </body>
