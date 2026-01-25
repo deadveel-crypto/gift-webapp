@@ -1,3 +1,6 @@
+Вот полный обновлённый код:
+
+```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -52,7 +55,6 @@
             z-index: 0;
             overflow: hidden;
             background: radial-gradient(ellipse at top, #0a0a18 0%, #050508 50%, #020203 100%);
-            will-change: auto;
         }
 
         .bg-orb {
@@ -60,8 +62,6 @@
             border-radius: 50%;
             filter: blur(80px);
             opacity: 0.35;
-            will-change: transform;
-            contain: layout style paint;
         }
 
         .bg-orb-1 {
@@ -130,9 +130,7 @@
         }
 
         @media (min-width: 769px) {
-            .star {
-                animation: twinkle 4s ease-in-out infinite;
-            }
+            .star { animation: twinkle 4s ease-in-out infinite; }
         }
 
         @keyframes twinkle {
@@ -155,6 +153,11 @@
             50% { transform: translateY(-8px); }
         }
 
+        @keyframes orbitalRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
         .header {
             text-align: center;
             margin-bottom: 25px;
@@ -164,9 +167,7 @@
             animation: cardEnter 0.6s ease-out;
         }
 
-        .brand-container {
-            margin-bottom: 25px;
-        }
+        .brand-container { margin-bottom: 25px; }
 
         .brand-text {
             font-family: 'Orbitron', sans-serif;
@@ -215,9 +216,7 @@
         }
 
         @media (min-width: 769px) {
-            .balance-ring {
-                animation: orbitalRotate 10s linear infinite;
-            }
+            .balance-ring { animation: orbitalRotate 10s linear infinite; }
         }
 
         .balance-ring::before {
@@ -247,9 +246,7 @@
         }
 
         @media (min-width: 769px) {
-            .balance-orb.stars .balance-ring {
-                animation-direction: reverse;
-            }
+            .balance-orb.stars .balance-ring { animation-direction: reverse; }
         }
 
         .balance-orb.stars .balance-ring::before {
@@ -269,24 +266,10 @@
             justify-content: center;
         }
 
-        .balance-icon {
-            font-size: 1.5rem;
-            margin-bottom: 2px;
-        }
-
-        .balance-value {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 700;
-        }
-
-        .balance-orb.sapphires .balance-value {
-            color: #c4b5fd;
-        }
-
-        .balance-orb.stars .balance-value {
-            color: #fcd34d;
-        }
+        .balance-icon { font-size: 1.5rem; margin-bottom: 2px; }
+        .balance-value { font-family: 'Orbitron', sans-serif; font-size: 1.1rem; font-weight: 700; }
+        .balance-orb.sapphires .balance-value { color: #c4b5fd; }
+        .balance-orb.stars .balance-value { color: #fcd34d; }
 
         .balance-label {
             font-family: 'Rajdhani', sans-serif;
@@ -297,11 +280,6 @@
             margin-top: 2px;
         }
 
-        @keyframes orbitalRotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
         .menu-screen {
             z-index: 10;
             width: 100%;
@@ -309,9 +287,7 @@
             animation: cardEnter 0.6s ease-out;
         }
 
-        .menu-screen.hidden {
-            display: none;
-        }
+        .menu-screen.hidden { display: none; }
 
         .menu-title {
             text-align: center;
@@ -324,8 +300,7 @@
             position: relative;
         }
 
-        .menu-title::before,
-        .menu-title::after {
+        .menu-title::before, .menu-title::after {
             content: '';
             position: absolute;
             top: 50%;
@@ -353,18 +328,13 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
             position: relative;
             overflow: hidden;
-            contain: layout style paint;
             -webkit-tap-highlight-color: transparent;
         }
 
-        .case-card:active {
-            transform: scale(0.97);
-        }
+        .case-card:active { transform: scale(0.97); }
 
         @media (min-width: 769px) {
-            .case-card:hover {
-                transform: translateY(-8px) scale(1.02);
-            }
+            .case-card:hover { transform: translateY(-8px) scale(1.02); }
         }
 
         .case-card.cosmic-style {
@@ -372,8 +342,7 @@
             background: linear-gradient(145deg, rgba(99, 102, 241, 0.12), rgba(15, 15, 35, 0.95));
         }
 
-        .case-card.cosmic-style:hover,
-        .case-card.cosmic-style:active {
+        .case-card.cosmic-style:hover, .case-card.cosmic-style:active {
             border-color: rgba(99, 102, 241, 0.7);
             box-shadow: 0 15px 40px rgba(99, 102, 241, 0.2);
         }
@@ -389,8 +358,7 @@
             background: linear-gradient(145deg, rgba(236, 72, 153, 0.15), rgba(15, 15, 35, 0.95));
         }
 
-        .case-card.stellar-style:hover,
-        .case-card.stellar-style:active {
+        .case-card.stellar-style:hover, .case-card.stellar-style:active {
             border-color: rgba(236, 72, 153, 0.8);
             box-shadow: 0 15px 40px rgba(236, 72, 153, 0.25);
         }
@@ -406,8 +374,7 @@
             background: linear-gradient(145deg, rgba(251, 191, 36, 0.12), rgba(15, 15, 35, 0.95));
         }
 
-        .case-card.golden-style:hover,
-        .case-card.golden-style:active {
+        .case-card.golden-style:hover, .case-card.golden-style:active {
             border-color: rgba(251, 191, 36, 0.9);
             box-shadow: 0 15px 40px rgba(251, 191, 36, 0.25);
         }
@@ -423,8 +390,7 @@
             background: linear-gradient(145deg, rgba(34, 211, 238, 0.15), rgba(15, 15, 35, 0.95));
         }
 
-        .case-card.divine-style:hover,
-        .case-card.divine-style:active {
+        .case-card.divine-style:hover, .case-card.divine-style:active {
             border-color: rgba(34, 211, 238, 0.9);
             box-shadow: 0 15px 40px rgba(34, 211, 238, 0.3);
         }
@@ -450,15 +416,16 @@
         }
 
         @media (min-width: 769px) {
-            .case-card-ring {
-                animation: orbitalRotate 12s linear infinite;
-            }
+            .case-card-ring { animation: orbitalRotate 12s linear infinite; }
         }
 
         .case-card-emoji {
             font-size: 3.5rem;
             filter: drop-shadow(0 6px 15px rgba(0, 0, 0, 0.4));
-            animation: subtleFloat 5s ease-in-out infinite;
+        }
+
+        @media (min-width: 769px) {
+            .case-card-emoji { animation: subtleFloat 5s ease-in-out infinite; }
         }
 
         .case-card-image {
@@ -467,8 +434,11 @@
             object-fit: cover;
             border-radius: 20px;
             filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.5));
-            animation: subtleFloat 5s ease-in-out infinite;
             border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @media (min-width: 769px) {
+            .case-card-image { animation: subtleFloat 5s ease-in-out infinite; }
         }
 
         .case-card-name {
@@ -529,9 +499,7 @@
             align-items: center;
         }
 
-        .case-screen.hidden {
-            display: none;
-        }
+        .case-screen.hidden { display: none; }
 
         body.theme-cosmic {
             --theme-color: #6366f1;
@@ -569,7 +537,10 @@
             height: 140px;
             margin: 0 auto 15px;
             position: relative;
-            animation: subtleFloat 5s ease-in-out infinite;
+        }
+
+        @media (min-width: 769px) {
+            .case-box { animation: subtleFloat 5s ease-in-out infinite; }
         }
 
         .case-glow {
@@ -579,7 +550,6 @@
             border-radius: 50%;
             filter: blur(20px);
             opacity: 0.4;
-            transition: background 0.5s ease;
         }
 
         .case-box-ring {
@@ -591,9 +561,7 @@
         }
 
         @media (min-width: 769px) {
-            .case-box-ring {
-                animation: orbitalRotate 18s linear infinite;
-            }
+            .case-box-ring { animation: orbitalRotate 18s linear infinite; }
         }
 
         .case-box-ring::before {
@@ -625,9 +593,7 @@
             filter: drop-shadow(0 6px 20px var(--theme-glow));
         }
 
-        .case-emoji.hidden {
-            display: none;
-        }
+        .case-emoji.hidden { display: none; }
 
         .case-display-image {
             width: 95px;
@@ -638,9 +604,7 @@
             border: 2px solid rgba(255, 255, 255, 0.15);
         }
 
-        .case-display-image.hidden {
-            display: none;
-        }
+        .case-display-image.hidden { display: none; }
 
         .case-name {
             font-family: 'Orbitron', sans-serif;
@@ -669,8 +633,6 @@
             overflow: hidden;
             border: 2px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 0 30px var(--theme-glow);
-            transition: box-shadow 0.5s ease;
-            contain: layout style;
         }
 
         .case-container::before {
@@ -680,12 +642,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(90deg, 
-                rgba(5, 5, 10, 1) 0%,
-                transparent 15%,
-                transparent 85%,
-                rgba(5, 5, 10, 1) 100%
-            );
+            background: linear-gradient(90deg, rgba(5, 5, 10, 1) 0%, transparent 15%, transparent 85%, rgba(5, 5, 10, 1) 100%);
             z-index: 10;
             pointer-events: none;
         }
@@ -708,7 +665,6 @@
             border-right: 14px solid transparent;
             border-top: 22px solid var(--theme-color);
             filter: drop-shadow(0 0 10px var(--theme-color));
-            transition: border-color 0.5s ease;
         }
 
         .pointer-line {
@@ -716,7 +672,6 @@
             height: 130px;
             background: linear-gradient(180deg, var(--theme-color), transparent);
             opacity: 0.4;
-            transition: background 0.5s ease;
         }
 
         .bottom-pointer {
@@ -753,95 +708,74 @@
             margin: 0 6px;
             border-radius: 18px;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
             position: relative;
             overflow: hidden;
             border: 2px solid rgba(255, 255, 255, 0.1);
-            contain: layout style paint;
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
         }
 
-        .prize-item.has-image {
-            background: transparent !important;
-        }
+        .prize-item.has-image { background: transparent !important; }
 
-        /* ============================================
-           УНИКАЛЬНЫЕ СТИЛИ ДЛЯ КАЖДОГО ПРИЗА
-           ============================================ */
-        
-        /* 0 звёзд - Серый/Пустой */
         .prize-item.rarity-empty {
             background: linear-gradient(145deg, rgba(55, 65, 81, 0.7), rgba(31, 41, 55, 0.8));
             border-color: rgba(107, 114, 128, 0.4);
         }
 
-        /* 15 звёзд - Бледно-зелёный */
         .prize-item.rarity-stars-15 {
             background: linear-gradient(145deg, rgba(52, 211, 153, 0.8), rgba(16, 185, 129, 0.85));
             border-color: rgba(52, 211, 153, 0.6);
             box-shadow: 0 0 18px rgba(52, 211, 153, 0.3);
         }
 
-        /* 25 звёзд - Бирюзовый */
         .prize-item.rarity-stars-25 {
             background: linear-gradient(145deg, rgba(45, 212, 191, 0.8), rgba(20, 184, 166, 0.85));
             border-color: rgba(45, 212, 191, 0.6);
             box-shadow: 0 0 18px rgba(45, 212, 191, 0.3);
         }
 
-        /* 50 звёзд - Синий */
         .prize-item.rarity-stars-50 {
             background: linear-gradient(145deg, rgba(59, 130, 246, 0.85), rgba(37, 99, 235, 0.9));
             border-color: rgba(59, 130, 246, 0.6);
             box-shadow: 0 0 20px rgba(59, 130, 246, 0.35);
         }
 
-        /* 75 звёзд - Индиго */
         .prize-item.rarity-stars-75 {
             background: linear-gradient(145deg, rgba(99, 102, 241, 0.85), rgba(79, 70, 229, 0.9));
             border-color: rgba(99, 102, 241, 0.6);
             box-shadow: 0 0 22px rgba(99, 102, 241, 0.35);
         }
 
-        /* 100 звёзд - Фиолетовый */
         .prize-item.rarity-stars-100 {
             background: linear-gradient(145deg, rgba(139, 92, 246, 0.85), rgba(124, 58, 237, 0.9));
             border-color: rgba(139, 92, 246, 0.6);
             box-shadow: 0 0 24px rgba(139, 92, 246, 0.4);
         }
 
-        /* 150 звёзд - Пурпурный */
         .prize-item.rarity-stars-150 {
             background: linear-gradient(145deg, rgba(168, 85, 247, 0.85), rgba(147, 51, 234, 0.9));
             border-color: rgba(168, 85, 247, 0.65);
             box-shadow: 0 0 26px rgba(168, 85, 247, 0.4);
         }
 
-        /* 250 звёзд - Розовый */
         .prize-item.rarity-stars-250 {
             background: linear-gradient(145deg, rgba(236, 72, 153, 0.85), rgba(219, 39, 119, 0.9));
             border-color: rgba(236, 72, 153, 0.65);
             box-shadow: 0 0 28px rgba(236, 72, 153, 0.45);
         }
 
-        /* 500 звёзд - Оранжевый */
         .prize-item.rarity-stars-500 {
             background: linear-gradient(145deg, rgba(251, 146, 60, 0.9), rgba(249, 115, 22, 0.92));
             border-color: rgba(251, 146, 60, 0.7);
             box-shadow: 0 0 30px rgba(251, 146, 60, 0.5);
         }
 
-        /* 1000 звёзд - Золотой */
         .prize-item.rarity-stars-1000 {
             background: linear-gradient(145deg, rgba(251, 191, 36, 0.9), rgba(245, 158, 11, 0.92));
             border-color: rgba(251, 191, 36, 0.75);
             box-shadow: 0 0 35px rgba(251, 191, 36, 0.55);
         }
 
-        /* 9999 звёзд - Красно-золотой (Мифический) */
         .prize-item.rarity-stars-9999 {
             background: linear-gradient(145deg, rgba(239, 68, 68, 0.9), rgba(220, 38, 38, 0.92));
             border-color: rgba(239, 68, 68, 0.8);
@@ -863,8 +797,6 @@
             height: 100%;
             object-fit: cover;
             border-radius: 16px;
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
         }
 
         .prize-item.winner {
@@ -896,17 +828,13 @@
             display: flex;
             align-items: center;
             gap: 14px;
-            position: relative;
-            overflow: hidden;
-            animation: cardEnter 0.6s ease-out 0.3s both;
             margin-top: 25px;
             text-transform: uppercase;
             -webkit-tap-highlight-color: transparent;
+            animation: cardEnter 0.6s ease-out 0.3s both;
         }
 
-        .spin-button:active:not(:disabled) {
-            transform: scale(0.97);
-        }
+        .spin-button:active:not(:disabled) { transform: scale(0.97); }
 
         @media (min-width: 769px) {
             .spin-button:hover:not(:disabled) {
@@ -946,8 +874,7 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        .back-to-menu-btn:hover,
-        .back-to-menu-btn:active {
+        .back-to-menu-btn:hover, .back-to-menu-btn:active {
             border-color: var(--theme-color);
             color: var(--text-primary);
             box-shadow: 0 0 20px var(--theme-glow);
@@ -971,8 +898,7 @@
             text-transform: uppercase;
         }
 
-        .info-title::before,
-        .info-title::after {
+        .info-title::before, .info-title::after {
             content: '◆';
             margin: 0 12px;
             opacity: 0.3;
@@ -985,25 +911,11 @@
             gap: 12px;
         }
 
-        .prizes-grid.cols-3 {
-            grid-template-columns: repeat(3, 1fr);
-        }
-
-        .prizes-grid.cols-4 {
-            grid-template-columns: repeat(4, 1fr);
-        }
-
-        .prizes-grid.cols-5 {
-            grid-template-columns: repeat(5, 1fr);
-        }
-
-        .prizes-grid.cols-6 {
-            grid-template-columns: repeat(3, 1fr);
-        }
-
-        .prizes-grid.cols-7 {
-            grid-template-columns: repeat(4, 1fr);
-        }
+        .prizes-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+        .prizes-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+        .prizes-grid.cols-5 { grid-template-columns: repeat(5, 1fr); }
+        .prizes-grid.cols-6 { grid-template-columns: repeat(3, 1fr); }
+        .prizes-grid.cols-7 { grid-template-columns: repeat(4, 1fr); }
 
         .prize-card {
             background: linear-gradient(145deg, rgba(20, 20, 40, 0.9), rgba(10, 10, 25, 0.95));
@@ -1013,9 +925,6 @@
             padding-bottom: 12px;
             text-align: center;
             transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            contain: layout style paint;
         }
 
         @media (min-width: 769px) {
@@ -1026,56 +935,16 @@
             }
         }
 
-        /* Стили карточек призов в сетке */
-        .prize-card.stars-15 {
-            border-color: rgba(52, 211, 153, 0.4);
-            background: linear-gradient(145deg, rgba(52, 211, 153, 0.1), rgba(15, 15, 35, 0.95));
-        }
-
-        .prize-card.stars-25 {
-            border-color: rgba(45, 212, 191, 0.4);
-            background: linear-gradient(145deg, rgba(45, 212, 191, 0.1), rgba(15, 15, 35, 0.95));
-        }
-
-        .prize-card.stars-50 {
-            border-color: rgba(59, 130, 246, 0.4);
-            background: linear-gradient(145deg, rgba(59, 130, 246, 0.1), rgba(15, 15, 35, 0.95));
-        }
-
-        .prize-card.stars-75 {
-            border-color: rgba(99, 102, 241, 0.4);
-            background: linear-gradient(145deg, rgba(99, 102, 241, 0.1), rgba(15, 15, 35, 0.95));
-        }
-
-        .prize-card.stars-100 {
-            border-color: rgba(139, 92, 246, 0.4);
-            background: linear-gradient(145deg, rgba(139, 92, 246, 0.1), rgba(15, 15, 35, 0.95));
-        }
-
-        .prize-card.stars-150 {
-            border-color: rgba(168, 85, 247, 0.45);
-            background: linear-gradient(145deg, rgba(168, 85, 247, 0.1), rgba(15, 15, 35, 0.95));
-        }
-
-        .prize-card.stars-250 {
-            border-color: rgba(236, 72, 153, 0.45);
-            background: linear-gradient(145deg, rgba(236, 72, 153, 0.1), rgba(15, 15, 35, 0.95));
-        }
-
-        .prize-card.stars-500 {
-            border-color: rgba(251, 146, 60, 0.5);
-            background: linear-gradient(145deg, rgba(251, 146, 60, 0.12), rgba(15, 15, 35, 0.95));
-        }
-
-        .prize-card.stars-1000 {
-            border-color: rgba(251, 191, 36, 0.5);
-            background: linear-gradient(145deg, rgba(251, 191, 36, 0.12), rgba(15, 15, 35, 0.95));
-        }
-
-        .prize-card.stars-9999 {
-            border-color: rgba(239, 68, 68, 0.5);
-            background: linear-gradient(145deg, rgba(239, 68, 68, 0.12), rgba(15, 15, 35, 0.95));
-        }
+        .prize-card.stars-15 { border-color: rgba(52, 211, 153, 0.4); background: linear-gradient(145deg, rgba(52, 211, 153, 0.1), rgba(15, 15, 35, 0.95)); }
+        .prize-card.stars-25 { border-color: rgba(45, 212, 191, 0.4); background: linear-gradient(145deg, rgba(45, 212, 191, 0.1), rgba(15, 15, 35, 0.95)); }
+        .prize-card.stars-50 { border-color: rgba(59, 130, 246, 0.4); background: linear-gradient(145deg, rgba(59, 130, 246, 0.1), rgba(15, 15, 35, 0.95)); }
+        .prize-card.stars-75 { border-color: rgba(99, 102, 241, 0.4); background: linear-gradient(145deg, rgba(99, 102, 241, 0.1), rgba(15, 15, 35, 0.95)); }
+        .prize-card.stars-100 { border-color: rgba(139, 92, 246, 0.4); background: linear-gradient(145deg, rgba(139, 92, 246, 0.1), rgba(15, 15, 35, 0.95)); }
+        .prize-card.stars-150 { border-color: rgba(168, 85, 247, 0.45); background: linear-gradient(145deg, rgba(168, 85, 247, 0.1), rgba(15, 15, 35, 0.95)); }
+        .prize-card.stars-250 { border-color: rgba(236, 72, 153, 0.45); background: linear-gradient(145deg, rgba(236, 72, 153, 0.1), rgba(15, 15, 35, 0.95)); }
+        .prize-card.stars-500 { border-color: rgba(251, 146, 60, 0.5); background: linear-gradient(145deg, rgba(251, 146, 60, 0.12), rgba(15, 15, 35, 0.95)); }
+        .prize-card.stars-1000 { border-color: rgba(251, 191, 36, 0.5); background: linear-gradient(145deg, rgba(251, 191, 36, 0.12), rgba(15, 15, 35, 0.95)); }
+        .prize-card.stars-9999 { border-color: rgba(239, 68, 68, 0.5); background: linear-gradient(145deg, rgba(239, 68, 68, 0.12), rgba(15, 15, 35, 0.95)); }
 
         .prize-card.empty {
             border-color: rgba(107, 114, 128, 0.25);
@@ -1102,20 +971,11 @@
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        .prize-card-emoji { 
-            font-size: 2rem;
-            filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.25));
-        }
+        .prize-card-emoji { font-size: 2rem; filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.25)); }
 
-        .prize-card-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
-        }
-        
-        .prize-card-name { 
+        .prize-card-image { width: 100%; height: 100%; object-fit: cover; }
+
+        .prize-card-name {
             font-family: 'Orbitron', sans-serif;
             font-size: 0.65rem;
             font-weight: 600;
@@ -1165,10 +1025,7 @@
             -webkit-backdrop-filter: blur(15px);
         }
 
-        .modal-overlay.show {
-            opacity: 1;
-            visibility: visible;
-        }
+        .modal-overlay.show { opacity: 1; visibility: visible; }
 
         .modal {
             background: linear-gradient(180deg, rgba(18, 18, 40, 0.98) 0%, rgba(8, 8, 18, 0.99) 100%);
@@ -1185,13 +1042,33 @@
             box-shadow: 0 0 60px var(--theme-glow);
         }
 
-        .modal-overlay.show .modal {
-            transform: scale(1) translateY(0);
-        }
+        .modal-overlay.show .modal { transform: scale(1) translateY(0); }
 
         .modal.win {
             border-color: rgba(251, 191, 36, 0.5);
             box-shadow: 0 0 80px rgba(251, 191, 36, 0.2);
+        }
+
+        .confetti-modal {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+            border-radius: 32px;
+        }
+
+        .confetti-modal .confetti-piece {
+            position: absolute;
+            animation: confettiModalFall 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        @keyframes confettiModalFall {
+            0% { opacity: 1; transform: translateY(-20px) rotate(0deg); }
+            100% { opacity: 0; transform: translateY(350px) rotate(720deg); }
         }
 
         .modal-emoji {
@@ -1199,6 +1076,8 @@
             margin-bottom: 25px;
             animation: bounceIn 0.5s ease-out;
             filter: drop-shadow(0 8px 25px rgba(0, 0, 0, 0.4));
+            position: relative;
+            z-index: 1;
         }
 
         .modal-prize-image {
@@ -1218,15 +1097,17 @@
             100% { transform: scale(1); opacity: 1; }
         }
 
-        .modal-title { 
+        .modal-title {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.3rem; 
+            font-size: 1.3rem;
             font-weight: 700;
             margin-bottom: 12px;
             letter-spacing: 2px;
             text-transform: uppercase;
+            position: relative;
+            z-index: 1;
         }
-        
+
         .modal-prize {
             font-family: 'Orbitron', sans-serif;
             font-size: 2.5rem;
@@ -1235,8 +1116,10 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
         }
-        
+
         .modal-balance {
             font-family: 'Rajdhani', sans-serif;
             font-size: 0.9rem;
@@ -1247,12 +1130,16 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 14px;
             letter-spacing: 1px;
+            position: relative;
+            z-index: 1;
         }
 
         .modal-buttons {
             display: flex;
             flex-direction: column;
             gap: 14px;
+            position: relative;
+            z-index: 1;
         }
 
         .modal-button {
@@ -1271,15 +1158,10 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        .modal-button:active {
-            transform: scale(0.97);
-        }
+        .modal-button:active { transform: scale(0.97); }
 
         @media (min-width: 769px) {
-            .modal-button:hover {
-                transform: scale(1.02);
-                box-shadow: 0 10px 30px var(--theme-glow);
-            }
+            .modal-button:hover { transform: scale(1.02); box-shadow: 0 10px 30px var(--theme-glow); }
         }
 
         .modal-button.secondary {
@@ -1288,49 +1170,15 @@
             color: var(--text-secondary);
         }
 
-        .modal-button.secondary:hover,
-        .modal-button.secondary:active {
+        .modal-button.secondary:hover, .modal-button.secondary:active {
             background: rgba(255, 255, 255, 0.05);
             color: white;
             box-shadow: none;
         }
 
-        .modal-button.gold {
-            background: linear-gradient(135deg, #fbbf24, #f59e0b);
-            color: #1a1a2e;
-        }
+        .modal-button.gold { background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #1a1a2e; }
 
-        .modal-button.gold:hover {
-            box-shadow: 0 10px 30px rgba(251, 191, 36, 0.4);
-        }
-
-        .confetti {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 99;
-            overflow: hidden;
-        }
-
-        .confetti-piece {
-            position: absolute;
-            animation: confettiFall 3.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-            will-change: transform, opacity;
-        }
-
-        @keyframes confettiFall {
-            0% { 
-                opacity: 1; 
-                transform: translateY(-50px) rotate(0deg);
-            }
-            100% { 
-                opacity: 0; 
-                transform: translateY(100vh) rotate(720deg);
-            }
-        }
+        .modal-button.gold:hover { box-shadow: 0 10px 30px rgba(251, 191, 36, 0.4); }
 
         .loading-overlay {
             position: fixed;
@@ -1347,10 +1195,7 @@
             transition: opacity 0.4s ease;
         }
 
-        .loading-overlay.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
+        .loading-overlay.hidden { opacity: 0; pointer-events: none; }
 
         .loader {
             width: 50px;
@@ -1362,9 +1207,7 @@
             animation: spin 0.8s linear infinite;
         }
 
-        @keyframes spin { 
-            to { transform: rotate(360deg); } 
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
         .loading-text {
             margin-top: 20px;
@@ -1409,7 +1252,7 @@
             .balance-icon { font-size: 1.2rem; }
             .balance-value { font-size: 0.85rem; }
         }
-        
+
         @supports (padding: max(0px)) {
             body {
                 padding-left: max(20px, env(safe-area-inset-left));
@@ -1419,25 +1262,7 @@
         }
 
         @media (max-width: 768px) {
-            .bg-orb-1,
-            .bg-orb-2 {
-                animation: none;
-            }
-            
-            .case-card-emoji,
-            .case-card-image {
-                animation: none;
-            }
-            
-            .case-box {
-                animation: none;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .confetti-piece {
-                animation-duration: 3s;
-            }
+            .bg-orb-1, .bg-orb-2 { animation: none; }
         }
     </style>
 </head>
@@ -1460,7 +1285,6 @@
             <h1 class="brand-text">Divine Case</h1>
             <div class="brand-subtitle">Premium Loot Experience</div>
         </div>
-        
         <div class="balance-container">
             <div class="balance-orb sapphires">
                 <div class="balance-ring"></div>
@@ -1531,6 +1355,7 @@
 
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal" id="modal">
+            <div class="confetti-modal" id="confettiModal"></div>
             <div class="modal-emoji" id="modalEmoji">🎉</div>
             <div class="modal-title" id="modalTitle">Поздравляем!</div>
             <div class="modal-prize" id="modalPrize">+50 ⭐</div>
@@ -1542,28 +1367,24 @@
         </div>
     </div>
 
-    <div class="confetti" id="confetti"></div>
-
     <script>
         const API_BASE = "https://deadveel.pythonanywhere.com";
-        
         const tg = window.Telegram?.WebApp;
         const initData = tg?.initData || '';
-        
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 769;
-        
+
         const GITHUB_USER = "deadveel-crypto";
         const GITHUB_REPO = "divine-case-assets";
         const GITHUB_BRANCH = "main";
         const IMG_CDN = `https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${GITHUB_REPO}@${GITHUB_BRANCH}`;
-        
+
         const CASES = [
             { id: 'cosmic', name: 'Cosmic Case', emoji: '🎁', image: `${IMG_CDN}/cases/cosmic.png`, cost: 100, tag: null, style: 'cosmic-style', theme: 'theme-cosmic' },
             { id: 'stellar', name: 'Stellar Case', emoji: '✨', image: `${IMG_CDN}/cases/stellar.png`, cost: 250, tag: null, style: 'stellar-style', theme: 'theme-stellar' },
             { id: 'golden', name: 'Golden Case', emoji: '👑', image: `${IMG_CDN}/cases/golden.png`, cost: 500, tag: 'HOT', style: 'golden-style', theme: 'theme-golden' },
             { id: 'divine', name: 'Divine Case', emoji: '💎', image: `${IMG_CDN}/cases/divine.png`, cost: 1000, tag: 'VIP', style: 'divine-style', theme: 'theme-divine' }
         ];
-        
+
         let STATE = {
             userId: null,
             username: '',
@@ -1578,12 +1399,9 @@
             currentScreen: 'menu',
             selectedCase: null
         };
-        
+
         let isSpinning = false;
 
-        // ============================================
-        // 🎁 ВСЕ ПРИЗЫ С УНИКАЛЬНЫМИ СТИЛЯМИ
-        // ============================================
         const PRIZE_VISUALS = {
             0: { stars: 0, emoji: "💨", rarity: "empty", image: `${IMG_CDN}/prizes/void.png`, name: "Void" },
             15: { stars: 15, emoji: "✧", rarity: "stars-15", image: `${IMG_CDN}/prizes/glimmer.png`, name: "Glimmer" },
@@ -1598,69 +1416,43 @@
             9999: { stars: 9999, emoji: "👑", rarity: "stars-9999", image: `${IMG_CDN}/prizes/divine_star.png`, name: "Divine Star" }
         };
 
-        // ============================================
-        // 🎲 ОБНОВЛЁННЫЕ ШАНСЫ ДЛЯ КАЖДОГО КЕЙСА
-        // ============================================
         const CASE_CONFIG = {
-            // COSMIC: 0, 15, 25, 50, 75, 100
             cosmic: {
                 prizes: [0, 15, 25, 50, 75, 100],
                 getRandomPrize: () => {
                     const rand = Math.random() * 100;
-                    if (rand < 85) return 0;      // 85%
-                    if (rand < 90) return 15;     // 5%
-                    if (rand < 94) return 25;     // 4%
-                    if (rand < 97) return 50;     // 3%
-                    if (rand < 99) return 75;     // 2%
-                    return 100;                    // 1%
+                    if (rand < 90) return 0;
+                    if (rand < 95) return 15;
+                    return 25;
                 }
             },
-            // STELLAR: 0, 25, 50, 75, 100, 150, 250
             stellar: {
                 prizes: [0, 25, 50, 75, 100, 150, 250],
                 getRandomPrize: () => {
                     const rand = Math.random() * 100;
-                    if (rand < 82) return 0;      // 82%
-                    if (rand < 88) return 25;     // 6%
-                    if (rand < 93) return 50;     // 5%
-                    if (rand < 96) return 75;     // 3%
-                    if (rand < 98) return 100;    // 2%
-                    if (rand < 99.3) return 150;  // 1.3%
-                    return 250;                    // 0.7%
+                    if (rand < 88) return 0;
+                    if (rand < 94) return 25;
+                    return 50;
                 }
             },
-            // GOLDEN: 0, 75, 100, 150, 250, 500
             golden: {
                 prizes: [0, 75, 100, 150, 250, 500],
                 getRandomPrize: () => {
                     const rand = Math.random() * 100;
-                    if (rand < 80) return 0;      // 80%
-                    if (rand < 88) return 75;     // 8%
-                    if (rand < 94) return 100;    // 6%
-                    if (rand < 97.5) return 150;  // 3.5%
-                    if (rand < 99.3) return 250;  // 1.8%
-                    return 500;                    // 0.7%
+                    if (rand < 92) return 0;
+                    return 75;
                 }
             },
-            // DIVINE: 0, 100, 150, 250, 500, 1000, 9999
             divine: {
                 prizes: [0, 100, 150, 250, 500, 1000, 9999],
                 getRandomPrize: () => {
                     const rand = Math.random() * 100;
-                    if (rand < 75) return 0;      // 75%
-                    if (rand < 85) return 100;    // 10%
-                    if (rand < 92) return 150;    // 7%
-                    if (rand < 96) return 250;    // 4%
-                    if (rand < 98.5) return 500;  // 2.5%
-                    if (rand < 99.8) return 1000; // 1.3%
-                    return 9999;                   // 0.2%
+                    if (rand < 90) return 0;
+                    return 100;
                 }
             }
         };
 
-        // ============================================
-        // 🎰 ВИЗУАЛЬНЫЕ ШАНСЫ ДЛЯ БАРАБАНА
-        // ============================================
         const VISUAL_DISPLAY_CONFIG = {
             cosmic: {
                 getVisualPrize: () => {
@@ -1716,13 +1508,11 @@
             if (screenWidth <= 390) return 102;
             return 112;
         }
-        
+
         let ITEM_WIDTH = getItemWidth();
-        const VISIBLE_ITEMS = isMobile ? 40 : 50; 
-        
-        window.addEventListener('resize', () => {
-            ITEM_WIDTH = getItemWidth();
-        });
+        const VISIBLE_ITEMS = isMobile ? 40 : 50;
+
+        window.addEventListener('resize', () => { ITEM_WIDTH = getItemWidth(); });
 
         async function apiRequest(path, options = {}) {
             const res = await fetch(API_BASE + path, {
@@ -1749,7 +1539,7 @@
                 updateUI();
                 return true;
             } catch (e) {
-                console.error("❌ Balance error:", e);
+                console.error("Balance error:", e);
                 showFatalError("Ошибка загрузки баланса:\n" + e.message);
                 return false;
             }
@@ -1759,29 +1549,15 @@
             const imageUrls = [];
             CASES.forEach(c => { if (c.image) imageUrls.push(c.image); });
             Object.values(PRIZE_VISUALS).forEach(p => { if (p.image) imageUrls.push(p.image); });
-            
-            const loadImage = (url) => {
-                const img = new Image();
-                img.src = url;
-            };
-            
-            if ('requestIdleCallback' in window) {
-                imageUrls.forEach((url, i) => {
-                    requestIdleCallback(() => loadImage(url), { timeout: 2000 + i * 100 });
-                });
-            } else {
-                imageUrls.forEach(loadImage);
-            }
+            imageUrls.forEach(url => { const img = new Image(); img.src = url; });
         }
 
         async function init() {
-            console.log("🎁 Divine Case - Init...");
-            
             if (!initData) {
-                showFatalError("❌ Telegram initData не получен.\nОткрой страницу только через бота.");
+                showFatalError("Telegram initData не получен.\nОткрой страницу только через бота.");
                 return;
             }
-            
+
             if (tg) {
                 tg.ready();
                 tg.expand();
@@ -1792,23 +1568,19 @@
                 tg.BackButton.show();
                 tg.BackButton.onClick(() => handleBackButton());
             }
-            
+
             generateStars();
             generateCasesGrid();
             preloadImages();
-            
+
             const balanceLoaded = await loadBalance();
             if (!balanceLoaded) return;
-            
+
             STATE.isInitialized = true;
-            
-            setTimeout(() => {
-                document.getElementById('loadingOverlay').classList.add('hidden');
-            }, 400);
-            
+            setTimeout(() => { document.getElementById('loadingOverlay').classList.add('hidden'); }, 400);
             updateSessionInfo();
         }
-        
+
         function generateCasesGrid() {
             const grid = document.getElementById('casesGrid');
             grid.innerHTML = CASES.map(caseItem => `
@@ -1816,7 +1588,7 @@
                     ${caseItem.tag ? `<div class="case-card-tag">${caseItem.tag}</div>` : ''}
                     <div class="case-card-image-container">
                         <div class="case-card-ring"></div>
-                        ${caseItem.image 
+                        ${caseItem.image
                             ? `<img src="${caseItem.image}" alt="${caseItem.name}" class="case-card-image" loading="lazy" onerror="this.outerHTML='<div class=\\'case-card-emoji\\'>${caseItem.emoji}</div>'">`
                             : `<div class="case-card-emoji">${caseItem.emoji}</div>`
                         }
@@ -1828,19 +1600,18 @@
                 </div>
             `).join('');
         }
-        
+
         function selectCase(caseId) {
             const selectedCase = CASES.find(c => c.id === caseId);
             if (!selectedCase) return;
-            
+
             STATE.selectedCase = selectedCase;
             STATE.spinCost = selectedCase.cost;
-            
             document.body.className = selectedCase.theme;
-            
+
             const emojiEl = document.getElementById('currentCaseEmoji');
             const imageEl = document.getElementById('currentCaseImage');
-            
+
             if (selectedCase.image) {
                 emojiEl.classList.add('hidden');
                 imageEl.classList.remove('hidden');
@@ -1855,22 +1626,22 @@
                 emojiEl.classList.remove('hidden');
                 emojiEl.textContent = selectedCase.emoji;
             }
-            
+
             document.getElementById('currentCaseName').textContent = selectedCase.name;
             document.getElementById('spinCost').textContent = `${selectedCase.cost} 💎`;
-            
+
             showScreen('case');
             generateItemsStrip();
             generatePrizesGrid();
             updateUI();
             haptic('impact');
         }
-        
-                function showScreen(screen) {
+
+        function showScreen(screen) {
             STATE.currentScreen = screen;
             const menuScreen = document.getElementById('menuScreen');
             const caseScreen = document.getElementById('caseScreen');
-            
+
             if (screen === 'menu') {
                 menuScreen.classList.remove('hidden');
                 caseScreen.classList.add('hidden');
@@ -1880,52 +1651,38 @@
                 caseScreen.classList.remove('hidden');
             }
         }
-        
+
         function goToMenu() {
             closeModal();
             showScreen('menu');
             STATE.selectedCase = null;
             haptic('selection');
         }
-        
+
         function handleBackButton() {
-            if (STATE.isModalOpen) {
-                closeModal();
-            } else if (STATE.currentScreen === 'case') {
-                goToMenu();
-            } else if (tg?.close) {
-                tg.close();
-            }
+            if (STATE.isModalOpen) closeModal();
+            else if (STATE.currentScreen === 'case') goToMenu();
+            else if (tg?.close) tg.close();
         }
-        
+
         function generatePrizesGrid() {
             const grid = document.getElementById('prizesGrid');
             const caseId = STATE.selectedCase?.id || 'cosmic';
             const config = CASE_CONFIG[caseId];
-            
-            // Сортируем призы по убыванию (без нуля в начале)
-            const displayPrizes = config.prizes
-                .filter(s => s > 0)
-                .sort((a, b) => b - a)
-                .map(stars => PRIZE_VISUALS[stars]);
-            
-            // Добавляем пустой приз в конец
+
+            const displayPrizes = config.prizes.filter(s => s > 0).sort((a, b) => b - a).map(stars => PRIZE_VISUALS[stars]);
             displayPrizes.push(PRIZE_VISUALS[0]);
-            
+
             grid.className = 'prizes-grid';
             const count = displayPrizes.length;
-            if (count <= 5) {
-                grid.classList.add('cols-' + count);
-            } else if (count === 6) {
-                grid.classList.add('cols-6');
-            } else {
-                grid.classList.add('cols-7');
-            }
-            
+            if (count <= 5) grid.classList.add('cols-' + count);
+            else if (count === 6) grid.classList.add('cols-6');
+            else grid.classList.add('cols-7');
+
             grid.innerHTML = displayPrizes.map(prize => `
                 <div class="prize-card ${prize.stars === 0 ? 'empty' : 'stars-' + prize.stars}">
                     <div class="prize-card-visual">
-                        ${prize.image 
+                        ${prize.image
                             ? `<img src="${prize.image}" alt="${prize.name}" class="prize-card-image" loading="lazy" onerror="this.outerHTML='<div class=\\'prize-card-emoji\\'>${prize.emoji}</div>'">`
                             : `<div class="prize-card-emoji">${prize.emoji}</div>`
                         }
@@ -1934,7 +1691,7 @@
                 </div>
             `).join('');
         }
-        
+
         function showFatalError(message) {
             document.getElementById('loadingOverlay').innerHTML = `
                 <div style="text-align: center; padding: 20px;">
@@ -1954,19 +1711,15 @@
         function getRandomPrizeForDisplay() {
             const caseId = STATE.selectedCase?.id || 'cosmic';
             const visualConfig = VISUAL_DISPLAY_CONFIG[caseId];
-            
-            if (visualConfig && visualConfig.getVisualPrize) {
-                return visualConfig.getVisualPrize();
-            }
-            
+            if (visualConfig && visualConfig.getVisualPrize) return visualConfig.getVisualPrize();
             return PRIZE_VISUALS[0];
         }
 
         async function openCase() {
             if (isSpinning || STATE.isModalOpen) return;
-            
+
             const currentCost = STATE.selectedCase?.cost || STATE.spinCost;
-            
+
             if (STATE.sapphires < currentCost) {
                 showStatus('❌ Недостаточно сапфиров!', 'error');
                 haptic('error');
@@ -1977,62 +1730,62 @@
             hideStatus();
             document.getElementById('spinBtn').disabled = true;
             haptic('impact');
-            
+
             const prizeStars = getRandomPrize();
             const prize = PRIZE_VISUALS[prizeStars] || PRIZE_VISUALS[0];
-            
+
             const animationPromise = runAnimation(prize);
-            
+
             let apiSuccess = false;
-            
+
             try {
-                const spinResult = await apiRequest("/api/spin", { 
+                const spinResult = await apiRequest("/api/spin", {
                     method: "POST",
                     body: JSON.stringify({ cost: currentCost, case_id: STATE.selectedCase?.id || 'cosmic' })
                 });
-                
+
                 STATE.sapphires = spinResult.new_sapphires;
                 STATE.spinsCount++;
                 updateUI();
-                
+
                 await animationPromise;
-                
+
                 const claimData = await apiRequest("/api/claim", {
                     method: "POST",
-                    body: JSON.stringify({ 
+                    body: JSON.stringify({
                         stars: prizeStars,
                         case_id: STATE.selectedCase?.id || 'cosmic'
                     })
                 });
-                
+
                 STATE.sapphires = claimData.new_sapphires;
                 STATE.stars = claimData.new_stars;
                 STATE.canSpin = claimData.can_spin;
-                
+
                 if (prizeStars > 0) STATE.totalWon += prizeStars;
-                
+
                 apiSuccess = true;
                 updateUI();
-                
-            } catch (e) {
-                console.error("❌ Spin/Claim error:", e);
+
+                        } catch (e) {
+                console.error("Spin/Claim error:", e);
                 await animationPromise;
                 showStatus('❌ Ошибка: ' + e.message, 'error');
                 haptic('error');
                 await loadBalance();
             }
-            
+
             if (apiSuccess) showResult(prize);
-            
+
             isSpinning = false;
             updateSessionInfo();
         }
 
         async function runAnimation(winningPrize) {
             const winningIndex = 30 + Math.floor(Math.random() * 5);
-            
+
             generateItemsStrip(winningPrize, winningIndex);
-            
+
             const container = document.getElementById('caseContainer');
             const strip = document.getElementById('itemsStrip');
             const containerWidth = container.offsetWidth;
@@ -2040,15 +1793,15 @@
             const targetPosition = (winningIndex * ITEM_WIDTH) + (ITEM_WIDTH / 2) - centerPosition;
             const randomOffset = (Math.random() - 0.5) * 30;
             const finalPosition = targetPosition + randomOffset;
-            
+
             strip.style.transform = `translateX(${containerWidth}px)`;
             strip.offsetHeight;
-            
+
             requestAnimationFrame(() => {
                 strip.classList.add('animating');
                 strip.style.transform = `translateX(-${finalPosition}px)`;
             });
-            
+
             if (!isMobile) {
                 playTickSounds();
             } else {
@@ -2056,13 +1809,11 @@
                 setTimeout(() => haptic('selection'), 2000);
                 setTimeout(() => haptic('selection'), 4000);
             }
-            
+
             await new Promise(resolve => setTimeout(resolve, 5100));
-            
+
             const winnerItem = strip.querySelector(`[data-index="${winningIndex}"]`);
-            if (winnerItem) {
-                winnerItem.classList.add('winner');
-            }
+            if (winnerItem) winnerItem.classList.add('winner');
         }
 
         function generateItemsStrip(winningPrize = null, winningIndex = null) {
@@ -2070,24 +1821,23 @@
             strip.innerHTML = '';
             strip.classList.remove('animating');
             strip.style.transform = 'translateX(0)';
-            
+
             const fragment = document.createDocumentFragment();
-            
+
             for (let i = 0; i < VISIBLE_ITEMS; i++) {
                 let prize;
-                
                 if (winningIndex !== null && i === winningIndex) {
                     prize = winningPrize;
                 } else {
                     prize = getRandomPrizeForDisplay();
                 }
-                
+
                 const item = document.createElement('div');
                 item.className = `prize-item rarity-${prize.rarity}`;
                 if (prize.image) item.classList.add('has-image');
                 item.dataset.index = i;
                 item.dataset.stars = prize.stars;
-                
+
                 if (prize.image) {
                     const img = document.createElement('img');
                     img.src = prize.image;
@@ -2102,33 +1852,31 @@
                 } else {
                     item.innerHTML = `<div class="prize-emoji">${prize.emoji}</div>`;
                 }
-                
+
                 fragment.appendChild(item);
             }
-            
+
             strip.appendChild(fragment);
         }
 
         function playTickSounds() {
             let tickCount = 0;
             const maxTicks = 35;
-            
+
             const tickInterval = setInterval(() => {
                 tickCount++;
                 if (tickCount > maxTicks) {
                     clearInterval(tickInterval);
                     return;
                 }
-                if (tickCount < 18) {
-                    haptic('selection');
-                }
+                if (tickCount < 18) haptic('selection');
             }, 120);
         }
 
         function showResult(prize) {
             STATE.isModalOpen = true;
             document.getElementById('spinBtn').disabled = true;
-            
+
             const overlay = document.getElementById('modalOverlay');
             const modal = document.getElementById('modal');
             const emoji = document.getElementById('modalEmoji');
@@ -2136,13 +1884,16 @@
             const prizeText = document.getElementById('modalPrize');
             const balance = document.getElementById('modalBalance');
             const spinAgainBtn = document.getElementById('spinAgainBtn');
-            
+            const confettiModal = document.getElementById('confettiModal');
+
+            if (confettiModal) confettiModal.innerHTML = '';
+
             if (prize.image) {
                 emoji.innerHTML = `<img src="${prize.image}" class="modal-prize-image" onerror="this.outerHTML='${prize.stars > 0 ? prize.emoji : '💨'}'">`;
             } else {
                 emoji.innerHTML = prize.stars > 0 ? prize.emoji : '💨';
             }
-            
+
             if (prize.stars > 0) {
                 modal.classList.add('win');
                 if (prize.stars >= 9999) {
@@ -2158,8 +1909,8 @@
                 }
                 prizeText.textContent = `+${prize.stars} ⭐`;
                 prizeText.style.display = '';
-                createConfetti();
                 haptic('success');
+                setTimeout(() => createConfettiInModal(), 100);
             } else {
                 modal.classList.remove('win');
                 title.textContent = 'Пусто...';
@@ -2167,13 +1918,48 @@
                 prizeText.style.display = '';
                 haptic('error');
             }
-            
+
             balance.textContent = `💎 ${STATE.sapphires} сапфиров | ⭐ ${STATE.stars} звёзд`;
-            
+
             const canSpinAgain = STATE.sapphires >= STATE.spinCost && STATE.canSpin;
             spinAgainBtn.style.display = canSpinAgain ? 'block' : 'none';
-            
+
             overlay.classList.add('show');
+        }
+
+        function createConfettiInModal() {
+            const container = document.getElementById('confettiModal');
+            if (!container) return;
+
+            container.innerHTML = '';
+
+            const colors = ['#fbbf24', '#f59e0b', '#6366f1', '#818cf8', '#ec4899', '#22d3ee', '#10b981', '#34d399', '#a855f7'];
+            const confettiCount = 40;
+            const fragment = document.createDocumentFragment();
+
+            for (let i = 0; i < confettiCount; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'confetti-piece';
+                const size = Math.random() * 8 + 4;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+
+                piece.style.cssText = `
+                    left: ${Math.random() * 100}%;
+                    width: ${size}px;
+                    height: ${size}px;
+                    background-color: ${color};
+                    animation-delay: ${Math.random() * 0.4}s;
+                    animation-duration: ${2 + Math.random() * 1}s;
+                    border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
+                    box-shadow: 0 0 ${size / 2}px ${color};
+                `;
+
+                fragment.appendChild(piece);
+            }
+
+            container.appendChild(fragment);
+
+            setTimeout(() => { container.innerHTML = ''; }, 3000);
         }
 
         function spinAgain() {
@@ -2188,23 +1974,27 @@
             STATE.isModalOpen = false;
             document.getElementById('modalOverlay').classList.remove('show');
             document.getElementById('modal').classList.remove('win');
+
+            const confettiModal = document.getElementById('confettiModal');
+            if (confettiModal) confettiModal.innerHTML = '';
+
             updateUI();
         }
 
         function updateUI() {
             document.getElementById('sapphires').textContent = STATE.sapphires;
             document.getElementById('stars-balance').textContent = STATE.stars;
-            
-            const canSpin = STATE.sapphires >= STATE.spinCost && 
-                           !isSpinning && 
+
+            const canSpin = STATE.sapphires >= STATE.spinCost &&
+                           !isSpinning &&
                            !STATE.isModalOpen &&
                            STATE.canSpin !== false;
-            
+
             document.getElementById('spinBtn').disabled = !canSpin;
         }
 
         function updateSessionInfo() {
-            document.getElementById('sessionInfo').textContent = 
+            document.getElementById('sessionInfo').textContent =
                 `ID:${STATE.userId || '?'} | Spins:${STATE.spinsCount} | Won:${STATE.totalWon}⭐`;
         }
 
@@ -2223,7 +2013,7 @@
             const container = document.getElementById('bgStars');
             const starCount = isMobile ? 40 : 70;
             const fragment = document.createDocumentFragment();
-            
+
             for (let i = 0; i < starCount; i++) {
                 const star = document.createElement('div');
                 star.className = 'star';
@@ -2237,43 +2027,8 @@
                 `;
                 fragment.appendChild(star);
             }
-            
-            container.appendChild(fragment);
-        }
 
-        function createConfetti() {
-            const container = document.getElementById('confetti');
-            container.innerHTML = '';
-            
-            const colors = ['#fbbf24', '#f59e0b', '#6366f1', '#818cf8', '#ec4899', '#22d3ee', '#10b981', '#34d399', '#a855f7'];
-            const confettiCount = isMobile ? 50 : 80;
-            const fragment = document.createDocumentFragment();
-            
-            for (let i = 0; i < confettiCount; i++) {
-                const piece = document.createElement('div');
-                piece.className = 'confetti-piece';
-                const size = Math.random() * 10 + 5;
-                const color = colors[Math.floor(Math.random() * colors.length)];
-                
-                piece.style.cssText = `
-                    left: ${Math.random() * 100}%;
-                    width: ${size}px;
-                    height: ${size}px;
-                    background-color: ${color};
-                    animation-delay: ${Math.random() * 0.6}s;
-                    animation-duration: ${3 + Math.random() * 1.5}s;
-                    border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
-                    box-shadow: 0 0 ${size / 2}px ${color};
-                `;
-                
-                fragment.appendChild(piece);
-            }
-            
             container.appendChild(fragment);
-            
-            setTimeout(() => {
-                container.innerHTML = '';
-            }, 4500);
         }
 
         function haptic(type) {
@@ -2299,28 +2054,21 @@
                     e.preventDefault();
                     openCase();
                 }
-                if (e.code === 'Escape') {
-                    handleBackButton();
-                }
+                if (e.code === 'Escape') handleBackButton();
             });
         }
 
         document.addEventListener('touchend', (e) => {
             const now = Date.now();
-            if (now - lastTouchEnd <= 300) {
-                e.preventDefault();
-            }
+            if (now - lastTouchEnd <= 300) e.preventDefault();
             lastTouchEnd = now;
         }, { passive: false });
 
         let lastTouchEnd = 0;
 
         document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                document.body.classList.add('paused');
-            } else {
-                document.body.classList.remove('paused');
-            }
+            if (document.hidden) document.body.classList.add('paused');
+            else document.body.classList.remove('paused');
         });
     </script>
 </body>
