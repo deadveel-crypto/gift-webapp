@@ -1817,7 +1817,7 @@
                     prize = winningPrize;
                     prevWasZero = (prize.stars === 0);
                     
-                                } else if (winningIndex !== null && Math.abs(i - winningIndex) === 1 && winningPrize && winningPrize.stars === 0) {
+                } else if (winningIndex !== null && Math.abs(i - winningIndex) === 1 && winningPrize && winningPrize.stars === 0) {
                     prize = getExpensivePrizeForCase();
                     prevWasZero = false;
                     
@@ -1933,50 +1933,56 @@
             document.getElementById('spinBtn').disabled = true;
             haptic('impact');
 
+            // Determine prize IMMEDIATELY (client-side)
             const prizeStars = getRandomPrize();
             const prize = PRIZE_VISUALS[prizeStars] || PRIZE_VISUALS[0];
 
+            // Optimistically update balance for instant feedback
+            STATE.sapphires -= currentCost;
+            STATE.spinsCount++;
+            updateUI();
+
+            // Start animation IMMEDIATELY - don't wait for API
+            const animationPromise = runAnimation(prize);
+
+            // Run API calls in parallel with animation (fire and forget style, but track for result)
             let apiSuccess = false;
+            const apiPromise = (async () => {
+                try {
+                    // Spin request (deducts sapphires on server)
+                    await apiRequest("/api/spin", {
+                        method: "POST",
+                        body: JSON.stringify({ cost: currentCost, case_id: STATE.selectedCase?.id || 'cosmic' })
+                    });
 
-            try {
-                // Сначала делаем spin запрос
-                const spinResult = await apiRequest("/api/spin", {
-                    method: "POST",
-                    body: JSON.stringify({ cost: currentCost, case_id: STATE.selectedCase?.id || 'cosmic' })
-                });
+                    // Claim request (adds stars on server)
+                    const claimData = await apiRequest("/api/claim", {
+                        method: "POST",
+                        body: JSON.stringify({
+                            stars: prizeStars,
+                            case_id: STATE.selectedCase?.id || 'cosmic'
+                        })
+                    });
 
-                STATE.sapphires = spinResult.new_sapphires;
-                STATE.spinsCount++;
-                updateUI();
+                    // Update with server values
+                    STATE.sapphires = claimData.new_sapphires;
+                    STATE.stars = claimData.new_stars;
+                    STATE.canSpin = claimData.can_spin;
 
-                // Запускаем анимацию и claim ПАРАЛЛЕЛЬНО
-                const animationPromise = runAnimation(prize);
-                const claimPromise = apiRequest("/api/claim", {
-                    method: "POST",
-                    body: JSON.stringify({
-                        stars: prizeStars,
-                        case_id: STATE.selectedCase?.id || 'cosmic'
-                    })
-                });
+                    if (prizeStars > 0) STATE.totalWon += prizeStars;
+                    apiSuccess = true;
+                    updateUI();
+                } catch (e) {
+                    console.error("Spin/Claim error:", e);
+                    showStatus('❌ Ошибка: ' + e.message, 'error');
+                    haptic('error');
+                    // Restore correct balance from server
+                    await loadBalance();
+                }
+            })();
 
-                // Ждём обоих одновременно
-                const [, claimData] = await Promise.all([animationPromise, claimPromise]);
-
-                STATE.sapphires = claimData.new_sapphires;
-                STATE.stars = claimData.new_stars;
-                STATE.canSpin = claimData.can_spin;
-
-                if (prizeStars > 0) STATE.totalWon += prizeStars;
-
-                apiSuccess = true;
-                updateUI();
-
-            } catch (e) {
-                console.error("Spin/Claim error:", e);
-                showStatus('❌ Ошибка: ' + e.message, 'error');
-                haptic('error');
-                await loadBalance();
-            }
+            // Wait for both animation and API to complete
+            await Promise.all([animationPromise, apiPromise]);
 
             if (apiSuccess) showResult(prize);
 
