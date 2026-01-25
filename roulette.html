@@ -1,3 +1,6 @@
+Вот полный обновлённый код:
+
+```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -1413,6 +1416,9 @@
             9999: { stars: 9999, emoji: "👑", rarity: "stars-9999", image: `${IMG_CDN}/prizes/divine_star.png`, name: "Divine Star" }
         };
 
+        // ============================================
+        // 🎲 РЕАЛЬНЫЕ ШАНСЫ (не менять!)
+        // ============================================
         const CASE_CONFIG = {
             cosmic: {
                 prizes: [0, 15, 25, 50, 75, 100],
@@ -1451,196 +1457,74 @@
         };
 
         // ============================================
-// 🎰 ВИЗУАЛЬНЫЕ ШАНСЫ ДЛЯ БАРАБАНА
-// ============================================
-
+        // 🎰 АЗАРТНАЯ ГЕНЕРАЦИЯ БАРАБАНА
         // ============================================
-// 🎰 ГЕНЕРАЦИЯ АЗАРТНОГО БАРАБАНА
-// ============================================
 
-// Получить "соседний" дорогой приз для создания азарта
-function getExpensivePrizeForCase() {
-    const caseId = STATE.selectedCase?.id || 'cosmic';
-    
-    const expensivePrizes = {
-        cosmic: [PRIZE_VISUALS[50], PRIZE_VISUALS[75], PRIZE_VISUALS[100]],
-        stellar: [PRIZE_VISUALS[100], PRIZE_VISUALS[150], PRIZE_VISUALS[250]],
-        golden: [PRIZE_VISUALS[250], PRIZE_VISUALS[500], PRIZE_VISUALS[150]],
-        divine: [PRIZE_VISUALS[500], PRIZE_VISUALS[1000], PRIZE_VISUALS[9999]]
-    };
-    
-    const prizes = expensivePrizes[caseId] || expensivePrizes.cosmic;
-    
-    const rand = Math.random();
-    if (rand < 0.5) return prizes[0];
-    if (rand < 0.8) return prizes[1];
-    return prizes[2];
-}
-
-// Получить случайный приз (не ноль) для барабана
-function getNonZeroPrizeForDisplay() {
-    const caseId = STATE.selectedCase?.id || 'cosmic';
-    
-    const prizePools = {
-        cosmic: [
-            { prize: PRIZE_VISUALS[15], weight: 25 },
-            { prize: PRIZE_VISUALS[25], weight: 25 },
-            { prize: PRIZE_VISUALS[50], weight: 20 },
-            { prize: PRIZE_VISUALS[75], weight: 18 },
-            { prize: PRIZE_VISUALS[100], weight: 12 }
-        ],
-        stellar: [
-            { prize: PRIZE_VISUALS[25], weight: 18 },
-            { prize: PRIZE_VISUALS[50], weight: 18 },
-            { prize: PRIZE_VISUALS[75], weight: 18 },
-            { prize: PRIZE_VISUALS[100], weight: 18 },
-            { prize: PRIZE_VISUALS[150], weight: 15 },
-            { prize: PRIZE_VISUALS[250], weight: 13 }
-        ],
-        golden: [
-            { prize: PRIZE_VISUALS[75], weight: 22 },
-            { prize: PRIZE_VISUALS[100], weight: 22 },
-            { prize: PRIZE_VISUALS[150], weight: 22 },
-            { prize: PRIZE_VISUALS[250], weight: 20 },
-            { prize: PRIZE_VISUALS[500], weight: 14 }
-        ],
-        divine: [
-            { prize: PRIZE_VISUALS[100], weight: 18 },
-            { prize: PRIZE_VISUALS[150], weight: 18 },
-            { prize: PRIZE_VISUALS[250], weight: 18 },
-            { prize: PRIZE_VISUALS[500], weight: 18 },
-            { prize: PRIZE_VISUALS[1000], weight: 18 },
-            { prize: PRIZE_VISUALS[9999], weight: 10 }
-        ]
-    };
-    
-    const pool = prizePools[caseId] || prizePools.cosmic;
-    const totalWeight = pool.reduce((sum, p) => sum + p.weight, 0);
-    let rand = Math.random() * totalWeight;
-    
-    for (const item of pool) {
-        rand -= item.weight;
-        if (rand <= 0) return item.prize;
-    }
-    
-    return pool[0].prize;
-}
-
-function generateItemsStrip(winningPrize = null, winningIndex = null) {
-    const strip = document.getElementById('itemsStrip');
-    strip.innerHTML = '';
-    strip.classList.remove('animating');
-    strip.style.transform = 'translateX(0)';
-
-    const fragment = document.createDocumentFragment();
-    let prevWasZero = false;
-    
-    for (let i = 0; i < VISIBLE_ITEMS; i++) {
-        let prize;
-
-        if (winningIndex !== null && i === winningIndex) {
-            prize = winningPrize;
-            prevWasZero = (prize.stars === 0);
+        function getExpensivePrizeForCase() {
+            const caseId = STATE.selectedCase?.id || 'cosmic';
             
-        } else if (winningIndex !== null && Math.abs(i - winningIndex) === 1 && winningPrize && winningPrize.stars === 0) {
-            prize = getExpensivePrizeForCase();
-            prevWasZero = false;
-            
-        } else if (winningIndex !== null && Math.abs(i - winningIndex) === 2 && winningPrize && winningPrize.stars === 0) {
-            prize = getNonZeroPrizeForDisplay();
-            prevWasZero = false;
-            
-        } else {
-            const shouldBeZero = Math.random() < 0.2;
-            
-            if (shouldBeZero && !prevWasZero) {
-                prize = PRIZE_VISUALS[0];
-                prevWasZero = true;
-            } else {
-                prize = getNonZeroPrizeForDisplay();
-                prevWasZero = false;
-            }
-        }
-
-        const item = document.createElement('div');
-        item.className = `prize-item rarity-${prize.rarity}`;
-        if (prize.image) item.classList.add('has-image');
-        item.dataset.index = i;
-        item.dataset.stars = prize.stars;
-
-        if (prize.image) {
-            const img = document.createElement('img');
-            img.src = prize.image;
-            img.alt = '';
-            img.className = 'prize-image';
-            img.loading = 'eager';
-            img.onerror = function() {
-                this.style.display = 'none';
-                this.parentElement.innerHTML = `<div class="prize-emoji">${prize.emoji}</div>`;
+            const expensivePrizes = {
+                cosmic: [PRIZE_VISUALS[50], PRIZE_VISUALS[75], PRIZE_VISUALS[100]],
+                stellar: [PRIZE_VISUALS[100], PRIZE_VISUALS[150], PRIZE_VISUALS[250]],
+                golden: [PRIZE_VISUALS[250], PRIZE_VISUALS[500], PRIZE_VISUALS[150]],
+                divine: [PRIZE_VISUALS[500], PRIZE_VISUALS[1000], PRIZE_VISUALS[9999]]
             };
-            item.appendChild(img);
-        } else {
-            item.innerHTML = `<div class="prize-emoji">${prize.emoji}</div>`;
+            
+            const prizes = expensivePrizes[caseId] || expensivePrizes.cosmic;
+            
+            const rand = Math.random();
+            if (rand < 0.5) return prizes[0];
+            if (rand < 0.8) return prizes[1];
+            return prizes[2];
         }
 
-        fragment.appendChild(item);
-    }
-
-    strip.appendChild(fragment);
-}
-
-async function runAnimation(winningPrize) {
-    const winningIndex = 30 + Math.floor(Math.random() * 5);
-
-    generateItemsStrip(winningPrize, winningIndex);
-
-    const container = document.getElementById('caseContainer');
-    const strip = document.getElementById('itemsStrip');
-    const containerWidth = container.offsetWidth;
-    const centerPosition = containerWidth / 2;
-    const targetPosition = (winningIndex * ITEM_WIDTH) + (ITEM_WIDTH / 2) - centerPosition;
-    
-    let randomOffset;
-    
-    if (winningPrize.stars === 0) {
-        const edgeChance = Math.random();
-        
-        if (edgeChance < 0.45) {
-            const direction = Math.random() > 0.5 ? 1 : -1;
-            randomOffset = direction * (ITEM_WIDTH * 0.38 + Math.random() * 8);
-        } else if (edgeChance < 0.75) {
-            const direction = Math.random() > 0.5 ? 1 : -1;
-            randomOffset = direction * (ITEM_WIDTH * 0.25 + Math.random() * 10);
-        } else {
-            randomOffset = (Math.random() - 0.5) * 35;
+        function getNonZeroPrizeForDisplay() {
+            const caseId = STATE.selectedCase?.id || 'cosmic';
+            
+            const prizePools = {
+                cosmic: [
+                    { prize: PRIZE_VISUALS[15], weight: 25 },
+                    { prize: PRIZE_VISUALS[25], weight: 25 },
+                    { prize: PRIZE_VISUALS[50], weight: 20 },
+                    { prize: PRIZE_VISUALS[75], weight: 18 },
+                    { prize: PRIZE_VISUALS[100], weight: 12 }
+                ],
+                stellar: [
+                    { prize: PRIZE_VISUALS[25], weight: 18 },
+                    { prize: PRIZE_VISUALS[50], weight: 18 },
+                    { prize: PRIZE_VISUALS[75], weight: 18 },
+                    { prize: PRIZE_VISUALS[100], weight: 18 },
+                    { prize: PRIZE_VISUALS[150], weight: 15 },
+                    { prize: PRIZE_VISUALS[250], weight: 13 }
+                ],
+                golden: [
+                    { prize: PRIZE_VISUALS[75], weight: 22 },
+                    { prize: PRIZE_VISUALS[100], weight: 22 },
+                    { prize: PRIZE_VISUALS[150], weight: 22 },
+                    { prize: PRIZE_VISUALS[250], weight: 20 },
+                    { prize: PRIZE_VISUALS[500], weight: 14 }
+                ],
+                divine: [
+                    { prize: PRIZE_VISUALS[100], weight: 18 },
+                    { prize: PRIZE_VISUALS[150], weight: 18 },
+                    { prize: PRIZE_VISUALS[250], weight: 18 },
+                    { prize: PRIZE_VISUALS[500], weight: 18 },
+                    { prize: PRIZE_VISUALS[1000], weight: 18 },
+                    { prize: PRIZE_VISUALS[9999], weight: 10 }
+                ]
+            };
+            
+            const pool = prizePools[caseId] || prizePools.cosmic;
+            const totalWeight = pool.reduce((sum, p) => sum + p.weight, 0);
+            let rand = Math.random() * totalWeight;
+            
+            for (const item of pool) {
+                rand -= item.weight;
+                if (rand <= 0) return item.prize;
+            }
+            
+            return pool[0].prize;
         }
-    } else {
-        randomOffset = (Math.random() - 0.5) * 20;
-    }
-    
-    const finalPosition = targetPosition + randomOffset;
-
-    strip.style.transform = `translateX(${containerWidth}px)`;
-    strip.offsetHeight;
-
-    requestAnimationFrame(() => {
-        strip.classList.add('animating');
-        strip.style.transform = `translateX(-${finalPosition}px)`;
-    });
-
-    if (!isMobile) {
-        playTickSounds();
-    } else {
-        setTimeout(() => haptic('selection'), 500);
-        setTimeout(() => haptic('selection'), 2000);
-        setTimeout(() => haptic('selection'), 4000);
-    }
-
-    await new Promise(resolve => setTimeout(resolve, 5100));
-
-    const winnerItem = strip.querySelector(`[data-index="${winningIndex}"]`);
-    if (winnerItem) winnerItem.classList.add('winner');
-}
 
         function getItemWidth() {
             const screenWidth = window.innerWidth;
@@ -1848,7 +1732,121 @@ async function runAnimation(winningPrize) {
             return CASE_CONFIG[caseId].getRandomPrize();
         }
 
-        
+        function generateItemsStrip(winningPrize = null, winningIndex = null) {
+            const strip = document.getElementById('itemsStrip');
+            strip.innerHTML = '';
+            strip.classList.remove('animating');
+            strip.style.transform = 'translateX(0)';
+
+            const fragment = document.createDocumentFragment();
+            let prevWasZero = false;
+            
+            for (let i = 0; i < VISIBLE_ITEMS; i++) {
+                let prize;
+
+                if (winningIndex !== null && i === winningIndex) {
+                    prize = winningPrize;
+                    prevWasZero = (prize.stars === 0);
+                    
+                                } else if (winningIndex !== null && Math.abs(i - winningIndex) === 1 && winningPrize && winningPrize.stars === 0) {
+                    prize = getExpensivePrizeForCase();
+                    prevWasZero = false;
+                    
+                } else if (winningIndex !== null && Math.abs(i - winningIndex) === 2 && winningPrize && winningPrize.stars === 0) {
+                    prize = getNonZeroPrizeForDisplay();
+                    prevWasZero = false;
+                    
+                } else {
+                    const shouldBeZero = Math.random() < 0.2;
+                    
+                    if (shouldBeZero && !prevWasZero) {
+                        prize = PRIZE_VISUALS[0];
+                        prevWasZero = true;
+                    } else {
+                        prize = getNonZeroPrizeForDisplay();
+                        prevWasZero = false;
+                    }
+                }
+
+                const item = document.createElement('div');
+                item.className = `prize-item rarity-${prize.rarity}`;
+                if (prize.image) item.classList.add('has-image');
+                item.dataset.index = i;
+                item.dataset.stars = prize.stars;
+
+                if (prize.image) {
+                    const img = document.createElement('img');
+                    img.src = prize.image;
+                    img.alt = '';
+                    img.className = 'prize-image';
+                    img.loading = 'eager';
+                    img.onerror = function() {
+                        this.style.display = 'none';
+                        this.parentElement.innerHTML = `<div class="prize-emoji">${prize.emoji}</div>`;
+                    };
+                    item.appendChild(img);
+                } else {
+                    item.innerHTML = `<div class="prize-emoji">${prize.emoji}</div>`;
+                }
+
+                fragment.appendChild(item);
+            }
+
+            strip.appendChild(fragment);
+        }
+
+        async function runAnimation(winningPrize) {
+            const winningIndex = 30 + Math.floor(Math.random() * 5);
+
+            generateItemsStrip(winningPrize, winningIndex);
+
+            const container = document.getElementById('caseContainer');
+            const strip = document.getElementById('itemsStrip');
+            const containerWidth = container.offsetWidth;
+            const centerPosition = containerWidth / 2;
+            const targetPosition = (winningIndex * ITEM_WIDTH) + (ITEM_WIDTH / 2) - centerPosition;
+            
+            let randomOffset;
+            
+            if (winningPrize.stars === 0) {
+                const edgeChance = Math.random();
+                
+                if (edgeChance < 0.45) {
+                    const direction = Math.random() > 0.5 ? 1 : -1;
+                    randomOffset = direction * (ITEM_WIDTH * 0.38 + Math.random() * 8);
+                } else if (edgeChance < 0.75) {
+                    const direction = Math.random() > 0.5 ? 1 : -1;
+                    randomOffset = direction * (ITEM_WIDTH * 0.25 + Math.random() * 10);
+                } else {
+                    randomOffset = (Math.random() - 0.5) * 35;
+                }
+            } else {
+                randomOffset = (Math.random() - 0.5) * 20;
+            }
+            
+            const finalPosition = targetPosition + randomOffset;
+
+            strip.style.transform = `translateX(${containerWidth}px)`;
+            strip.offsetHeight;
+
+            requestAnimationFrame(() => {
+                strip.classList.add('animating');
+                strip.style.transform = `translateX(-${finalPosition}px)`;
+            });
+
+            if (!isMobile) {
+                playTickSounds();
+            } else {
+                setTimeout(() => haptic('selection'), 500);
+                setTimeout(() => haptic('selection'), 2000);
+                setTimeout(() => haptic('selection'), 4000);
+            }
+
+            await new Promise(resolve => setTimeout(resolve, 5100));
+
+            const winnerItem = strip.querySelector(`[data-index="${winningIndex}"]`);
+            if (winnerItem) winnerItem.classList.add('winner');
+        }
 
         async function openCase() {
             if (isSpinning || STATE.isModalOpen) return;
@@ -1902,7 +1900,7 @@ async function runAnimation(winningPrize) {
                 apiSuccess = true;
                 updateUI();
 
-                        } catch (e) {
+            } catch (e) {
                 console.error("Spin/Claim error:", e);
                 await animationPromise;
                 showStatus('❌ Ошибка: ' + e.message, 'error');
@@ -1914,108 +1912,6 @@ async function runAnimation(winningPrize) {
 
             isSpinning = false;
             updateSessionInfo();
-        }
-
-        async function runAnimation(winningPrize) {
-    const winningIndex = 30 + Math.floor(Math.random() * 5);
-
-    generateItemsStrip(winningPrize, winningIndex);
-
-    const container = document.getElementById('caseContainer');
-    const strip = document.getElementById('itemsStrip');
-    const containerWidth = container.offsetWidth;
-    const centerPosition = containerWidth / 2;
-    const targetPosition = (winningIndex * ITEM_WIDTH) + (ITEM_WIDTH / 2) - centerPosition;
-    
-    // ✅ НОВАЯ ЛОГИКА: разный оффсет для нуля и выигрыша
-    let randomOffset;
-    
-    if (winningPrize.stars === 0) {
-        // При выпадении нуля — часто смещаем к краю (эффект "почти!")
-        const edgeChance = Math.random();
-        
-        if (edgeChance < 0.4) {
-            // 40% — сильное смещение к краю (почти на соседний приз)
-            const direction = Math.random() > 0.5 ? 1 : -1;
-            randomOffset = direction * (ITEM_WIDTH * 0.35 + Math.random() * 10);
-        } else if (edgeChance < 0.7) {
-            // 30% — среднее смещение
-            const direction = Math.random() > 0.5 ? 1 : -1;
-            randomOffset = direction * (ITEM_WIDTH * 0.2 + Math.random() * 10);
-        } else {
-            // 30% — обычное попадание в центр
-            randomOffset = (Math.random() - 0.5) * 30;
-        }
-    } else {
-        // При выигрыше — всегда ближе к центру (чёткое попадание)
-        randomOffset = (Math.random() - 0.5) * 25;
-    }
-    
-    const finalPosition = targetPosition + randomOffset;
-
-    strip.style.transform = `translateX(${containerWidth}px)`;
-    strip.offsetHeight;
-
-    requestAnimationFrame(() => {
-        strip.classList.add('animating');
-        strip.style.transform = `translateX(-${finalPosition}px)`;
-    });
-
-    if (!isMobile) {
-        playTickSounds();
-    } else {
-        setTimeout(() => haptic('selection'), 500);
-        setTimeout(() => haptic('selection'), 2000);
-        setTimeout(() => haptic('selection'), 4000);
-    }
-
-    await new Promise(resolve => setTimeout(resolve, 5100));
-
-    const winnerItem = strip.querySelector(`[data-index="${winningIndex}"]`);
-    if (winnerItem) winnerItem.classList.add('winner');
-}
-
-        function generateItemsStrip(winningPrize = null, winningIndex = null) {
-            const strip = document.getElementById('itemsStrip');
-            strip.innerHTML = '';
-            strip.classList.remove('animating');
-            strip.style.transform = 'translateX(0)';
-
-            const fragment = document.createDocumentFragment();
-
-            for (let i = 0; i < VISIBLE_ITEMS; i++) {
-                let prize;
-                if (winningIndex !== null && i === winningIndex) {
-                    prize = winningPrize;
-                } else {
-                    prize = getRandomPrizeForDisplay();
-                }
-
-                const item = document.createElement('div');
-                item.className = `prize-item rarity-${prize.rarity}`;
-                if (prize.image) item.classList.add('has-image');
-                item.dataset.index = i;
-                item.dataset.stars = prize.stars;
-
-                if (prize.image) {
-                    const img = document.createElement('img');
-                    img.src = prize.image;
-                    img.alt = '';
-                    img.className = 'prize-image';
-                    img.loading = 'eager';
-                    img.onerror = function() {
-                        this.style.display = 'none';
-                        this.parentElement.innerHTML = `<div class="prize-emoji">${prize.emoji}</div>`;
-                    };
-                    item.appendChild(img);
-                } else {
-                    item.innerHTML = `<div class="prize-emoji">${prize.emoji}</div>`;
-                }
-
-                fragment.appendChild(item);
-            }
-
-            strip.appendChild(fragment);
         }
 
         function playTickSounds() {
