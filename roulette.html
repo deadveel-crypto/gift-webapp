@@ -27,7 +27,7 @@
             --border-color: rgba(99, 102, 241, 0.12);
             --theme-color: #6366f1;
             --theme-color-light: #818cf8;
-            --theme-glow: rgba(99, 102, 241, 0.4);
+            --theme-glow: rgba(99, 102, 241, 0.5);
         }
 
         body {
@@ -58,12 +58,12 @@
             position: absolute;
             border-radius: 50%;
             filter: blur(80px);
-            opacity: 0.35;
+            opacity: 0.4;
         }
 
         .bg-orb-1 {
-            width: 400px;
-            height: 400px;
+            width: 450px;
+            height: 450px;
             background: #1e1b4b;
             top: -100px;
             right: -100px;
@@ -71,8 +71,8 @@
         }
 
         .bg-orb-2 {
-            width: 350px;
-            height: 350px;
+            width: 400px;
+            height: 400px;
             background: #0f172a;
             bottom: -80px;
             left: -80px;
@@ -80,13 +80,13 @@
         }
 
         .bg-orb-3 {
-            width: 500px;
-            height: 500px;
+            width: 600px;
+            height: 600px;
             background: radial-gradient(circle, var(--theme-glow), transparent 70%);
             top: 30%;
             left: 50%;
             transform: translate(-50%, -50%);
-            opacity: 0.25;
+            opacity: 0.35;
             transition: background 0.5s ease;
         }
 
@@ -102,8 +102,8 @@
             right: 0;
             bottom: 0;
             background-image: 
-                linear-gradient(rgba(99, 102, 241, 0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(99, 102, 241, 0.02) 1px, transparent 1px);
+                linear-gradient(rgba(99, 102, 241, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(99, 102, 241, 0.03) 1px, transparent 1px);
             background-size: 60px 60px;
             pointer-events: none;
         }
@@ -147,17 +147,17 @@
 
         @keyframes subtleFloat {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
-
-        @keyframes orbitalRotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+            50% { transform: translateY(-10px); }
         }
 
         @keyframes pulseGlow {
-            0%, 100% { opacity: 0.6; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.05); }
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
+
+        @keyframes breatheGlow {
+            0%, 100% { filter: blur(40px); opacity: 0.6; }
+            50% { filter: blur(50px); opacity: 0.8; }
         }
 
         @keyframes shimmer {
@@ -188,6 +188,7 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
             animation: textShine 4s linear infinite;
+            text-shadow: 0 0 40px rgba(129, 140, 248, 0.5);
         }
 
         .brand-subtitle {
@@ -199,7 +200,6 @@
             margin-top: 5px;
         }
 
-        /* NEW BALANCE DESIGN */
         .balance-container {
             display: flex;
             justify-content: center;
@@ -226,32 +226,32 @@
             left: 0;
             right: 0;
             height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
         }
 
         .balance-card.sapphires {
-            border-color: rgba(99, 102, 241, 0.25);
-            box-shadow: 0 8px 32px rgba(99, 102, 241, 0.15), inset 0 1px 0 rgba(129, 140, 248, 0.1);
+            border-color: rgba(99, 102, 241, 0.3);
+            box-shadow: 0 8px 32px rgba(99, 102, 241, 0.2), inset 0 1px 0 rgba(129, 140, 248, 0.15), 0 0 60px rgba(99, 102, 241, 0.15);
         }
 
         .balance-card.sapphires::after {
             content: '';
             position: absolute;
             inset: 0;
-            background: radial-gradient(ellipse at bottom left, rgba(99, 102, 241, 0.1), transparent 60%);
+            background: radial-gradient(ellipse at bottom left, rgba(99, 102, 241, 0.15), transparent 60%);
             pointer-events: none;
         }
 
         .balance-card.stars {
-            border-color: rgba(251, 191, 36, 0.25);
-            box-shadow: 0 8px 32px rgba(251, 191, 36, 0.12), inset 0 1px 0 rgba(251, 191, 36, 0.1);
+            border-color: rgba(251, 191, 36, 0.3);
+            box-shadow: 0 8px 32px rgba(251, 191, 36, 0.15), inset 0 1px 0 rgba(251, 191, 36, 0.15), 0 0 60px rgba(251, 191, 36, 0.1);
         }
 
         .balance-card.stars::after {
             content: '';
             position: absolute;
             inset: 0;
-            background: radial-gradient(ellipse at bottom left, rgba(251, 191, 36, 0.1), transparent 60%);
+            background: radial-gradient(ellipse at bottom left, rgba(251, 191, 36, 0.15), transparent 60%);
             pointer-events: none;
         }
 
@@ -267,13 +267,13 @@
         }
 
         .balance-card.sapphires .balance-icon-wrap {
-            background: linear-gradient(145deg, rgba(99, 102, 241, 0.25), rgba(99, 102, 241, 0.1));
-            box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+            background: linear-gradient(145deg, rgba(99, 102, 241, 0.3), rgba(99, 102, 241, 0.15));
+            box-shadow: 0 0 25px rgba(99, 102, 241, 0.4);
         }
 
         .balance-card.stars .balance-icon-wrap {
-            background: linear-gradient(145deg, rgba(251, 191, 36, 0.25), rgba(251, 191, 36, 0.1));
-            box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+            background: linear-gradient(145deg, rgba(251, 191, 36, 0.3), rgba(251, 191, 36, 0.15));
+            box-shadow: 0 0 25px rgba(251, 191, 36, 0.4);
         }
 
         .balance-icon {
@@ -303,7 +303,6 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            text-shadow: 0 0 30px rgba(129, 140, 248, 0.5);
         }
 
         .balance-card.stars .balance-value {
@@ -311,7 +310,6 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            text-shadow: 0 0 30px rgba(251, 191, 36, 0.5);
         }
 
         .balance-label {
@@ -360,83 +358,108 @@
             gap: 16px;
         }
 
+        /* ENHANCED CASE CARDS */
         .case-card {
-            background: linear-gradient(145deg, rgba(20, 20, 40, 0.9), rgba(10, 10, 25, 0.95));
-            border: 2px solid rgba(99, 102, 241, 0.2);
-            border-radius: 24px;
-            padding: 24px 16px;
+            position: relative;
+            border-radius: 28px;
+            padding: 28px 16px;
             text-align: center;
             cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             -webkit-tap-highlight-color: transparent;
+            overflow: hidden;
+            background: transparent;
+            border: none;
+        }
+
+        .case-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 28px;
+            padding: 2px;
+            background: linear-gradient(145deg, rgba(255,255,255,0.15), rgba(255,255,255,0.02));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        .case-card-bg {
+            position: absolute;
+            inset: 0;
+            border-radius: 28px;
+            background: linear-gradient(145deg, rgba(15, 15, 35, 0.9), rgba(8, 8, 20, 0.95));
+            z-index: 0;
+        }
+
+        .case-card-glow {
+            position: absolute;
+            inset: -40px;
+            border-radius: 50%;
+            filter: blur(40px);
+            opacity: 0.6;
+            pointer-events: none;
+            z-index: 0;
+            transition: all 0.4s ease;
+        }
+
+        .case-card:hover .case-card-glow,
+        .case-card:active .case-card-glow {
+            opacity: 1;
+            filter: blur(50px);
+            transform: scale(1.15);
+        }
+
+        .case-card.cosmic-style .case-card-glow {
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.8) 0%, rgba(99, 102, 241, 0.4) 40%, transparent 70%);
+        }
+
+        .case-card.stellar-style .case-card-glow {
+            background: radial-gradient(circle, rgba(236, 72, 153, 0.8) 0%, rgba(236, 72, 153, 0.4) 40%, transparent 70%);
+        }
+
+        .case-card.golden-style .case-card-glow {
+            background: radial-gradient(circle, rgba(251, 191, 36, 0.8) 0%, rgba(251, 191, 36, 0.4) 40%, transparent 70%);
+        }
+
+        .case-card.divine-style .case-card-glow {
+            background: radial-gradient(circle, rgba(34, 211, 238, 0.8) 0%, rgba(34, 211, 238, 0.4) 40%, transparent 70%);
         }
 
         .case-card:active { transform: scale(0.97); }
 
         @media (min-width: 769px) {
             .case-card:hover { transform: translateY(-8px) scale(1.02); }
+            .case-card-glow { animation: breatheGlow 4s ease-in-out infinite; }
         }
 
-        .case-card.cosmic-style {
-            border-color: rgba(99, 102, 241, 0.35);
-            background: linear-gradient(145deg, rgba(99, 102, 241, 0.12), rgba(15, 15, 35, 0.95));
-        }
-
-        .case-card.cosmic-style:hover, .case-card.cosmic-style:active {
-            border-color: rgba(99, 102, 241, 0.7);
-            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.2);
-        }
-
+        .case-card.cosmic-style { box-shadow: 0 10px 40px rgba(99, 102, 241, 0.25), 0 0 80px rgba(99, 102, 241, 0.15); }
+        .case-card.cosmic-style:hover { box-shadow: 0 20px 60px rgba(99, 102, 241, 0.4), 0 0 100px rgba(99, 102, 241, 0.25); }
         .case-card.cosmic-style .case-card-name {
             background: linear-gradient(135deg, #e0e7ff, #a78bfa, #818cf8);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .case-card.stellar-style {
-            border-color: rgba(236, 72, 153, 0.4);
-            background: linear-gradient(145deg, rgba(236, 72, 153, 0.15), rgba(15, 15, 35, 0.95));
-        }
-
-        .case-card.stellar-style:hover, .case-card.stellar-style:active {
-            border-color: rgba(236, 72, 153, 0.8);
-            box-shadow: 0 15px 40px rgba(236, 72, 153, 0.25);
-        }
-
+        .case-card.stellar-style { box-shadow: 0 10px 40px rgba(236, 72, 153, 0.25), 0 0 80px rgba(236, 72, 153, 0.15); }
+        .case-card.stellar-style:hover { box-shadow: 0 20px 60px rgba(236, 72, 153, 0.4), 0 0 100px rgba(236, 72, 153, 0.25); }
         .case-card.stellar-style .case-card-name {
             background: linear-gradient(135deg, #fce7f3, #f472b6, #ec4899);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .case-card.golden-style {
-            border-color: rgba(251, 191, 36, 0.45);
-            background: linear-gradient(145deg, rgba(251, 191, 36, 0.12), rgba(15, 15, 35, 0.95));
-        }
-
-        .case-card.golden-style:hover, .case-card.golden-style:active {
-            border-color: rgba(251, 191, 36, 0.9);
-            box-shadow: 0 15px 40px rgba(251, 191, 36, 0.25);
-        }
-
+        .case-card.golden-style { box-shadow: 0 10px 40px rgba(251, 191, 36, 0.3), 0 0 80px rgba(251, 191, 36, 0.15); }
+        .case-card.golden-style:hover { box-shadow: 0 20px 60px rgba(251, 191, 36, 0.45), 0 0 100px rgba(251, 191, 36, 0.25); }
         .case-card.golden-style .case-card-name {
             background: linear-gradient(135deg, #fef3c7, #fbbf24, #f59e0b);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .case-card.divine-style {
-            border-color: rgba(34, 211, 238, 0.5);
-            background: linear-gradient(145deg, rgba(34, 211, 238, 0.15), rgba(15, 15, 35, 0.95));
-        }
-
-        .case-card.divine-style:hover, .case-card.divine-style:active {
-            border-color: rgba(34, 211, 238, 0.9);
-            box-shadow: 0 15px 40px rgba(34, 211, 238, 0.3);
-        }
-
+        .case-card.divine-style { box-shadow: 0 10px 40px rgba(34, 211, 238, 0.3), 0 0 80px rgba(34, 211, 238, 0.15); }
+        .case-card.divine-style:hover { box-shadow: 0 20px 60px rgba(34, 211, 238, 0.45), 0 0 100px rgba(34, 211, 238, 0.25); }
         .case-card.divine-style .case-card-name {
             background: linear-gradient(135deg, #cffafe, #22d3ee, #06b6d4);
             -webkit-background-clip: text;
@@ -445,47 +468,15 @@
 
         .case-card-image-container {
             position: relative;
-            width: 90px;
-            height: 90px;
+            width: 100px;
+            height: 100px;
             margin: 0 auto 16px;
-        }
-
-        /* GLOW EFFECT INSTEAD OF RING */
-        .case-card-glow {
-            position: absolute;
-            inset: -20px;
-            border-radius: 50%;
-            filter: blur(25px);
-            opacity: 0.5;
-            pointer-events: none;
-            transition: opacity 0.3s ease, transform 0.3s ease;
-        }
-
-        .case-card:hover .case-card-glow,
-        .case-card:active .case-card-glow {
-            opacity: 0.8;
-            transform: scale(1.1);
-        }
-
-        .case-card.cosmic-style .case-card-glow {
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.6), rgba(99, 102, 241, 0.2), transparent 70%);
-        }
-
-        .case-card.stellar-style .case-card-glow {
-            background: radial-gradient(circle, rgba(236, 72, 153, 0.6), rgba(236, 72, 153, 0.2), transparent 70%);
-        }
-
-        .case-card.golden-style .case-card-glow {
-            background: radial-gradient(circle, rgba(251, 191, 36, 0.6), rgba(251, 191, 36, 0.2), transparent 70%);
-        }
-
-        .case-card.divine-style .case-card-glow {
-            background: radial-gradient(circle, rgba(34, 211, 238, 0.6), rgba(34, 211, 238, 0.2), transparent 70%);
+            z-index: 2;
         }
 
         .case-card-emoji {
-            font-size: 3.5rem;
-            filter: drop-shadow(0 6px 15px rgba(0, 0, 0, 0.4));
+            font-size: 4rem;
+            filter: drop-shadow(0 8px 25px rgba(0, 0, 0, 0.5));
             position: relative;
             z-index: 1;
         }
@@ -495,12 +486,12 @@
         }
 
         .case-card-image {
-            width: 80px;
-            height: 80px;
+            width: 90px;
+            height: 90px;
             object-fit: cover;
-            border-radius: 20px;
-            filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.5));
-            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 22px;
+            filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.6));
+            border: 2px solid rgba(255, 255, 255, 0.15);
             position: relative;
             z-index: 1;
         }
@@ -516,21 +507,25 @@
             margin-bottom: 12px;
             letter-spacing: 1px;
             text-transform: uppercase;
+            position: relative;
+            z-index: 2;
         }
 
         .case-card-price {
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             font-weight: 600;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 6px;
+            position: relative;
+            z-index: 2;
         }
 
         .case-card-price-text {
             color: #c4b5fd;
-            text-shadow: 0 0 15px rgba(139, 92, 246, 0.6);
+            text-shadow: 0 0 20px rgba(139, 92, 246, 0.7);
         }
 
         .case-card-tag {
@@ -544,18 +539,19 @@
             border-radius: 10px;
             text-transform: uppercase;
             letter-spacing: 1px;
+            z-index: 3;
         }
 
         .case-card.golden-style .case-card-tag {
             background: linear-gradient(135deg, #fbbf24, #f59e0b);
             color: #1a1a2e;
-            box-shadow: 0 0 15px rgba(251, 191, 36, 0.4);
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.5);
         }
 
         .case-card.divine-style .case-card-tag {
             background: linear-gradient(135deg, #22d3ee, #06b6d4);
             color: #042f2e;
-            box-shadow: 0 0 15px rgba(34, 211, 238, 0.4);
+            box-shadow: 0 0 20px rgba(34, 211, 238, 0.5);
         }
 
         .case-screen {
@@ -572,27 +568,28 @@
         body.theme-cosmic {
             --theme-color: #6366f1;
             --theme-color-light: #818cf8;
-            --theme-glow: rgba(99, 102, 241, 0.4);
+            --theme-glow: rgba(99, 102, 241, 0.5);
         }
 
         body.theme-stellar {
             --theme-color: #ec4899;
             --theme-color-light: #f472b6;
-            --theme-glow: rgba(236, 72, 153, 0.4);
+            --theme-glow: rgba(236, 72, 153, 0.5);
         }
 
         body.theme-golden {
             --theme-color: #fbbf24;
             --theme-color-light: #fcd34d;
-            --theme-glow: rgba(251, 191, 36, 0.4);
+            --theme-glow: rgba(251, 191, 36, 0.5);
         }
 
         body.theme-divine {
             --theme-color: #22d3ee;
             --theme-color-light: #67e8f9;
-            --theme-glow: rgba(34, 211, 238, 0.4);
+            --theme-glow: rgba(34, 211, 238, 0.5);
         }
 
+        /* NEW CASE DISPLAY - NO BOX, JUST GLOW */
         .case-display {
             text-align: center;
             margin-bottom: 25px;
@@ -600,89 +597,91 @@
             animation: cardEnter 0.6s ease-out 0.1s both;
         }
 
-        .case-box {
-            width: 140px;
-            height: 140px;
-            margin: 0 auto 15px;
+        .case-hero {
             position: relative;
+            width: 160px;
+            height: 160px;
+            margin: 0 auto 20px;
         }
 
-        @media (min-width: 769px) {
-            .case-box { animation: subtleFloat 5s ease-in-out infinite; }
-        }
-
-        .case-glow {
+        .case-hero-glow {
             position: absolute;
-            inset: -20px;
-            background: radial-gradient(circle, var(--theme-glow) 0%, transparent 70%);
+            inset: -60px;
+            background: radial-gradient(circle, var(--theme-glow) 0%, var(--theme-glow) 20%, transparent 70%);
             border-radius: 50%;
-            filter: blur(20px);
+            filter: blur(40px);
+            opacity: 0.8;
+            animation: pulseGlow 3s ease-in-out infinite;
+        }
+
+        .case-hero-glow-inner {
+            position: absolute;
+            inset: -30px;
+            background: radial-gradient(circle, var(--theme-color) 0%, transparent 60%);
+            border-radius: 50%;
+            filter: blur(25px);
             opacity: 0.4;
         }
 
-        .case-box-ring {
+        .case-hero-particles {
             position: absolute;
-            inset: -12px;
-            border: 2px solid var(--theme-color);
-            opacity: 0.3;
+            inset: -20px;
             border-radius: 50%;
+            overflow: hidden;
+            pointer-events: none;
         }
 
-        @media (min-width: 769px) {
-            .case-box-ring { animation: orbitalRotate 18s linear infinite; }
-        }
-
-        .case-box-ring::before {
-            content: '';
+        .case-particle {
             position: absolute;
-            top: -4px;
-            left: 50%;
-            width: 8px;
-            height: 8px;
-            background: var(--theme-color);
+            width: 4px;
+            height: 4px;
+            background: var(--theme-color-light);
             border-radius: 50%;
-            box-shadow: 0 0 12px var(--theme-color);
+            opacity: 0.6;
         }
 
-        .case-box-inner {
+        .case-hero-content {
+            position: relative;
             width: 100%;
             height: 100%;
-            background: linear-gradient(145deg, rgba(20, 20, 45, 0.9), rgba(10, 10, 25, 0.95));
-            border-radius: 28px;
-            border: 2px solid rgba(255, 255, 255, 0.15);
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
+            z-index: 2;
+        }
+
+        @media (min-width: 769px) {
+            .case-hero-content { animation: subtleFloat 5s ease-in-out infinite; }
         }
 
         .case-emoji {
-            font-size: 4.5rem;
-            filter: drop-shadow(0 6px 20px var(--theme-glow));
+            font-size: 5.5rem;
+            filter: drop-shadow(0 10px 40px var(--theme-glow));
         }
 
         .case-emoji.hidden { display: none; }
 
         .case-display-image {
-            width: 95px;
-            height: 95px;
+            width: 120px;
+            height: 120px;
             object-fit: cover;
-            border-radius: 22px;
-            filter: drop-shadow(0 6px 20px var(--theme-glow));
-            border: 2px solid rgba(255, 255, 255, 0.15);
+            border-radius: 28px;
+            filter: drop-shadow(0 10px 40px var(--theme-glow));
+            border: 3px solid rgba(255, 255, 255, 0.2);
         }
 
         .case-display-image.hidden { display: none; }
 
         .case-name {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: 700;
             background: linear-gradient(135deg, #fff, var(--theme-color-light));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             text-transform: uppercase;
+            text-shadow: 0 0 40px var(--theme-glow);
         }
 
         .case-section {
@@ -700,7 +699,7 @@
             border-radius: 24px;
             overflow: hidden;
             border: 2px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 30px var(--theme-glow);
+            box-shadow: 0 0 50px var(--theme-glow), inset 0 0 30px rgba(0,0,0,0.3);
         }
 
         .case-container::before {
@@ -732,14 +731,14 @@
             border-left: 14px solid transparent;
             border-right: 14px solid transparent;
             border-top: 22px solid var(--theme-color);
-            filter: drop-shadow(0 0 10px var(--theme-color));
+            filter: drop-shadow(0 0 15px var(--theme-color));
         }
 
         .pointer-line {
             width: 3px;
             height: 130px;
             background: linear-gradient(180deg, var(--theme-color), transparent);
-            opacity: 0.4;
+            opacity: 0.5;
         }
 
         .bottom-pointer {
@@ -793,61 +792,61 @@
         .prize-item.rarity-stars-15 {
             background: linear-gradient(145deg, rgba(52, 211, 153, 0.8), rgba(16, 185, 129, 0.85));
             border-color: rgba(52, 211, 153, 0.6);
-            box-shadow: 0 0 18px rgba(52, 211, 153, 0.3);
+            box-shadow: 0 0 20px rgba(52, 211, 153, 0.4);
         }
 
         .prize-item.rarity-stars-25 {
             background: linear-gradient(145deg, rgba(45, 212, 191, 0.8), rgba(20, 184, 166, 0.85));
             border-color: rgba(45, 212, 191, 0.6);
-            box-shadow: 0 0 18px rgba(45, 212, 191, 0.3);
+            box-shadow: 0 0 20px rgba(45, 212, 191, 0.4);
         }
 
         .prize-item.rarity-stars-50 {
             background: linear-gradient(145deg, rgba(59, 130, 246, 0.85), rgba(37, 99, 235, 0.9));
             border-color: rgba(59, 130, 246, 0.6);
-            box-shadow: 0 0 20px rgba(59, 130, 246, 0.35);
+            box-shadow: 0 0 25px rgba(59, 130, 246, 0.45);
         }
 
         .prize-item.rarity-stars-75 {
             background: linear-gradient(145deg, rgba(99, 102, 241, 0.85), rgba(79, 70, 229, 0.9));
             border-color: rgba(99, 102, 241, 0.6);
-            box-shadow: 0 0 22px rgba(99, 102, 241, 0.35);
+            box-shadow: 0 0 25px rgba(99, 102, 241, 0.45);
         }
 
         .prize-item.rarity-stars-100 {
             background: linear-gradient(145deg, rgba(139, 92, 246, 0.85), rgba(124, 58, 237, 0.9));
             border-color: rgba(139, 92, 246, 0.6);
-            box-shadow: 0 0 24px rgba(139, 92, 246, 0.4);
+            box-shadow: 0 0 30px rgba(139, 92, 246, 0.5);
         }
 
         .prize-item.rarity-stars-150 {
             background: linear-gradient(145deg, rgba(168, 85, 247, 0.85), rgba(147, 51, 234, 0.9));
             border-color: rgba(168, 85, 247, 0.65);
-            box-shadow: 0 0 26px rgba(168, 85, 247, 0.4);
+            box-shadow: 0 0 30px rgba(168, 85, 247, 0.5);
         }
 
         .prize-item.rarity-stars-250 {
             background: linear-gradient(145deg, rgba(236, 72, 153, 0.85), rgba(219, 39, 119, 0.9));
             border-color: rgba(236, 72, 153, 0.65);
-            box-shadow: 0 0 28px rgba(236, 72, 153, 0.45);
+            box-shadow: 0 0 35px rgba(236, 72, 153, 0.55);
         }
 
         .prize-item.rarity-stars-500 {
             background: linear-gradient(145deg, rgba(251, 146, 60, 0.9), rgba(249, 115, 22, 0.92));
             border-color: rgba(251, 146, 60, 0.7);
-            box-shadow: 0 0 30px rgba(251, 146, 60, 0.5);
+            box-shadow: 0 0 40px rgba(251, 146, 60, 0.6);
         }
 
         .prize-item.rarity-stars-1000 {
             background: linear-gradient(145deg, rgba(251, 191, 36, 0.9), rgba(245, 158, 11, 0.92));
             border-color: rgba(251, 191, 36, 0.75);
-            box-shadow: 0 0 35px rgba(251, 191, 36, 0.55);
+            box-shadow: 0 0 45px rgba(251, 191, 36, 0.65);
         }
 
         .prize-item.rarity-stars-9999 {
             background: linear-gradient(145deg, rgba(239, 68, 68, 0.9), rgba(220, 38, 38, 0.92));
             border-color: rgba(239, 68, 68, 0.8);
-            box-shadow: 0 0 40px rgba(239, 68, 68, 0.6), 0 0 60px rgba(251, 191, 36, 0.3);
+            box-shadow: 0 0 50px rgba(239, 68, 68, 0.7), 0 0 80px rgba(251, 191, 36, 0.4);
         }
 
         .prize-emoji {
@@ -870,7 +869,7 @@
         .prize-item.winner {
             animation: winnerPop 0.5s ease-out;
             border-color: var(--theme-color) !important;
-            box-shadow: 0 0 40px var(--theme-glow) !important;
+            box-shadow: 0 0 60px var(--theme-glow) !important;
         }
 
         @keyframes winnerPop {
@@ -890,7 +889,7 @@
             color: #0a0a14;
             border-radius: 18px;
             cursor: pointer;
-            box-shadow: 0 12px 35px var(--theme-glow);
+            box-shadow: 0 15px 50px var(--theme-glow), 0 0 30px var(--theme-glow);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             z-index: 10;
             display: flex;
@@ -907,7 +906,7 @@
         @media (min-width: 769px) {
             .spin-button:hover:not(:disabled) {
                 transform: translateY(-4px) scale(1.02);
-                box-shadow: 0 20px 50px var(--theme-glow);
+                box-shadow: 0 25px 70px var(--theme-glow), 0 0 50px var(--theme-glow);
             }
         }
 
@@ -945,7 +944,7 @@
         .back-to-menu-btn:hover, .back-to-menu-btn:active {
             border-color: var(--theme-color);
             color: var(--text-primary);
-            box-shadow: 0 0 20px var(--theme-glow);
+            box-shadow: 0 0 30px var(--theme-glow);
         }
 
         .info-section {
@@ -969,7 +968,7 @@
         .info-title::before, .info-title::after {
             content: '◆';
             margin: 0 12px;
-            opacity: 0.3;
+            opacity: 0.4;
             color: var(--theme-color);
         }
 
@@ -999,20 +998,20 @@
             .prize-card:hover {
                 transform: translateY(-4px) scale(1.02);
                 border-color: var(--theme-color);
-                box-shadow: 0 12px 30px var(--theme-glow);
+                box-shadow: 0 12px 40px var(--theme-glow);
             }
         }
 
-        .prize-card.stars-15 { border-color: rgba(52, 211, 153, 0.4); background: linear-gradient(145deg, rgba(52, 211, 153, 0.1), rgba(15, 15, 35, 0.95)); }
-        .prize-card.stars-25 { border-color: rgba(45, 212, 191, 0.4); background: linear-gradient(145deg, rgba(45, 212, 191, 0.1), rgba(15, 15, 35, 0.95)); }
-        .prize-card.stars-50 { border-color: rgba(59, 130, 246, 0.4); background: linear-gradient(145deg, rgba(59, 130, 246, 0.1), rgba(15, 15, 35, 0.95)); }
-        .prize-card.stars-75 { border-color: rgba(99, 102, 241, 0.4); background: linear-gradient(145deg, rgba(99, 102, 241, 0.1), rgba(15, 15, 35, 0.95)); }
-        .prize-card.stars-100 { border-color: rgba(139, 92, 246, 0.4); background: linear-gradient(145deg, rgba(139, 92, 246, 0.1), rgba(15, 15, 35, 0.95)); }
-        .prize-card.stars-150 { border-color: rgba(168, 85, 247, 0.45); background: linear-gradient(145deg, rgba(168, 85, 247, 0.1), rgba(15, 15, 35, 0.95)); }
-        .prize-card.stars-250 { border-color: rgba(236, 72, 153, 0.45); background: linear-gradient(145deg, rgba(236, 72, 153, 0.1), rgba(15, 15, 35, 0.95)); }
-        .prize-card.stars-500 { border-color: rgba(251, 146, 60, 0.5); background: linear-gradient(145deg, rgba(251, 146, 60, 0.12), rgba(15, 15, 35, 0.95)); }
-        .prize-card.stars-1000 { border-color: rgba(251, 191, 36, 0.5); background: linear-gradient(145deg, rgba(251, 191, 36, 0.12), rgba(15, 15, 35, 0.95)); }
-        .prize-card.stars-9999 { border-color: rgba(239, 68, 68, 0.5); background: linear-gradient(145deg, rgba(239, 68, 68, 0.12), rgba(15, 15, 35, 0.95)); }
+        .prize-card.stars-15 { border-color: rgba(52, 211, 153, 0.4); background: linear-gradient(145deg, rgba(52, 211, 153, 0.12), rgba(15, 15, 35, 0.95)); }
+        .prize-card.stars-25 { border-color: rgba(45, 212, 191, 0.4); background: linear-gradient(145deg, rgba(45, 212, 191, 0.12), rgba(15, 15, 35, 0.95)); }
+        .prize-card.stars-50 { border-color: rgba(59, 130, 246, 0.4); background: linear-gradient(145deg, rgba(59, 130, 246, 0.12), rgba(15, 15, 35, 0.95)); }
+        .prize-card.stars-75 { border-color: rgba(99, 102, 241, 0.4); background: linear-gradient(145deg, rgba(99, 102, 241, 0.12), rgba(15, 15, 35, 0.95)); }
+        .prize-card.stars-100 { border-color: rgba(139, 92, 246, 0.45); background: linear-gradient(145deg, rgba(139, 92, 246, 0.12), rgba(15, 15, 35, 0.95)); }
+        .prize-card.stars-150 { border-color: rgba(168, 85, 247, 0.45); background: linear-gradient(145deg, rgba(168, 85, 247, 0.12), rgba(15, 15, 35, 0.95)); }
+        .prize-card.stars-250 { border-color: rgba(236, 72, 153, 0.45); background: linear-gradient(145deg, rgba(236, 72, 153, 0.12), rgba(15, 15, 35, 0.95)); }
+        .prize-card.stars-500 { border-color: rgba(251, 146, 60, 0.5); background: linear-gradient(145deg, rgba(251, 146, 60, 0.14), rgba(15, 15, 35, 0.95)); }
+        .prize-card.stars-1000 { border-color: rgba(251, 191, 36, 0.5); background: linear-gradient(145deg, rgba(251, 191, 36, 0.14), rgba(15, 15, 35, 0.95)); }
+        .prize-card.stars-9999 { border-color: rgba(239, 68, 68, 0.5); background: linear-gradient(145deg, rgba(239, 68, 68, 0.14), rgba(15, 15, 35, 0.95)); }
 
         .prize-card.empty {
             border-color: rgba(107, 114, 128, 0.25);
@@ -1107,14 +1106,14 @@
             border: 2px solid rgba(255, 255, 255, 0.1);
             position: relative;
             overflow: hidden;
-            box-shadow: 0 0 60px var(--theme-glow);
+            box-shadow: 0 0 80px var(--theme-glow);
         }
 
         .modal-overlay.show .modal { transform: scale(1) translateY(0); }
 
         .modal.win {
             border-color: rgba(251, 191, 36, 0.5);
-            box-shadow: 0 0 80px rgba(251, 191, 36, 0.2);
+            box-shadow: 0 0 100px rgba(251, 191, 36, 0.3);
         }
 
         .confetti-modal {
@@ -1229,7 +1228,7 @@
         .modal-button:active { transform: scale(0.97); }
 
         @media (min-width: 769px) {
-            .modal-button:hover { transform: scale(1.02); box-shadow: 0 10px 30px var(--theme-glow); }
+            .modal-button:hover { transform: scale(1.02); box-shadow: 0 10px 40px var(--theme-glow); }
         }
 
         .modal-button.secondary {
@@ -1246,7 +1245,7 @@
 
         .modal-button.gold { background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #1a1a2e; }
 
-        .modal-button.gold:hover { box-shadow: 0 10px 30px rgba(251, 191, 36, 0.4); }
+        .modal-button.gold:hover { box-shadow: 0 10px 40px rgba(251, 191, 36, 0.5); }
 
         .loading-overlay {
             position: fixed;
@@ -1305,6 +1304,9 @@
             .balance-card { padding: 12px 18px; min-width: 125px; }
             .balance-icon-wrap { width: 38px; height: 38px; }
             .balance-value { font-size: 1.1rem; }
+            .case-hero { width: 140px; height: 140px; }
+            .case-emoji { font-size: 4.5rem; }
+            .case-display-image { width: 100px; height: 100px; }
         }
 
         @media (max-width: 380px) {
@@ -1318,6 +1320,9 @@
             .balance-icon-wrap { width: 34px; height: 34px; }
             .balance-icon { font-size: 1.2rem; }
             .balance-value { font-size: 1rem; }
+            .case-hero { width: 120px; height: 120px; }
+            .case-emoji { font-size: 4rem; }
+            .case-display-image { width: 85px; height: 85px; }
         }
 
         @supports (padding: max(0px)) {
@@ -1381,10 +1386,10 @@
 
     <div class="case-screen hidden" id="caseScreen">
         <div class="case-display">
-            <div class="case-box">
-                <div class="case-glow"></div>
-                <div class="case-box-ring"></div>
-                <div class="case-box-inner">
+            <div class="case-hero">
+                <div class="case-hero-glow"></div>
+                <div class="case-hero-glow-inner"></div>
+                <div class="case-hero-content">
                     <span class="case-emoji" id="currentCaseEmoji">🎁</span>
                     <img class="case-display-image hidden" id="currentCaseImage" src="" alt="">
                 </div>
@@ -1485,9 +1490,6 @@
             9999: { stars: 9999, emoji: "👑", rarity: "stars-9999", image: `${IMG_CDN}/prizes/divine_star.png`, name: "Divine Star" }
         };
 
-        // ============================================
-        // 🎲 РЕАЛЬНЫЕ ШАНСЫ (не менять!)
-        // ============================================
         const CASE_CONFIG = {
             cosmic: {
                 prizes: [0, 15, 25, 50, 75, 100],
@@ -1525,22 +1527,15 @@
             }
         };
 
-        // ============================================
-        // 🎰 АЗАРТНАЯ ГЕНЕРАЦИЯ БАРАБАНА
-        // ============================================
-
         function getExpensivePrizeForCase() {
             const caseId = STATE.selectedCase?.id || 'cosmic';
-            
             const expensivePrizes = {
                 cosmic: [PRIZE_VISUALS[50], PRIZE_VISUALS[75], PRIZE_VISUALS[100]],
                 stellar: [PRIZE_VISUALS[100], PRIZE_VISUALS[150], PRIZE_VISUALS[250]],
                 golden: [PRIZE_VISUALS[250], PRIZE_VISUALS[500], PRIZE_VISUALS[150]],
                 divine: [PRIZE_VISUALS[500], PRIZE_VISUALS[1000], PRIZE_VISUALS[9999]]
             };
-            
             const prizes = expensivePrizes[caseId] || expensivePrizes.cosmic;
-            
             const rand = Math.random();
             if (rand < 0.5) return prizes[0];
             if (rand < 0.8) return prizes[1];
@@ -1549,7 +1544,6 @@
 
         function getNonZeroPrizeForDisplay() {
             const caseId = STATE.selectedCase?.id || 'cosmic';
-            
             const prizePools = {
                 cosmic: [
                     { prize: PRIZE_VISUALS[15], weight: 25 },
@@ -1582,16 +1576,13 @@
                     { prize: PRIZE_VISUALS[9999], weight: 10 }
                 ]
             };
-            
             const pool = prizePools[caseId] || prizePools.cosmic;
             const totalWeight = pool.reduce((sum, p) => sum + p.weight, 0);
             let rand = Math.random() * totalWeight;
-            
             for (const item of pool) {
                 rand -= item.weight;
                 if (rand <= 0) return item.prize;
             }
-            
             return pool[0].prize;
         }
 
@@ -1678,9 +1669,10 @@
             const grid = document.getElementById('casesGrid');
             grid.innerHTML = CASES.map(caseItem => `
                 <div class="case-card ${caseItem.style}" onclick="selectCase('${caseItem.id}')">
+                    <div class="case-card-bg"></div>
+                    <div class="case-card-glow"></div>
                     ${caseItem.tag ? `<div class="case-card-tag">${caseItem.tag}</div>` : ''}
                     <div class="case-card-image-container">
-                        <div class="case-card-glow"></div>
                         ${caseItem.image
                             ? `<img src="${caseItem.image}" alt="${caseItem.name}" class="case-card-image" loading="lazy" onerror="this.outerHTML='<div class=\\'case-card-emoji\\'>${caseItem.emoji}</div>'">`
                             : `<div class="case-card-emoji">${caseItem.emoji}</div>`
@@ -1816,18 +1808,14 @@
                 if (winningIndex !== null && i === winningIndex) {
                     prize = winningPrize;
                     prevWasZero = (prize.stars === 0);
-                    
                 } else if (winningIndex !== null && Math.abs(i - winningIndex) === 1 && winningPrize && winningPrize.stars === 0) {
                     prize = getExpensivePrizeForCase();
                     prevWasZero = false;
-                    
                 } else if (winningIndex !== null && Math.abs(i - winningIndex) === 2 && winningPrize && winningPrize.stars === 0) {
                     prize = getNonZeroPrizeForDisplay();
                     prevWasZero = false;
-                    
                 } else {
                     const shouldBeZero = Math.random() < 0.2;
-                    
                     if (shouldBeZero && !prevWasZero) {
                         prize = PRIZE_VISUALS[0];
                         prevWasZero = true;
@@ -1879,7 +1867,6 @@
             
             if (winningPrize.stars === 0) {
                 const edgeChance = Math.random();
-                
                 if (edgeChance < 0.45) {
                     const direction = Math.random() > 0.5 ? 1 : -1;
                     randomOffset = direction * (ITEM_WIDTH * 0.38 + Math.random() * 8);
@@ -1933,29 +1920,23 @@
             document.getElementById('spinBtn').disabled = true;
             haptic('impact');
 
-            // Determine prize IMMEDIATELY (client-side)
             const prizeStars = getRandomPrize();
             const prize = PRIZE_VISUALS[prizeStars] || PRIZE_VISUALS[0];
 
-            // Optimistically update balance for instant feedback
             STATE.sapphires -= currentCost;
             STATE.spinsCount++;
             updateUI();
 
-            // Start animation IMMEDIATELY - don't wait for API
             const animationPromise = runAnimation(prize);
 
-            // Run API calls in parallel with animation (fire and forget style, but track for result)
             let apiSuccess = false;
             const apiPromise = (async () => {
                 try {
-                    // Spin request (deducts sapphires on server)
                     await apiRequest("/api/spin", {
                         method: "POST",
                         body: JSON.stringify({ cost: currentCost, case_id: STATE.selectedCase?.id || 'cosmic' })
                     });
 
-                    // Claim request (adds stars on server)
                     const claimData = await apiRequest("/api/claim", {
                         method: "POST",
                         body: JSON.stringify({
@@ -1964,7 +1945,6 @@
                         })
                     });
 
-                    // Update with server values
                     STATE.sapphires = claimData.new_sapphires;
                     STATE.stars = claimData.new_stars;
                     STATE.canSpin = claimData.can_spin;
@@ -1976,12 +1956,10 @@
                     console.error("Spin/Claim error:", e);
                     showStatus('❌ Ошибка: ' + e.message, 'error');
                     haptic('error');
-                    // Restore correct balance from server
                     await loadBalance();
                 }
             })();
 
-            // Wait for both animation and API to complete
             await Promise.all([animationPromise, apiPromise]);
 
             if (apiSuccess) showResult(prize);
