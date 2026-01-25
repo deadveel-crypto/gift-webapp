@@ -1782,39 +1782,63 @@ const VISUAL_DISPLAY_CONFIG = {
         }
 
         async function runAnimation(winningPrize) {
-            const winningIndex = 30 + Math.floor(Math.random() * 5);
+    const winningIndex = 30 + Math.floor(Math.random() * 5);
 
-            generateItemsStrip(winningPrize, winningIndex);
+    generateItemsStrip(winningPrize, winningIndex);
 
-            const container = document.getElementById('caseContainer');
-            const strip = document.getElementById('itemsStrip');
-            const containerWidth = container.offsetWidth;
-            const centerPosition = containerWidth / 2;
-            const targetPosition = (winningIndex * ITEM_WIDTH) + (ITEM_WIDTH / 2) - centerPosition;
-            const randomOffset = (Math.random() - 0.5) * 30;
-            const finalPosition = targetPosition + randomOffset;
-
-            strip.style.transform = `translateX(${containerWidth}px)`;
-            strip.offsetHeight;
-
-            requestAnimationFrame(() => {
-                strip.classList.add('animating');
-                strip.style.transform = `translateX(-${finalPosition}px)`;
-            });
-
-            if (!isMobile) {
-                playTickSounds();
-            } else {
-                setTimeout(() => haptic('selection'), 500);
-                setTimeout(() => haptic('selection'), 2000);
-                setTimeout(() => haptic('selection'), 4000);
-            }
-
-            await new Promise(resolve => setTimeout(resolve, 5100));
-
-            const winnerItem = strip.querySelector(`[data-index="${winningIndex}"]`);
-            if (winnerItem) winnerItem.classList.add('winner');
+    const container = document.getElementById('caseContainer');
+    const strip = document.getElementById('itemsStrip');
+    const containerWidth = container.offsetWidth;
+    const centerPosition = containerWidth / 2;
+    const targetPosition = (winningIndex * ITEM_WIDTH) + (ITEM_WIDTH / 2) - centerPosition;
+    
+    // ✅ НОВАЯ ЛОГИКА: разный оффсет для нуля и выигрыша
+    let randomOffset;
+    
+    if (winningPrize.stars === 0) {
+        // При выпадении нуля — часто смещаем к краю (эффект "почти!")
+        const edgeChance = Math.random();
+        
+        if (edgeChance < 0.4) {
+            // 40% — сильное смещение к краю (почти на соседний приз)
+            const direction = Math.random() > 0.5 ? 1 : -1;
+            randomOffset = direction * (ITEM_WIDTH * 0.35 + Math.random() * 10);
+        } else if (edgeChance < 0.7) {
+            // 30% — среднее смещение
+            const direction = Math.random() > 0.5 ? 1 : -1;
+            randomOffset = direction * (ITEM_WIDTH * 0.2 + Math.random() * 10);
+        } else {
+            // 30% — обычное попадание в центр
+            randomOffset = (Math.random() - 0.5) * 30;
         }
+    } else {
+        // При выигрыше — всегда ближе к центру (чёткое попадание)
+        randomOffset = (Math.random() - 0.5) * 25;
+    }
+    
+    const finalPosition = targetPosition + randomOffset;
+
+    strip.style.transform = `translateX(${containerWidth}px)`;
+    strip.offsetHeight;
+
+    requestAnimationFrame(() => {
+        strip.classList.add('animating');
+        strip.style.transform = `translateX(-${finalPosition}px)`;
+    });
+
+    if (!isMobile) {
+        playTickSounds();
+    } else {
+        setTimeout(() => haptic('selection'), 500);
+        setTimeout(() => haptic('selection'), 2000);
+        setTimeout(() => haptic('selection'), 4000);
+    }
+
+    await new Promise(resolve => setTimeout(resolve, 5100));
+
+    const winnerItem = strip.querySelector(`[data-index="${winningIndex}"]`);
+    if (winnerItem) winnerItem.classList.add('winner');
+}
 
         function generateItemsStrip(winningPrize = null, winningIndex = null) {
             const strip = document.getElementById('itemsStrip');
