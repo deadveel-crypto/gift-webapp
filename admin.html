@@ -44,7 +44,6 @@
             overflow-x: hidden;
         }
 
-        /* Animated Background */
         .bg-gradient {
             position: fixed;
             top: 0;
@@ -58,7 +57,6 @@
             z-index: -1;
         }
 
-        /* Header */
         .header {
             position: sticky;
             top: 0;
@@ -94,7 +92,6 @@
             font-weight: 600;
         }
 
-        /* Container */
         .container {
             max-width: 600px;
             margin: 0 auto;
@@ -102,7 +99,6 @@
             padding-bottom: calc(80px + var(--safe-area-bottom));
         }
 
-        /* Stats Grid */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -142,10 +138,14 @@
             margin-top: 4px;
         }
 
-        /* Search */
+        /* Search & Sort Container */
+        .search-sort-container {
+            margin-bottom: 20px;
+        }
+
         .search-container {
             position: relative;
-            margin-bottom: 20px;
+            margin-bottom: 12px;
         }
 
         .search-input {
@@ -176,6 +176,75 @@
             transform: translateY(-50%);
             font-size: 20px;
             opacity: 0.5;
+        }
+
+        /* Sort Pills */
+        .sort-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sort-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding-left: 4px;
+        }
+
+        .sort-pills {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        .sort-pills::-webkit-scrollbar {
+            display: none;
+        }
+
+        .sort-pill {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 14px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .sort-pill:hover {
+            border-color: var(--accent);
+            color: var(--text-primary);
+        }
+
+        .sort-pill.active {
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            border-color: transparent;
+            color: white;
+        }
+
+        .sort-pill .sort-icon {
+            font-size: 14px;
+        }
+
+        .sort-pill .sort-arrow {
+            font-size: 10px;
+            opacity: 0.7;
+        }
+
+        .sort-pill.active .sort-arrow {
+            opacity: 1;
         }
 
         /* Users List */
@@ -245,18 +314,30 @@
 
         .user-stats {
             display: flex;
-            gap: 12px;
+            flex-direction: column;
+            gap: 4px;
             font-size: 13px;
+            text-align: right;
         }
 
         .user-stat {
             display: flex;
             align-items: center;
+            justify-content: flex-end;
             gap: 4px;
         }
 
         .user-stat-icon {
-            font-size: 14px;
+            font-size: 12px;
+        }
+
+        .user-stat-value {
+            font-weight: 600;
+            min-width: 40px;
+        }
+
+        .user-stat-value.highlight {
+            color: var(--warning);
         }
 
         /* Modal */
@@ -753,38 +834,7 @@
             color: var(--text-secondary);
         }
 
-        /* Tabs */
-        .tabs {
-            display: flex;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 14px;
-            padding: 4px;
-            margin-bottom: 20px;
-        }
-
-        .tab {
-            flex: 1;
-            padding: 12px;
-            text-align: center;
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-secondary);
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .tab.active {
-            background: linear-gradient(135deg, var(--accent), #8b5cf6);
-            color: white;
-        }
-
-        .tab:not(.active):hover {
-            color: var(--text-primary);
-        }
-
-        /* Segmented Control for amounts */
+        /* Amount presets */
         .amount-presets {
             display: flex;
             gap: 8px;
@@ -816,12 +866,33 @@
             border-color: var(--danger);
             background: rgba(239, 68, 68, 0.1);
         }
+
+        /* Users count badge */
+        .users-count {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            font-size: 14px;
+        }
+
+        .users-count-label {
+            color: var(--text-secondary);
+        }
+
+        .users-count-value {
+            font-weight: 700;
+            color: var(--accent-light);
+        }
     </style>
 </head>
 <body>
     <div class="bg-gradient"></div>
 
-    <!-- Header -->
     <header class="header">
         <div class="header-content">
             <h1 class="header-title">🛠 Админ-панель</h1>
@@ -829,7 +900,6 @@
         </div>
     </header>
 
-    <!-- Main Content -->
     <main class="container" id="mainContent">
         <div class="loading" id="loadingScreen">
             <div class="spinner"></div>
@@ -843,9 +913,7 @@
                 <h3 class="modal-title">Пользователь</h3>
                 <button class="modal-close" onclick="closeUserModal()">×</button>
             </div>
-            <div class="modal-body" id="userModalBody">
-                <!-- Content will be inserted here -->
-            </div>
+            <div class="modal-body" id="userModalBody"></div>
         </div>
     </div>
 
@@ -856,13 +924,10 @@
                 <h3 class="modal-title" id="editModalTitle">Редактирование</h3>
                 <button class="modal-close" onclick="closeEditModal()">×</button>
             </div>
-            <div class="modal-body" id="editModalBody">
-                <!-- Content will be inserted here -->
-            </div>
+            <div class="modal-body" id="editModalBody"></div>
         </div>
     </div>
 
-    <!-- Toast -->
     <div class="toast" id="toast"></div>
 
     <script>
@@ -878,6 +943,11 @@
         let currentPage = 0;
         let searchQuery = "";
         let searchTimeout = null;
+        
+        // Сортировка
+        let sortBy = "created_at"; // created_at, sapphires, stars, referrals
+        let sortOrder = "desc"; // asc, desc
+        let allUsers = []; // Кэш всех пользователей для сортировки
 
         if (tg) {
             try {
@@ -885,7 +955,6 @@
                 tg.expand();
                 initData = tg.initData || "";
                 
-                // Настройка кнопки "Назад"
                 tg.BackButton.show();
                 tg.BackButton.onClick(() => {
                     if (document.getElementById('editModal').classList.contains('show')) {
@@ -916,6 +985,65 @@
             
             const response = await fetch(`${API_URL}${endpoint}`, options);
             return response.json();
+        }
+
+        // ============================================
+        // СОРТИРОВКА
+        // ============================================
+        function sortUsers(users) {
+            return [...users].sort((a, b) => {
+                let aVal, bVal;
+                
+                switch (sortBy) {
+                    case 'sapphires':
+                        aVal = a.sapphires || 0;
+                        bVal = b.sapphires || 0;
+                        break;
+                    case 'stars':
+                        aVal = a.stars || 0;
+                        bVal = b.stars || 0;
+                        break;
+                    case 'referrals':
+                        aVal = a.referrals || 0;
+                        bVal = b.referrals || 0;
+                        break;
+                    case 'user_id':
+                        aVal = a.user_id;
+                        bVal = b.user_id;
+                        break;
+                    case 'created_at':
+                    default:
+                        aVal = new Date(a.created_at || 0).getTime();
+                        bVal = new Date(b.created_at || 0).getTime();
+                        break;
+                }
+                
+                if (sortOrder === 'asc') {
+                    return aVal - bVal;
+                } else {
+                    return bVal - aVal;
+                }
+            });
+        }
+
+        function toggleSort(field) {
+            haptic('light');
+            
+            if (sortBy === field) {
+                // Меняем направление
+                sortOrder = sortOrder === 'desc' ? 'asc' : 'desc';
+            } else {
+                // Новое поле, по умолчанию desc
+                sortBy = field;
+                sortOrder = 'desc';
+            }
+            
+            renderUsersList();
+        }
+
+        function getSortArrow(field) {
+            if (sortBy !== field) return '';
+            return sortOrder === 'desc' ? '↓' : '↑';
         }
 
         // ============================================
@@ -957,12 +1085,11 @@
             try {
                 const [statsResult, usersResult] = await Promise.all([
                     apiRequest('/api/admin/stats'),
-                    apiRequest(`/api/admin/users?page=${currentPage}&q=${encodeURIComponent(searchQuery)}`)
+                    apiRequest(`/api/admin/users?page=0&limit=1000&q=${encodeURIComponent(searchQuery)}`)
                 ]);
 
                 const stats = statsResult.success ? statsResult : { total_users: 0, total_sapphires: 0, total_stars: 0, banned_users: 0 };
-                const users = usersResult.success ? usersResult.users : [];
-                const totalPages = usersResult.pages || 1;
+                allUsers = usersResult.success ? usersResult.users : [];
 
                 container.innerHTML = `
                     <!-- Stats -->
@@ -1013,34 +1140,62 @@
                         </div>
                     </div>
 
-                    <!-- Search -->
-                    <div class="search-container">
-                        <span class="search-icon">🔍</span>
-                        <input type="text" class="search-input" id="searchInput" 
-                               placeholder="Поиск по ID, имени, username..." 
-                               value="${searchQuery}"
-                               oninput="handleSearch(this.value)">
+                    <!-- Search & Sort -->
+                    <div class="search-sort-container">
+                        <div class="search-container">
+                            <span class="search-icon">🔍</span>
+                            <input type="text" class="search-input" id="searchInput" 
+                                   placeholder="Поиск по ID, имени, username..." 
+                                   value="${searchQuery}"
+                                   oninput="handleSearch(this.value)">
+                        </div>
+                        
+                        <div class="sort-container">
+                            <div class="sort-label">Сортировка</div>
+                            <div class="sort-pills" id="sortPills">
+                                <button class="sort-pill ${sortBy === 'created_at' ? 'active' : ''}" onclick="toggleSort('created_at')">
+                                    <span class="sort-icon">📅</span>
+                                    <span>Дата</span>
+                                    <span class="sort-arrow">${getSortArrow('created_at')}</span>
+                                </button>
+                                <button class="sort-pill ${sortBy === 'sapphires' ? 'active' : ''}" onclick="toggleSort('sapphires')">
+                                    <span class="sort-icon">💎</span>
+                                    <span>Сапфиры</span>
+                                    <span class="sort-arrow">${getSortArrow('sapphires')}</span>
+                                </button>
+                                <button class="sort-pill ${sortBy === 'stars' ? 'active' : ''}" onclick="toggleSort('stars')">
+                                    <span class="sort-icon">⭐</span>
+                                    <span>Звёзды</span>
+                                    <span class="sort-arrow">${getSortArrow('stars')}</span>
+                                </button>
+                                <button class="sort-pill ${sortBy === 'referrals' ? 'active' : ''}" onclick="toggleSort('referrals')">
+                                    <span class="sort-icon">👥</span>
+                                    <span>Рефералы</span>
+                                    <span class="sort-arrow">${getSortArrow('referrals')}</span>
+                                </button>
+                                <button class="sort-pill ${sortBy === 'user_id' ? 'active' : ''}" onclick="toggleSort('user_id')">
+                                    <span class="sort-icon">🆔</span>
+                                    <span>ID</span>
+                                    <span class="sort-arrow">${getSortArrow('user_id')}</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Users Count -->
+                    <div class="users-count">
+                        <span class="users-count-label">Найдено пользователей:</span>
+                        <span class="users-count-value" id="usersCountValue">${allUsers.length}</span>
                     </div>
 
                     <!-- Users List -->
-                    <div class="users-list" id="usersList">
-                        ${users.length ? users.map(user => renderUserCard(user)).join('') : `
-                            <div class="empty-state">
-                                <div class="empty-state-icon">👤</div>
-                                <div class="empty-state-text">Пользователи не найдены</div>
-                            </div>
-                        `}
-                    </div>
+                    <div class="users-list" id="usersList"></div>
 
                     <!-- Pagination -->
-                    ${totalPages > 1 ? `
-                        <div class="pagination">
-                            <button class="pagination-btn" ${currentPage === 0 ? 'disabled' : ''} onclick="changePage(${currentPage - 1})">←</button>
-                            <span class="pagination-info">${currentPage + 1} / ${totalPages}</span>
-                            <button class="pagination-btn" ${currentPage >= totalPages - 1 ? 'disabled' : ''} onclick="changePage(${currentPage + 1})">→</button>
-                        </div>
-                    ` : ''}
+                    <div class="pagination" id="pagination"></div>
                 `;
+
+                renderUsersList();
 
             } catch (error) {
                 console.error("Load dashboard error:", error);
@@ -1053,8 +1208,88 @@
             }
         }
 
+        function renderUsersList() {
+            const sortedUsers = sortUsers(allUsers);
+            const pageSize = 20;
+            const totalPages = Math.ceil(sortedUsers.length / pageSize);
+            const startIdx = currentPage * pageSize;
+            const endIdx = Math.min(startIdx + pageSize, sortedUsers.length);
+            const pageUsers = sortedUsers.slice(startIdx, endIdx);
+
+            // Обновляем кнопки сортировки
+            const sortPills = document.getElementById('sortPills');
+            if (sortPills) {
+                sortPills.innerHTML = `
+                    <button class="sort-pill ${sortBy === 'created_at' ? 'active' : ''}" onclick="toggleSort('created_at')">
+                        <span class="sort-icon">📅</span>
+                        <span>Дата</span>
+                        <span class="sort-arrow">${getSortArrow('created_at')}</span>
+                    </button>
+                    <button class="sort-pill ${sortBy === 'sapphires' ? 'active' : ''}" onclick="toggleSort('sapphires')">
+                        <span class="sort-icon">💎</span>
+                        <span>Сапфиры</span>
+                        <span class="sort-arrow">${getSortArrow('sapphires')}</span>
+                    </button>
+                    <button class="sort-pill ${sortBy === 'stars' ? 'active' : ''}" onclick="toggleSort('stars')">
+                        <span class="sort-icon">⭐</span>
+                        <span>Звёзды</span>
+                        <span class="sort-arrow">${getSortArrow('stars')}</span>
+                    </button>
+                    <button class="sort-pill ${sortBy === 'referrals' ? 'active' : ''}" onclick="toggleSort('referrals')">
+                        <span class="sort-icon">👥</span>
+                        <span>Рефералы</span>
+                        <span class="sort-arrow">${getSortArrow('referrals')}</span>
+                    </button>
+                    <button class="sort-pill ${sortBy === 'user_id' ? 'active' : ''}" onclick="toggleSort('user_id')">
+                        <span class="sort-icon">🆔</span>
+                        <span>ID</span>
+                        <span class="sort-arrow">${getSortArrow('user_id')}</span>
+                    </button>
+                `;
+            }
+
+            // Обновляем список пользователей
+            const usersList = document.getElementById('usersList');
+            if (usersList) {
+                if (pageUsers.length === 0) {
+                    usersList.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">👤</div>
+                            <div class="empty-state-text">Пользователи не найдены</div>
+                        </div>
+                    `;
+                } else {
+                    usersList.innerHTML = pageUsers.map(user => renderUserCard(user)).join('');
+                }
+            }
+
+            // Обновляем пагинацию
+            const pagination = document.getElementById('pagination');
+            if (pagination && totalPages > 1) {
+                pagination.innerHTML = `
+                    <button class="pagination-btn" ${currentPage === 0 ? 'disabled' : ''} onclick="changePage(${currentPage - 1})">←</button>
+                    <span class="pagination-info">${currentPage + 1} / ${totalPages}</span>
+                    <button class="pagination-btn" ${currentPage >= totalPages - 1 ? 'disabled' : ''} onclick="changePage(${currentPage + 1})">→</button>
+                `;
+            } else if (pagination) {
+                pagination.innerHTML = '';
+            }
+
+            // Обновляем счётчик
+            const countValue = document.getElementById('usersCountValue');
+            if (countValue) {
+                countValue.textContent = allUsers.length;
+            }
+        }
+
         function renderUserCard(user) {
             const initials = (user.full_name || user.username || 'U').substring(0, 2).toUpperCase();
+            
+            // Определяем какое поле подсвечивать
+            const highlightSapphires = sortBy === 'sapphires';
+            const highlightStars = sortBy === 'stars';
+            const highlightReferrals = sortBy === 'referrals';
+            
             return `
                 <div class="user-card ${user.is_banned ? 'banned' : ''}" onclick="openUserModal(${user.user_id})">
                     <div class="user-avatar">${initials}</div>
@@ -1065,11 +1300,15 @@
                     <div class="user-stats">
                         <div class="user-stat">
                             <span class="user-stat-icon">💎</span>
-                            <span>${formatNumber(user.sapphires)}</span>
+                            <span class="user-stat-value ${highlightSapphires ? 'highlight' : ''}">${formatNumber(user.sapphires || 0)}</span>
                         </div>
                         <div class="user-stat">
                             <span class="user-stat-icon">⭐</span>
-                            <span>${formatNumber(user.stars)}</span>
+                            <span class="user-stat-value ${highlightStars ? 'highlight' : ''}">${formatNumber(user.stars || 0)}</span>
+                        </div>
+                        <div class="user-stat">
+                            <span class="user-stat-icon">👥</span>
+                            <span class="user-stat-value ${highlightReferrals ? 'highlight' : ''}">${formatNumber(user.referrals || 0)}</span>
                         </div>
                     </div>
                 </div>
@@ -1081,17 +1320,25 @@
         // ============================================
         function handleSearch(query) {
             clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(() => {
+            searchTimeout = setTimeout(async () => {
                 searchQuery = query;
                 currentPage = 0;
-                loadDashboard();
+                
+                // Загружаем пользователей с поиском
+                const result = await apiRequest(`/api/admin/users?page=0&limit=1000&q=${encodeURIComponent(searchQuery)}`);
+                if (result.success) {
+                    allUsers = result.users;
+                    renderUsersList();
+                }
             }, 300);
         }
 
         function changePage(page) {
-            currentPage = page;
-            loadDashboard();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            currentPage = Math.max(0, page);
+            renderUsersList();
+            
+            // Скроллим к списку
+            document.getElementById('usersList')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
         // ============================================
@@ -1225,7 +1472,7 @@
             const title = document.getElementById('editModalTitle');
             const body = document.getElementById('editModalBody');
             
-                        const titles = {
+            const titles = {
                 sapphires: '💎 Сапфиры',
                 stars: '⭐ Звёзды',
                 referrals: '👥 Рефералы'
@@ -1273,7 +1520,6 @@
             
             modal.classList.add('show');
             
-            // Фокус на поле ввода
             setTimeout(() => {
                 document.getElementById('amountInput').focus();
             }, 300);
@@ -1295,7 +1541,6 @@
                 return;
             }
             
-            // Для списания делаем отрицательным
             if (action === 'subtract') {
                 value = -value;
             }
@@ -1324,7 +1569,6 @@
                     haptic('success');
                     closeEditModal();
                     
-                    // Обновляем данные в модалке
                     if (result.balance) {
                         document.getElementById('userSapphires').textContent = formatNumber(result.balance.sapphires);
                         document.getElementById('userStars').textContent = formatNumber(result.balance.stars);
@@ -1332,6 +1576,14 @@
                         currentUser.sapphires = result.balance.sapphires;
                         currentUser.stars = result.balance.stars;
                         currentUser.referrals = result.balance.referrals;
+                        
+                        // Обновляем в кэше
+                        const userInCache = allUsers.find(u => u.user_id === currentUser.user_id);
+                        if (userInCache) {
+                            userInCache.sapphires = result.balance.sapphires;
+                            userInCache.stars = result.balance.stars;
+                            userInCache.referrals = result.balance.referrals;
+                        }
                     }
                 } else {
                     showToast(result.error || 'Ошибка', 'error');
@@ -1366,7 +1618,13 @@
                     showToast(result.message || 'Успешно!', 'success');
                     haptic('success');
                     closeUserModal();
-                    loadDashboard();
+                    
+                    // Обновляем в кэше
+                    const userInCache = allUsers.find(u => u.user_id === userId);
+                    if (userInCache) {
+                        userInCache.is_banned = ban;
+                    }
+                    renderUsersList();
                 } else {
                     showToast(result.error || 'Ошибка', 'error');
                     haptic('error');
@@ -1437,7 +1695,13 @@
                 return;
             }
             
-            const confirmed = confirm(`Выдать ${amount} ${currency === 'sapphires' ? 'сапфиров' : currency === 'stars' ? 'звёзд' : 'рефералов'} ВСЕМ пользователям?`);
+            const currencyNames = {
+                sapphires: 'сапфиров',
+                stars: 'звёзд',
+                referrals: 'рефералов'
+            };
+            
+            const confirmed = confirm(`Выдать ${amount} ${currencyNames[currency]} ВСЕМ пользователям?`);
             
             if (!confirmed) return;
             
@@ -1538,6 +1802,8 @@
         // УТИЛИТЫ
         // ============================================
         function formatNumber(num) {
+            if (num === null || num === undefined) return '0';
+            num = Number(num);
             if (num >= 1000000) {
                 return (num / 1000000).toFixed(1) + 'M';
             }
@@ -1579,7 +1845,7 @@
             }
         }
 
-        // Закрытие модалок по клику на overlay
+        // Закрытие модалок
         document.getElementById('userModal').addEventListener('click', (e) => {
             if (e.target.id === 'userModal') closeUserModal();
         });
