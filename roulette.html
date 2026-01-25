@@ -213,11 +213,11 @@
         @keyframes confettiFall {
             0% { 
                 opacity: 1; 
-                transform: translateY(-20px) rotate(0deg) scale(1);
+                transform: translateY(0) rotate(0deg) scale(1);
             }
             100% { 
                 opacity: 0; 
-                transform: translateY(350px) rotate(720deg) scale(0.3);
+                transform: translateY(500px) rotate(720deg) scale(0.3);
             }
         }
 
@@ -769,13 +769,28 @@
             font-family: 'Orbitron', sans-serif;
             font-size: 1.2rem;
             font-weight: 700;
-            background: linear-gradient(135deg, #fff, var(--theme-color-light));
+            background: linear-gradient(90deg, 
+                var(--theme-color-light), 
+                var(--theme-color), 
+                var(--theme-color-light), 
+                rgba(255,255,255,0.9), 
+                var(--theme-color-light), 
+                var(--theme-color), 
+                var(--theme-color-light)
+            );
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
             letter-spacing: 3px;
             text-transform: uppercase;
-            animation: textShine 4s linear infinite;
-            background-size: 200% auto;
+            animation: smoothShine 6s ease-in-out infinite;
+            background-size: 300% auto;
+        }
+
+        @keyframes smoothShine {
+            0% { background-position: 0% center; }
+            50% { background-position: 100% center; }
+            100% { background-position: 0% center; }
         }
 
         .case-section {
@@ -1236,14 +1251,13 @@
 
         .confetti-modal {
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
+            top: -20px;
+            left: -20px;
+            right: -20px;
             bottom: 0;
             pointer-events: none;
             z-index: 0;
             overflow: hidden;
-            border-radius: 28px;
         }
 
         .confetti-piece {
@@ -1348,6 +1362,9 @@
             border-radius: 16px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             position: relative;
+            /* No animations or transforms */
+            transform: none !important;
+            animation: none !important;
         }
 
         .modal-balance-item::before {
@@ -1362,10 +1379,14 @@
 
         .modal-balance-item.sapphire {
             border-color: rgba(99, 102, 241, 0.4);
+            transform: none !important;
+            animation: none !important;
         }
 
         .modal-balance-item.star {
             border-color: rgba(251, 191, 36, 0.4);
+            transform: none !important;
+            animation: none !important;
         }
 
         .modal-balance-icon {
@@ -1389,6 +1410,8 @@
             font-size: 1.1rem;
             font-weight: 700;
             line-height: 1;
+            transform: none !important;
+            animation: none !important;
         }
 
         .modal-balance-item.sapphire .modal-balance-value {
@@ -2344,7 +2367,7 @@
 
                 piece.style.cssText = `
                     left: ${left}%;
-                    top: -10px;
+                    top: 0;
                     width: ${size}px;
                     height: ${size * (Math.random() * 0.5 + 0.5)}px;
                     background: ${color};
