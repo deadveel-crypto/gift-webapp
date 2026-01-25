@@ -1256,7 +1256,7 @@
             filter: none;
         }
 
-        /* Balance display in modal - NO ANIMATIONS */
+        /* Balance display in modal - COMPLETELY STATIC */
         .modal-balance {
             display: flex;
             justify-content: center;
@@ -1275,7 +1275,10 @@
             border-radius: 16px;
             border: 2px solid rgba(255, 255, 255, 0.1);
             position: relative;
-            /* NO animations, NO transforms */
+            /* STATIC - no animations, no transforms, no transitions */
+            animation: none !important;
+            transform: none !important;
+            transition: none !important;
         }
 
         .modal-balance-item::before {
@@ -1286,16 +1289,17 @@
             right: 0;
             height: 1px;
             background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+            animation: none !important;
         }
 
         .modal-balance-item.sapphire {
             border-color: rgba(99, 102, 241, 0.5);
-            box-shadow: 0 0 20px rgba(99, 102, 241, 0.3), inset 0 0 15px rgba(99, 102, 241, 0.1);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
         }
 
         .modal-balance-item.star {
             border-color: rgba(251, 191, 36, 0.5);
-            box-shadow: 0 0 20px rgba(251, 191, 36, 0.3), inset 0 0 15px rgba(251, 191, 36, 0.1);
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
         }
 
         .modal-balance-icon {
