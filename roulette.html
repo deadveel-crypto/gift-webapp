@@ -212,21 +212,24 @@
 
         /* Confetti animations */
         @keyframes confettiDrop {
-            0% {
-                transform: translateY(0) rotateZ(0deg) rotateX(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(100vh) rotateZ(720deg) rotateX(360deg);
-                opacity: 0.8;
-            }
-        }
+    0% {
+        transform: translateY(-10px) rotateZ(0deg) rotateX(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(120vh) rotateZ(720deg) rotateX(360deg);
+        opacity: 0.6;
+    }
+}
 
-        @keyframes confettiSway {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(15px); }
-            75% { transform: translateX(-15px); }
-        }
+@keyframes confettiSway {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(20px); }
+    75% { transform: translateX(-20px); }
+}
 
         @keyframes confettiGlow {
             0%, 100% { filter: brightness(1); }
@@ -1783,7 +1786,7 @@
 
         let isSpinning = false;
         let confettiActive = false;
-        const MAX_CONFETTI = 25;
+        const MAX_CONFETTI = 40;
 
         const PRIZE_VISUALS = {
             0: { stars: 0, emoji: null, rarity: "empty", image: `${IMG_CDN}/prizes/void.png`, name: "Void" },
@@ -2386,7 +2389,7 @@
         const confettiShapes = ['square', 'circle', 'star', 'ribbon'];
         let confettiInterval = null;
         let confettiPieces = [];
-        const MAX_CONFETTI_PIECES = 60;
+        const MAX_CONFETTI_PIECES = 25;
 
         function createConfetti() {
     const modal = document.getElementById('modal');
