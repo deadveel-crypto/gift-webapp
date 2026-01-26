@@ -1678,10 +1678,8 @@
                 prizes: [0, 15, 25, 50, 75, 100],
                 getRandomPrize: () => {
                     const rand = Math.random() * 100;
-                    // 93% - пусто, 5% - 15 звёзд, 2% - 25 звёзд
-                    // 50, 75, 100 - отображаются но никогда не выпадают
-                    if (rand < 93) return 0;
-                    if (rand < 98) return 15;
+                    if (rand < 90) return 0;
+                    if (rand < 95) return 15;
                     return 25;
                 }
             },
@@ -1689,10 +1687,8 @@
                 prizes: [0, 25, 50, 75, 100, 150, 250],
                 getRandomPrize: () => {
                     const rand = Math.random() * 100;
-                    // 93% - пусто, 5% - 25 звёзд, 2% - 50 звёзд
-                    // 75, 100, 150, 250 - отображаются но никогда не выпадают
-                    if (rand < 93) return 0;
-                    if (rand < 98) return 25;
+                    if (rand < 88) return 0;
+                    if (rand < 94) return 25;
                     return 50;
                 }
             },
@@ -1700,22 +1696,16 @@
                 prizes: [0, 75, 100, 150, 250, 500],
                 getRandomPrize: () => {
                     const rand = Math.random() * 100;
-                    // 93% - пусто, 5% - 75 звёзд, 2% - 100 звёзд
-                    // 150, 250, 500 - отображаются но никогда не выпадают
-                    if (rand < 93) return 0;
-                    if (rand < 98) return 75;
-                    return 100;
+                    if (rand < 92) return 0;
+                    return 75;
                 }
             },
             divine: {
                 prizes: [0, 100, 150, 250, 500, 1000, 9999],
                 getRandomPrize: () => {
                     const rand = Math.random() * 100;
-                    // 93% - пусто, 5% - 100 звёзд, 2% - 150 звёзд
-                    // 250, 500, 1000, 9999 - отображаются но никогда не выпадают
-                    if (rand < 93) return 0;
-                    if (rand < 98) return 100;
-                    return 150;
+                    if (rand < 90) return 0;
+                    return 100;
                 }
             }
         };
@@ -2273,7 +2263,7 @@
 
             function createConfettiBatch() {
                 const fragment = document.createDocumentFragment();
-                const batchSize = 8;
+                const batchSize = 12;
 
                 for (let i = 0; i < batchSize; i++) {
                     const piece = document.createElement('div');
@@ -2307,7 +2297,7 @@
             }
 
             createConfettiBatch();
-            confettiInterval = setInterval(createConfettiBatch, 600);
+            confettiInterval = setInterval(createConfettiBatch, 400);
         }
 
         function stopConfetti() {
