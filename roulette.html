@@ -213,14 +213,14 @@
         @keyframes confettiFall {
             0% { 
                 opacity: 1; 
-                transform: translateY(-10px) rotate(0deg) scale(1);
+                transform: translateY(-20px) rotate(0deg) scale(1);
             }
             90% {
                 opacity: 1;
             }
             100% { 
                 opacity: 0; 
-                transform: translateY(calc(100vh - 100px)) rotate(720deg) scale(0.3);
+                transform: translateY(500px) rotate(720deg) scale(0.3);
             }
         }
 
@@ -1253,20 +1253,20 @@
         }
 
         .confetti-container {
-            position: fixed;
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 99;
-            overflow: hidden;
+            z-index: 1;
+            overflow: visible;
         }
 
         .confetti-piece {
             position: absolute;
             will-change: transform, opacity;
-            animation: confettiFall 4s linear forwards;
+            animation: confettiFall 3s ease-out forwards;
         }
 
         .modal-emoji {
@@ -1605,8 +1605,7 @@
         <div class="bg-stars" id="bgStars"></div>
     </div>
 
-    <!-- Confetti container moved outside modal for full screen coverage -->
-    <div class="confetti-container" id="confettiContainer"></div>
+
 
     <div class="header">
         <div class="brand-container">
@@ -1685,6 +1684,7 @@
 
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal" id="modal">
+            <div class="confetti-container" id="confettiContainer"></div>
             <div class="modal-emoji" id="modalEmoji"></div>
             <div class="modal-title" id="modalTitle">Поздравляем!</div>
             <div class="modal-prize" id="modalPrize">+50</div>
@@ -2354,7 +2354,7 @@
                 
                 const currentPieces = container.querySelectorAll('.confetti-piece');
                 if (currentPieces.length >= MAX_CONFETTI) {
-                    for (let i = 0; i < 3 && currentPieces[i]; i++) {
+                    for (let i = 0; i < 5 && currentPieces[i]; i++) {
                         currentPieces[i].remove();
                     }
                 }
@@ -2362,35 +2362,33 @@
                 const piece = document.createElement('div');
                 piece.className = 'confetti-piece';
                 
-                const size = Math.random() * 10 + 5;
+                const size = Math.random() * 8 + 4;
                 const color = colors[Math.floor(Math.random() * colors.length)];
-                const duration = 3 + Math.random() * 2;
+                const duration = 2.5 + Math.random() * 1.5;
                 const left = Math.random() * 100;
-                const delay = Math.random() * 0.5;
 
                 piece.style.cssText = `
                     left: ${left}%;
-                    top: -20px;
+                    top: -10px;
                     width: ${size}px;
-                    height: ${size * (Math.random() * 0.6 + 0.4)}px;
+                    height: ${size * (Math.random() * 0.5 + 0.5)}px;
                     background: ${color};
-                    animation: confettiFall ${duration}s linear ${delay}s forwards;
+                    animation: confettiFall ${duration}s ease-out forwards;
                     border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
                     box-shadow: 0 0 ${size}px ${color};
-                    opacity: 0;
                 `;
 
                 piece.addEventListener('animationend', () => piece.remove());
                 container.appendChild(piece);
                 
                 if (confettiActive) {
-                    setTimeout(createConfettiPiece, 80 + Math.random() * 80);
+                    setTimeout(createConfettiPiece, 60 + Math.random() * 60);
                 }
             }
             
             // Initial burst of confetti
-            for (let i = 0; i < 15; i++) {
-                setTimeout(createConfettiPiece, i * 30);
+            for (let i = 0; i < 20; i++) {
+                setTimeout(createConfettiPiece, i * 25);
             }
         }
 
