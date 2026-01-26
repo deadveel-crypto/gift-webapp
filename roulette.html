@@ -1862,11 +1862,12 @@
         // IMPORTANT: renamed shapes to avoid conflict with background `.star` class
         const confettiShapes = ['shape-square', 'shape-circle', 'shape-star', 'shape-ribbon'];
 
-        // base counts/durations are adjusted per win/lose
-        const CONFETTI_COUNT_WIN = 36;
-        const CONFETTI_COUNT_LOSE = 18;
+        // Confetti should ALWAYS fall continuously (win = ярче/быстрее, lose = меньше/серее/медленнее)
+        const CONFETTI_COUNT_WIN = 46;
+        const CONFETTI_COUNT_LOSE = 26;
 
         function clearConfettiTimers() {
+            // оставлено для совместимости (таймеры больше не используются)
             if (confettiStopTimer) {
                 clearTimeout(confettiStopTimer);
                 confettiStopTimer = null;
@@ -1880,23 +1881,20 @@
             const container = document.getElementById('confettiContainer');
             if (!container) return;
 
-            // Clear previous
             container.innerHTML = '';
 
-            // Set fall distance based on real container height (modal size can differ)
+            // IMPORTANT: считаем дистанцию падения от реальной высоты модалки
+            // (иначе на разных экранах "съезжает" и падает не туда)
             const fallDistance = Math.max(320, container.clientHeight + 60);
             container.style.setProperty('--confetti-fall-distance', fallDistance + 'px');
 
             const count = isWin ? CONFETTI_COUNT_WIN : CONFETTI_COUNT_LOSE;
             const palette = isWin
                 ? confettiColors
-                : ['#6b7280', '#9ca3af', '#d1d5db', '#e5e7eb'];
+                : ['#4b5563', '#6b7280', '#9ca3af', '#d1d5db'];
 
-            // WIN: continuous flow (infinite)
-            // LOSE: one subtle fall (1 iteration) and stop
-            const iterationCount = isWin ? 'infinite' : '1';
-
-            let maxEndMs = 0;
+            // БЕСКОНЕЧНО для обоих режимов
+            const iterationCount = 'infinite';
 
             for (let i = 0; i < count; i++) {
                 const confetti = document.createElement('div');
@@ -1905,20 +1903,17 @@
 
                 const color = palette[Math.floor(Math.random() * palette.length)];
                 const size = 6 + Math.random() * 8;
-                const left = (i / count) * 100 + (Math.random() - 0.5) * 18;
-
-                // Use positive stagger so you always see it starting from the top after open
-                const delay = isWin ? (i * 0.06) % 0.9 : (i * 0.05) % 0.6;
+                const left = Math.random() * 100;
 
                 const fallDuration = isWin
-                    ? (3.6 + Math.random() * 1.2) // 3.6..4.8
-                    : (5.2 + Math.random() * 1.6); // 5.2..6.8
+                    ? (3.4 + Math.random() * 1.2)   // 3.4..4.6 (поживее)
+                    : (5.6 + Math.random() * 2.2);  // 5.6..7.8 (спокойнее)
 
-                const swayDuration = 1.4 + Math.random() * 1.2;
+                const swayDuration = 1.2 + Math.random() * 1.6;
 
-                // Track end for LOSE to auto stop
-                const endMs = (delay + fallDuration) * 1000;
-                if (endMs > maxEndMs) maxEndMs = endMs;
+                // КЛЮЧЕВОЕ: отрицательная задержка
+                // чтобы конфетти были видны СРАЗУ и не было пауз в начале
+                const delay = -(Math.random() * fallDuration);
 
                 confetti.style.cssText = `
                     left: ${Math.max(0, Math.min(100, left))}%;
@@ -1926,20 +1921,13 @@
                     height: ${shape === 'shape-ribbon' ? size * 2 : size}px;
                     background: ${color};
                     box-shadow: 0 0 ${Math.max(2, size / 2)}px ${color};
-                    opacity: ${isWin ? 1 : 0.85};
+                    opacity: ${isWin ? 1 : 0.6};
                     animation-duration: ${fallDuration}s, ${swayDuration}s;
                     animation-delay: ${delay}s, ${delay}s;
                     animation-iteration-count: ${iterationCount}, ${iterationCount};
                 `;
 
                 container.appendChild(confetti);
-            }
-
-            if (!isWin) {
-                // stop a bit after last piece finishes
-                confettiStopTimer = setTimeout(() => {
-                    if (STATE.isModalOpen) stopConfetti();
-                }, maxEndMs + 250);
             }
         }
 
