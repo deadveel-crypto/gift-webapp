@@ -1709,14 +1709,19 @@
 
         // ============ CANVAS CONFETTI SYSTEM ============
                 // ============ CANVAS CONFETTI SYSTEM ============
+                // ============ CANVAS CONFETTI SYSTEM ============
         let confettiCanvas = null;
         let confettiCtx = null;
         let confettiActive = false;
         let confettiAnimationId = null;
+        let confettiPhase = 'burst'; // 'burst' -> 'fall'
+        let burstComplete = false;
         
-        // Typed Arrays для максимальной производительности
-        let particleX, particleY, particleS, particleVY;
-        let particleWobble, particleWobbleSpeed, particleColor, particleShape, particleBaseX;
+        const MAX_PARTICLES = 100;
+        let particleX, particleY, particleVX, particleVY;
+        let particleS, particleRotation, particleRotationSpeed;
+        let particleColor, particleShape, particleOpacity;
+        let particleGravity, particleDrag;
         
         const COLORS = [
             '#FFFFFF', '#FFFEF0', '#FFF8DC',
@@ -1731,38 +1736,47 @@
         let canvasW = 0;
         let canvasH = 0;
 
-        function initParticles(w, h, count, initial) {
+        function initBurstParticles(w, h) {
             canvasW = w;
             canvasH = h;
-            particleCount = count;
+            particleCount = MAX_PARTICLES;
             
-            particleX = new Float32Array(count);
-            particleY = new Float32Array(count);
-            particleS = new Float32Array(count);
-            particleVY = new Float32Array(count);
-            particleWobble = new Float32Array(count);
-            particleWobbleSpeed = new Float32Array(count);
-            particleColor = new Array(count);
-            particleShape = new Uint8Array(count);
-            particleBaseX = new Float32Array(count);
+            particleX = new Float32Array(MAX_PARTICLES);
+            particleY = new Float32Array(MAX_PARTICLES);
+            particleVX = new Float32Array(MAX_PARTICLES);
+            particleVY = new Float32Array(MAX_PARTICLES);
+            particleS = new Float32Array(MAX_PARTICLES);
+            particleRotation = new Float32Array(MAX_PARTICLES);
+            particleRotationSpeed = new Float32Array(MAX_PARTICLES);
+            particleOpacity = new Float32Array(MAX_PARTICLES);
+            particleGravity = new Float32Array(MAX_PARTICLES);
+            particleDrag = new Float32Array(MAX_PARTICLES);
+            particleColor = new Array(MAX_PARTICLES);
+            particleShape = new Uint8Array(MAX_PARTICLES);
             
-            const section = w / count;
+            const centerX = w / 2;
             
-            for (let i = 0; i < count; i++) {
-                particleBaseX[i] = section * i + section / 2;
-                resetParticle(i, initial);
+            for (let i = 0; i < MAX_PARTICLES; i++) {
+                // Стартовая позиция - верх по центру с разбросом
+                particleX[i] = centerX + (Math.random() - 0.5) * w * 0.8;
+                particleY[i] = -10 - Math.random() * 30;
+                
+                // Выстрел вниз и в стороны
+                const angle = Math.PI / 2 + (Math.random() - 0.5) * 0.8; // Вниз с разбросом
+                const power = Math.random() * 8 + 6; // Сила выстрела
+                
+                particleVX[i] = Math.cos(angle) * power * (Math.random() - 0.5) * 2;
+                particleVY[i] = Math.sin(angle) * power;
+                
+                particleS[i] = Math.random() * 6 + 4;
+                particleRotation[i] = Math.random() * 360;
+                particleRotationSpeed[i] = (Math.random() - 0.5) * 8;
+                particleOpacity[i] = 1;
+                particleGravity[i] = 0.15 + Math.random() * 0.1;
+                particleDrag[i] = 0.98 + Math.random() * 0.015;
+                particleColor[i] = COLORS[Math.floor(Math.random() * COLORS.length)];
+                particleShape[i] = Math.floor(Math.random() * 3);
             }
-        }
-
-        function resetParticle(i, initial) {
-            particleX[i] = particleBaseX[i] + (Math.random() - 0.5) * 40;
-            particleY[i] = initial ? Math.random() * canvasH : -Math.random() * 20 - 5;
-            particleS[i] = Math.random() * 5 + 3;
-            particleVY[i] = Math.random() * 0.6 + 0.3;
-            particleWobble[i] = Math.random() * 6.28;
-            particleWobbleSpeed[i] = Math.random() * 0.025 + 0.01;
-            particleColor[i] = COLORS[Math.floor(Math.random() * COLORS.length)];
-            particleShape[i] = Math.random() > 0.5 ? 0 : 1;
         }
 
         function createConfettiCanvas() {
@@ -1791,12 +1805,10 @@
             
             confettiCtx = confettiCanvas.getContext('2d', { alpha: true, desynchronized: true });
             confettiActive = true;
+            confettiPhase = 'burst';
+            burstComplete = false;
             
-            const w = confettiCanvas.width;
-            const h = confettiCanvas.height;
-            const count = 80;
-            
-            initParticles(w, h, count, true);
+            initBurstParticles(confettiCanvas.width, confettiCanvas.height);
             animateConfetti();
         }
 
@@ -1808,29 +1820,121 @@
             const h = canvasH;
             
             ctx.clearRect(0, 0, w, h);
-            ctx.globalAlpha = 0.95;
+            
+            let activeCount = 0;
+            let allSettled = true;
             
             for (let i = 0; i < particleCount; i++) {
-                particleWobble[i] += particleWobbleSpeed[i];
-                particleX[i] += Math.sin(particleWobble[i]) * 0.4;
+                if (particleOpacity[i] <= 0) continue;
+                
+                // Физика
+                particleVY[i] += particleGravity[i];
+                particleVX[i] *= particleDrag[i];
+                particleVY[i] *= particleDrag[i];
+                
+                particleX[i] += particleVX[i];
                 particleY[i] += particleVY[i];
                 
-                if (particleY[i] > h + 5) {
-                    resetParticle(i, false);
+                // Плавное замедление вращения
+                particleRotation[i] += particleRotationSpeed[i];
+                particleRotationSpeed[i] *= 0.995;
+                
+                // Проверяем, устаканились ли частицы (медленное падение)
+                if (Math.abs(particleVY[i]) > 1.5 || Math.abs(particleVX[i]) > 0.5) {
+                    allSettled = false;
                 }
                 
+                // Плавное затухание внизу
+                if (particleY[i] > h - 80) {
+                    particleOpacity[i] -= 0.025;
+                }
+                
+                // Удаление за пределами
+                if (particleY[i] > h + 20 || particleOpacity[i] <= 0) {
+                    particleOpacity[i] = 0;
+                    continue;
+                }
+                
+                activeCount++;
+                
+                // Отрисовка
                 const x = particleX[i];
                 const y = particleY[i];
                 const s = particleS[i];
                 
+                ctx.save();
+                ctx.translate(x, y);
+                ctx.rotate(particleRotation[i] * Math.PI / 180);
+                ctx.globalAlpha = particleOpacity[i];
                 ctx.fillStyle = particleColor[i];
                 
-                if (particleShape[i] === 0) {
-                    ctx.fillRect(x - s * 0.5, y - s * 0.3, s, s * 0.6);
-                } else {
-                    ctx.beginPath();
-                    ctx.arc(x, y, s * 0.5, 0, 6.28);
-                    ctx.fill();
+                switch (particleShape[i]) {
+                    case 0: // Прямоугольник
+                        ctx.fillRect(-s * 0.5, -s * 0.3, s, s * 0.6);
+                        break;
+                    case 1: // Круг
+                        ctx.beginPath();
+                        ctx.arc(0, 0, s * 0.45, 0, 6.28);
+                        ctx.fill();
+                        break;
+                    case 2: // Ромб
+                        ctx.beginPath();
+                        ctx.moveTo(0, -s * 0.5);
+                        ctx.lineTo(s * 0.35, 0);
+                        ctx.lineTo(0, s * 0.5);
+                        ctx.lineTo(-s * 0.35, 0);
+                        ctx.closePath();
+                        ctx.fill();
+                        break;
+                }
+                
+                ctx.restore();
+            }
+            
+            // Переход в фазу медленного падения
+            if (confettiPhase === 'burst' && allSettled && !burstComplete) {
+                burstComplete = true;
+                confettiPhase = 'fall';
+                
+                // Делаем падение ещё медленнее и плавнее
+                for (let i = 0; i < particleCount; i++) {
+                    if (particleOpacity[i] > 0) {
+                        particleGravity[i] = 0.03 + Math.random() * 0.02;
+                        particleVY[i] = Math.min(particleVY[i], 0.8);
+                        particleVX[i] *= 0.3;
+                        particleDrag[i] = 0.995;
+                        particleRotationSpeed[i] *= 0.3;
+                    }
+                }
+            }
+            
+            // Продолжаем анимацию пока есть активные частицы
+            if (activeCount > 0 && confettiActive) {
+                confettiAnimationId = requestAnimationFrame(animateConfetti);
+            } else if (confettiActive) {
+                // Все частицы упали, но модалка ещё открыта - добавляем новые
+                addFallingParticles();
+            }
+        }
+        
+        function addFallingParticles() {
+            if (!confettiActive) return;
+            
+            // Добавляем новые медленно падающие частицы
+            for (let i = 0; i < particleCount; i++) {
+                if (particleOpacity[i] <= 0) {
+                    particleX[i] = Math.random() * canvasW;
+                    particleY[i] = -10 - Math.random() * 20;
+                    particleVX[i] = (Math.random() - 0.5) * 0.5;
+                    particleVY[i] = Math.random() * 0.5 + 0.3;
+                    particleS[i] = Math.random() * 5 + 3;
+                    particleRotation[i] = Math.random() * 360;
+                    particleRotationSpeed[i] = (Math.random() - 0.5) * 2;
+                    particleOpacity[i] = 0.9;
+                    particleGravity[i] = 0.02 + Math.random() * 0.015;
+                    particleDrag[i] = 0.998;
+                    particleColor[i] = COLORS[Math.floor(Math.random() * COLORS.length)];
+                    particleShape[i] = Math.floor(Math.random() * 3);
                 }
             }
             
@@ -1851,6 +1955,8 @@
             }
             confettiCtx = null;
             particleCount = 0;
+            confettiPhase = 'burst';
+            burstComplete = false;
         }
 
         // ============ HELPERS ============
