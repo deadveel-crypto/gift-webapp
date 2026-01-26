@@ -1790,99 +1790,54 @@
                 // ============ CANVAS CONFETTI SYSTEM ============
                 // ============ CANVAS CONFETTI SYSTEM ============
                 // ============ CANVAS CONFETTI SYSTEM ============
+                // ============ CANVAS CONFETTI SYSTEM ============
         let confettiCanvas = null;
         let confettiCtx = null;
         let confettiParticles = [];
         let confettiAnimationId = null;
         let confettiActive = false;
+        let lastFrameTime = 0;
+        const TARGET_FPS = 30; // Ограничиваем FPS для оптимизации
+        const FRAME_DURATION = 1000 / TARGET_FPS;
 
+        // Простые яркие цвета без сложных градиентов
         const confettiColors = [
-            { color: '#FFD700', glow: 'rgba(255, 215, 0, 0.9)' },      // Золотой
-            { color: '#FFF44F', glow: 'rgba(255, 244, 79, 0.9)' },     // Лимонный
-            { color: '#FFEC8B', glow: 'rgba(255, 236, 139, 0.9)' },    // Светло-золотой
-            { color: '#87CEEB', glow: 'rgba(135, 206, 235, 0.9)' },    // Небесно-голубой
-            { color: '#00BFFF', glow: 'rgba(0, 191, 255, 0.9)' },      // Голубой
-            { color: '#E0B0FF', glow: 'rgba(224, 176, 255, 0.9)' },    // Сиреневый
-            { color: '#FF69B4', glow: 'rgba(255, 105, 180, 0.9)' },    // Розовый
-            { color: '#98FB98', glow: 'rgba(152, 251, 152, 0.9)' },    // Мятный
-            { color: '#FFFFFF', glow: 'rgba(255, 255, 255, 1)' },      // Белый
-            { color: '#F0F8FF', glow: 'rgba(240, 248, 255, 1)' },      // Снежный
+            '#FFD700', '#FFF44F', '#FFEC8B', // Золотые
+            '#87CEEB', '#00BFFF', '#7DF9FF', // Голубые  
+            '#FFB6C1', '#FF69B4', '#FF91AF', // Розовые
+            '#98FB98', '#90EE90', '#7CFC00', // Зелёные
+            '#FFFFFF', '#F8F8FF', '#FFFAFA', // Белые
+            '#DDA0DD', '#EE82EE', '#DA70D6', // Фиолетовые
         ];
 
         class ConfettiParticle {
             constructor(canvasWidth, canvasHeight, index, total) {
-                this.canvasWidth = canvasWidth;
-                this.canvasHeight = canvasHeight;
-                this.index = index;
-                this.total = total;
+                this.cw = canvasWidth;
+                this.ch = canvasHeight;
+                // Равномерное распределение
+                this.baseX = (canvasWidth / total) * index + (canvasWidth / total) / 2;
                 this.reset(true);
             }
 
-            reset(initial = false) {
-                // Равномерное распределение по горизонтали
-                const section = this.canvasWidth / this.total;
-                this.x = section * this.index + Math.random() * section;
-                
-                if (initial) {
-                    // При старте — распределяем по всей высоте
-                    this.y = Math.random() * this.canvasHeight;
-                } else {
-                    // При респавне — сверху
-                    this.y = -5 - Math.random() * 20;
-                }
-                
-                this.size = Math.random() * 5 + 4;
-                this.speedY = Math.random() * 0.4 + 0.25;
-                
-                // Плавное покачивание
-                this.wobblePhase = Math.random() * Math.PI * 2;
-                this.wobbleSpeed = Math.random() * 0.008 + 0.004;
-                this.wobbleRadius = Math.random() * 0.3 + 0.2;
-                
-                // Медленное вращение
-                this.rotation = Math.random() * 360;
-                this.rotationSpeed = Math.random() * 0.3 - 0.15;
-                
-                // Яркие цвета
-                const colorData = confettiColors[Math.floor(Math.random() * confettiColors.length)];
-                this.color = colorData.color;
-                this.glowColor = colorData.glow;
-                
-                // Форма
-                this.shape = Math.floor(Math.random() * 3);
-                
-                // Высокая яркость
-                this.opacity = Math.random() * 0.2 + 0.8;
-                
-                // Мягкое мерцание
-                this.twinklePhase = Math.random() * Math.PI * 2;
-                this.twinkleSpeed = Math.random() * 0.03 + 0.02;
+            reset(initial) {
+                this.x = this.baseX + (Math.random() - 0.5) * 30;
+                this.y = initial ? Math.random() * this.ch : -Math.random() * 15;
+                this.s = Math.random() * 4 + 3; // size
+                this.vy = Math.random() * 0.5 + 0.3; // скорость Y
+                this.vx = (Math.random() - 0.5) * 0.3; // скорость X
+                this.wobble = Math.random() * 6.28;
+                this.wobbleSpeed = Math.random() * 0.03 + 0.015;
+                this.color = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+                this.shape = Math.random() > 0.5 ? 0 : 1; // 0=rect, 1=circle
+                this.opacity = 0.85 + Math.random() * 0.15;
             }
 
             update() {
-                // Плавное синусоидальное покачивание
-                this.wobblePhase += this.wobbleSpeed;
-                this.x += Math.sin(this.wobblePhase) * this.wobbleRadius;
+                this.wobble += this.wobbleSpeed;
+                this.x += this.vx + Math.sin(this.wobble) * 0.3;
+                this.y += this.vy;
                 
-                // Равномерное падение
-                this.y += this.speedY;
-                
-                // Плавное вращение
-                this.rotation += this.rotationSpeed;
-                
-                // Мягкое мерцание яркости
-                this.twinklePhase += this.twinkleSpeed;
-                this.currentOpacity = this.opacity + Math.sin(this.twinklePhase) * 0.1;
-                
-                // Затухание внизу
-                if (this.y > this.canvasHeight - 40) {
-                    const fadeStart = this.canvasHeight - 40;
-                    const fadeProgress = (this.y - fadeStart) / 40;
-                    this.currentOpacity *= (1 - fadeProgress);
-                }
-                
-                // Респавн сверху
-                if (this.y > this.canvasHeight) {
+                if (this.y > this.ch + 5) {
                     if (confettiActive) {
                         this.reset(false);
                         return true;
@@ -1891,75 +1846,32 @@
                 }
                 return true;
             }
-
-            draw(ctx) {
-                ctx.save();
-                ctx.translate(this.x, this.y);
-                ctx.rotate((this.rotation * Math.PI) / 180);
-                ctx.globalAlpha = Math.max(0, Math.min(1, this.currentOpacity));
-                
-                // Красивый glow эффект
-                ctx.shadowColor = this.glowColor;
-                ctx.shadowBlur = 15;
-                ctx.fillStyle = this.color;
-
-                const size = this.size;
-                
-                switch (this.shape) {
-                    case 0: // Прямоугольник
-                        ctx.fillRect(-size / 2, -size / 3, size, size / 1.5);
-                        break;
-                    case 1: // Круг
-                        ctx.beginPath();
-                        ctx.arc(0, 0, size / 2, 0, Math.PI * 2);
-                        ctx.fill();
-                        break;
-                    case 2: // Звёздочка простая
-                        ctx.beginPath();
-                        for (let i = 0; i < 4; i++) {
-                            const angle = (i * Math.PI) / 2;
-                            const x = Math.cos(angle) * size / 2;
-                            const y = Math.sin(angle) * size / 2;
-                            if (i === 0) ctx.moveTo(x, y);
-                            else ctx.lineTo(x, y);
-                        }
-                        ctx.closePath();
-                        ctx.fill();
-                        break;
-                }
-                
-                ctx.restore();
-            }
         }
 
         function createConfettiCanvas() {
             const modal = document.getElementById('modal');
             if (!modal) return null;
             
-            // Удаляем старый canvas
-            const oldCanvas = modal.querySelector('.confetti-canvas');
-            if (oldCanvas) oldCanvas.remove();
+            const old = modal.querySelector('.confetti-canvas');
+            if (old) old.remove();
             
-            // Создаём canvas поверх всего
             const canvas = document.createElement('canvas');
             canvas.className = 'confetti-canvas';
-            canvas.style.cssText = `
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                pointer-events: none;
-                z-index: 100;
-                border-radius: 28px;
-            `;
+            canvas.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:100;border-radius:28px;';
             
             modal.style.position = 'relative';
-            modal.appendChild(canvas); // Добавляем в конец, чтобы быть поверх
+            modal.appendChild(canvas);
             
             const rect = modal.getBoundingClientRect();
-            canvas.width = rect.width;
-            canvas.height = rect.height;
+            // Уменьшаем разрешение canvas для производительности
+            const scale = window.devicePixelRatio > 1 ? 0.5 : 0.75;
+            canvas.width = rect.width * scale;
+            canvas.height = rect.height * scale;
+            canvas.style.width = rect.width + 'px';
+            canvas.style.height = rect.height + 'px';
+            
+            const ctx = canvas.getContext('2d', { alpha: true });
+            ctx.scale(scale, scale);
             
             return canvas;
         }
@@ -1971,56 +1883,80 @@
             confettiCtx = confettiCanvas.getContext('2d');
             confettiActive = true;
             confettiParticles = [];
+            lastFrameTime = 0;
 
-            const width = confettiCanvas.width;
-            const height = confettiCanvas.height;
+            const rect = document.getElementById('modal').getBoundingClientRect();
+            const w = rect.width;
+            const h = rect.height;
             
-            // Количество частиц
-            const isMobile = window.innerWidth < 500;
-            const particleCount = isMobile ? 35 : 50;
+            // Больше частиц, но простых
+            const count = Math.min(60, Math.floor(w * h / 2000));
             
-            // Создаём частицы с равномерным распределением
-            for (let i = 0; i < particleCount; i++) {
-                confettiParticles.push(new ConfettiParticle(width, height, i, particleCount));
+            for (let i = 0; i < count; i++) {
+                confettiParticles.push(new ConfettiParticle(w, h, i, count));
             }
 
-            animateConfetti();
+            animateConfetti(0);
         }
 
-        function animateConfetti() {
+        function animateConfetti(timestamp) {
             if (!confettiCtx || !confettiCanvas) return;
             
-            confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
-
-            // Обновляем и рисуем
-            confettiParticles = confettiParticles.filter(particle => {
-                const alive = particle.update();
-                if (alive) particle.draw(confettiCtx);
-                return alive;
-            });
-
-            if (confettiParticles.length > 0 || confettiActive) {
+            // Ограничение FPS
+            if (timestamp - lastFrameTime < FRAME_DURATION) {
+                if (confettiActive || confettiParticles.length > 0) {
+                    confettiAnimationId = requestAnimationFrame(animateConfetti);
+                }
+                return;
+            }
+            lastFrameTime = timestamp;
+            
+            const rect = document.getElementById('modal')?.getBoundingClientRect();
+            if (!rect) return;
+            
+            confettiCtx.clearRect(0, 0, rect.width, rect.height);
+            
+            // Один проход — без shadow для скорости
+            let i = confettiParticles.length;
+            while (i--) {
+                const p = confettiParticles[i];
+                if (!p.update()) {
+                    confettiParticles.splice(i, 1);
+                    continue;
+                }
+                
+                confettiCtx.globalAlpha = p.opacity;
+                confettiCtx.fillStyle = p.color;
+                
+                if (p.shape === 0) {
+                    confettiCtx.fillRect(p.x - p.s/2, p.y - p.s/3, p.s, p.s * 0.6);
+                } else {
+                    confettiCtx.beginPath();
+                    confettiCtx.arc(p.x, p.y, p.s/2, 0, 6.28);
+                    confettiCtx.fill();
+                }
+            }
+            
+            if (confettiActive || confettiParticles.length > 0) {
                 confettiAnimationId = requestAnimationFrame(animateConfetti);
             }
         }
 
         function stopConfetti() {
             confettiActive = false;
-            confettiParticles = [];
             
+            // Мгновенная очистка
             if (confettiAnimationId) {
                 cancelAnimationFrame(confettiAnimationId);
                 confettiAnimationId = null;
             }
             
-            if (confettiCtx && confettiCanvas) {
-                confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
-            }
+            confettiParticles = [];
             
-            if (confettiCanvas && confettiCanvas.parentNode) {
+            if (confettiCanvas) {
                 confettiCanvas.remove();
+                confettiCanvas = null;
             }
-            confettiCanvas = null;
             confettiCtx = null;
         }
         // ============ ОСТАЛЬНОЙ КОД ============
