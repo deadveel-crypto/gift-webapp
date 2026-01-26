@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Divine Case</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -223,7 +224,7 @@
                 opacity: 1;
             }
             100% {
-                transform: translateY(450px) rotate(720deg);
+                transform: translateY(var(--confetti-fall-distance, 450px)) rotate(720deg);
                 opacity: 0;
             }
         }
@@ -1273,6 +1274,8 @@
             z-index: 50;
             overflow: hidden;
             border-radius: 28px;
+            /* fall distance is set from JS based on real modal height */
+            --confetti-fall-distance: 450px;
         }
 
         .confetti {
@@ -1283,21 +1286,22 @@
             pointer-events: none;
             will-change: transform;
             animation: confettiFall linear infinite, confettiSway ease-in-out infinite;
+            animation-fill-mode: both;
         }
 
-        .confetti.square {
+        .confetti.shape-square {
             border-radius: 2px;
         }
 
-        .confetti.circle {
+        .confetti.shape-circle {
             border-radius: 50%;
         }
 
-        .confetti.star {
+        .confetti.shape-star {
             clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
         }
 
-        .confetti.ribbon {
+        .confetti.shape-ribbon {
             width: 6px;
             height: 16px;
             border-radius: 3px;
@@ -1628,6 +1632,10 @@
             .bg-orb-1, .bg-orb-2, .bg-orb-4, .bg-orb-5 { animation: none; }
             .star { animation-duration: 4s; }
         }
+
+        @media (prefers-reduced-motion: reduce) {
+            .confetti { animation: none !important; }
+        }
     </style>
 </head>
 <body>
@@ -1785,6 +1793,7 @@
 
         let isSpinning = false;
         let confettiActive = false;
+        let confettiStopTimer = null;
 
         const PRIZE_VISUALS = {
             0: { stars: 0, emoji: null, rarity: "empty", image: `${IMG_CDN}/prizes/void.png`, name: "Void" },
@@ -1850,55 +1859,95 @@
             '#ffffff', '#e2e8f0'
         ];
 
-        const confettiShapes = ['square', 'circle', 'star', 'ribbon'];
-        const CONFETTI_COUNT = 30;
-        const FALL_DURATION = 4; // seconds for one full fall cycle
+        // IMPORTANT: renamed shapes to avoid conflict with background `.star` class
+        const confettiShapes = ['shape-square', 'shape-circle', 'shape-star', 'shape-ribbon'];
+
+        // base counts/durations are adjusted per win/lose
+        const CONFETTI_COUNT_WIN = 36;
+        const CONFETTI_COUNT_LOSE = 18;
+
+        function clearConfettiTimers() {
+            if (confettiStopTimer) {
+                clearTimeout(confettiStopTimer);
+                confettiStopTimer = null;
+            }
+        }
 
         function startConfetti(isWin = true) {
             confettiActive = true;
+            clearConfettiTimers();
+
             const container = document.getElementById('confettiContainer');
             if (!container) return;
 
             // Clear previous
             container.innerHTML = '';
 
-            // Create fixed amount of confetti with evenly distributed delays
-            for (let i = 0; i < CONFETTI_COUNT; i++) {
+            // Set fall distance based on real container height (modal size can differ)
+            const fallDistance = Math.max(320, container.clientHeight + 60);
+            container.style.setProperty('--confetti-fall-distance', fallDistance + 'px');
+
+            const count = isWin ? CONFETTI_COUNT_WIN : CONFETTI_COUNT_LOSE;
+            const palette = isWin
+                ? confettiColors
+                : ['#6b7280', '#9ca3af', '#d1d5db', '#e5e7eb'];
+
+            // WIN: continuous flow (infinite)
+            // LOSE: one subtle fall (1 iteration) and stop
+            const iterationCount = isWin ? 'infinite' : '1';
+
+            let maxEndMs = 0;
+
+            for (let i = 0; i < count; i++) {
                 const confetti = document.createElement('div');
                 const shape = confettiShapes[Math.floor(Math.random() * confettiShapes.length)];
                 confetti.className = `confetti ${shape}`;
 
-                const color = isWin 
-                    ? confettiColors[Math.floor(Math.random() * confettiColors.length)]
-                    : ['#6b7280', '#9ca3af', '#d1d5db', '#e5e7eb'][Math.floor(Math.random() * 4)];
-                
+                const color = palette[Math.floor(Math.random() * palette.length)];
                 const size = 6 + Math.random() * 8;
-                const left = (i / CONFETTI_COUNT) * 100 + (Math.random() - 0.5) * 20; // Evenly spread horizontally
-                
-                // Evenly distribute start times across the animation cycle
-                const delay = (i / CONFETTI_COUNT) * FALL_DURATION;
-                const swayDuration = 1.5 + Math.random() * 1;
+                const left = (i / count) * 100 + (Math.random() - 0.5) * 18;
+
+                // Use positive stagger so you always see it starting from the top after open
+                const delay = isWin ? (i * 0.06) % 0.9 : (i * 0.05) % 0.6;
+
+                const fallDuration = isWin
+                    ? (3.6 + Math.random() * 1.2) // 3.6..4.8
+                    : (5.2 + Math.random() * 1.6); // 5.2..6.8
+
+                const swayDuration = 1.4 + Math.random() * 1.2;
+
+                // Track end for LOSE to auto stop
+                const endMs = (delay + fallDuration) * 1000;
+                if (endMs > maxEndMs) maxEndMs = endMs;
 
                 confetti.style.cssText = `
                     left: ${Math.max(0, Math.min(100, left))}%;
                     width: ${size}px;
-                    height: ${shape === 'ribbon' ? size * 2 : size}px;
+                    height: ${shape === 'shape-ribbon' ? size * 2 : size}px;
                     background: ${color};
-                    box-shadow: 0 0 ${size/2}px ${color};
-                    animation-duration: ${FALL_DURATION}s, ${swayDuration}s;
-                    animation-delay: -${delay}s, 0s;
+                    box-shadow: 0 0 ${Math.max(2, size / 2)}px ${color};
+                    opacity: ${isWin ? 1 : 0.85};
+                    animation-duration: ${fallDuration}s, ${swayDuration}s;
+                    animation-delay: ${delay}s, ${delay}s;
+                    animation-iteration-count: ${iterationCount}, ${iterationCount};
                 `;
 
                 container.appendChild(confetti);
+            }
+
+            if (!isWin) {
+                // stop a bit after last piece finishes
+                confettiStopTimer = setTimeout(() => {
+                    if (STATE.isModalOpen) stopConfetti();
+                }, maxEndMs + 250);
             }
         }
 
         function stopConfetti() {
             confettiActive = false;
+            clearConfettiTimers();
             const container = document.getElementById('confettiContainer');
-            if (container) {
-                container.innerHTML = '';
-            }
+            if (container) container.innerHTML = '';
         }
 
         function getExpensivePrizeForCase() {
@@ -2434,11 +2483,11 @@
             spinAgainBtn.style.display = canSpinAgain ? 'block' : 'none';
 
             overlay.classList.add('show');
-            
-            // Start confetti for BOTH win and lose
-            setTimeout(() => {
+
+            // Start confetti AFTER modal becomes visible so height is correct
+            requestAnimationFrame(() => {
                 startConfetti(isWin);
-            }, 100);
+            });
         }
 
         function spinAgain() {
@@ -2571,7 +2620,8 @@
                 if (STATE.isModalOpen) {
                     const modal = document.getElementById('modal');
                     const isWin = modal.classList.contains('win');
-                    startConfetti(isWin);
+                    // Restart confetti with correct mode on return
+                    requestAnimationFrame(() => startConfetti(isWin));
                 }
             }
         });
