@@ -213,14 +213,14 @@
         @keyframes confettiFall {
             0% { 
                 opacity: 1; 
-                transform: translateY(0) rotate(0deg) scale(1);
+                transform: translateY(-10px) rotate(0deg) scale(1);
             }
-            70% {
+            90% {
                 opacity: 1;
             }
             100% { 
                 opacity: 0; 
-                transform: translateY(700px) rotate(720deg) scale(0.3);
+                transform: translateY(calc(100vh - 100px)) rotate(720deg) scale(0.3);
             }
         }
 
@@ -1226,7 +1226,7 @@
             transition: transform 0.15s ease-out;
             border: 2px solid var(--theme-color);
             position: relative;
-            overflow: hidden;
+            overflow: visible;
             box-shadow: 0 0 80px var(--theme-glow), 0 25px 80px rgba(0, 0, 0, 0.8);
         }
 
@@ -1252,21 +1252,21 @@
             box-shadow: 0 0 60px rgba(107, 114, 128, 0.4), 0 25px 80px rgba(0, 0, 0, 0.8);
         }
 
-        .confetti-modal {
-            position: absolute;
-            top: -20px;
-            left: -20px;
-            right: -20px;
-            bottom: -20px;
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             pointer-events: none;
-            z-index: 0;
-            overflow: visible;
+            z-index: 99;
+            overflow: hidden;
         }
 
         .confetti-piece {
             position: absolute;
             will-change: transform, opacity;
-            animation: confettiFall 3s linear forwards;
+            animation: confettiFall 4s linear forwards;
         }
 
         .modal-emoji {
@@ -1605,6 +1605,9 @@
         <div class="bg-stars" id="bgStars"></div>
     </div>
 
+    <!-- Confetti container moved outside modal for full screen coverage -->
+    <div class="confetti-container" id="confettiContainer"></div>
+
     <div class="header">
         <div class="brand-container">
             <h1 class="brand-text">Divine Case</h1>
@@ -1682,7 +1685,6 @@
 
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal" id="modal">
-            <div class="confetti-modal" id="confettiModal"></div>
             <div class="modal-emoji" id="modalEmoji"></div>
             <div class="modal-title" id="modalTitle">Поздравляем!</div>
             <div class="modal-prize" id="modalPrize">+50</div>
@@ -1743,7 +1745,7 @@
 
         let isSpinning = false;
         let confettiActive = false;
-        const MAX_CONFETTI = 25; // Maximum confetti pieces at once
+        const MAX_CONFETTI = 40;
 
         const PRIZE_VISUALS = {
             0: { stars: 0, emoji: null, rarity: "empty", image: `${IMG_CDN}/prizes/void.png`, name: "Void" },
@@ -2332,9 +2334,8 @@
             overlay.classList.add('show');
         }
 
-        // Fixed confetti - constant amount, no accumulation
         function startConfetti() {
-            const container = document.getElementById('confettiModal');
+            const container = document.getElementById('confettiContainer');
             if (!container) return;
             
             confettiActive = true;
@@ -2351,10 +2352,8 @@
             function createConfettiPiece() {
                 if (!confettiActive) return;
                 
-                // Check current count and remove old ones if needed
                 const currentPieces = container.querySelectorAll('.confetti-piece');
                 if (currentPieces.length >= MAX_CONFETTI) {
-                    // Remove the oldest pieces
                     for (let i = 0; i < 3 && currentPieces[i]; i++) {
                         currentPieces[i].remove();
                     }
@@ -2363,40 +2362,41 @@
                 const piece = document.createElement('div');
                 piece.className = 'confetti-piece';
                 
-                const size = Math.random() * 8 + 4;
+                const size = Math.random() * 10 + 5;
                 const color = colors[Math.floor(Math.random() * colors.length)];
-                const duration = 3.5 + Math.random() * 1.5;
+                const duration = 3 + Math.random() * 2;
                 const left = Math.random() * 100;
+                const delay = Math.random() * 0.5;
 
                 piece.style.cssText = `
                     left: ${left}%;
-                    top: 0;
+                    top: -20px;
                     width: ${size}px;
-                    height: ${size * (Math.random() * 0.5 + 0.5)}px;
+                    height: ${size * (Math.random() * 0.6 + 0.4)}px;
                     background: ${color};
-                    animation-duration: ${duration}s;
+                    animation: confettiFall ${duration}s linear ${delay}s forwards;
                     border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
                     box-shadow: 0 0 ${size}px ${color};
+                    opacity: 0;
                 `;
 
                 piece.addEventListener('animationend', () => piece.remove());
                 container.appendChild(piece);
                 
-                // Schedule next piece
                 if (confettiActive) {
-                    setTimeout(createConfettiPiece, 150 + Math.random() * 100);
+                    setTimeout(createConfettiPiece, 80 + Math.random() * 80);
                 }
             }
             
-            // Start with a few pieces
-            for (let i = 0; i < 5; i++) {
-                setTimeout(createConfettiPiece, i * 50);
+            // Initial burst of confetti
+            for (let i = 0; i < 15; i++) {
+                setTimeout(createConfettiPiece, i * 30);
             }
         }
 
         function stopConfetti() {
             confettiActive = false;
-            const container = document.getElementById('confettiModal');
+            const container = document.getElementById('confettiContainer');
             if (container) container.innerHTML = '';
         }
 
@@ -2426,7 +2426,6 @@
             sapphiresEl.textContent = STATE.sapphires;
             starsEl.textContent = STATE.stars;
             
-            // Add animation when values change
             if (oldSapphires !== STATE.sapphires) {
                 sapphiresEl.classList.add('updated');
                 setTimeout(() => sapphiresEl.classList.remove('updated'), 400);
