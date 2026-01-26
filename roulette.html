@@ -1262,49 +1262,59 @@
         }
 
         /* Fullscreen confetti overlay */
-        #confettiOverlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 150;
-            overflow: hidden;
-        }
+        /* Fullscreen confetti overlay */
+#confettiOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    overflow: hidden;
+}
 
-        .confetti {
-            position: absolute;
-            top: -20px;
-            width: 12px;
-            height: 12px;
-            pointer-events: none;
-            will-change: transform;
-        }
 
-        .confetti-inner {
-            width: 100%;
-            height: 100%;
-            animation: confettiGlow 2s ease-in-out infinite;
-        }
+.confetti {
+    position: absolute;
+    top: -20px;
+    width: 10px;
+    height: 16px;
+    pointer-events: none;
+    will-change: transform;
+    animation: confettiDrop 5s linear forwards, confettiSway 3s ease-in-out infinite;
+}
 
-        .confetti.square .confetti-inner {
-            border-radius: 2px;
-        }
+.confetti-inner {
+    width: 100%;
+    height: 100%;
+    animation: confettiGlow 2s ease-in-out infinite;
+}
 
-        .confetti.circle .confetti-inner {
-            border-radius: 50%;
-        }
+.confetti.square .confetti-inner {
+    border-radius: 2px;
+}
 
-        .confetti.star .confetti-inner {
-            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-        }
+.confetti.circle .confetti-inner {
+    border-radius: 50%;
+}
 
-        .confetti.ribbon .confetti-inner {
-            width: 8px;
-            height: 20px;
-            border-radius: 4px;
-        }
+.confetti.star .confetti-inner {
+    clip-path: polygon(
+        50% 0%, 61% 35%, 98% 35%, 
+        68% 57%, 79% 91%, 
+        50% 70%, 21% 91%, 
+        32% 57%, 2% 35%, 
+        39% 35%
+    );
+}
+
+.confetti.ribbon .confetti-inner {
+    width: 8px;
+    height: 20px;
+    border-radius: 4px;
+}
+
 
         .modal-emoji {
             font-size: 4.5rem;
@@ -2390,65 +2400,63 @@
         const MAX_CONFETTI_PIECES = 60;
 
         function createConfetti() {
-            const overlay = document.getElementById('confettiOverlay');
-            if (!overlay || !confettiActive) return;
+    const overlay = document.getElementById('confettiOverlay');
+    if (!overlay || !confettiActive) return;
 
-            // Limit confetti count
-            if (confettiPieces.length >= MAX_CONFETTI_PIECES) {
-                const oldPiece = confettiPieces.shift();
-                if (oldPiece && oldPiece.parentNode) {
-                    oldPiece.remove();
-                }
-            }
-
-            const confetti = document.createElement('div');
-            const inner = document.createElement('div');
-            inner.className = 'confetti-inner';
-
-            const shape = confettiShapes[Math.floor(Math.random() * confettiShapes.length)];
-            confetti.className = `confetti ${shape}`;
-
-            const color = confettiColors[Math.floor(Math.random() * confettiColors.length)];
-            const size = 8 + Math.random() * 10;
-            const left = Math.random() * 100;
-            const duration = 6 + Math.random() * 4; // 6-10 seconds - slower fall
-            const swayDuration = 2 + Math.random() * 2;
-            const delay = Math.random() * 0.5;
-            const rotateStart = Math.random() * 360;
-
-            inner.style.background = color;
-            inner.style.boxShadow = `0 0 ${size/2}px ${color}`;
-
-            confetti.style.cssText = `
-                left: ${left}%;
-                width: ${size}px;
-                height: ${shape === 'ribbon' ? size * 2 : size}px;
-                animation: confettiDrop ${duration}s linear forwards, confettiSway ${swayDuration}s ease-in-out infinite;
-                animation-delay: ${delay}s;
-                transform: rotateZ(${rotateStart}deg);
-                opacity: 0;
-            `;
-
-            // Fade in after delay
-            setTimeout(() => {
-                confetti.style.opacity = '1';
-            }, delay * 1000);
-
-            confetti.appendChild(inner);
-            overlay.appendChild(confetti);
-            confettiPieces.push(confetti);
-
-            // Remove after animation
-            setTimeout(() => {
-                if (confetti.parentNode) {
-                    confetti.remove();
-                }
-                const index = confettiPieces.indexOf(confetti);
-                if (index > -1) {
-                    confettiPieces.splice(index, 1);
-                }
-            }, (duration + delay) * 1000);
+    // Limit confetti count
+    if (confettiPieces.length >= MAX_CONFETTI_PIECES) {
+        const oldPiece = confettiPieces.shift();
+        if (oldPiece && oldPiece.parentNode) {
+            oldPiece.remove();
         }
+    }
+
+    const confetti = document.createElement('div');
+    const inner = document.createElement('div');
+    inner.className = 'confetti-inner';
+
+    const shape = confettiShapes[Math.floor(Math.random() * confettiShapes.length)];
+    confetti.className = `confetti ${shape}`;
+
+    const color = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+    const size = 8 + Math.random() * 10;
+    const left = Math.random() * 100;
+    const duration = 6 + Math.random() * 4;
+    const swayDuration = 2 + Math.random() * 2;
+    const rotateStart = Math.random() * 360;
+
+    inner.style.background = color;
+    inner.style.boxShadow = `0 0 ${size/2}px ${color}`;
+
+    // 🔥 ВАЖНЫЕ ИСПРАВЛЕНИЯ ТУТ
+    confetti.style.cssText = `
+        position: absolute;
+        top: -30px;                 /* старт выше экрана */
+        left: ${left}%;
+        width: ${size}px;
+        height: ${shape === 'ribbon' ? size * 2 : size}px;
+        animation: confettiDrop ${duration}s linear forwards, confettiSway ${swayDuration}s ease-in-out infinite;
+        transform: rotateZ(${rotateStart}deg);
+        opacity: 1;                 /* сразу видно */
+        z-index: 9999;
+    `;
+
+    confetti.appendChild(inner);
+    overlay.appendChild(confetti);
+    confettiPieces.push(confetti);
+
+    // Удаляем после падения
+    setTimeout(() => {
+        if (confetti.parentNode) {
+            confetti.remove();
+        }
+        const index = confettiPieces.indexOf(confetti);
+        if (index > -1) {
+            confettiPieces.splice(index, 1);
+        }
+    }, duration * 1000);
+}
+
 
         function startConfetti() {
             confettiActive = true;
