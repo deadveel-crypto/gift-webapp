@@ -1,3 +1,6 @@
+Вот полный код файла `roulette.html`:
+
+```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -189,11 +192,6 @@
             50% { transform: scale(1.1); }
         }
 
-        @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
-        }
-
         @keyframes rotateGlow {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
@@ -208,11 +206,6 @@
                 text-shadow: 0 0 30px rgba(156, 163, 175, 0.9), 0 0 60px rgba(156, 163, 175, 0.6), 0 0 80px rgba(156, 163, 175, 0.3);
                 opacity: 1;
             }
-        }
-
-        @keyframes prizeCardFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
         }
 
         @keyframes valueCountUp {
@@ -252,7 +245,6 @@
             color: var(--text-secondary);
             text-transform: uppercase;
             margin-top: 5px;
-            animation: borderGlow 3s ease-in-out infinite;
         }
 
         .balance-container {
@@ -292,7 +284,6 @@
         .balance-card.sapphires {
             border-color: rgba(99, 102, 241, 0.3);
             box-shadow: 0 8px 32px rgba(99, 102, 241, 0.2), inset 0 1px 0 rgba(129, 140, 248, 0.15), 0 0 60px rgba(99, 102, 241, 0.15);
-            animation: borderGlow 4s ease-in-out infinite;
         }
 
         .balance-card.sapphires::after {
@@ -325,7 +316,6 @@
             justify-content: center;
             border-radius: 12px;
             flex-shrink: 0;
-            animation: iconBounce 3s ease-in-out infinite;
         }
 
         .balance-card.sapphires .balance-icon-wrap {
@@ -336,7 +326,6 @@
         .balance-card.stars .balance-icon-wrap {
             background: linear-gradient(145deg, rgba(251, 191, 36, 0.3), rgba(251, 191, 36, 0.15));
             box-shadow: 0 0 25px rgba(251, 191, 36, 0.4);
-            animation-delay: 0.5s;
         }
 
         .balance-icon {
@@ -554,14 +543,6 @@
             z-index: 2;
         }
 
-        .case-card-emoji {
-            font-size: 4rem;
-            filter: drop-shadow(0 8px 25px rgba(0, 0, 0, 0.5));
-            position: relative;
-            z-index: 1;
-            animation: subtleFloat 4s ease-in-out infinite;
-        }
-
         .case-card-image {
             width: 90px;
             height: 90px;
@@ -772,14 +753,8 @@
             background-clip: text;
             letter-spacing: 3px;
             text-transform: uppercase;
-            animation: smoothShine 6s ease-in-out infinite;
+            animation: textShine 6s ease-in-out infinite;
             background-size: 300% auto;
-        }
-
-        @keyframes smoothShine {
-            0% { background-position: 0% center; }
-            50% { background-position: 100% center; }
-            100% { background-position: 0% center; }
         }
 
         .case-section {
@@ -798,7 +773,6 @@
             overflow: hidden;
             border: 2px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 0 50px var(--theme-glow), inset 0 0 30px rgba(0,0,0,0.3);
-            animation: borderGlow 4s ease-in-out infinite;
         }
 
         .case-container::before {
@@ -950,11 +924,6 @@
             box-shadow: 0 0 50px rgba(239, 68, 68, 0.7), 0 0 80px rgba(251, 191, 36, 0.4);
         }
 
-        .prize-emoji {
-            font-size: 2.5rem;
-            filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.3));
-        }
-
         .prize-image {
             position: absolute;
             top: 0;
@@ -1088,23 +1057,13 @@
             padding-bottom: 12px;
             text-align: center;
             transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-            animation: prizeCardFloat 4s ease-in-out infinite;
         }
-
-        .prize-card:nth-child(1) { animation-delay: 0s; }
-        .prize-card:nth-child(2) { animation-delay: 0.5s; }
-        .prize-card:nth-child(3) { animation-delay: 1s; }
-        .prize-card:nth-child(4) { animation-delay: 1.5s; }
-        .prize-card:nth-child(5) { animation-delay: 2s; }
-        .prize-card:nth-child(6) { animation-delay: 2.5s; }
-        .prize-card:nth-child(7) { animation-delay: 3s; }
 
         @media (min-width: 769px) {
             .prize-card:hover {
                 transform: translateY(-4px) scale(1.02);
                 border-color: var(--theme-color);
                 box-shadow: 0 12px 40px var(--theme-glow);
-                animation: none;
             }
         }
 
@@ -1143,8 +1102,6 @@
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
-
-        .prize-card-emoji { font-size: 2rem; filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.25)); }
 
         .prize-card-image { width: 100%; height: 100%; object-fit: cover; }
 
@@ -1238,9 +1195,6 @@
             box-shadow: 0 0 60px rgba(107, 114, 128, 0.4), 0 25px 80px rgba(0, 0, 0, 0.8);
         }
 
-        /* ========== CONFETTI ========== */
-        
-
         .modal-emoji {
             font-size: 4.5rem;
             margin-bottom: 15px;
@@ -1262,9 +1216,8 @@
         }
 
         .modal.win .modal-prize-image {
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5), 0 0 60px var(--theme-glow);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5), 0 0 40px var(--theme-glow);
             border-color: var(--theme-color);
-            animation: pulseGlow 2s ease-in-out infinite;
         }
 
         .modal-title {
@@ -1328,17 +1281,6 @@
             z-index: 2;
         }
 
-        @keyframes balanceItemPulse {
-            0%, 100% { 
-                transform: scale(1);
-                box-shadow: 0 0 15px rgba(99, 102, 241, 0.2);
-            }
-            50% { 
-                transform: scale(1.03);
-                box-shadow: 0 0 25px rgba(99, 102, 241, 0.4);
-            }
-        }
-
         .modal-balance-item {
             display: flex;
             align-items: center;
@@ -1348,7 +1290,6 @@
             border-radius: 16px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             position: relative;
-            animation: balanceItemPulse 2s ease-in-out infinite;
         }
 
         .modal-balance-item::before {
@@ -1363,26 +1304,12 @@
 
         .modal-balance-item.sapphire {
             border-color: rgba(99, 102, 241, 0.4);
-        }
-
-        .modal-balance-item.sapphire:hover {
-            box-shadow: 0 0 30px rgba(99, 102, 241, 0.5);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
         }
 
         .modal-balance-item.star {
             border-color: rgba(251, 191, 36, 0.4);
-            animation: starItemPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes starItemPulse {
-            0%, 100% { 
-                transform: scale(1);
-                box-shadow: 0 0 15px rgba(251, 191, 36, 0.2);
-            }
-            50% { 
-                transform: scale(1.03);
-                box-shadow: 0 0 25px rgba(251, 191, 36, 0.4);
-            }
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
         }
 
         .modal-balance-icon {
@@ -1393,7 +1320,6 @@
             justify-content: center;
             font-size: 1.1rem;
             flex-shrink: 0;
-            animation: iconBounce 1.5s ease-in-out infinite;
         }
 
         .modal-balance-icon img {
@@ -1421,28 +1347,6 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-        }
-
-        .modal-prize-image {
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-            margin-bottom: 15px;
-            border-radius: 22px;
-            border: 3px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
-            position: relative;
-            z-index: 2;
-        }
-
-        .modal.win .modal-prize-image {
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5), 0 0 40px var(--theme-glow);
-            border-color: var(--theme-color);
-        }
-
-        .modal.win .modal-prize-image {
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5), 0 0 40px var(--theme-glow);
-            border-color: var(--theme-color);
         }
 
         .modal-buttons {
@@ -1559,14 +1463,12 @@
         @media (max-width: 390px) {
             .case-container { height: 115px; }
             .prize-item { width: 90px; height: 90px; }
-            .prize-emoji { font-size: 2.2rem; }
             .pointer-line { height: 115px; }
             .brand-text { font-size: 1.7rem; }
             .balance-card { padding: 12px 18px; min-width: 125px; }
             .balance-icon-wrap { width: 38px; height: 38px; }
             .balance-value { font-size: 1.1rem; }
             .case-hero { width: 140px; height: 140px; }
-            .case-emoji { font-size: 4.5rem; }
             .case-display-image { width: 100px; height: 100px; }
             .modal { padding: 30px 22px; }
             .modal-balance { gap: 8px; }
@@ -1576,7 +1478,6 @@
         @media (max-width: 380px) {
             .case-container { height: 110px; }
             .prize-item { width: 85px; height: 85px; }
-            .prize-emoji { font-size: 1.8rem; }
             .brand-text { font-size: 1.5rem; }
             .pointer-line { height: 110px; }
             .balance-container { gap: 10px; }
@@ -1585,7 +1486,6 @@
             .balance-icon { font-size: 1.2rem; }
             .balance-value { font-size: 1rem; }
             .case-hero { width: 120px; height: 120px; }
-            .case-emoji { font-size: 4rem; }
             .case-display-image { width: 85px; height: 85px; }
             .modal-balance { flex-direction: column; gap: 10px; }
         }
@@ -1627,7 +1527,7 @@
         <div class="balance-container">
             <div class="balance-card sapphires">
                 <div class="balance-icon-wrap">
-                    <span class="balance-icon" id="sapphireIcon"></span>
+                    <span class="balance-icon" id="sapphireIcon">💎</span>
                 </div>
                 <div class="balance-info">
                     <span class="balance-value" id="sapphires">0</span>
@@ -1636,7 +1536,7 @@
             </div>
             <div class="balance-card stars">
                 <div class="balance-icon-wrap">
-                    <span class="balance-icon" id="starIcon"></span>
+                    <span class="balance-icon" id="starIcon">⭐</span>
                 </div>
                 <div class="balance-info">
                     <span class="balance-value" id="stars-balance">0</span>
@@ -1694,8 +1594,6 @@
 
     <div class="session-info" id="sessionInfo"></div>
 
-    <!-- Canvas для конфетти -->
-
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal" id="modal">
             <div class="modal-emoji" id="modalEmoji"></div>
@@ -1703,11 +1601,11 @@
             <div class="modal-prize" id="modalPrize">+50</div>
             <div class="modal-balance" id="modalBalance">
                 <div class="modal-balance-item sapphire">
-                    <div class="modal-balance-icon" id="modalSapphireIcon"></div>
+                    <div class="modal-balance-icon" id="modalSapphireIcon">💎</div>
                     <span class="modal-balance-value" id="modalSapphires">0</span>
                 </div>
                 <div class="modal-balance-item star">
-                    <div class="modal-balance-icon" id="modalStarIcon"></div>
+                    <div class="modal-balance-icon" id="modalStarIcon">⭐</div>
                     <span class="modal-balance-value" id="modalStars">0</span>
                 </div>
             </div>
@@ -1729,16 +1627,11 @@
         const GITHUB_BRANCH = "main";
         const IMG_CDN = `https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${GITHUB_REPO}@${GITHUB_BRANCH}`;
 
-        const CUSTOM_ICONS = {
-            sapphire: null,
-            star: null
-        };
-
         const CASES = [
-            { id: 'cosmic', name: 'Cosmic Case', emoji: null, image: `${IMG_CDN}/cases/cosmic.png`, cost: 100, tag: 'NEW', style: 'cosmic-style', theme: 'theme-cosmic' },
-            { id: 'stellar', name: 'Stellar Case', emoji: null, image: `${IMG_CDN}/cases/stellar.png`, cost: 250, tag: 'BEST', style: 'stellar-style', theme: 'theme-stellar' },
-            { id: 'golden', name: 'Golden Case', emoji: null, image: `${IMG_CDN}/cases/golden.png`, cost: 500, tag: 'HOT', style: 'golden-style', theme: 'theme-golden' },
-            { id: 'divine', name: 'Divine Case', emoji: null, image: `${IMG_CDN}/cases/divine.png`, cost: 1000, tag: 'VIP', style: 'divine-style', theme: 'theme-divine' }
+            { id: 'cosmic', name: 'Cosmic Case', image: `${IMG_CDN}/cases/cosmic.png`, cost: 100, tag: 'NEW', style: 'cosmic-style', theme: 'theme-cosmic' },
+            { id: 'stellar', name: 'Stellar Case', image: `${IMG_CDN}/cases/stellar.png`, cost: 250, tag: 'BEST', style: 'stellar-style', theme: 'theme-stellar' },
+            { id: 'golden', name: 'Golden Case', image: `${IMG_CDN}/cases/golden.png`, cost: 500, tag: 'HOT', style: 'golden-style', theme: 'theme-golden' },
+            { id: 'divine', name: 'Divine Case', image: `${IMG_CDN}/cases/divine.png`, cost: 1000, tag: 'VIP', style: 'divine-style', theme: 'theme-divine' }
         ];
 
         let STATE = {
@@ -1759,27 +1652,25 @@
         let isSpinning = false;
 
         const PRIZE_VISUALS = {
-            0: { stars: 0, emoji: null, rarity: "empty", image: `${IMG_CDN}/prizes/void.png`, name: "Void" },
-            15: { stars: 15, emoji: null, rarity: "stars-15", image: `${IMG_CDN}/prizes/glimmer.png`, name: "Glimmer" },
-            25: { stars: 25, emoji: null, rarity: "stars-25", image: `${IMG_CDN}/prizes/spark.png`, name: "Spark" },
-            50: { stars: 50, emoji: null, rarity: "stars-50", image: `${IMG_CDN}/prizes/radiance.png`, name: "Radiance" },
-                        75: { stars: 75, emoji: null, rarity: "stars-75", image: `${IMG_CDN}/prizes/stardust.png`, name: "Stardust" },
-            100: { stars: 100, emoji: null, rarity: "stars-100", image: `${IMG_CDN}/prizes/aurora.png`, name: "Aurora" },
-            150: { stars: 150, emoji: null, rarity: "stars-150", image: `${IMG_CDN}/prizes/ember.png`, name: "Ember" },
-            250: { stars: 250, emoji: null, rarity: "stars-250", image: `${IMG_CDN}/prizes/lightning.jpeg`, name: "Lightning" },
-            500: { stars: 500, emoji: null, rarity: "stars-500", image: `${IMG_CDN}/prizes/supernova.png`, name: "Supernova" },
-            1000: { stars: 1000, emoji: null, rarity: "stars-1000", image: `${IMG_CDN}/prizes/galaxy.png`, name: "Galaxy" },
-            9999: { stars: 9999, emoji: null, rarity: "stars-9999", image: `${IMG_CDN}/prizes/divine_star.png`, name: "Divine Star" }
+            0: { stars: 0, rarity: "empty", image: `${IMG_CDN}/prizes/void.png`, name: "Void" },
+            15: { stars: 15, rarity: "stars-15", image: `${IMG_CDN}/prizes/glimmer.png`, name: "Glimmer" },
+            25: { stars: 25, rarity: "stars-25", image: `${IMG_CDN}/prizes/spark.png`, name: "Spark" },
+            50: { stars: 50, rarity: "stars-50", image: `${IMG_CDN}/prizes/radiance.png`, name: "Radiance" },
+            75: { stars: 75, rarity: "stars-75", image: `${IMG_CDN}/prizes/stardust.png`, name: "Stardust" },
+            100: { stars: 100, rarity: "stars-100", image: `${IMG_CDN}/prizes/aurora.png`, name: "Aurora" },
+            150: { stars: 150, rarity: "stars-150", image: `${IMG_CDN}/prizes/ember.png`, name: "Ember" },
+            250: { stars: 250, rarity: "stars-250", image: `${IMG_CDN}/prizes/lightning.jpeg`, name: "Lightning" },
+            500: { stars: 500, rarity: "stars-500", image: `${IMG_CDN}/prizes/supernova.png`, name: "Supernova" },
+            1000: { stars: 1000, rarity: "stars-1000", image: `${IMG_CDN}/prizes/galaxy.png`, name: "Galaxy" },
+            9999: { stars: 9999, rarity: "stars-9999", image: `${IMG_CDN}/prizes/divine_star.png`, name: "Divine Star" }
         };
 
-        // 🔥 ТЕСТОВЫЙ РЕЖИМ: 100% победа в cosmic
-        const TEST_MODE = true;
+        const TEST_MODE = true; // 100% победа для тестирования
 
         const CASE_CONFIG = {
             cosmic: {
                 prizes: [0, 15, 25, 50, 75, 100],
                 getRandomPrize: () => {
-                    // 🔥 ТЕСТ: всегда выигрыш
                     if (TEST_MODE) {
                         const wins = [25, 50, 75, 100];
                         return wins[Math.floor(Math.random() * wins.length)];
@@ -1821,65 +1712,60 @@
 
         // ============ CANVAS CONFETTI SYSTEM ============
                 // ============ CANVAS CONFETTI SYSTEM ============
-                // ============ CANVAS CONFETTI SYSTEM ============
-                // ============ CANVAS CONFETTI SYSTEM ============
-                // ============ CANVAS CONFETTI SYSTEM ============
-                // ============ CANVAS CONFETTI SYSTEM ============
         let confettiCanvas = null;
         let confettiCtx = null;
-        let confettiParticles = [];
-        let confettiAnimationId = null;
         let confettiActive = false;
-        let lastFrameTime = 0;
-        const TARGET_FPS = 30; // Ограничиваем FPS для оптимизации
-        const FRAME_DURATION = 1000 / TARGET_FPS;
-
-        // Простые яркие цвета без сложных градиентов
-        const confettiColors = [
-            '#FFD700', '#FFF44F', '#FFEC8B', // Золотые
-            '#87CEEB', '#00BFFF', '#7DF9FF', // Голубые  
-            '#FFB6C1', '#FF69B4', '#FF91AF', // Розовые
-            '#98FB98', '#90EE90', '#7CFC00', // Зелёные
-            '#FFFFFF', '#F8F8FF', '#FFFAFA', // Белые
-            '#DDA0DD', '#EE82EE', '#DA70D6', // Фиолетовые
+        let confettiAnimationId = null;
+        
+        // Typed Arrays для максимальной производительности
+        let particleX, particleY, particleS, particleVY;
+        let particleWobble, particleWobbleSpeed, particleColor, particleShape, particleBaseX;
+        
+        const COLORS = [
+            '#FFFFFF', '#FFFEF0', '#FFF8DC',
+            '#FFD700', '#FFEC8B', '#FFF44F',
+            '#87CEEB', '#B0E0E6', '#E0FFFF',
+            '#FFB6C1', '#FFC0CB', '#FFE4E1',
+            '#98FB98', '#ADFF2F', '#E0FFE0',
+            '#E6E6FA', '#DDA0DD', '#F0E6FF',
         ];
+        
+        let particleCount = 0;
+        let canvasW = 0;
+        let canvasH = 0;
 
-        class ConfettiParticle {
-            constructor(canvasWidth, canvasHeight, index, total) {
-                this.cw = canvasWidth;
-                this.ch = canvasHeight;
-                // Равномерное распределение
-                this.baseX = (canvasWidth / total) * index + (canvasWidth / total) / 2;
-                this.reset(true);
+        function initParticles(w, h, count, initial) {
+            canvasW = w;
+            canvasH = h;
+            particleCount = count;
+            
+            particleX = new Float32Array(count);
+            particleY = new Float32Array(count);
+            particleS = new Float32Array(count);
+            particleVY = new Float32Array(count);
+            particleWobble = new Float32Array(count);
+            particleWobbleSpeed = new Float32Array(count);
+            particleColor = new Array(count);
+            particleShape = new Uint8Array(count);
+            particleBaseX = new Float32Array(count);
+            
+            const section = w / count;
+            
+            for (let i = 0; i < count; i++) {
+                particleBaseX[i] = section * i + section / 2;
+                resetParticle(i, initial);
             }
+        }
 
-            reset(initial) {
-                this.x = this.baseX + (Math.random() - 0.5) * 30;
-                this.y = initial ? Math.random() * this.ch : -Math.random() * 15;
-                this.s = Math.random() * 4 + 3; // size
-                this.vy = Math.random() * 0.5 + 0.3; // скорость Y
-                this.vx = (Math.random() - 0.5) * 0.3; // скорость X
-                this.wobble = Math.random() * 6.28;
-                this.wobbleSpeed = Math.random() * 0.03 + 0.015;
-                this.color = confettiColors[Math.floor(Math.random() * confettiColors.length)];
-                this.shape = Math.random() > 0.5 ? 0 : 1; // 0=rect, 1=circle
-                this.opacity = 0.85 + Math.random() * 0.15;
-            }
-
-            update() {
-                this.wobble += this.wobbleSpeed;
-                this.x += this.vx + Math.sin(this.wobble) * 0.3;
-                this.y += this.vy;
-                
-                if (this.y > this.ch + 5) {
-                    if (confettiActive) {
-                        this.reset(false);
-                        return true;
-                    }
-                    return false;
-                }
-                return true;
-            }
+        function resetParticle(i, initial) {
+            particleX[i] = particleBaseX[i] + (Math.random() - 0.5) * 40;
+            particleY[i] = initial ? Math.random() * canvasH : -Math.random() * 20 - 5;
+            particleS[i] = Math.random() * 5 + 3;
+            particleVY[i] = Math.random() * 0.6 + 0.3;
+            particleWobble[i] = Math.random() * 6.28;
+            particleWobbleSpeed[i] = Math.random() * 0.025 + 0.01;
+            particleColor[i] = COLORS[Math.floor(Math.random() * COLORS.length)];
+            particleShape[i] = Math.random() > 0.5 ? 0 : 1;
         }
 
         function createConfettiCanvas() {
@@ -1893,19 +1779,11 @@
             canvas.className = 'confetti-canvas';
             canvas.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:100;border-radius:28px;';
             
-            modal.style.position = 'relative';
             modal.appendChild(canvas);
             
             const rect = modal.getBoundingClientRect();
-            // Уменьшаем разрешение canvas для производительности
-            const scale = window.devicePixelRatio > 1 ? 0.5 : 0.75;
-            canvas.width = rect.width * scale;
-            canvas.height = rect.height * scale;
-            canvas.style.width = rect.width + 'px';
-            canvas.style.height = rect.height + 'px';
-            
-            const ctx = canvas.getContext('2d', { alpha: true });
-            ctx.scale(scale, scale);
+            canvas.width = rect.width;
+            canvas.height = rect.height;
             
             return canvas;
         }
@@ -1914,86 +1792,71 @@
             confettiCanvas = createConfettiCanvas();
             if (!confettiCanvas) return;
             
-            confettiCtx = confettiCanvas.getContext('2d');
+            confettiCtx = confettiCanvas.getContext('2d', { alpha: true, desynchronized: true });
             confettiActive = true;
-            confettiParticles = [];
-            lastFrameTime = 0;
-
-            const rect = document.getElementById('modal').getBoundingClientRect();
-            const w = rect.width;
-            const h = rect.height;
             
-            // Больше частиц, но простых
-            const count = Math.min(60, Math.floor(w * h / 2000));
+            const w = confettiCanvas.width;
+            const h = confettiCanvas.height;
+            const count = 80;
             
-            for (let i = 0; i < count; i++) {
-                confettiParticles.push(new ConfettiParticle(w, h, i, count));
-            }
-
-            animateConfetti(0);
+            initParticles(w, h, count, true);
+            animateConfetti();
         }
 
-        function animateConfetti(timestamp) {
-            if (!confettiCtx || !confettiCanvas) return;
+        function animateConfetti() {
+            if (!confettiCtx || !confettiCanvas || !confettiActive) return;
             
-            // Ограничение FPS
-            if (timestamp - lastFrameTime < FRAME_DURATION) {
-                if (confettiActive || confettiParticles.length > 0) {
-                    confettiAnimationId = requestAnimationFrame(animateConfetti);
-                }
-                return;
-            }
-            lastFrameTime = timestamp;
+            const ctx = confettiCtx;
+            const w = canvasW;
+            const h = canvasH;
             
-            const rect = document.getElementById('modal')?.getBoundingClientRect();
-            if (!rect) return;
+            ctx.clearRect(0, 0, w, h);
+            ctx.globalAlpha = 0.95;
             
-            confettiCtx.clearRect(0, 0, rect.width, rect.height);
-            
-            // Один проход — без shadow для скорости
-            let i = confettiParticles.length;
-            while (i--) {
-                const p = confettiParticles[i];
-                if (!p.update()) {
-                    confettiParticles.splice(i, 1);
-                    continue;
+            for (let i = 0; i < particleCount; i++) {
+                particleWobble[i] += particleWobbleSpeed[i];
+                particleX[i] += Math.sin(particleWobble[i]) * 0.4;
+                particleY[i] += particleVY[i];
+                
+                if (particleY[i] > h + 5) {
+                    resetParticle(i, false);
                 }
                 
-                confettiCtx.globalAlpha = p.opacity;
-                confettiCtx.fillStyle = p.color;
+                const x = particleX[i];
+                const y = particleY[i];
+                const s = particleS[i];
                 
-                if (p.shape === 0) {
-                    confettiCtx.fillRect(p.x - p.s/2, p.y - p.s/3, p.s, p.s * 0.6);
+                ctx.fillStyle = particleColor[i];
+                
+                if (particleShape[i] === 0) {
+                    ctx.fillRect(x - s * 0.5, y - s * 0.3, s, s * 0.6);
                 } else {
-                    confettiCtx.beginPath();
-                    confettiCtx.arc(p.x, p.y, p.s/2, 0, 6.28);
-                    confettiCtx.fill();
+                    ctx.beginPath();
+                    ctx.arc(x, y, s * 0.5, 0, 6.28);
+                    ctx.fill();
                 }
             }
             
-            if (confettiActive || confettiParticles.length > 0) {
-                confettiAnimationId = requestAnimationFrame(animateConfetti);
-            }
+            confettiAnimationId = requestAnimationFrame(animateConfetti);
         }
 
         function stopConfetti() {
             confettiActive = false;
             
-            // Мгновенная очистка
             if (confettiAnimationId) {
                 cancelAnimationFrame(confettiAnimationId);
                 confettiAnimationId = null;
             }
-            
-            confettiParticles = [];
             
             if (confettiCanvas) {
                 confettiCanvas.remove();
                 confettiCanvas = null;
             }
             confettiCtx = null;
+            particleCount = 0;
         }
-        // ============ ОСТАЛЬНОЙ КОД ============
+
+        // ============ HELPERS ============
 
         function getExpensivePrizeForCase() {
             const caseId = STATE.selectedCase?.id || 'cosmic';
@@ -2066,6 +1929,8 @@
 
         window.addEventListener('resize', () => { ITEM_WIDTH = getItemWidth(); });
 
+        // ============ API ============
+
         async function apiRequest(path, options = {}) {
             const res = await fetch(API_BASE + path, {
                 ...options,
@@ -2097,24 +1962,7 @@
             }
         }
 
-        function setupCustomIcons() {
-            const sapphireIcon = document.getElementById('sapphireIcon');
-            const starIcon = document.getElementById('starIcon');
-            const modalSapphireIcon = document.getElementById('modalSapphireIcon');
-            const modalStarIcon = document.getElementById('modalStarIcon');
-            
-            sapphireIcon.innerHTML = '💎';
-            modalSapphireIcon.innerHTML = '💎';
-            starIcon.innerHTML = '⭐';
-            modalStarIcon.innerHTML = '⭐';
-        }
-
-        function preloadImages() {
-            const imageUrls = [];
-            CASES.forEach(c => { if (c.image) imageUrls.push(c.image); });
-            Object.values(PRIZE_VISUALS).forEach(p => { if (p.image) imageUrls.push(p.image); });
-            imageUrls.forEach(url => { const img = new Image(); img.src = url; });
-        }
+        // ============ INIT ============
 
         async function init() {
             if (!initData) {
@@ -2135,7 +1983,6 @@
 
             generateStars();
             generateCasesGrid();
-            setupCustomIcons();
             preloadImages();
 
             const balanceLoaded = await loadBalance();
@@ -2144,6 +1991,13 @@
             STATE.isInitialized = true;
             setTimeout(() => { document.getElementById('loadingOverlay').classList.add('hidden'); }, 400);
             updateSessionInfo();
+        }
+
+        function preloadImages() {
+            const imageUrls = [];
+            CASES.forEach(c => { if (c.image) imageUrls.push(c.image); });
+            Object.values(PRIZE_VISUALS).forEach(p => { if (p.image) imageUrls.push(p.image); });
+            imageUrls.forEach(url => { const img = new Image(); img.src = url; });
         }
 
         function generateCasesGrid() {
@@ -2592,6 +2446,8 @@
                 } catch (e) {}
             }
         }
+
+        // ============ EVENT LISTENERS ============
 
         document.addEventListener('DOMContentLoaded', init);
 
