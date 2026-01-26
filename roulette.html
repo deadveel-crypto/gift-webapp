@@ -213,19 +213,19 @@
         /* Confetti animations */
         @keyframes confettiFall {
             0% {
-                transform: translateY(-10vh) rotate(0deg);
+                transform: translateY(-10px) rotate(0deg);
                 opacity: 1;
             }
             100% {
-                transform: translateY(100vh) rotate(720deg);
+                transform: translateY(400px) rotate(720deg);
                 opacity: 0;
             }
         }
 
         @keyframes confettiSway {
             0%, 100% { margin-left: 0; }
-            25% { margin-left: 30px; }
-            75% { margin-left: -30px; }
+            25% { margin-left: 20px; }
+            75% { margin-left: -20px; }
         }
 
         @keyframes prizeCardFloat {
@@ -1230,7 +1230,7 @@
             transition: transform 0.15s ease-out;
             border: 2px solid var(--theme-color);
             position: relative;
-            overflow: visible;
+            overflow: hidden;
             box-shadow: 0 0 80px var(--theme-glow), 0 25px 80px rgba(0, 0, 0, 0.8);
         }
 
@@ -1256,24 +1256,27 @@
             box-shadow: 0 0 60px rgba(107, 114, 128, 0.4), 0 25px 80px rgba(0, 0, 0, 0.8);
         }
 
-        /* Confetti overlay - positioned on modal-overlay for full screen effect */
-        #confettiContainer {
-            position: fixed;
+        /* Confetti container inside modal */
+        .confetti-container {
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 150;
+            z-index: 50;
             overflow: hidden;
+            border-radius: 28px;
         }
 
         .confetti {
             position: absolute;
+            top: -20px;
             width: 10px;
             height: 10px;
             pointer-events: none;
             will-change: transform;
+            animation: confettiFall linear forwards;
         }
 
         .confetti.square {
@@ -1696,11 +1699,11 @@
 
     <div class="session-info" id="sessionInfo"></div>
 
-    <!-- Confetti container - outside modal for full screen effect -->
-    <div id="confettiContainer"></div>
-
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal" id="modal">
+            <!-- Confetti container INSIDE modal -->
+            <div class="confetti-container" id="confettiContainer"></div>
+            
             <div class="modal-emoji" id="modalEmoji"></div>
             <div class="modal-title" id="modalTitle">Поздравляем!</div>
             <div class="modal-prize" id="modalPrize">+50</div>
@@ -1744,7 +1747,7 @@
             { id: 'divine', name: 'Divine Case', emoji: null, image: `${IMG_CDN}/cases/divine.png`, cost: 1000, tag: 'VIP', style: 'divine-style', theme: 'theme-divine' }
         ];
 
-                let STATE = {
+        let STATE = {
             userId: null,
             username: '',
             sapphires: 0,
@@ -1762,8 +1765,6 @@
         let isSpinning = false;
         let confettiActive = false;
         let confettiInterval = null;
-        let confettiPieces = [];
-        const MAX_CONFETTI_PIECES = 80;
 
         const PRIZE_VISUALS = {
             0: { stars: 0, emoji: null, rarity: "empty", image: `${IMG_CDN}/prizes/void.png`, name: "Void" },
@@ -1818,18 +1819,93 @@
             }
         };
 
-        // Confetti colors matching theme
+        // Confetti colors
         const confettiColors = [
-            '#fbbf24', '#f59e0b', '#fcd34d', // Gold
-            '#6366f1', '#818cf8', '#a78bfa', // Purple
-            '#ec4899', '#f472b6', '#fb7185', // Pink
-            '#22d3ee', '#67e8f9', '#06b6d4', // Cyan
-            '#10b981', '#34d399', '#6ee7b7', // Green
-            '#ef4444', '#f87171', '#fca5a5', // Red
-            '#ffffff', '#e2e8f0'              // White
+            '#fbbf24', '#f59e0b', '#fcd34d',
+            '#6366f1', '#818cf8', '#a78bfa',
+            '#ec4899', '#f472b6', '#fb7185',
+            '#22d3ee', '#67e8f9', '#06b6d4',
+            '#10b981', '#34d399', '#6ee7b7',
+            '#ef4444', '#f87171', '#fca5a5',
+            '#ffffff', '#e2e8f0'
         ];
 
         const confettiShapes = ['square', 'circle', 'star', 'ribbon'];
+
+        function createConfetti(container, isWin) {
+            if (!container || !confettiActive) return;
+
+            const confetti = document.createElement('div');
+            const shape = confettiShapes[Math.floor(Math.random() * confettiShapes.length)];
+            confetti.className = `confetti ${shape}`;
+
+            const color = isWin 
+                ? confettiColors[Math.floor(Math.random() * confettiColors.length)]
+                : ['#6b7280', '#9ca3af', '#d1d5db', '#e5e7eb'][Math.floor(Math.random() * 4)];
+            
+            const size = 6 + Math.random() * 8;
+            const left = Math.random() * 100;
+            const duration = 3 + Math.random() * 2;
+            const delay = Math.random() * 0.3;
+            const rotateStart = Math.random() * 360;
+            const swayAmount = 10 + Math.random() * 20;
+
+            confetti.style.cssText = `
+                left: ${left}%;
+                width: ${size}px;
+                height: ${shape === 'ribbon' ? size * 2 : size}px;
+                background: ${color};
+                box-shadow: 0 0 ${size/2}px ${color};
+                animation-duration: ${duration}s;
+                animation-delay: ${delay}s;
+                transform: rotate(${rotateStart}deg);
+            `;
+
+            container.appendChild(confetti);
+
+            // Remove after animation
+            setTimeout(() => {
+                if (confetti.parentNode) {
+                    confetti.remove();
+                }
+            }, (duration + delay) * 1000);
+        }
+
+        function startConfetti(isWin = true) {
+            confettiActive = true;
+            const container = document.getElementById('confettiContainer');
+            if (!container) return;
+
+            // Clear previous
+            container.innerHTML = '';
+
+            // Initial burst
+            for (let i = 0; i < 25; i++) {
+                setTimeout(() => {
+                    if (confettiActive) createConfetti(container, isWin);
+                }, i * 40);
+            }
+
+            // Continuous confetti
+            confettiInterval = setInterval(() => {
+                if (confettiActive && container.children.length < 50) {
+                    createConfetti(container, isWin);
+                    if (Math.random() > 0.5) createConfetti(container, isWin);
+                }
+            }, 100);
+        }
+
+        function stopConfetti() {
+            confettiActive = false;
+            if (confettiInterval) {
+                clearInterval(confettiInterval);
+                confettiInterval = null;
+            }
+            const container = document.getElementById('confettiContainer');
+            if (container) {
+                container.innerHTML = '';
+            }
+        }
 
         function getExpensivePrizeForCase() {
             const caseId = STATE.selectedCase?.id || 'cosmic';
@@ -2311,137 +2387,6 @@
             }, 120);
         }
 
-        // ============ CONFETTI SYSTEM ============
-        function createConfetti() {
-            const container = document.getElementById('confettiContainer');
-            if (!container || !confettiActive) return;
-
-            // Limit confetti count
-            if (confettiPieces.length >= MAX_CONFETTI_PIECES) {
-                const oldPiece = confettiPieces.shift();
-                if (oldPiece && oldPiece.parentNode) {
-                    oldPiece.remove();
-                }
-            }
-
-            const confetti = document.createElement('div');
-            const shape = confettiShapes[Math.floor(Math.random() * confettiShapes.length)];
-            confetti.className = `confetti ${shape}`;
-
-            const color = confettiColors[Math.floor(Math.random() * confettiColors.length)];
-            const size = 8 + Math.random() * 10;
-            const left = Math.random() * 100;
-            const duration = 3 + Math.random() * 3;
-            const delay = Math.random() * 0.5;
-            const rotateStart = Math.random() * 360;
-            const rotateEnd = rotateStart + 360 + Math.random() * 720;
-            const swayAmount = 50 + Math.random() * 100;
-            const swayDirection = Math.random() > 0.5 ? 1 : -1;
-
-            confetti.style.cssText = `
-                left: ${left}%;
-                top: -20px;
-                width: ${size}px;
-                height: ${shape === 'ribbon' ? size * 2.5 : size}px;
-                background: ${color};
-                box-shadow: 0 0 ${size/2}px ${color}, 0 0 ${size}px ${color}40;
-                opacity: 1;
-                transform: rotate(${rotateStart}deg);
-            `;
-
-            container.appendChild(confetti);
-            confettiPieces.push(confetti);
-
-            // Animate using requestAnimationFrame for smooth performance
-            const startTime = performance.now();
-            const totalDuration = duration * 1000;
-
-            function animateConfetti(currentTime) {
-                if (!confettiActive || !confetti.parentNode) {
-                    if (confetti.parentNode) confetti.remove();
-                    return;
-                }
-
-                const elapsed = currentTime - startTime - (delay * 1000);
-                if (elapsed < 0) {
-                    requestAnimationFrame(animateConfetti);
-                    return;
-                }
-
-                const progress = Math.min(elapsed / totalDuration, 1);
-                
-                // Easing for natural fall
-                const easeProgress = progress < 0.5 
-                    ? 2 * progress * progress 
-                    : 1 - Math.pow(-2 * progress + 2, 2) / 2;
-
-                const y = easeProgress * (window.innerHeight + 50);
-                const rotation = rotateStart + (rotateEnd - rotateStart) * progress;
-                const sway = Math.sin(progress * Math.PI * 4) * swayAmount * swayDirection;
-                const opacity = progress > 0.7 ? 1 - ((progress - 0.7) / 0.3) : 1;
-
-                confetti.style.transform = `translateY(${y}px) translateX(${sway}px) rotate(${rotation}deg)`;
-                confetti.style.opacity = opacity;
-
-                if (progress < 1) {
-                    requestAnimationFrame(animateConfetti);
-                } else {
-                    if (confetti.parentNode) confetti.remove();
-                    const index = confettiPieces.indexOf(confetti);
-                    if (index > -1) confettiPieces.splice(index, 1);
-                }
-            }
-
-            requestAnimationFrame(animateConfetti);
-        }
-
-        function startConfetti() {
-            confettiActive = true;
-            const container = document.getElementById('confettiContainer');
-            if (!container) return;
-
-            // Clear any existing confetti
-            container.innerHTML = '';
-            confettiPieces = [];
-
-            // Initial burst - create many confetti quickly
-            for (let i = 0; i < 30; i++) {
-                setTimeout(() => {
-                    if (confettiActive) createConfetti();
-                }, i * 50);
-            }
-
-            // Continue creating confetti at regular intervals
-            confettiInterval = setInterval(() => {
-                if (confettiActive) {
-                    createConfetti();
-                    // Create 2-3 at a time for denser effect
-                    if (Math.random() > 0.5) createConfetti();
-                    if (Math.random() > 0.7) createConfetti();
-                } else {
-                    clearInterval(confettiInterval);
-                }
-            }, 150);
-        }
-
-        function stopConfetti() {
-            confettiActive = false;
-            
-            if (confettiInterval) {
-                clearInterval(confettiInterval);
-                confettiInterval = null;
-            }
-
-            // Clear all confetti after a short delay to let them fade
-            setTimeout(() => {
-                const container = document.getElementById('confettiContainer');
-                if (container) {
-                    container.innerHTML = '';
-                }
-                confettiPieces = [];
-            }, 500);
-        }
-
         function showResult(prize) {
             STATE.isModalOpen = true;
             document.getElementById('spinBtn').disabled = true;
@@ -2462,7 +2407,9 @@
                 emoji.innerHTML = '';
             }
 
-            if (prize.stars > 0) {
+            const isWin = prize.stars > 0;
+
+            if (isWin) {
                 modal.classList.add('win');
                 
                 if (prize.stars >= 9999) {
@@ -2479,9 +2426,6 @@
                 
                 prizeText.textContent = `+${prize.stars}`;
                 haptic('success');
-                
-                // Start confetti for wins
-                setTimeout(() => startConfetti(), 100);
             } else {
                 modal.classList.add('lose');
                 title.textContent = 'Пусто...';
@@ -2496,6 +2440,11 @@
             spinAgainBtn.style.display = canSpinAgain ? 'block' : 'none';
 
             overlay.classList.add('show');
+            
+            // Start confetti for BOTH win and lose
+            setTimeout(() => {
+                startConfetti(isWin);
+            }, 100);
         }
 
         function spinAgain() {
@@ -2625,8 +2574,10 @@
                 stopConfetti();
             } else {
                 document.body.classList.remove('paused');
-                if (STATE.isModalOpen && document.getElementById('modal').classList.contains('win')) {
-                    startConfetti();
+                if (STATE.isModalOpen) {
+                    const modal = document.getElementById('modal');
+                    const isWin = modal.classList.contains('win');
+                    startConfetti(isWin);
                 }
             }
         });
