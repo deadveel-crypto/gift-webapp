@@ -1235,7 +1235,7 @@
             transition: transform 0.15s ease-out;
             border: 2px solid var(--theme-color);
             position: relative;
-            overflow: visible;
+            overflow: hidden;
             box-shadow: 0 0 80px var(--theme-glow), 0 25px 80px rgba(0, 0, 0, 0.8);
         }
 
@@ -1720,12 +1720,10 @@
 
     <div class="session-info" id="sessionInfo"></div>
 
-    <!-- Fullscreen Confetti Overlay -->
-    <div id="confettiOverlay"></div>
-
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal" id="modal">
-            <div class="modal-emoji" id="modalEmoji"></div>
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modal">
+        <div id="confettiOverlay"></div>
+        <div class="modal-emoji" id="modalEmoji"></div>
             <div class="modal-title" id="modalTitle">Поздравляем!</div>
             <div class="modal-prize" id="modalPrize">+50</div>
             <div class="modal-balance" id="modalBalance">
@@ -1785,7 +1783,7 @@
 
         let isSpinning = false;
         let confettiActive = false;
-        const MAX_CONFETTI = 40;
+        const MAX_CONFETTI = 25;
 
         const PRIZE_VISUALS = {
             0: { stars: 0, emoji: null, rarity: "empty", image: `${IMG_CDN}/prizes/void.png`, name: "Void" },
@@ -2391,105 +2389,104 @@
         const MAX_CONFETTI_PIECES = 60;
 
         function createConfetti() {
-            const overlay = document.getElementById('confettiOverlay');
-            if (!overlay || !confettiActive) return;
+    const modal = document.getElementById('modal');
+    const overlay = modal?.querySelector('#confettiOverlay');
+    if (!overlay || !confettiActive) return;
 
-            // Limit confetti count
-            if (confettiPieces.length >= MAX_CONFETTI_PIECES) {
-                const oldPiece = confettiPieces.shift();
-                if (oldPiece && oldPiece.parentNode) {
-                    oldPiece.remove();
-                }
-            }
-
-            const confetti = document.createElement('div');
-            const inner = document.createElement('div');
-            inner.className = 'confetti-inner';
-
-            const shape = confettiShapes[Math.floor(Math.random() * confettiShapes.length)];
-            confetti.className = `confetti ${shape}`;
-
-            const color = confettiColors[Math.floor(Math.random() * confettiColors.length)];
-            const size = 8 + Math.random() * 10;
-            const left = Math.random() * 100;
-            const duration = 6 + Math.random() * 4; // 6-10 seconds - slower fall
-            const swayDuration = 2 + Math.random() * 2;
-            const delay = Math.random() * 0.5;
-            const rotateStart = Math.random() * 360;
-
-            inner.style.background = color;
-            inner.style.boxShadow = `0 0 ${size/2}px ${color}`;
-
-            confetti.style.cssText = `
-                left: ${left}%;
-                width: ${size}px;
-                height: ${shape === 'ribbon' ? size * 2 : size}px;
-                animation: confettiDrop ${duration}s linear forwards, confettiSway ${swayDuration}s ease-in-out infinite;
-                animation-delay: ${delay}s;
-                transform: rotateZ(${rotateStart}deg);
-                opacity: 0;
-            `;
-
-            // Fade in after delay
-            setTimeout(() => {
-                confetti.style.opacity = '1';
-            }, delay * 1000);
-
-            confetti.appendChild(inner);
-            overlay.appendChild(confetti);
-            confettiPieces.push(confetti);
-
-            // Remove after animation
-            setTimeout(() => {
-                if (confetti.parentNode) {
-                    confetti.remove();
-                }
-                const index = confettiPieces.indexOf(confetti);
-                if (index > -1) {
-                    confettiPieces.splice(index, 1);
-                }
-            }, (duration + delay) * 1000);
+    // Limit confetti count
+    if (confettiPieces.length >= MAX_CONFETTI_PIECES) {
+        const oldPiece = confettiPieces.shift();
+        if (oldPiece && oldPiece.parentNode) {
+            oldPiece.remove();
         }
+    }
+
+    const confetti = document.createElement('div');
+    const inner = document.createElement('div');
+    inner.className = 'confetti-inner';
+
+    const shape = confettiShapes[Math.floor(Math.random() * confettiShapes.length)];
+    confetti.className = `confetti ${shape}`;
+
+    const color = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+    const size = 6 + Math.random() * 8;
+    const left = Math.random() * 100;
+    const duration = 8 + Math.random() * 4;
+    const swayDuration = 3 + Math.random() * 2;
+    const delay = Math.random() * 0.3;
+    const rotateStart = Math.random() * 360;
+
+    inner.style.background = color;
+    inner.style.boxShadow = `0 0 ${size/2}px ${color}`;
+
+    confetti.style.cssText = `
+        left: ${left}%;
+        width: ${size}px;
+        height: ${shape === 'ribbon' ? size * 2 : size}px;
+        animation: confettiDrop ${duration}s ease-in forwards, confettiSway ${swayDuration}s ease-in-out infinite;
+        animation-delay: ${delay}s;
+        transform: rotateZ(${rotateStart}deg);
+        opacity: 0;
+    `;
+
+    setTimeout(() => {
+        confetti.style.opacity = '1';
+    }, delay * 1000);
+
+    confetti.appendChild(inner);
+    overlay.appendChild(confetti);
+    confettiPieces.push(confetti);
+
+    setTimeout(() => {
+        if (confetti.parentNode) {
+            confetti.remove();
+        }
+        const index = confettiPieces.indexOf(confetti);
+        if (index > -1) {
+            confettiPieces.splice(index, 1);
+        }
+    }, (duration + delay) * 1000);
+}
 
         function startConfetti() {
-            confettiActive = true;
-            const overlay = document.getElementById('confettiOverlay');
-            if (!overlay) return;
+    confettiActive = true;
+    const modal = document.getElementById('modal');
+    const overlay = modal?.querySelector('#confettiOverlay');
+    if (!overlay) return;
 
-            // Initial burst - create many confetti at once
-            for (let i = 0; i < 30; i++) {
-                setTimeout(() => {
-                    if (confettiActive) createConfetti();
-                }, i * 50);
-            }
+    // Initial burst - create fewer confetti
+    for (let i = 0; i < 12; i++) {
+        setTimeout(() => {
+            if (confettiActive) createConfetti();
+        }, i * 80);
+    }
 
-            // Continue creating confetti
-            confettiInterval = setInterval(() => {
-                if (confettiActive) {
-                    createConfetti();
-                    // Create 2-3 at a time for more density
-                    if (Math.random() > 0.5) createConfetti();
-                } else {
-                    clearInterval(confettiInterval);
-                }
-            }, 150); // Create new confetti every 150ms
+    // Continue creating confetti slowly
+    confettiInterval = setInterval(() => {
+        if (confettiActive) {
+            createConfetti();
+        } else {
+            clearInterval(confettiInterval);
         }
+    }, 400);
+}
 
         function stopConfetti() {
-            confettiActive = false;
-            
-            if (confettiInterval) {
-                clearInterval(confettiInterval);
-                confettiInterval = null;
-            }
+    confettiActive = false;
+    
+    if (confettiInterval) {
+        clearInterval(confettiInterval);
+        confettiInterval = null;
+    }
 
-            // Clear all confetti
-            const overlay = document.getElementById('confettiOverlay');
-            if (overlay) {
-                overlay.innerHTML = '';
-            }
-            confettiPieces = [];
-        }
+    // Clear all confetti from modal
+    const modal = document.getElementById('modal');
+    const overlay = modal?.querySelector('#confettiOverlay');
+    if (overlay) {
+        overlay.innerHTML = '';
+    }
+    confettiPieces = [];
+}
 
         function spinAgain() {
             closeModal();
