@@ -1,6 +1,3 @@
-Вот исправленный код с новой системой конфетти и 100% шансом на победу для тестирования:
-
-```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -1781,11 +1778,13 @@
         };
 
         // ============ CANVAS CONFETTI SYSTEM ============
+                // ============ CANVAS CONFETTI SYSTEM ============
         const confettiCanvas = document.getElementById('confettiCanvas');
         const confettiCtx = confettiCanvas.getContext('2d');
         let confettiParticles = [];
         let confettiAnimationId = null;
         let confettiActive = false;
+        let confettiPhase = 'burst'; // 'burst' или 'rain'
 
         const confettiColors = [
             '#fbbf24', '#f59e0b', '#fcd34d',
@@ -1806,45 +1805,123 @@
         resizeConfettiCanvas();
 
         class ConfettiParticle {
-            constructor() {
-                this.reset();
+            constructor(type = 'burst') {
+                this.type = type;
+                if (type === 'burst') {
+                    this.initBurst();
+                } else {
+                    this.initRain();
+                }
             }
 
-            reset() {
-                this.x = Math.random() * confettiCanvas.width;
-                this.y = -20 - Math.random() * 100;
-                this.size = Math.random() * 10 + 5;
-                this.speedY = Math.random() * 3 + 2;
-                this.speedX = Math.random() * 4 - 2;
+            initBurst() {
+                // Стартовая позиция - центр снизу
+                this.x = confettiCanvas.width / 2 + (Math.random() - 0.5) * 200;
+                this.y = confettiCanvas.height + 20;
+                
+                // Размер
+                this.size = Math.random() * 12 + 6;
+                
+                // Начальная скорость - выстрел вверх и в стороны
+                const angle = -Math.PI / 2 + (Math.random() - 0.5) * 1.2; // Вверх с разбросом
+                const power = Math.random() * 25 + 20; // Сила выстрела
+                this.speedX = Math.cos(angle) * power;
+                this.speedY = Math.sin(angle) * power;
+                
+                // Физика
+                this.gravity = 0.3;
+                this.friction = 0.98;
+                this.drag = 0.99;
+                
+                // Вращение
                 this.rotation = Math.random() * 360;
-                this.rotationSpeed = Math.random() * 10 - 5;
+                this.rotationSpeed = Math.random() * 15 - 7.5;
+                
+                // Покачивание
+                this.wobble = Math.random() * Math.PI * 2;
+                this.wobbleSpeed = Math.random() * 0.15 + 0.05;
+                this.wobbleAmplitude = Math.random() * 3 + 1;
+                
+                // Внешний вид
                 this.color = confettiColors[Math.floor(Math.random() * confettiColors.length)];
-                this.shape = Math.floor(Math.random() * 3); // 0: rect, 1: circle, 2: star
-                this.wobble = Math.random() * 10;
-                this.wobbleSpeed = Math.random() * 0.1 + 0.05;
+                this.shape = Math.floor(Math.random() * 4); // 0: rect, 1: circle, 2: star, 3: ribbon
                 this.opacity = 1;
-                this.gravity = 0.1;
+                
+                // Флаг перехода в медленное падение
+                this.isFloating = false;
+            }
+
+            initRain() {
+                // Стартовая позиция - сверху экрана
+                this.x = Math.random() * confettiCanvas.width;
+                this.y = -20 - Math.random() * 50;
+                
+                // Размер меньше для дождя
+                this.size = Math.random() * 8 + 4;
+                
+                // Медленная скорость падения
+                this.speedX = Math.random() * 1 - 0.5;
+                this.speedY = Math.random() * 1.5 + 0.8;
+                
+                // Физика
+                this.gravity = 0.02;
+                this.friction = 0.99;
+                this.drag = 0.995;
+                
+                // Вращение
+                this.rotation = Math.random() * 360;
+                this.rotationSpeed = Math.random() * 3 - 1.5;
+                
+                // Покачивание
+                this.wobble = Math.random() * Math.PI * 2;
+                this.wobbleSpeed = Math.random() * 0.08 + 0.02;
+                this.wobbleAmplitude = Math.random() * 4 + 2;
+                
+                // Внешний вид
+                this.color = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+                this.shape = Math.floor(Math.random() * 4);
+                this.opacity = Math.random() * 0.4 + 0.6;
+                
+                this.isFloating = true;
             }
 
             update() {
-                this.y += this.speedY;
+                // Применяем гравитацию
                 this.speedY += this.gravity;
-                this.x += this.speedX + Math.sin(this.wobble) * 2;
+                
+                // Применяем трение/сопротивление воздуха
+                this.speedX *= this.drag;
+                this.speedY *= this.friction;
+                
+                // Обновляем позицию
                 this.wobble += this.wobbleSpeed;
+                this.x += this.speedX + Math.sin(this.wobble) * this.wobbleAmplitude;
+                this.y += this.speedY;
+                
+                // Вращение
                 this.rotation += this.rotationSpeed;
-
-                // Fade out near bottom
-                if (this.y > confettiCanvas.height - 100) {
-                    this.opacity -= 0.02;
+                // Замедляем вращение со временем
+                this.rotationSpeed *= 0.995;
+                
+                // Переход burst частиц в режим плавного падения
+                if (this.type === 'burst' && !this.isFloating && this.speedY > 0 && Math.abs(this.speedY) < 3) {
+                    this.isFloating = true;
+                    this.gravity = 0.015;
+                    this.friction = 0.995;
+                    this.wobbleAmplitude = Math.random() * 5 + 3;
+                    this.wobbleSpeed = Math.random() * 0.05 + 0.02;
                 }
-
-                // Reset if off screen
-                if (this.y > confettiCanvas.height || this.opacity <= 0) {
-                    if (confettiActive) {
-                        this.reset();
-                    }
+                
+                // Затухание внизу экрана
+                if (this.y > confettiCanvas.height - 150) {
+                    this.opacity -= 0.008;
+                }
+                
+                // Удаляем если вышел за экран или исчез
+                if (this.y > confettiCanvas.height + 50 || this.opacity <= 0) {
                     return false;
                 }
+                
                 return true;
             }
 
@@ -1854,8 +1931,10 @@
                 confettiCtx.rotate((this.rotation * Math.PI) / 180);
                 confettiCtx.globalAlpha = this.opacity;
                 confettiCtx.fillStyle = this.color;
+                
+                // Свечение
                 confettiCtx.shadowColor = this.color;
-                confettiCtx.shadowBlur = 5;
+                confettiCtx.shadowBlur = this.isFloating ? 3 : 8;
 
                 switch (this.shape) {
                     case 0: // Rectangle
@@ -1868,6 +1947,9 @@
                         break;
                     case 2: // Star
                         this.drawStar(0, 0, 5, this.size / 2, this.size / 4);
+                        break;
+                    case 3: // Ribbon
+                        confettiCtx.fillRect(-this.size / 6, -this.size, this.size / 3, this.size * 2);
                         break;
                 }
 
@@ -1903,35 +1985,53 @@
 
         function startConfetti() {
             confettiActive = true;
+            confettiPhase = 'burst';
             confettiParticles = [];
 
-            // Create initial burst
-            for (let i = 0; i < 80; i++) {
-                const particle = new ConfettiParticle();
-                particle.y = Math.random() * confettiCanvas.height * 0.5 - 100;
-                confettiParticles.push(particle);
+            // Фаза 1: Выстрел - создаём много частиц сразу
+            for (let i = 0; i < 100; i++) {
+                setTimeout(() => {
+                    if (confettiActive) {
+                        confettiParticles.push(new ConfettiParticle('burst'));
+                    }
+                }, i * 15); // Небольшая задержка для эффекта волны
             }
+
+            // Фаза 2: Через 1.5 секунды начинаем медленный дождь
+            setTimeout(() => {
+                if (confettiActive) {
+                    confettiPhase = 'rain';
+                }
+            }, 1500);
 
             animateConfetti();
         }
 
+        let rainInterval = null;
+
         function animateConfetti() {
             confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
 
-            // Add new particles while active
-            if (confettiActive && confettiParticles.length < 100 && Math.random() > 0.7) {
-                confettiParticles.push(new ConfettiParticle());
+            // Добавляем новые частицы дождя
+            if (confettiActive && confettiPhase === 'rain' && Math.random() > 0.85) {
+                confettiParticles.push(new ConfettiParticle('rain'));
             }
 
-            // Update and draw particles
+            // Ограничиваем максимальное количество частиц
+            if (confettiParticles.length > 150) {
+                confettiParticles = confettiParticles.slice(-150);
+            }
+
+            // Обновляем и рисуем частицы
             confettiParticles = confettiParticles.filter(particle => {
                 const alive = particle.update();
-                if (alive || confettiActive) {
+                if (alive) {
                     particle.draw();
                 }
-                return alive || confettiActive;
+                return alive;
             });
 
+            // Продолжаем анимацию
             if (confettiParticles.length > 0 || confettiActive) {
                 confettiAnimationId = requestAnimationFrame(animateConfetti);
             } else {
@@ -1941,17 +2041,24 @@
 
         function stopConfetti() {
             confettiActive = false;
-            // Let remaining particles fall naturally
+            confettiPhase = 'burst';
+            
+            // Даём частицам красиво упасть
             setTimeout(() => {
                 if (!confettiActive) {
-                    confettiParticles = [];
-                    confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
-                    if (confettiAnimationId) {
-                        cancelAnimationFrame(confettiAnimationId);
-                        confettiAnimationId = null;
-                    }
+                    // Ждём пока все частицы упадут
+                    const checkEmpty = setInterval(() => {
+                        if (confettiParticles.length === 0) {
+                            clearInterval(checkEmpty);
+                            confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+                            if (confettiAnimationId) {
+                                cancelAnimationFrame(confettiAnimationId);
+                                confettiAnimationId = null;
+                            }
+                        }
+                    }, 100);
                 }
-            }, 3000);
+            }, 500);
         }
 
         // ============ ОСТАЛЬНОЙ КОД ============
