@@ -215,27 +215,12 @@
                 opacity: 1; 
                 transform: translateY(0) rotate(0deg) scale(1);
             }
-            20% {
+            70% {
                 opacity: 1;
-            }
-            80% {
-                opacity: 0.8;
             }
             100% { 
                 opacity: 0; 
-                transform: translateY(800px) rotate(1080deg) scale(0.2);
-            }
-        }
-
-        @keyframes confettiSway {
-            0%, 100% { 
-                transform: translateX(0) translateY(var(--fall-y, 0)) rotate(var(--rotation, 0deg));
-            }
-            25% {
-                transform: translateX(30px) translateY(var(--fall-y, 0)) rotate(var(--rotation, 0deg));
-            }
-            75% {
-                transform: translateX(-30px) translateY(var(--fall-y, 0)) rotate(var(--rotation, 0deg));
+                transform: translateY(700px) rotate(720deg) scale(0.3);
             }
         }
 
@@ -282,27 +267,6 @@
             text-transform: uppercase;
             margin-top: 5px;
             animation: borderGlow 3s ease-in-out infinite;
-        }
-
-        /* Demo Mode Badge */
-        .demo-badge {
-            display: none;
-            background: linear-gradient(135deg, #f59e0b, #fbbf24);
-            color: #1a1a2e;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.65rem;
-            font-weight: 700;
-            padding: 6px 14px;
-            border-radius: 20px;
-            margin-top: 10px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            box-shadow: 0 0 20px rgba(251, 191, 36, 0.5);
-            animation: tagPulse 2s ease-in-out infinite;
-        }
-
-        body.demo-mode .demo-badge {
-            display: inline-block;
         }
 
         .balance-container {
@@ -1302,6 +1266,7 @@
         .confetti-piece {
             position: absolute;
             will-change: transform, opacity;
+            animation: confettiFall 3s linear forwards;
         }
 
         .modal-emoji {
@@ -1400,6 +1365,7 @@
             border-radius: 16px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             position: relative;
+            /* No animations or transforms */
             transform: none !important;
             animation: none !important;
         }
@@ -1643,7 +1609,6 @@
         <div class="brand-container">
             <h1 class="brand-text">Divine Case</h1>
             <div class="brand-subtitle">Premium Loot Experience</div>
-            <div class="demo-badge">🎮 DEMO MODE</div>
         </div>
         <div class="balance-container">
             <div class="balance-card sapphires">
@@ -1744,9 +1709,6 @@
         const initData = tg?.initData || '';
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 769;
 
-        // Demo mode detection - active when not running from Telegram
-        const IS_DEMO_MODE = !initData || initData.length === 0;
-
         const GITHUB_USER = "deadveel-crypto";
         const GITHUB_REPO = "divine-case-assets";
         const GITHUB_BRANCH = "main";
@@ -1767,23 +1729,21 @@
         let STATE = {
             userId: null,
             username: '',
-            sapphires: IS_DEMO_MODE ? 999999 : 0,
+            sapphires: 0,
             stars: 0,
             spinCost: 100,
-            canSpin: true,
+            canSpin: false,
             isInitialized: false,
             spinsCount: 0,
             totalWon: 0,
             isModalOpen: false,
             currentScreen: 'menu',
-            selectedCase: null,
-            isDemoMode: IS_DEMO_MODE
+            selectedCase: null
         };
 
         let isSpinning = false;
         let confettiActive = false;
-        let confettiInterval = null;
-        const MAX_CONFETTI = 40;
+        const MAX_CONFETTI = 25; // Maximum confetti pieces at once
 
         const PRIZE_VISUALS = {
             0: { stars: 0, emoji: null, rarity: "empty", image: `${IMG_CDN}/prizes/void.png`, name: "Void" },
@@ -1799,61 +1759,6 @@
             9999: { stars: 9999, emoji: null, rarity: "stars-9999", image: `${IMG_CDN}/prizes/divine_star.png`, name: "Divine Star" }
         };
 
-        // Demo mode prize configs - 80% win chance
-        const DEMO_CASE_CONFIG = {
-            cosmic: {
-                prizes: [0, 15, 25, 50, 75, 100],
-                getRandomPrize: () => {
-                    const rand = Math.random() * 100;
-                    if (rand < 20) return 0; // 20% empty
-                    if (rand < 45) return 15;
-                    if (rand < 65) return 25;
-                    if (rand < 80) return 50;
-                    if (rand < 92) return 75;
-                    return 100;
-                }
-            },
-            stellar: {
-                prizes: [0, 25, 50, 75, 100, 150, 250],
-                getRandomPrize: () => {
-                    const rand = Math.random() * 100;
-                    if (rand < 20) return 0;
-                    if (rand < 40) return 25;
-                    if (rand < 55) return 50;
-                    if (rand < 70) return 75;
-                    if (rand < 82) return 100;
-                    if (rand < 92) return 150;
-                    return 250;
-                }
-            },
-            golden: {
-                prizes: [0, 75, 100, 150, 250, 500],
-                getRandomPrize: () => {
-                    const rand = Math.random() * 100;
-                    if (rand < 20) return 0;
-                    if (rand < 40) return 75;
-                    if (rand < 58) return 100;
-                    if (rand < 75) return 150;
-                    if (rand < 90) return 250;
-                    return 500;
-                }
-            },
-            divine: {
-                prizes: [0, 100, 150, 250, 500, 1000, 9999],
-                getRandomPrize: () => {
-                    const rand = Math.random() * 100;
-                    if (rand < 20) return 0;
-                    if (rand < 38) return 100;
-                    if (rand < 54) return 150;
-                    if (rand < 70) return 250;
-                    if (rand < 85) return 500;
-                    if (rand < 96) return 1000;
-                    return 9999;
-                }
-            }
-        };
-
-        // Normal mode prize configs
         const CASE_CONFIG = {
             cosmic: {
                 prizes: [0, 15, 25, 50, 75, 100],
@@ -1981,14 +1886,6 @@
         }
 
         async function loadBalance() {
-            // Demo mode - use local state
-            if (STATE.isDemoMode) {
-                STATE.sapphires = 999999;
-                STATE.canSpin = true;
-                updateUI();
-                return true;
-            }
-
             try {
                 const data = await apiRequest("/api/balance");
                 STATE.sapphires = data.sapphires;
@@ -2036,10 +1933,9 @@
         }
 
         async function init() {
-            // Enable demo mode if not from Telegram
-            if (STATE.isDemoMode) {
-                document.body.classList.add('demo-mode');
-                console.log('🎮 Demo mode activated - infinite sapphires, 80% win chance');
+            if (!initData) {
+                showFatalError("Telegram initData не получен.\nОткрой страницу только через бота.");
+                return;
             }
 
             if (tg) {
@@ -2059,7 +1955,7 @@
             preloadImages();
 
             const balanceLoaded = await loadBalance();
-            if (!balanceLoaded && !STATE.isDemoMode) return;
+            if (!balanceLoaded) return;
 
             STATE.isInitialized = true;
             setTimeout(() => { document.getElementById('loadingOverlay').classList.add('hidden'); }, 400);
@@ -2091,9 +1987,6 @@
             STATE.selectedCase = selectedCase;
             STATE.spinCost = selectedCase.cost;
             document.body.className = selectedCase.theme;
-            if (STATE.isDemoMode) {
-                document.body.classList.add('demo-mode');
-            }
 
             const emojiEl = document.getElementById('currentCaseEmoji');
             const imageEl = document.getElementById('currentCaseImage');
@@ -2129,9 +2022,6 @@
                 menuScreen.classList.remove('hidden');
                 caseScreen.classList.add('hidden');
                 document.body.className = '';
-                if (STATE.isDemoMode) {
-                    document.body.classList.add('demo-mode');
-                }
             } else {
                 menuScreen.classList.add('hidden');
                 caseScreen.classList.remove('hidden');
@@ -2154,7 +2044,7 @@
         function generatePrizesGrid() {
             const grid = document.getElementById('prizesGrid');
             const caseId = STATE.selectedCase?.id || 'cosmic';
-            const config = STATE.isDemoMode ? DEMO_CASE_CONFIG[caseId] : CASE_CONFIG[caseId];
+            const config = CASE_CONFIG[caseId];
 
             const displayPrizes = config.prizes.filter(s => s > 0).sort((a, b) => b - a).map(stars => PRIZE_VISUALS[stars]);
             displayPrizes.push(PRIZE_VISUALS[0]);
@@ -2188,9 +2078,7 @@
 
         function getRandomPrize() {
             const caseId = STATE.selectedCase?.id || 'cosmic';
-            // Use demo config with 80% win rate if in demo mode
-            const config = STATE.isDemoMode ? DEMO_CASE_CONFIG[caseId] : CASE_CONFIG[caseId];
-            return config.getRandomPrize();
+            return CASE_CONFIG[caseId].getRandomPrize();
         }
 
         function generateItemsStrip(winningPrize = null, winningIndex = null) {
@@ -2304,8 +2192,7 @@
 
             const currentCost = STATE.selectedCase?.cost || STATE.spinCost;
 
-            // Demo mode - always allow (infinite sapphires)
-            if (!STATE.isDemoMode && STATE.sapphires < currentCost) {
+            if (STATE.sapphires < currentCost) {
                 showStatus('Недостаточно сапфиров!', 'error');
                 haptic('error');
                 return;
@@ -2319,30 +2206,12 @@
             const prizeStars = getRandomPrize();
             const prize = PRIZE_VISUALS[prizeStars] || PRIZE_VISUALS[0];
 
-            // Demo mode - don't actually deduct (infinite sapphires)
-            if (!STATE.isDemoMode) {
-                STATE.sapphires -= currentCost;
-            }
+            STATE.sapphires -= currentCost;
             STATE.spinsCount++;
             updateUI();
 
             const animationPromise = runAnimation(prize);
             
-            // Demo mode - skip API calls
-            if (STATE.isDemoMode) {
-                await animationPromise;
-                
-                // Update local state
-                STATE.stars += prizeStars;
-                if (prizeStars > 0) STATE.totalWon += prizeStars;
-                
-                updateUI();
-                showResult(prize);
-                isSpinning = false;
-                updateSessionInfo();
-                return;
-            }
-
             let spinSuccess = false;
             const spinPromise = (async () => {
                 try {
@@ -2454,17 +2323,16 @@
                 haptic('error');
             }
 
-            // Demo mode shows infinite sapphires symbol
-            document.getElementById('modalSapphires').textContent = STATE.isDemoMode ? '∞' : STATE.sapphires;
+            document.getElementById('modalSapphires').textContent = STATE.sapphires;
             document.getElementById('modalStars').textContent = STATE.stars;
 
-            const canSpinAgain = (STATE.isDemoMode || STATE.sapphires >= STATE.spinCost) && STATE.canSpin;
+            const canSpinAgain = STATE.sapphires >= STATE.spinCost && STATE.canSpin;
             spinAgainBtn.style.display = canSpinAgain ? 'block' : 'none';
 
             overlay.classList.add('show');
         }
 
-        // Improved confetti - falls much longer and more visible
+        // Fixed confetti - constant amount, no accumulation
         function startConfetti() {
             const container = document.getElementById('confettiModal');
             if (!container) return;
@@ -2477,130 +2345,59 @@
                 '#ec4899', '#f472b6',
                 '#22d3ee', '#67e8f9',
                 '#10b981', '#34d399',
-                '#ef4444', '#f87171',
-                '#ffffff', '#e0e7ff'
+                '#ef4444', '#f87171'
             ];
-
-            const shapes = ['square', 'rectangle', 'circle'];
 
             function createConfettiPiece() {
                 if (!confettiActive) return;
                 
-                // Limit confetti count
+                // Check current count and remove old ones if needed
                 const currentPieces = container.querySelectorAll('.confetti-piece');
                 if (currentPieces.length >= MAX_CONFETTI) {
-                    const oldPiece = currentPieces[0];
-                    if (oldPiece) oldPiece.remove();
+                    // Remove the oldest pieces
+                    for (let i = 0; i < 3 && currentPieces[i]; i++) {
+                        currentPieces[i].remove();
+                    }
                 }
                 
                 const piece = document.createElement('div');
                 piece.className = 'confetti-piece';
                 
-                const size = Math.random() * 10 + 6;
+                const size = Math.random() * 8 + 4;
                 const color = colors[Math.floor(Math.random() * colors.length)];
-                const shape = shapes[Math.floor(Math.random() * shapes.length)];
+                const duration = 3.5 + Math.random() * 1.5;
                 const left = Math.random() * 100;
-                const duration = 6 + Math.random() * 4; // 6-10 seconds fall time
-                const delay = Math.random() * 0.5;
-                const rotation = Math.random() * 360;
-                const swayAmount = 20 + Math.random() * 40;
-
-                let width = size;
-                let height = size;
-                let borderRadius = '2px';
-
-                if (shape === 'rectangle') {
-                    height = size * (0.4 + Math.random() * 0.3);
-                } else if (shape === 'circle') {
-                    borderRadius = '50%';
-                }
 
                 piece.style.cssText = `
                     left: ${left}%;
-                    top: -20px;
-                    width: ${width}px;
-                    height: ${height}px;
+                    top: 0;
+                    width: ${size}px;
+                    height: ${size * (Math.random() * 0.5 + 0.5)}px;
                     background: ${color};
-                    border-radius: ${borderRadius};
-                    box-shadow: 0 0 ${size/2}px ${color}80;
-                    opacity: 1;
-                    transform: rotate(${rotation}deg);
-                    animation: confettiFallCustom ${duration}s ease-out ${delay}s forwards;
+                    animation-duration: ${duration}s;
+                    border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
+                    box-shadow: 0 0 ${size}px ${color};
                 `;
 
-                // Custom keyframes for each piece with sway
-                const keyframes = `
-                    @keyframes confettiFallCustom {
-                        0% { 
-                            opacity: 1; 
-                            transform: translateY(0) translateX(0) rotate(${rotation}deg) scale(1);
-                        }
-                        25% {
-                            transform: translateY(200px) translateX(${swayAmount}px) rotate(${rotation + 180}deg) scale(1);
-                        }
-                        50% {
-                            opacity: 1;
-                            transform: translateY(400px) translateX(-${swayAmount}px) rotate(${rotation + 360}deg) scale(0.95);
-                        }
-                        75% {
-                            opacity: 0.8;
-                            transform: translateY(600px) translateX(${swayAmount * 0.5}px) rotate(${rotation + 540}deg) scale(0.8);
-                        }
-                        100% { 
-                            opacity: 0; 
-                            transform: translateY(900px) translateX(0) rotate(${rotation + 720}deg) scale(0.4);
-                        }
-                    }
-                `;
-
-                // Add unique animation
-                const styleId = 'confetti-' + Math.random().toString(36).substr(2, 9);
-                const style = document.createElement('style');
-                style.id = styleId;
-                style.textContent = keyframes;
-                document.head.appendChild(style);
-
-                piece.addEventListener('animationend', () => {
-                    piece.remove();
-                    const styleEl = document.getElementById(styleId);
-                    if (styleEl) styleEl.remove();
-                });
-
+                piece.addEventListener('animationend', () => piece.remove());
                 container.appendChild(piece);
+                
+                // Schedule next piece
+                if (confettiActive) {
+                    setTimeout(createConfettiPiece, 150 + Math.random() * 100);
+                }
             }
             
-            // Create initial burst
-            for (let i = 0; i < 15; i++) {
-                setTimeout(() => createConfettiPiece(), i * 30);
+            // Start with a few pieces
+            for (let i = 0; i < 5; i++) {
+                setTimeout(createConfettiPiece, i * 50);
             }
-
-            // Keep creating confetti continuously
-            confettiInterval = setInterval(() => {
-                if (confettiActive) {
-                    createConfettiPiece();
-                    // Sometimes create 2 at once
-                    if (Math.random() > 0.5) {
-                        setTimeout(createConfettiPiece, 50);
-                    }
-                }
-            }, 120);
         }
 
         function stopConfetti() {
             confettiActive = false;
-            if (confettiInterval) {
-                clearInterval(confettiInterval);
-                confettiInterval = null;
-            }
             const container = document.getElementById('confettiModal');
-            if (container) {
-                // Let existing pieces finish their animation
-                setTimeout(() => {
-                    if (!confettiActive) {
-                        container.innerHTML = '';
-                    }
-                }, 2000);
-            }
+            if (container) container.innerHTML = '';
         }
 
         function spinAgain() {
@@ -2623,15 +2420,14 @@
             const sapphiresEl = document.getElementById('sapphires');
             const starsEl = document.getElementById('stars-balance');
             
-            const oldSapphires = sapphiresEl.textContent;
+            const oldSapphires = parseInt(sapphiresEl.textContent) || 0;
             const oldStars = parseInt(starsEl.textContent) || 0;
             
-            // Demo mode shows infinity symbol
-            sapphiresEl.textContent = STATE.isDemoMode ? '∞' : STATE.sapphires;
+            sapphiresEl.textContent = STATE.sapphires;
             starsEl.textContent = STATE.stars;
             
             // Add animation when values change
-            if (oldSapphires !== sapphiresEl.textContent) {
+            if (oldSapphires !== STATE.sapphires) {
                 sapphiresEl.classList.add('updated');
                 setTimeout(() => sapphiresEl.classList.remove('updated'), 400);
             }
@@ -2640,7 +2436,7 @@
                 setTimeout(() => starsEl.classList.remove('updated'), 400);
             }
 
-            const canSpin = (STATE.isDemoMode || STATE.sapphires >= STATE.spinCost) &&
+            const canSpin = STATE.sapphires >= STATE.spinCost &&
                            !isSpinning &&
                            !STATE.isModalOpen &&
                            STATE.canSpin !== false;
@@ -2649,9 +2445,8 @@
         }
 
         function updateSessionInfo() {
-            const modeText = STATE.isDemoMode ? 'DEMO | ' : '';
             document.getElementById('sessionInfo').textContent =
-                `${modeText}ID:${STATE.userId || '?'} | Spins:${STATE.spinsCount} | Won:${STATE.totalWon}`;
+                `ID:${STATE.userId || '?'} | Spins:${STATE.spinsCount} | Won:${STATE.totalWon}`;
         }
 
         function showStatus(message, type = 'error') {
