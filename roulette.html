@@ -1328,7 +1328,7 @@
             z-index: 2;
         }
 
-        .modal-balance-item {
+                .modal-balance-item {
             display: flex;
             align-items: center;
             gap: 8px;
@@ -1392,6 +1392,23 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+        }
+
+        .modal-prize-image {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border-radius: 22px;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 2;
+        }
+
+        .modal.win .modal-prize-image {
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5), 0 0 40px var(--theme-glow);
+            border-color: var(--theme-color);
         }
 
         .modal-buttons {
@@ -1772,6 +1789,7 @@
                 // ============ CANVAS CONFETTI SYSTEM ============
                 // ============ CANVAS CONFETTI SYSTEM ============
                 // ============ CANVAS CONFETTI SYSTEM ============
+                // ============ CANVAS CONFETTI SYSTEM ============
         let confettiCanvas = null;
         let confettiCtx = null;
         let confettiParticles = [];
@@ -1779,52 +1797,94 @@
         let confettiActive = false;
 
         const confettiColors = [
-            { color: '#fbbf24', glow: 'rgba(251, 191, 36, 0.6)' },
-            { color: '#6366f1', glow: 'rgba(99, 102, 241, 0.6)' },
-            { color: '#ec4899', glow: 'rgba(236, 72, 153, 0.6)' },
-            { color: '#22d3ee', glow: 'rgba(34, 211, 238, 0.6)' },
-            { color: '#10b981', glow: 'rgba(16, 185, 129, 0.6)' },
-            { color: '#f87171', glow: 'rgba(248, 113, 113, 0.6)' },
-            { color: '#ffffff', glow: 'rgba(255, 255, 255, 0.7)' },
+            { color: '#FFD700', glow: 'rgba(255, 215, 0, 0.9)' },      // Золотой
+            { color: '#FFF44F', glow: 'rgba(255, 244, 79, 0.9)' },     // Лимонный
+            { color: '#FFEC8B', glow: 'rgba(255, 236, 139, 0.9)' },    // Светло-золотой
+            { color: '#87CEEB', glow: 'rgba(135, 206, 235, 0.9)' },    // Небесно-голубой
+            { color: '#00BFFF', glow: 'rgba(0, 191, 255, 0.9)' },      // Голубой
+            { color: '#E0B0FF', glow: 'rgba(224, 176, 255, 0.9)' },    // Сиреневый
+            { color: '#FF69B4', glow: 'rgba(255, 105, 180, 0.9)' },    // Розовый
+            { color: '#98FB98', glow: 'rgba(152, 251, 152, 0.9)' },    // Мятный
+            { color: '#FFFFFF', glow: 'rgba(255, 255, 255, 1)' },      // Белый
+            { color: '#F0F8FF', glow: 'rgba(240, 248, 255, 1)' },      // Снежный
         ];
 
         class ConfettiParticle {
-            constructor(canvasWidth, canvasHeight) {
+            constructor(canvasWidth, canvasHeight, index, total) {
                 this.canvasWidth = canvasWidth;
                 this.canvasHeight = canvasHeight;
-                this.reset();
+                this.index = index;
+                this.total = total;
+                this.reset(true);
             }
 
-            reset() {
-                this.x = Math.random() * this.canvasWidth;
-                this.y = -10 - Math.random() * 30;
-                this.size = Math.random() * 6 + 4;
-                this.speedY = Math.random() * 0.6 + 0.3;
-                this.wobblePhase = Math.random() * Math.PI * 2;
-                this.wobbleSpeed = Math.random() * 0.012 + 0.006;
-                this.rotation = Math.random() * 360;
-                this.rotationSpeed = Math.random() * 0.5 - 0.25;
+            reset(initial = false) {
+                // Равномерное распределение по горизонтали
+                const section = this.canvasWidth / this.total;
+                this.x = section * this.index + Math.random() * section;
                 
+                if (initial) {
+                    // При старте — распределяем по всей высоте
+                    this.y = Math.random() * this.canvasHeight;
+                } else {
+                    // При респавне — сверху
+                    this.y = -5 - Math.random() * 20;
+                }
+                
+                this.size = Math.random() * 5 + 4;
+                this.speedY = Math.random() * 0.4 + 0.25;
+                
+                // Плавное покачивание
+                this.wobblePhase = Math.random() * Math.PI * 2;
+                this.wobbleSpeed = Math.random() * 0.008 + 0.004;
+                this.wobbleRadius = Math.random() * 0.3 + 0.2;
+                
+                // Медленное вращение
+                this.rotation = Math.random() * 360;
+                this.rotationSpeed = Math.random() * 0.3 - 0.15;
+                
+                // Яркие цвета
                 const colorData = confettiColors[Math.floor(Math.random() * confettiColors.length)];
                 this.color = colorData.color;
                 this.glowColor = colorData.glow;
+                
+                // Форма
                 this.shape = Math.floor(Math.random() * 3);
-                this.opacity = Math.random() * 0.3 + 0.7;
+                
+                // Высокая яркость
+                this.opacity = Math.random() * 0.2 + 0.8;
+                
+                // Мягкое мерцание
+                this.twinklePhase = Math.random() * Math.PI * 2;
+                this.twinkleSpeed = Math.random() * 0.03 + 0.02;
             }
 
             update() {
+                // Плавное синусоидальное покачивание
                 this.wobblePhase += this.wobbleSpeed;
-                this.x += Math.sin(this.wobblePhase) * 0.4;
+                this.x += Math.sin(this.wobblePhase) * this.wobbleRadius;
+                
+                // Равномерное падение
                 this.y += this.speedY;
+                
+                // Плавное вращение
                 this.rotation += this.rotationSpeed;
                 
-                if (this.y > this.canvasHeight - 30) {
-                    this.opacity -= 0.03;
+                // Мягкое мерцание яркости
+                this.twinklePhase += this.twinkleSpeed;
+                this.currentOpacity = this.opacity + Math.sin(this.twinklePhase) * 0.1;
+                
+                // Затухание внизу
+                if (this.y > this.canvasHeight - 40) {
+                    const fadeStart = this.canvasHeight - 40;
+                    const fadeProgress = (this.y - fadeStart) / 40;
+                    this.currentOpacity *= (1 - fadeProgress);
                 }
                 
-                if (this.y > this.canvasHeight || this.opacity <= 0) {
+                // Респавн сверху
+                if (this.y > this.canvasHeight) {
                     if (confettiActive) {
-                        this.reset();
+                        this.reset(false);
                         return true;
                     }
                     return false;
@@ -1836,25 +1896,38 @@
                 ctx.save();
                 ctx.translate(this.x, this.y);
                 ctx.rotate((this.rotation * Math.PI) / 180);
-                ctx.globalAlpha = this.opacity;
-                ctx.fillStyle = this.color;
+                ctx.globalAlpha = Math.max(0, Math.min(1, this.currentOpacity));
+                
+                // Красивый glow эффект
                 ctx.shadowColor = this.glowColor;
-                ctx.shadowBlur = 12;
+                ctx.shadowBlur = 15;
+                ctx.fillStyle = this.color;
 
                 const size = this.size;
+                
                 switch (this.shape) {
-                    case 0:
-                        ctx.fillRect(-size / 2, -size / 4, size, size / 2);
+                    case 0: // Прямоугольник
+                        ctx.fillRect(-size / 2, -size / 3, size, size / 1.5);
                         break;
-                    case 1:
+                    case 1: // Круг
                         ctx.beginPath();
                         ctx.arc(0, 0, size / 2, 0, Math.PI * 2);
                         ctx.fill();
                         break;
-                    case 2:
-                        ctx.fillRect(-size / 5, -size * 0.6, size / 2.5, size * 1.2);
+                    case 2: // Звёздочка простая
+                        ctx.beginPath();
+                        for (let i = 0; i < 4; i++) {
+                            const angle = (i * Math.PI) / 2;
+                            const x = Math.cos(angle) * size / 2;
+                            const y = Math.sin(angle) * size / 2;
+                            if (i === 0) ctx.moveTo(x, y);
+                            else ctx.lineTo(x, y);
+                        }
+                        ctx.closePath();
+                        ctx.fill();
                         break;
                 }
+                
                 ctx.restore();
             }
         }
@@ -1863,11 +1936,11 @@
             const modal = document.getElementById('modal');
             if (!modal) return null;
             
-            // Удаляем старый canvas если есть
+            // Удаляем старый canvas
             const oldCanvas = modal.querySelector('.confetti-canvas');
             if (oldCanvas) oldCanvas.remove();
             
-            // Создаём новый canvas внутри модального окна
+            // Создаём canvas поверх всего
             const canvas = document.createElement('canvas');
             canvas.className = 'confetti-canvas';
             canvas.style.cssText = `
@@ -1877,14 +1950,13 @@
                 width: 100%;
                 height: 100%;
                 pointer-events: none;
-                z-index: 1;
+                z-index: 100;
                 border-radius: 28px;
             `;
             
             modal.style.position = 'relative';
-            modal.insertBefore(canvas, modal.firstChild);
+            modal.appendChild(canvas); // Добавляем в конец, чтобы быть поверх
             
-            // Устанавливаем размеры canvas
             const rect = modal.getBoundingClientRect();
             canvas.width = rect.width;
             canvas.height = rect.height;
@@ -1903,14 +1975,13 @@
             const width = confettiCanvas.width;
             const height = confettiCanvas.height;
             
-            // Создаём начальные частицы (меньше для оптимизации)
+            // Количество частиц
             const isMobile = window.innerWidth < 500;
-            const particleCount = isMobile ? 15 : 25;
+            const particleCount = isMobile ? 35 : 50;
             
+            // Создаём частицы с равномерным распределением
             for (let i = 0; i < particleCount; i++) {
-                const particle = new ConfettiParticle(width, height);
-                particle.y = Math.random() * height * 0.7;
-                confettiParticles.push(particle);
+                confettiParticles.push(new ConfettiParticle(width, height, i, particleCount));
             }
 
             animateConfetti();
@@ -1920,12 +1991,6 @@
             if (!confettiCtx || !confettiCanvas) return;
             
             confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
-
-            // Добавляем новые частицы редко
-            const maxParticles = window.innerWidth < 500 ? 20 : 30;
-            if (confettiActive && confettiParticles.length < maxParticles && Math.random() > 0.92) {
-                confettiParticles.push(new ConfettiParticle(confettiCanvas.width, confettiCanvas.height));
-            }
 
             // Обновляем и рисуем
             confettiParticles = confettiParticles.filter(particle => {
@@ -1952,7 +2017,6 @@
                 confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
             }
             
-            // Удаляем canvas
             if (confettiCanvas && confettiCanvas.parentNode) {
                 confettiCanvas.remove();
             }
