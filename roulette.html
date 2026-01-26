@@ -1,2586 +1,2614 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Divine Case</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
+<!DOCTYPE html><html lang="ru"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"> <title>Divine Case</title> <script src="https://telegram.org/js/telegram-web-app.js"></script> <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet"> <style> * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+text
+
+    :root {
+        --bg-primary: #05050a;
+        --bg-secondary: #0a0a14;
+        --accent-gold: #fbbf24;
+        --accent-purple: #6366f1;
+        --accent-purple-light: #818cf8;
+        --accent-pink: #ec4899;
+        --accent-aqua: #22d3ee;
+        --text-primary: #ffffff;
+        --text-secondary: #71717a;
+        --border-color: rgba(99, 102, 241, 0.12);
+        --theme-color: #6366f1;
+        --theme-color-light: #818cf8;
+        --theme-glow: rgba(99, 102, 241, 0.5);
+    }
+
+    body {
+        background: var(--bg-primary);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: var(--text-primary);
+        overflow-x: hidden;
+        padding: 20px;
+        padding-bottom: 100px;
+        position: relative;
+    }
+
+    .animated-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 0;
+        overflow: hidden;
+        background: radial-gradient(ellipse at top, #0a0a18 0%, #050508 50%, #020203 100%);
+    }
+
+    .bg-orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        opacity: 0.5;
+    }
+
+    .bg-orb-1 {
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(circle, #312e81 0%, #1e1b4b 50%, transparent 70%);
+        top: -150px;
+        right: -150px;
+        animation: floatOrb 12s ease-in-out infinite;
+    }
+
+    .bg-orb-2 {
+        width: 450px;
+        height: 450px;
+        background: radial-gradient(circle, #1e3a5f 0%, #0f172a 50%, transparent 70%);
+        bottom: -100px;
+        left: -100px;
+        animation: floatOrb 15s ease-in-out infinite reverse;
+    }
+
+    .bg-orb-3 {
+        width: 700px;
+        height: 700px;
+        background: radial-gradient(circle, var(--theme-glow) 0%, transparent 60%);
+        top: 35%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 0.4;
+        transition: background 0.5s ease;
+        animation: pulseOrb 6s ease-in-out infinite;
+    }
+
+    .bg-orb-4 {
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(circle, rgba(236, 72, 153, 0.3) 0%, transparent 70%);
+        top: 60%;
+        right: 10%;
+        animation: floatOrb 18s ease-in-out infinite;
+    }
+
+    .bg-orb-5 {
+        width: 250px;
+        height: 250px;
+        background: radial-gradient(circle, rgba(34, 211, 238, 0.25) 0%, transparent 70%);
+        top: 20%;
+        left: 5%;
+        animation: floatOrb 20s ease-in-out infinite reverse;
+    }
+
+    @keyframes floatOrb {
+        0%, 100% { transform: translateY(0) scale(1); }
+        50% { transform: translateY(-30px) scale(1.05); }
+    }
+
+    @keyframes pulseOrb {
+        0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
+        50% { opacity: 0.5; transform: translate(-50%, -50%) scale(1.1); }
+    }
+
+    .bg-stars {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+    }
+
+    .star {
+        position: absolute;
+        background: white;
+        border-radius: 50%;
+        animation: twinkle 3s ease-in-out infinite;
+    }
+
+    .star.big {
+        box-shadow: 0 0 6px 2px rgba(255, 255, 255, 0.3);
+    }
+
+    @keyframes twinkle {
+        0%, 100% { opacity: 0.2; transform: scale(1); }
+        50% { opacity: 0.8; transform: scale(1.2); }
+    }
+
+    @keyframes textShine {
+        0% { background-position: -200% center; }
+        100% { background-position: 200% center; }
+    }
+
+    @keyframes cardEnter {
+        0% { opacity: 0; transform: translateY(30px) scale(0.95); }
+        100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes subtleFloat {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+
+    @keyframes pulseGlow {
+        0%, 100% { opacity: 0.5; transform: scale(1); }
+        50% { opacity: 0.8; transform: scale(1.05); }
+    }
+
+    @keyframes breatheGlow {
+        0%, 100% { filter: blur(40px); opacity: 0.6; }
+        50% { filter: blur(50px); opacity: 0.8; }
+    }
+
+    @keyframes buttonPulse {
+        0%, 100% { box-shadow: 0 15px 50px var(--theme-glow), 0 0 30px var(--theme-glow); }
+        50% { box-shadow: 0 20px 60px var(--theme-glow), 0 0 50px var(--theme-glow), 0 0 80px var(--theme-glow); }
+    }
+
+    @keyframes tagPulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+    }
+
+    @keyframes borderGlow {
+        0%, 100% { border-color: rgba(255, 255, 255, 0.08); }
+        50% { border-color: rgba(255, 255, 255, 0.2); }
+    }
+
+    @keyframes iconBounce {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+    }
+
+    @keyframes shimmer {
+        0% { background-position: -200% 0; }
+        100% { background-position: 200% 0; }
+    }
+
+    @keyframes rotateGlow {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    @keyframes emptyTextGlow {
+        0%, 100% { 
+            text-shadow: 0 0 20px rgba(156, 163, 175, 0.6), 0 0 40px rgba(156, 163, 175, 0.4);
+            opacity: 0.9;
         }
-
-        :root {
-            --bg-primary: #05050a;
-            --bg-secondary: #0a0a14;
-            --accent-gold: #fbbf24;
-            --accent-purple: #6366f1;
-            --accent-purple-light: #818cf8;
-            --accent-pink: #ec4899;
-            --accent-aqua: #22d3ee;
-            --text-primary: #ffffff;
-            --text-secondary: #71717a;
-            --border-color: rgba(99, 102, 241, 0.12);
-            --theme-color: #6366f1;
-            --theme-color-light: #818cf8;
-            --theme-glow: rgba(99, 102, 241, 0.5);
-        }
-
-        body {
-            background: var(--bg-primary);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: var(--text-primary);
-            overflow-x: hidden;
-            padding: 20px;
-            padding-bottom: 100px;
-            position: relative;
-        }
-
-        .animated-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: 0;
-            overflow: hidden;
-            background: radial-gradient(ellipse at top, #0a0a18 0%, #050508 50%, #020203 100%);
-        }
-
-        .bg-orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.5;
-        }
-
-        .bg-orb-1 {
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, #312e81 0%, #1e1b4b 50%, transparent 70%);
-            top: -150px;
-            right: -150px;
-            animation: floatOrb 12s ease-in-out infinite;
-        }
-
-        .bg-orb-2 {
-            width: 450px;
-            height: 450px;
-            background: radial-gradient(circle, #1e3a5f 0%, #0f172a 50%, transparent 70%);
-            bottom: -100px;
-            left: -100px;
-            animation: floatOrb 15s ease-in-out infinite reverse;
-        }
-
-        .bg-orb-3 {
-            width: 700px;
-            height: 700px;
-            background: radial-gradient(circle, var(--theme-glow) 0%, transparent 60%);
-            top: 35%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            opacity: 0.4;
-            transition: background 0.5s ease;
-            animation: pulseOrb 6s ease-in-out infinite;
-        }
-
-        .bg-orb-4 {
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(236, 72, 153, 0.3) 0%, transparent 70%);
-            top: 60%;
-            right: 10%;
-            animation: floatOrb 18s ease-in-out infinite;
-        }
-
-        .bg-orb-5 {
-            width: 250px;
-            height: 250px;
-            background: radial-gradient(circle, rgba(34, 211, 238, 0.25) 0%, transparent 70%);
-            top: 20%;
-            left: 5%;
-            animation: floatOrb 20s ease-in-out infinite reverse;
-        }
-
-        @keyframes floatOrb {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-30px) scale(1.05); }
-        }
-
-        @keyframes pulseOrb {
-            0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
-            50% { opacity: 0.5; transform: translate(-50%, -50%) scale(1.1); }
-        }
-
-        .bg-stars {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            pointer-events: none;
-        }
-
-        .star {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-            animation: twinkle 3s ease-in-out infinite;
-        }
-
-        .star.big {
-            box-shadow: 0 0 6px 2px rgba(255, 255, 255, 0.3);
-        }
-
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.2; transform: scale(1); }
-            50% { opacity: 0.8; transform: scale(1.2); }
-        }
-
-        @keyframes textShine {
-            0% { background-position: -200% center; }
-            100% { background-position: 200% center; }
-        }
-
-        @keyframes cardEnter {
-            0% { opacity: 0; transform: translateY(30px) scale(0.95); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        @keyframes subtleFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        @keyframes pulseGlow {
-            0%, 100% { opacity: 0.5; transform: scale(1); }
-            50% { opacity: 0.8; transform: scale(1.05); }
-        }
-
-        @keyframes breatheGlow {
-            0%, 100% { filter: blur(40px); opacity: 0.6; }
-            50% { filter: blur(50px); opacity: 0.8; }
-        }
-
-        @keyframes buttonPulse {
-            0%, 100% { box-shadow: 0 15px 50px var(--theme-glow), 0 0 30px var(--theme-glow); }
-            50% { box-shadow: 0 20px 60px var(--theme-glow), 0 0 50px var(--theme-glow), 0 0 80px var(--theme-glow); }
-        }
-
-        @keyframes tagPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        @keyframes borderGlow {
-            0%, 100% { border-color: rgba(255, 255, 255, 0.08); }
-            50% { border-color: rgba(255, 255, 255, 0.2); }
-        }
-
-        @keyframes iconBounce {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
-        }
-
-        @keyframes rotateGlow {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @keyframes emptyTextGlow {
-            0%, 100% { 
-                text-shadow: 0 0 20px rgba(156, 163, 175, 0.6), 0 0 40px rgba(156, 163, 175, 0.4);
-                opacity: 0.9;
-            }
-            50% { 
-                text-shadow: 0 0 30px rgba(156, 163, 175, 0.9), 0 0 60px rgba(156, 163, 175, 0.6), 0 0 80px rgba(156, 163, 175, 0.3);
-                opacity: 1;
-            }
-        }
-
-        /* Confetti animations */
-        @keyframes confettiFall {
-            0% {
-                transform: translateY(-10px) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(400px) rotate(720deg);
-                opacity: 0;
-            }
-        }
-
-        @keyframes confettiSway {
-            0%, 100% { margin-left: 0; }
-            25% { margin-left: 20px; }
-            75% { margin-left: -20px; }
-        }
-
-        @keyframes prizeCardFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-        }
-
-        @keyframes valueCountUp {
-            0% { transform: scale(1.3); opacity: 0.5; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 25px;
-            z-index: 10;
-            width: 100%;
-            max-width: 400px;
-            animation: cardEnter 0.6s ease-out;
-        }
-
-        .brand-container { margin-bottom: 25px; }
-
-        .brand-text {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 900;
-            font-size: 2rem;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            background: linear-gradient(90deg, #818cf8, #c4b5fd, #f0abfc, #c4b5fd, #818cf8);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: textShine 4s linear infinite;
-        }
-
-        .brand-subtitle {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 0.7rem;
-            letter-spacing: 6px;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            margin-top: 5px;
-            animation: borderGlow 3s ease-in-out infinite;
-        }
-
-        .balance-container {
-            display: flex;
-            justify-content: center;
-            gap: 16px;
-        }
-
-        .balance-card {
-            position: relative;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 14px 22px;
-            background: linear-gradient(145deg, rgba(15, 15, 35, 0.95), rgba(8, 8, 20, 0.98));
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            overflow: hidden;
-            min-width: 140px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .balance-card:hover {
-            transform: translateY(-3px);
-        }
-
-        .balance-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-        }
-
-        .balance-card.sapphires {
-            border-color: rgba(99, 102, 241, 0.3);
-            box-shadow: 0 8px 32px rgba(99, 102, 241, 0.2), inset 0 1px 0 rgba(129, 140, 248, 0.15), 0 0 60px rgba(99, 102, 241, 0.15);
-            animation: borderGlow 4s ease-in-out infinite;
-        }
-
-        .balance-card.sapphires::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(ellipse at bottom left, rgba(99, 102, 241, 0.15), transparent 60%);
-            pointer-events: none;
-        }
-
-        .balance-card.stars {
-            border-color: rgba(251, 191, 36, 0.3);
-            box-shadow: 0 8px 32px rgba(251, 191, 36, 0.15), inset 0 1px 0 rgba(251, 191, 36, 0.15), 0 0 60px rgba(251, 191, 36, 0.1);
-        }
-
-        .balance-card.stars::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(ellipse at bottom left, rgba(251, 191, 36, 0.15), transparent 60%);
-            pointer-events: none;
-        }
-
-        .balance-icon-wrap {
-            position: relative;
-            width: 42px;
-            height: 42px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 12px;
-            flex-shrink: 0;
-            animation: iconBounce 3s ease-in-out infinite;
-        }
-
-        .balance-card.sapphires .balance-icon-wrap {
-            background: linear-gradient(145deg, rgba(99, 102, 241, 0.3), rgba(99, 102, 241, 0.15));
-            box-shadow: 0 0 25px rgba(99, 102, 241, 0.4);
-        }
-
-        .balance-card.stars .balance-icon-wrap {
-            background: linear-gradient(145deg, rgba(251, 191, 36, 0.3), rgba(251, 191, 36, 0.15));
-            box-shadow: 0 0 25px rgba(251, 191, 36, 0.4);
-            animation-delay: 0.5s;
-        }
-
-        .balance-icon {
-            font-size: 1.4rem;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-            position: relative;
-            z-index: 1;
-        }
-
-        .balance-icon-img {
-            width: 28px;
-            height: 28px;
-            object-fit: contain;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-        }
-
-        .balance-info {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .balance-value {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.25rem;
-            font-weight: 700;
-            line-height: 1;
-            transition: transform 0.3s ease;
-        }
-
-        .balance-value.updated {
-            animation: valueCountUp 0.4s ease-out;
-        }
-
-        .balance-card.sapphires .balance-value {
-            background: linear-gradient(135deg, #c4b5fd, #818cf8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .balance-card.stars .balance-value {
-            background: linear-gradient(135deg, #fef3c7, #fbbf24);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .balance-label {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 0.65rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-        }
-
-        .menu-screen {
-            z-index: 10;
-            width: 100%;
-            max-width: 400px;
-            animation: cardEnter 0.6s ease-out;
-        }
-
-        .menu-screen.hidden { display: none; }
-
-        .menu-title {
-            text-align: center;
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-bottom: 25px;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            position: relative;
-        }
-
-        .menu-title::before, .menu-title::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            width: 50px;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.5));
-        }
-
-        .menu-title::before { left: 20px; }
-        .menu-title::after { right: 20px; transform: rotate(180deg); }
-
-        .cases-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-        }
-
-        .case-card {
-            position: relative;
-            border-radius: 28px;
-            padding: 28px 16px;
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            -webkit-tap-highlight-color: transparent;
-            overflow: hidden;
-            background: transparent;
-            border: none;
-            animation: cardEnter 0.5s ease-out backwards;
-        }
-
-        .case-card:nth-child(1) { animation-delay: 0.1s; }
-        .case-card:nth-child(2) { animation-delay: 0.2s; }
-        .case-card:nth-child(3) { animation-delay: 0.3s; }
-        .case-card:nth-child(4) { animation-delay: 0.4s; }
-
-        .case-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 28px;
-            padding: 2px;
-            background: linear-gradient(145deg, rgba(255,255,255,0.15), rgba(255,255,255,0.02));
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            pointer-events: none;
-        }
-
-        .case-card-bg {
-            position: absolute;
-            inset: 0;
-            border-radius: 28px;
-            background: linear-gradient(145deg, rgba(15, 15, 35, 0.9), rgba(8, 8, 20, 0.95));
-            z-index: 0;
-        }
-
-        .case-card-glow {
-            position: absolute;
-            inset: -40px;
-            border-radius: 50%;
-            filter: blur(40px);
-            opacity: 0.6;
-            pointer-events: none;
-            z-index: 0;
-            transition: all 0.4s ease;
-            animation: breatheGlow 4s ease-in-out infinite;
-        }
-
-        .case-card:hover .case-card-glow,
-        .case-card:active .case-card-glow {
+        50% { 
+            text-shadow: 0 0 30px rgba(156, 163, 175, 0.9), 0 0 60px rgba(156, 163, 175, 0.6), 0 0 80px rgba(156, 163, 175, 0.3);
             opacity: 1;
-            filter: blur(50px);
-            transform: scale(1.15);
         }
+    }
 
-        .case-card.cosmic-style .case-card-glow {
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.8) 0%, rgba(99, 102, 241, 0.4) 40%, transparent 70%);
+    /* Confetti animations */
+    @keyframes confettiDrop {
+        0% {
+            transform: translateY(0) rotateZ(0deg) rotateX(0deg);
+            opacity: 1;
         }
-
-        .case-card.stellar-style .case-card-glow {
-            background: radial-gradient(circle, rgba(236, 72, 153, 0.8) 0%, rgba(236, 72, 153, 0.4) 40%, transparent 70%);
-        }
-
-        .case-card.golden-style .case-card-glow {
-            background: radial-gradient(circle, rgba(251, 191, 36, 0.8) 0%, rgba(251, 191, 36, 0.4) 40%, transparent 70%);
-        }
-
-        .case-card.divine-style .case-card-glow {
-            background: radial-gradient(circle, rgba(34, 211, 238, 0.8) 0%, rgba(34, 211, 238, 0.4) 40%, transparent 70%);
-        }
-
-        .case-card:active { transform: scale(0.97); }
-
-        @media (min-width: 769px) {
-            .case-card:hover { transform: translateY(-8px) scale(1.02); }
-        }
-
-        .case-card.cosmic-style { box-shadow: 0 10px 40px rgba(99, 102, 241, 0.25), 0 0 80px rgba(99, 102, 241, 0.15); }
-        .case-card.cosmic-style:hover { box-shadow: 0 20px 60px rgba(99, 102, 241, 0.4), 0 0 100px rgba(99, 102, 241, 0.25); }
-        .case-card.cosmic-style .case-card-name {
-            background: linear-gradient(135deg, #e0e7ff, #a78bfa, #818cf8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .case-card.stellar-style { box-shadow: 0 10px 40px rgba(236, 72, 153, 0.25), 0 0 80px rgba(236, 72, 153, 0.15); }
-        .case-card.stellar-style:hover { box-shadow: 0 20px 60px rgba(236, 72, 153, 0.4), 0 0 100px rgba(236, 72, 153, 0.25); }
-        .case-card.stellar-style .case-card-name {
-            background: linear-gradient(135deg, #fce7f3, #f472b6, #ec4899);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .case-card.golden-style { box-shadow: 0 10px 40px rgba(251, 191, 36, 0.3), 0 0 80px rgba(251, 191, 36, 0.15); }
-        .case-card.golden-style:hover { box-shadow: 0 20px 60px rgba(251, 191, 36, 0.45), 0 0 100px rgba(251, 191, 36, 0.25); }
-        .case-card.golden-style .case-card-name {
-            background: linear-gradient(135deg, #fef3c7, #fbbf24, #f59e0b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .case-card.divine-style { box-shadow: 0 10px 40px rgba(34, 211, 238, 0.3), 0 0 80px rgba(34, 211, 238, 0.15); }
-        .case-card.divine-style:hover { box-shadow: 0 20px 60px rgba(34, 211, 238, 0.45), 0 0 100px rgba(34, 211, 238, 0.25); }
-        .case-card.divine-style .case-card-name {
-            background: linear-gradient(135deg, #cffafe, #22d3ee, #06b6d4);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .case-card-image-container {
-            position: relative;
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 16px;
-            z-index: 2;
-        }
-
-        .case-card-emoji {
-            font-size: 4rem;
-            filter: drop-shadow(0 8px 25px rgba(0, 0, 0, 0.5));
-            position: relative;
-            z-index: 1;
-            animation: subtleFloat 4s ease-in-out infinite;
-        }
-
-        .case-card-image {
-            width: 90px;
-            height: 90px;
-            object-fit: cover;
-            border-radius: 22px;
-            filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.6));
-            border: 2px solid rgba(255, 255, 255, 0.15);
-            position: relative;
-            z-index: 1;
-            animation: subtleFloat 4s ease-in-out infinite;
-            transition: transform 0.3s ease;
-        }
-
-        .case-card:hover .case-card-image {
-            transform: scale(1.05);
-        }
-
-        .case-card:nth-child(1) .case-card-image { animation-delay: 0s; }
-        .case-card:nth-child(2) .case-card-image { animation-delay: 1s; }
-        .case-card:nth-child(3) .case-card-image { animation-delay: 2s; }
-        .case-card:nth-child(4) .case-card-image { animation-delay: 3s; }
-
-        .case-card-name {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.8rem;
-            font-weight: 700;
-            margin-bottom: 12px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            position: relative;
-            z-index: 2;
-        }
-
-        .case-card-price {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .case-card-price-text {
-            color: #c4b5fd;
-            text-shadow: 0 0 20px rgba(139, 92, 246, 0.7);
-        }
-
-        .case-card-tag {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.55rem;
-            font-weight: 700;
-            padding: 5px 10px;
-            border-radius: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            z-index: 3;
-            animation: tagPulse 2s ease-in-out infinite;
-        }
-
-        .case-card.cosmic-style .case-card-tag {
-            background: linear-gradient(135deg, #6366f1, #818cf8);
-            color: #fff;
-            box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
-        }
-
-        .case-card.stellar-style .case-card-tag {
-            background: linear-gradient(135deg, #ec4899, #f472b6);
-            color: #fff;
-            box-shadow: 0 0 20px rgba(236, 72, 153, 0.5);
-        }
-
-        .case-card.golden-style .case-card-tag {
-            background: linear-gradient(135deg, #fbbf24, #f59e0b);
-            color: #1a1a2e;
-            box-shadow: 0 0 20px rgba(251, 191, 36, 0.5);
-        }
-
-        .case-card.divine-style .case-card-tag {
-            background: linear-gradient(135deg, #22d3ee, #06b6d4);
-            color: #042f2e;
-            box-shadow: 0 0 20px rgba(34, 211, 238, 0.5);
-        }
-
-        .case-screen {
-            z-index: 10;
-            width: 100%;
-            max-width: 400px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .case-screen.hidden { display: none; }
-
-        body.theme-cosmic {
-            --theme-color: #6366f1;
-            --theme-color-light: #818cf8;
-            --theme-glow: rgba(99, 102, 241, 0.5);
-        }
-
-        body.theme-stellar {
-            --theme-color: #ec4899;
-            --theme-color-light: #f472b6;
-            --theme-glow: rgba(236, 72, 153, 0.5);
-        }
-
-        body.theme-golden {
-            --theme-color: #fbbf24;
-            --theme-color-light: #fcd34d;
-            --theme-glow: rgba(251, 191, 36, 0.5);
-        }
-
-        body.theme-divine {
-            --theme-color: #22d3ee;
-            --theme-color-light: #67e8f9;
-            --theme-glow: rgba(34, 211, 238, 0.5);
-        }
-
-        .case-display {
-            text-align: center;
-            margin-bottom: 25px;
-            z-index: 10;
-            animation: cardEnter 0.6s ease-out 0.1s both;
-        }
-
-        .case-hero {
-            position: relative;
-            width: 160px;
-            height: 160px;
-            margin: 0 auto 20px;
-        }
-
-        .case-hero-glow {
-            position: absolute;
-            inset: -60px;
-            background: radial-gradient(circle, var(--theme-glow) 0%, var(--theme-glow) 20%, transparent 70%);
-            border-radius: 50%;
-            filter: blur(40px);
+        100% {
+            transform: translateY(100vh) rotateZ(720deg) rotateX(360deg);
             opacity: 0.8;
-            animation: pulseGlow 3s ease-in-out infinite;
         }
+    }
 
-        .case-hero-glow-inner {
-            position: absolute;
-            inset: -30px;
-            background: radial-gradient(circle, var(--theme-color) 0%, transparent 60%);
-            border-radius: 50%;
-            filter: blur(25px);
-            opacity: 0.4;
-            animation: rotateGlow 20s linear infinite;
-        }
+    @keyframes confettiSway {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(15px); }
+        75% { transform: translateX(-15px); }
+    }
 
-        .case-hero-content {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2;
-            animation: subtleFloat 4s ease-in-out infinite;
-        }
+    @keyframes confettiGlow {
+        0%, 100% { filter: brightness(1); }
+        50% { filter: brightness(1.5); }
+    }
 
-        .case-emoji {
-            font-size: 5.5rem;
-            filter: drop-shadow(0 10px 40px var(--theme-glow));
-        }
+    @keyframes prizeCardFloat {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-5px); }
+    }
 
-        .case-emoji.hidden { display: none; }
+    @keyframes valueCountUp {
+        0% { transform: scale(1.3); opacity: 0.5; }
+        100% { transform: scale(1); opacity: 1; }
+    }
 
-        .case-display-image {
-            width: 120px;
-            height: 120px;
-            object-fit: cover;
-            border-radius: 28px;
-            filter: drop-shadow(0 10px 40px var(--theme-glow));
-            border: 3px solid rgba(255, 255, 255, 0.2);
-            transition: transform 0.3s ease;
-        }
+    .header {
+        text-align: center;
+        margin-bottom: 25px;
+        z-index: 10;
+        width: 100%;
+        max-width: 400px;
+        animation: cardEnter 0.6s ease-out;
+    }
 
-        .case-display-image:hover {
-            transform: scale(1.05) rotate(2deg);
-        }
+    .brand-container { margin-bottom: 25px; }
 
-        .case-display-image.hidden { display: none; }
+    .brand-text {
+        font-family: 'Orbitron', sans-serif;
+        font-weight: 900;
+        font-size: 2rem;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        background: linear-gradient(90deg, #818cf8, #c4b5fd, #f0abfc, #c4b5fd, #818cf8);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: textShine 4s linear infinite;
+    }
 
-        .case-name {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.2rem;
-            font-weight: 700;
-            background: linear-gradient(90deg, 
-                var(--theme-color-light), 
-                var(--theme-color), 
-                var(--theme-color-light), 
-                rgba(255,255,255,0.9), 
-                var(--theme-color-light), 
-                var(--theme-color), 
-                var(--theme-color-light)
-            );
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            animation: smoothShine 6s ease-in-out infinite;
-            background-size: 300% auto;
-        }
+    .brand-subtitle {
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 0.7rem;
+        letter-spacing: 6px;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        margin-top: 5px;
+        animation: borderGlow 3s ease-in-out infinite;
+    }
 
-        @keyframes smoothShine {
-            0% { background-position: 0% center; }
-            50% { background-position: 100% center; }
-            100% { background-position: 0% center; }
-        }
+    .balance-container {
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+    }
 
-        .case-section {
-            width: 100%;
-            max-width: 400px;
-            z-index: 10;
-            animation: cardEnter 0.6s ease-out 0.2s both;
-        }
+    .balance-card {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 22px;
+        background: linear-gradient(145deg, rgba(15, 15, 35, 0.95), rgba(8, 8, 20, 0.98));
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        overflow: hidden;
+        min-width: 140px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
 
-        .case-container {
-            position: relative;
-            width: 100%;
-            height: 130px;
-            background: linear-gradient(180deg, rgba(15, 15, 35, 0.9), rgba(10, 10, 25, 0.95));
-            border-radius: 24px;
-            overflow: hidden;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 50px var(--theme-glow), inset 0 0 30px rgba(0,0,0,0.3);
-            animation: borderGlow 4s ease-in-out infinite;
-        }
+    .balance-card:hover {
+        transform: translateY(-3px);
+    }
 
-        .case-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg, rgba(5, 5, 10, 1) 0%, transparent 15%, transparent 85%, rgba(5, 5, 10, 1) 100%);
-            z-index: 10;
-            pointer-events: none;
-        }
+    .balance-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    }
 
-        .center-pointer {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 20;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+    .balance-card.sapphires {
+        border-color: rgba(99, 102, 241, 0.3);
+        box-shadow: 0 8px 32px rgba(99, 102, 241, 0.2), inset 0 1px 0 rgba(129, 140, 248, 0.15), 0 0 60px rgba(99, 102, 241, 0.15);
+        animation: borderGlow 4s ease-in-out infinite;
+    }
 
-        .pointer-arrow {
-            width: 0;
-            height: 0;
-            border-left: 14px solid transparent;
-            border-right: 14px solid transparent;
-            border-top: 22px solid var(--theme-color);
-            filter: drop-shadow(0 0 15px var(--theme-color));
-            animation: pulseGlow 2s ease-in-out infinite;
-        }
+    .balance-card.sapphires::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse at bottom left, rgba(99, 102, 241, 0.15), transparent 60%);
+        pointer-events: none;
+    }
 
-        .pointer-line {
-            width: 3px;
-            height: 130px;
-            background: linear-gradient(180deg, var(--theme-color), transparent);
-            opacity: 0.5;
-        }
+    .balance-card.stars {
+        border-color: rgba(251, 191, 36, 0.3);
+        box-shadow: 0 8px 32px rgba(251, 191, 36, 0.15), inset 0 1px 0 rgba(251, 191, 36, 0.15), 0 0 60px rgba(251, 191, 36, 0.1);
+    }
 
-        .bottom-pointer {
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 20;
-        }
+    .balance-card.stars::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse at bottom left, rgba(251, 191, 36, 0.15), transparent 60%);
+        pointer-events: none;
+    }
 
-        .bottom-pointer .pointer-arrow {
-            border-top: none;
-            border-bottom: 22px solid var(--theme-color);
-        }
+    .balance-icon-wrap {
+        position: relative;
+        width: 42px;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        flex-shrink: 0;
+        animation: iconBounce 3s ease-in-out infinite;
+    }
 
-        .items-strip {
-            display: flex;
-            align-items: center;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            will-change: transform;
-        }
+    .balance-card.sapphires .balance-icon-wrap {
+        background: linear-gradient(145deg, rgba(99, 102, 241, 0.3), rgba(99, 102, 241, 0.15));
+        box-shadow: 0 0 25px rgba(99, 102, 241, 0.4);
+    }
 
-        .items-strip.animating {
-            transition: transform 5s cubic-bezier(0.15, 0.85, 0.25, 1);
-        }
+    .balance-card.stars .balance-icon-wrap {
+        background: linear-gradient(145deg, rgba(251, 191, 36, 0.3), rgba(251, 191, 36, 0.15));
+        box-shadow: 0 0 25px rgba(251, 191, 36, 0.4);
+        animation-delay: 0.5s;
+    }
 
-        .prize-item {
-            flex-shrink: 0;
-            width: 100px;
-            height: 100px;
-            margin: 0 6px;
-            border-radius: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            transition: transform 0.2s ease;
-        }
+    .balance-icon {
+        font-size: 1.4rem;
+        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        position: relative;
+        z-index: 1;
+    }
 
-        .prize-item.has-image { background: transparent !important; }
+    .balance-icon-img {
+        width: 28px;
+        height: 28px;
+        object-fit: contain;
+        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    }
 
-        .prize-item.rarity-empty {
-            background: linear-gradient(145deg, rgba(55, 65, 81, 0.7), rgba(31, 41, 55, 0.8));
-            border-color: rgba(107, 114, 128, 0.4);
-        }
+    .balance-info {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        position: relative;
+        z-index: 1;
+    }
 
-        .prize-item.rarity-stars-15 {
-            background: linear-gradient(145deg, rgba(52, 211, 153, 0.8), rgba(16, 185, 129, 0.85));
-            border-color: rgba(52, 211, 153, 0.6);
-            box-shadow: 0 0 20px rgba(52, 211, 153, 0.4);
-        }
+    .balance-value {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.25rem;
+        font-weight: 700;
+        line-height: 1;
+        transition: transform 0.3s ease;
+    }
 
-        .prize-item.rarity-stars-25 {
-            background: linear-gradient(145deg, rgba(45, 212, 191, 0.8), rgba(20, 184, 166, 0.85));
-            border-color: rgba(45, 212, 191, 0.6);
-            box-shadow: 0 0 20px rgba(45, 212, 191, 0.4);
-        }
+    .balance-value.updated {
+        animation: valueCountUp 0.4s ease-out;
+    }
 
-        .prize-item.rarity-stars-50 {
-            background: linear-gradient(145deg, rgba(59, 130, 246, 0.85), rgba(37, 99, 235, 0.9));
-            border-color: rgba(59, 130, 246, 0.6);
-            box-shadow: 0 0 25px rgba(59, 130, 246, 0.45);
-        }
+    .balance-card.sapphires .balance-value {
+        background: linear-gradient(135deg, #c4b5fd, #818cf8);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
 
-        .prize-item.rarity-stars-75 {
-            background: linear-gradient(145deg, rgba(99, 102, 241, 0.85), rgba(79, 70, 229, 0.9));
-            border-color: rgba(99, 102, 241, 0.6);
-            box-shadow: 0 0 25px rgba(99, 102, 241, 0.45);
-        }
+    .balance-card.stars .balance-value {
+        background: linear-gradient(135deg, #fef3c7, #fbbf24);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
 
-        .prize-item.rarity-stars-100 {
-            background: linear-gradient(145deg, rgba(139, 92, 246, 0.85), rgba(124, 58, 237, 0.9));
-            border-color: rgba(139, 92, 246, 0.6);
-            box-shadow: 0 0 30px rgba(139, 92, 246, 0.5);
-        }
+    .balance-label {
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 0.65rem;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+    }
 
-        .prize-item.rarity-stars-150 {
-            background: linear-gradient(145deg, rgba(168, 85, 247, 0.85), rgba(147, 51, 234, 0.9));
-            border-color: rgba(168, 85, 247, 0.65);
-            box-shadow: 0 0 30px rgba(168, 85, 247, 0.5);
-        }
+    .menu-screen {
+        z-index: 10;
+        width: 100%;
+        max-width: 400px;
+        animation: cardEnter 0.6s ease-out;
+    }
 
-        .prize-item.rarity-stars-250 {
-            background: linear-gradient(145deg, rgba(236, 72, 153, 0.85), rgba(219, 39, 119, 0.9));
-            border-color: rgba(236, 72, 153, 0.65);
-            box-shadow: 0 0 35px rgba(236, 72, 153, 0.55);
-        }
+    .menu-screen.hidden { display: none; }
 
-        .prize-item.rarity-stars-500 {
-            background: linear-gradient(145deg, rgba(251, 146, 60, 0.9), rgba(249, 115, 22, 0.92));
-            border-color: rgba(251, 146, 60, 0.7);
-            box-shadow: 0 0 40px rgba(251, 146, 60, 0.6);
-        }
+    .menu-title {
+        text-align: center;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        margin-bottom: 25px;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        position: relative;
+    }
 
-        .prize-item.rarity-stars-1000 {
-            background: linear-gradient(145deg, rgba(251, 191, 36, 0.9), rgba(245, 158, 11, 0.92));
-            border-color: rgba(251, 191, 36, 0.75);
-            box-shadow: 0 0 45px rgba(251, 191, 36, 0.65);
-        }
+    .menu-title::before, .menu-title::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        width: 50px;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.5));
+    }
 
-        .prize-item.rarity-stars-9999 {
-            background: linear-gradient(145deg, rgba(239, 68, 68, 0.9), rgba(220, 38, 38, 0.92));
-            border-color: rgba(239, 68, 68, 0.8);
-            box-shadow: 0 0 50px rgba(239, 68, 68, 0.7), 0 0 80px rgba(251, 191, 36, 0.4);
-        }
+    .menu-title::before { left: 20px; }
+    .menu-title::after { right: 20px; transform: rotate(180deg); }
 
-        .prize-emoji {
-            font-size: 2.5rem;
-            filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.3));
-        }
+    .cases-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
 
-        .prize-image {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 16px;
-        }
+    .case-card {
+        position: relative;
+        border-radius: 28px;
+        padding: 28px 16px;
+        text-align: center;
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        -webkit-tap-highlight-color: transparent;
+        overflow: hidden;
+        background: transparent;
+        border: none;
+        animation: cardEnter 0.5s ease-out backwards;
+    }
 
-        .prize-item.winner {
-            animation: winnerPop 0.5s ease-out;
-            border-color: var(--theme-color) !important;
-            box-shadow: 0 0 60px var(--theme-glow) !important;
-        }
+    .case-card:nth-child(1) { animation-delay: 0.1s; }
+    .case-card:nth-child(2) { animation-delay: 0.2s; }
+    .case-card:nth-child(3) { animation-delay: 0.3s; }
+    .case-card:nth-child(4) { animation-delay: 0.4s; }
 
-        @keyframes winnerPop {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.12); }
-            100% { transform: scale(1); }
-        }
+    .case-card::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 28px;
+        padding: 2px;
+        background: linear-gradient(145deg, rgba(255,255,255,0.15), rgba(255,255,255,0.02));
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        pointer-events: none;
+    }
 
-        .spin-button {
-            background: linear-gradient(135deg, var(--theme-color), var(--theme-color-light));
-            border: none;
-            padding: 20px 50px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.95rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            color: #0a0a14;
-            border-radius: 18px;
-            cursor: pointer;
-            box-shadow: 0 15px 50px var(--theme-glow), 0 0 30px var(--theme-glow);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            z-index: 10;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            margin-top: 25px;
-            text-transform: uppercase;
-            -webkit-tap-highlight-color: transparent;
-            animation: cardEnter 0.6s ease-out 0.3s both, buttonPulse 3s ease-in-out infinite 1s;
-        }
+    .case-card-bg {
+        position: absolute;
+        inset: 0;
+        border-radius: 28px;
+        background: linear-gradient(145deg, rgba(15, 15, 35, 0.9), rgba(8, 8, 20, 0.95));
+        z-index: 0;
+    }
 
-        .spin-button:active:not(:disabled) { transform: scale(0.97); }
+    .case-card-glow {
+        position: absolute;
+        inset: -40px;
+        border-radius: 50%;
+        filter: blur(40px);
+        opacity: 0.6;
+        pointer-events: none;
+        z-index: 0;
+        transition: all 0.4s ease;
+        animation: breatheGlow 4s ease-in-out infinite;
+    }
 
-        @media (min-width: 769px) {
-            .spin-button:hover:not(:disabled) {
-                transform: translateY(-4px) scale(1.02);
-                box-shadow: 0 25px 70px var(--theme-glow), 0 0 50px var(--theme-glow);
-                animation: none;
-            }
-        }
+    .case-card:hover .case-card-glow,
+    .case-card:active .case-card-glow {
+        opacity: 1;
+        filter: blur(50px);
+        transform: scale(1.15);
+    }
 
-        .spin-button:disabled {
-            background: linear-gradient(135deg, #374151, #1f2937);
-            cursor: not-allowed;
-            box-shadow: none;
+    .case-card.cosmic-style .case-card-glow {
+        background: radial-gradient(circle, rgba(99, 102, 241, 0.8) 0%, rgba(99, 102, 241, 0.4) 40%, transparent 70%);
+    }
+
+    .case-card.stellar-style .case-card-glow {
+        background: radial-gradient(circle, rgba(236, 72, 153, 0.8) 0%, rgba(236, 72, 153, 0.4) 40%, transparent 70%);
+    }
+
+    .case-card.golden-style .case-card-glow {
+        background: radial-gradient(circle, rgba(251, 191, 36, 0.8) 0%, rgba(251, 191, 36, 0.4) 40%, transparent 70%);
+    }
+
+    .case-card.divine-style .case-card-glow {
+        background: radial-gradient(circle, rgba(34, 211, 238, 0.8) 0%, rgba(34, 211, 238, 0.4) 40%, transparent 70%);
+    }
+
+    .case-card:active { transform: scale(0.97); }
+
+    @media (min-width: 769px) {
+        .case-card:hover { transform: translateY(-8px) scale(1.02); }
+    }
+
+    .case-card.cosmic-style { box-shadow: 0 10px 40px rgba(99, 102, 241, 0.25), 0 0 80px rgba(99, 102, 241, 0.15); }
+    .case-card.cosmic-style:hover { box-shadow: 0 20px 60px rgba(99, 102, 241, 0.4), 0 0 100px rgba(99, 102, 241, 0.25); }
+    .case-card.cosmic-style .case-card-name {
+        background: linear-gradient(135deg, #e0e7ff, #a78bfa, #818cf8);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .case-card.stellar-style { box-shadow: 0 10px 40px rgba(236, 72, 153, 0.25), 0 0 80px rgba(236, 72, 153, 0.15); }
+    .case-card.stellar-style:hover { box-shadow: 0 20px 60px rgba(236, 72, 153, 0.4), 0 0 100px rgba(236, 72, 153, 0.25); }
+    .case-card.stellar-style .case-card-name {
+        background: linear-gradient(135deg, #fce7f3, #f472b6, #ec4899);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .case-card.golden-style { box-shadow: 0 10px 40px rgba(251, 191, 36, 0.3), 0 0 80px rgba(251, 191, 36, 0.15); }
+    .case-card.golden-style:hover { box-shadow: 0 20px 60px rgba(251, 191, 36, 0.45), 0 0 100px rgba(251, 191, 36, 0.25); }
+    .case-card.golden-style .case-card-name {
+        background: linear-gradient(135deg, #fef3c7, #fbbf24, #f59e0b);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .case-card.divine-style { box-shadow: 0 10px 40px rgba(34, 211, 238, 0.3), 0 0 80px rgba(34, 211, 238, 0.15); }
+    .case-card.divine-style:hover { box-shadow: 0 20px 60px rgba(34, 211, 238, 0.45), 0 0 100px rgba(34, 211, 238, 0.25); }
+    .case-card.divine-style .case-card-name {
+        background: linear-gradient(135deg, #cffafe, #22d3ee, #06b6d4);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .case-card-image-container {
+        position: relative;
+        width: 100px;
+        height: 100px;
+        margin: 0 auto 16px;
+        z-index: 2;
+    }
+
+    .case-card-emoji {
+        font-size: 4rem;
+        filter: drop-shadow(0 8px 25px rgba(0, 0, 0, 0.5));
+        position: relative;
+        z-index: 1;
+        animation: subtleFloat 4s ease-in-out infinite;
+    }
+
+    .case-card-image {
+        width: 90px;
+        height: 90px;
+        object-fit: cover;
+        border-radius: 22px;
+        filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.6));
+        border: 2px solid rgba(255, 255, 255, 0.15);
+        position: relative;
+        z-index: 1;
+        animation: subtleFloat 4s ease-in-out infinite;
+        transition: transform 0.3s ease;
+    }
+
+    .case-card:hover .case-card-image {
+        transform: scale(1.05);
+    }
+
+    .case-card:nth-child(1) .case-card-image { animation-delay: 0s; }
+    .case-card:nth-child(2) .case-card-image { animation-delay: 1s; }
+    .case-card:nth-child(3) .case-card-image { animation-delay: 2s; }
+    .case-card:nth-child(4) .case-card-image { animation-delay: 3s; }
+
+    .case-card-name {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 0.8rem;
+        font-weight: 700;
+        margin-bottom: 12px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        position: relative;
+        z-index: 2;
+    }
+
+    .case-card-price {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .case-card-price-text {
+        color: #c4b5fd;
+        text-shadow: 0 0 20px rgba(139, 92, 246, 0.7);
+    }
+
+    .case-card-tag {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 0.55rem;
+        font-weight: 700;
+        padding: 5px 10px;
+        border-radius: 10px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        z-index: 3;
+        animation: tagPulse 2s ease-in-out infinite;
+    }
+
+    .case-card.cosmic-style .case-card-tag {
+        background: linear-gradient(135deg, #6366f1, #818cf8);
+        color: #fff;
+        box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+    }
+
+    .case-card.stellar-style .case-card-tag {
+        background: linear-gradient(135deg, #ec4899, #f472b6);
+        color: #fff;
+        box-shadow: 0 0 20px rgba(236, 72, 153, 0.5);
+    }
+
+    .case-card.golden-style .case-card-tag {
+        background: linear-gradient(135deg, #fbbf24, #f59e0b);
+        color: #1a1a2e;
+        box-shadow: 0 0 20px rgba(251, 191, 36, 0.5);
+    }
+
+    .case-card.divine-style .case-card-tag {
+        background: linear-gradient(135deg, #22d3ee, #06b6d4);
+        color: #042f2e;
+        box-shadow: 0 0 20px rgba(34, 211, 238, 0.5);
+    }
+
+    .case-screen {
+        z-index: 10;
+        width: 100%;
+        max-width: 400px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .case-screen.hidden { display: none; }
+
+    body.theme-cosmic {
+        --theme-color: #6366f1;
+        --theme-color-light: #818cf8;
+        --theme-glow: rgba(99, 102, 241, 0.5);
+    }
+
+    body.theme-stellar {
+        --theme-color: #ec4899;
+        --theme-color-light: #f472b6;
+        --theme-glow: rgba(236, 72, 153, 0.5);
+    }
+
+    body.theme-golden {
+        --theme-color: #fbbf24;
+        --theme-color-light: #fcd34d;
+        --theme-glow: rgba(251, 191, 36, 0.5);
+    }
+
+    body.theme-divine {
+        --theme-color: #22d3ee;
+        --theme-color-light: #67e8f9;
+        --theme-glow: rgba(34, 211, 238, 0.5);
+    }
+
+    .case-display {
+        text-align: center;
+        margin-bottom: 25px;
+        z-index: 10;
+        animation: cardEnter 0.6s ease-out 0.1s both;
+    }
+
+    .case-hero {
+        position: relative;
+        width: 160px;
+        height: 160px;
+        margin: 0 auto 20px;
+    }
+
+    .case-hero-glow {
+        position: absolute;
+        inset: -60px;
+        background: radial-gradient(circle, var(--theme-glow) 0%, var(--theme-glow) 20%, transparent 70%);
+        border-radius: 50%;
+        filter: blur(40px);
+        opacity: 0.8;
+        animation: pulseGlow 3s ease-in-out infinite;
+    }
+
+    .case-hero-glow-inner {
+        position: absolute;
+        inset: -30px;
+        background: radial-gradient(circle, var(--theme-color) 0%, transparent 60%);
+        border-radius: 50%;
+        filter: blur(25px);
+        opacity: 0.4;
+        animation: rotateGlow 20s linear infinite;
+    }
+
+    .case-hero-content {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2;
+        animation: subtleFloat 4s ease-in-out infinite;
+    }
+
+    .case-emoji {
+        font-size: 5.5rem;
+        filter: drop-shadow(0 10px 40px var(--theme-glow));
+    }
+
+    .case-emoji.hidden { display: none; }
+
+    .case-display-image {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 28px;
+        filter: drop-shadow(0 10px 40px var(--theme-glow));
+        border: 3px solid rgba(255, 255, 255, 0.2);
+        transition: transform 0.3s ease;
+    }
+
+    .case-display-image:hover {
+        transform: scale(1.05) rotate(2deg);
+    }
+
+    .case-display-image.hidden { display: none; }
+
+    .case-name {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.2rem;
+        font-weight: 700;
+        background: linear-gradient(90deg, 
+            var(--theme-color-light), 
+            var(--theme-color), 
+            var(--theme-color-light), 
+            rgba(255,255,255,0.9), 
+            var(--theme-color-light), 
+            var(--theme-color), 
+            var(--theme-color-light)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        animation: smoothShine 6s ease-in-out infinite;
+        background-size: 300% auto;
+    }
+
+    @keyframes smoothShine {
+        0% { background-position: 0% center; }
+        50% { background-position: 100% center; }
+        100% { background-position: 0% center; }
+    }
+
+    .case-section {
+        width: 100%;
+        max-width: 400px;
+        z-index: 10;
+        animation: cardEnter 0.6s ease-out 0.2s both;
+    }
+
+    .case-container {
+        position: relative;
+        width: 100%;
+        height: 130px;
+        background: linear-gradient(180deg, rgba(15, 15, 35, 0.9), rgba(10, 10, 25, 0.95));
+        border-radius: 24px;
+        overflow: hidden;
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 0 50px var(--theme-glow), inset 0 0 30px rgba(0,0,0,0.3);
+        animation: borderGlow 4s ease-in-out infinite;
+    }
+
+    .case-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(90deg, rgba(5, 5, 10, 1) 0%, transparent 15%, transparent 85%, rgba(5, 5, 10, 1) 100%);
+        z-index: 10;
+        pointer-events: none;
+    }
+
+    .center-pointer {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 20;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .pointer-arrow {
+        width: 0;
+        height: 0;
+        border-left: 14px solid transparent;
+        border-right: 14px solid transparent;
+        border-top: 22px solid var(--theme-color);
+        filter: drop-shadow(0 0 15px var(--theme-color));
+        animation: pulseGlow 2s ease-in-out infinite;
+    }
+
+    .pointer-line {
+        width: 3px;
+        height: 130px;
+        background: linear-gradient(180deg, var(--theme-color), transparent);
+        opacity: 0.5;
+    }
+
+    .bottom-pointer {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 20;
+    }
+
+    .bottom-pointer .pointer-arrow {
+        border-top: none;
+        border-bottom: 22px solid var(--theme-color);
+    }
+
+    .items-strip {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        will-change: transform;
+    }
+
+    .items-strip.animating {
+        transition: transform 5s cubic-bezier(0.15, 0.85, 0.25, 1);
+    }
+
+    .prize-item {
+        flex-shrink: 0;
+        width: 100px;
+        height: 100px;
+        margin: 0 6px;
+        border-radius: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        transition: transform 0.2s ease;
+    }
+
+    .prize-item.has-image { background: transparent !important; }
+
+    .prize-item.rarity-empty {
+        background: linear-gradient(145deg, rgba(55, 65, 81, 0.7), rgba(31, 41, 55, 0.8));
+        border-color: rgba(107, 114, 128, 0.4);
+    }
+
+    .prize-item.rarity-stars-15 {
+        background: linear-gradient(145deg, rgba(52, 211, 153, 0.8), rgba(16, 185, 129, 0.85));
+        border-color: rgba(52, 211, 153, 0.6);
+        box-shadow: 0 0 20px rgba(52, 211, 153, 0.4);
+    }
+
+    .prize-item.rarity-stars-25 {
+        background: linear-gradient(145deg, rgba(45, 212, 191, 0.8), rgba(20, 184, 166, 0.85));
+        border-color: rgba(45, 212, 191, 0.6);
+        box-shadow: 0 0 20px rgba(45, 212, 191, 0.4);
+    }
+
+    .prize-item.rarity-stars-50 {
+        background: linear-gradient(145deg, rgba(59, 130, 246, 0.85), rgba(37, 99, 235, 0.9));
+        border-color: rgba(59, 130, 246, 0.6);
+        box-shadow: 0 0 25px rgba(59, 130, 246, 0.45);
+    }
+
+    .prize-item.rarity-stars-75 {
+        background: linear-gradient(145deg, rgba(99, 102, 241, 0.85), rgba(79, 70, 229, 0.9));
+        border-color: rgba(99, 102, 241, 0.6);
+        box-shadow: 0 0 25px rgba(99, 102, 241, 0.45);
+    }
+
+    .prize-item.rarity-stars-100 {
+        background: linear-gradient(145deg, rgba(139, 92, 246, 0.85), rgba(124, 58, 237, 0.9));
+        border-color: rgba(139, 92, 246, 0.6);
+        box-shadow: 0 0 30px rgba(139, 92, 246, 0.5);
+    }
+
+    .prize-item.rarity-stars-150 {
+        background: linear-gradient(145deg, rgba(168, 85, 247, 0.85), rgba(147, 51, 234, 0.9));
+        border-color: rgba(168, 85, 247, 0.65);
+        box-shadow: 0 0 30px rgba(168, 85, 247, 0.5);
+    }
+
+    .prize-item.rarity-stars-250 {
+        background: linear-gradient(145deg, rgba(236, 72, 153, 0.85), rgba(219, 39, 119, 0.9));
+        border-color: rgba(236, 72, 153, 0.65);
+        box-shadow: 0 0 35px rgba(236, 72, 153, 0.55);
+    }
+
+    .prize-item.rarity-stars-500 {
+        background: linear-gradient(145deg, rgba(251, 146, 60, 0.9), rgba(249, 115, 22, 0.92));
+        border-color: rgba(251, 146, 60, 0.7);
+        box-shadow: 0 0 40px rgba(251, 146, 60, 0.6);
+    }
+
+    .prize-item.rarity-stars-1000 {
+        background: linear-gradient(145deg, rgba(251, 191, 36, 0.9), rgba(245, 158, 11, 0.92));
+        border-color: rgba(251, 191, 36, 0.75);
+        box-shadow: 0 0 45px rgba(251, 191, 36, 0.65);
+    }
+
+    .prize-item.rarity-stars-9999 {
+        background: linear-gradient(145deg, rgba(239, 68, 68, 0.9), rgba(220, 38, 38, 0.92));
+        border-color: rgba(239, 68, 68, 0.8);
+        box-shadow: 0 0 50px rgba(239, 68, 68, 0.7), 0 0 80px rgba(251, 191, 36, 0.4);
+    }
+
+    .prize-emoji {
+        font-size: 2.5rem;
+        filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.3));
+    }
+
+    .prize-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 16px;
+    }
+
+    .prize-item.winner {
+        animation: winnerPop 0.5s ease-out;
+        border-color: var(--theme-color) !important;
+        box-shadow: 0 0 60px var(--theme-glow) !important;
+    }
+
+    @keyframes winnerPop {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.12); }
+        100% { transform: scale(1); }
+    }
+
+    .spin-button {
+        background: linear-gradient(135deg, var(--theme-color), var(--theme-color-light));
+        border: none;
+        padding: 20px 50px;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 0.95rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        color: #0a0a14;
+        border-radius: 18px;
+        cursor: pointer;
+        box-shadow: 0 15px 50px var(--theme-glow), 0 0 30px var(--theme-glow);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-top: 25px;
+        text-transform: uppercase;
+        -webkit-tap-highlight-color: transparent;
+        animation: cardEnter 0.6s ease-out 0.3s both, buttonPulse 3s ease-in-out infinite 1s;
+    }
+
+    .spin-button:active:not(:disabled) { transform: scale(0.97); }
+
+    @media (min-width: 769px) {
+        .spin-button:hover:not(:disabled) {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 25px 70px var(--theme-glow), 0 0 50px var(--theme-glow);
             animation: none;
         }
+    }
 
-        .spin-cost {
-            background: rgba(0, 0, 0, 0.25);
-            padding: 8px 16px;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            letter-spacing: 1px;
-        }
+    .spin-button:disabled {
+        background: linear-gradient(135deg, #374151, #1f2937);
+        cursor: not-allowed;
+        box-shadow: none;
+        animation: none;
+    }
 
-        .back-to-menu-btn {
-            background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            padding: 14px 28px;
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-            border-radius: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 15px;
-            z-index: 10;
-            letter-spacing: 1px;
-            -webkit-tap-highlight-color: transparent;
-        }
+    .spin-cost {
+        background: rgba(0, 0, 0, 0.25);
+        padding: 8px 16px;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        letter-spacing: 1px;
+    }
 
-        .back-to-menu-btn:hover, .back-to-menu-btn:active {
+    .back-to-menu-btn {
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        padding: 14px 28px;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        border-radius: 14px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 15px;
+        z-index: 10;
+        letter-spacing: 1px;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .back-to-menu-btn:hover, .back-to-menu-btn:active {
+        border-color: var(--theme-color);
+        color: var(--text-primary);
+        box-shadow: 0 0 30px var(--theme-glow);
+    }
+
+    .info-section {
+        margin-top: 35px;
+        width: 100%;
+        max-width: 400px;
+        z-index: 10;
+        animation: cardEnter 0.6s ease-out 0.4s both;
+    }
+
+    .info-title {
+        text-align: center;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+        margin-bottom: 18px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+    }
+
+    .prizes-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+    }
+
+    .prizes-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+    .prizes-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+    .prizes-grid.cols-5 { grid-template-columns: repeat(5, 1fr); }
+    .prizes-grid.cols-6 { grid-template-columns: repeat(3, 1fr); }
+    .prizes-grid.cols-7 { grid-template-columns: repeat(4, 1fr); }
+
+    .prize-card {
+        background: linear-gradient(145deg, rgba(20, 20, 40, 0.9), rgba(10, 10, 25, 0.95));
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 10px;
+        padding-bottom: 12px;
+        text-align: center;
+        transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        animation: prizeCardFloat 4s ease-in-out infinite;
+    }
+
+    .prize-card:nth-child(1) { animation-delay: 0s; }
+    .prize-card:nth-child(2) { animation-delay: 0.5s; }
+    .prize-card:nth-child(3) { animation-delay: 1s; }
+    .prize-card:nth-child(4) { animation-delay: 1.5s; }
+    .prize-card:nth-child(5) { animation-delay: 2s; }
+    .prize-card:nth-child(6) { animation-delay: 2.5s; }
+    .prize-card:nth-child(7) { animation-delay: 3s; }
+
+    @media (min-width: 769px) {
+        .prize-card:hover {
+            transform: translateY(-4px) scale(1.02);
             border-color: var(--theme-color);
-            color: var(--text-primary);
-            box-shadow: 0 0 30px var(--theme-glow);
+            box-shadow: 0 12px 40px var(--theme-glow);
+            animation: none;
         }
+    }
 
-        .info-section {
-            margin-top: 35px;
-            width: 100%;
-            max-width: 400px;
-            z-index: 10;
-            animation: cardEnter 0.6s ease-out 0.4s both;
+    .prize-card.stars-15 { border-color: rgba(52, 211, 153, 0.4); background: linear-gradient(145deg, rgba(52, 211, 153, 0.12), rgba(15, 15, 35, 0.95)); }
+    .prize-card.stars-25 { border-color: rgba(45, 212, 191, 0.4); background: linear-gradient(145deg, rgba(45, 212, 191, 0.12), rgba(15, 15, 35, 0.95)); }
+    .prize-card.stars-50 { border-color: rgba(59, 130, 246, 0.4); background: linear-gradient(145deg, rgba(59, 130, 246, 0.12), rgba(15, 15, 35, 0.95)); }
+    .prize-card.stars-75 { border-color: rgba(99, 102, 241, 0.4); background: linear-gradient(145deg, rgba(99, 102, 241, 0.12), rgba(15, 15, 35, 0.95)); }
+    .prize-card.stars-100 { border-color: rgba(139, 92, 246, 0.45); background: linear-gradient(145deg, rgba(139, 92, 246, 0.12), rgba(15, 15, 35, 0.95)); }
+    .prize-card.stars-150 { border-color: rgba(168, 85, 247, 0.45); background: linear-gradient(145deg, rgba(168, 85, 247, 0.12), rgba(15, 15, 35, 0.95)); }
+    .prize-card.stars-250 { border-color: rgba(236, 72, 153, 0.45); background: linear-gradient(145deg, rgba(236, 72, 153, 0.12), rgba(15, 15, 35, 0.95)); }
+    .prize-card.stars-500 { border-color: rgba(251, 146, 60, 0.5); background: linear-gradient(145deg, rgba(251, 146, 60, 0.14), rgba(15, 15, 35, 0.95)); }
+    .prize-card.stars-1000 { border-color: rgba(251, 191, 36, 0.5); background: linear-gradient(145deg, rgba(251, 191, 36, 0.14), rgba(15, 15, 35, 0.95)); }
+    .prize-card.stars-9999 { border-color: rgba(239, 68, 68, 0.5); background: linear-gradient(145deg, rgba(239, 68, 68, 0.14), rgba(15, 15, 35, 0.95)); }
+
+    .prize-card.empty {
+        border-color: rgba(107, 114, 128, 0.25);
+        background: linear-gradient(145deg, rgba(55, 65, 81, 0.15), rgba(15, 15, 35, 0.95));
+        opacity: 0.6;
+    }
+
+    .prize-card.empty .prize-card-name {
+        background: linear-gradient(135deg, #6b7280, #9ca3af);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .prize-card-visual {
+        width: 100%;
+        aspect-ratio: 1;
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .prize-card-emoji { font-size: 2rem; filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.25)); }
+
+    .prize-card-image { width: 100%; height: 100%; object-fit: cover; }
+
+    .prize-card-name {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 0.65rem;
+        font-weight: 600;
+        background: linear-gradient(135deg, var(--theme-color-light), var(--theme-color));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-align: center;
+        letter-spacing: 0.5px;
+    }
+
+    .status-message {
+        background: linear-gradient(135deg, rgba(127, 29, 29, 0.7), rgba(69, 10, 10, 0.7));
+        border: 1px solid rgba(239, 68, 68, 0.4);
+        border-radius: 16px;
+        padding: 16px;
+        margin-top: 15px;
+        text-align: center;
+        font-size: 0.85rem;
+        display: none;
+        z-index: 10;
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .status-message.success {
+        background: linear-gradient(135deg, rgba(21, 87, 36, 0.7), rgba(6, 78, 59, 0.7));
+        border-color: rgba(34, 197, 94, 0.4);
+    }
+
+    .status-message.show { display: block; animation: cardEnter 0.3s ease-out; }
+
+    /* ========== MODAL - INSTANT ========== */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.85);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 100;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.15s ease, visibility 0.15s ease;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
+
+    .modal-overlay.show { opacity: 1; visibility: visible; }
+
+    .modal {
+        background: linear-gradient(180deg, rgba(20, 20, 50, 0.98) 0%, rgba(10, 10, 25, 0.99) 100%);
+        border-radius: 28px;
+        padding: 35px 30px;
+        text-align: center;
+        max-width: 320px;
+        width: 90%;
+        transform: scale(0.95);
+        transition: transform 0.15s ease-out;
+        border: 2px solid var(--theme-color);
+        position: relative;
+        overflow: visible;
+        box-shadow: 0 0 80px var(--theme-glow), 0 25px 80px rgba(0, 0, 0, 0.8);
+    }
+
+    .modal::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, var(--theme-color-light), transparent);
+    }
+
+    .modal-overlay.show .modal { transform: scale(1); }
+
+    .modal.win {
+        border-color: var(--theme-color);
+        box-shadow: 0 0 100px var(--theme-glow), 0 25px 80px rgba(0, 0, 0, 0.8);
+    }
+
+    .modal.lose {
+        border-color: rgba(107, 114, 128, 0.5);
+        box-shadow: 0 0 60px rgba(107, 114, 128, 0.4), 0 25px 80px rgba(0, 0, 0, 0.8);
+    }
+
+    /* Modal confetti container */
+    #confettiOverlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+        overflow: hidden;
+        border-radius: 28px;
+    }
+
+    .confetti {
+        position: absolute;
+        top: -20px;
+        width: 12px;
+        height: 12px;
+        pointer-events: none;
+        will-change: transform;
+    }
+
+    .confetti-inner {
+        width: 100%;
+        height: 100%;
+        animation: confettiGlow 2s ease-in-out infinite;
+    }
+
+    .confetti.square .confetti-inner {
+        border-radius: 2px;
+    }
+
+    .confetti.circle .confetti-inner {
+        border-radius: 50%;
+    }
+
+    .confetti.star .confetti-inner {
+        clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    }
+
+    .confetti.ribbon .confetti-inner {
+        width: 8px;
+        height: 20px;
+        border-radius: 4px;
+    }
+
+    .modal-emoji {
+        font-size: 4.5rem;
+        margin-bottom: 15px;
+        filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5));
+        position: relative;
+        z-index: 2;
+    }
+
+    .modal-prize-image {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        margin-bottom: 15px;
+        border-radius: 22px;
+        border: 3px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
+        position: relative;
+        z-index: 2;
+    }
+
+    .modal.win .modal-prize-image {
+        box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5), 0 0 60px var(--theme-glow);
+        border-color: var(--theme-color);
+        animation: pulseGlow 2s ease-in-out infinite;
+    }
+
+    .modal-title {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-bottom: 12px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        position: relative;
+        z-index: 2;
+    }
+
+    .modal.win .modal-title {
+        background: linear-gradient(135deg, #fff, var(--theme-color-light), #fff);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: textShine 3s linear infinite;
+    }
+
+    .modal.lose .modal-title {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.8rem;
+        font-weight: 900;
+        background: linear-gradient(135deg, #e5e7eb, #9ca3af, #6b7280, #9ca3af, #e5e7eb);
+        background-size: 300% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: textShine 4s linear infinite, emptyTextGlow 2.5s ease-in-out infinite;
+        letter-spacing: 6px;
+    }
+
+    .modal-prize {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 2.2rem;
+        font-weight: 900;
+        background: linear-gradient(135deg, #fff, var(--theme-color-light), var(--theme-color));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 18px;
+        position: relative;
+        z-index: 2;
+        filter: drop-shadow(0 4px 15px var(--theme-glow));
+    }
+
+    .modal.lose .modal-prize {
+        font-size: 0.95rem;
+        font-weight: 600;
+        background: linear-gradient(135deg, #a1a1aa, #71717a);
+        -webkit-background-clip: text;
+        filter: none;
+    }
+
+    .modal-balance {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin-bottom: 20px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .modal-balance-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 18px;
+        background: linear-gradient(145deg, rgba(25, 25, 55, 0.95), rgba(12, 12, 30, 0.98));
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        position: relative;
+        /* No animations or transforms */
+        transform: none !important;
+        animation: none !important;
+    }
+
+    .modal-balance-item::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+    }
+
+    .modal-balance-item.sapphire {
+        border-color: rgba(99, 102, 241, 0.4);
+        transform: none !important;
+        animation: none !important;
+    }
+
+    .modal-balance-item.star {
+        border-color: rgba(251, 191, 36, 0.4);
+        transform: none !important;
+        animation: none !important;
+    }
+
+    .modal-balance-icon {
+        width: 22px;
+        height: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+        flex-shrink: 0;
+    }
+
+    .modal-balance-icon img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    .modal-balance-value {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.1rem;
+        font-weight: 700;
+        line-height: 1;
+        transform: none !important;
+        animation: none !important;
+    }
+
+    .modal-balance-item.sapphire .modal-balance-value {
+        background: linear-gradient(135deg, #c4b5fd, #818cf8);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .modal-balance-item.star .modal-balance-value {
+        background: linear-gradient(135deg, #fef3c7, #fbbf24);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .modal-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .modal-button {
+        background: linear-gradient(135deg, var(--theme-color), var(--theme-color-light));
+        border: none;
+        padding: 16px 32px;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 0.85rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        color: #0a0a14;
+        border-radius: 14px;
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        text-transform: uppercase;
+        -webkit-tap-highlight-color: transparent;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .modal-button:active { transform: scale(0.97); }
+
+    @media (min-width: 769px) {
+        .modal-button:hover { 
+            transform: scale(1.03); 
+            box-shadow: 0 12px 40px var(--theme-glow); 
         }
+    }
 
-        .info-title {
-            text-align: center;
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            margin-bottom: 18px;
-            letter-spacing: 3px;
-            text-transform: uppercase;
+    .modal-button.secondary {
+        background: transparent;
+        border: 2px solid rgba(255, 255, 255, 0.15);
+        color: var(--text-secondary);
+        padding: 14px 32px;
+    }
+
+    .modal-button.secondary:hover, .modal-button.secondary:active {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(255, 255, 255, 0.3);
+        color: white;
+    }
+
+    .modal-button.theme-btn { 
+        background: linear-gradient(135deg, var(--theme-color), var(--theme-color-light)); 
+        color: #1a1a2e;
+        box-shadow: 0 8px 30px var(--theme-glow);
+    }
+
+    .modal-button.theme-btn:hover { 
+        box-shadow: 0 12px 50px var(--theme-glow); 
+    }
+
+    .loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--bg-primary);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 200;
+        transition: opacity 0.4s ease;
+    }
+
+    .loading-overlay.hidden { opacity: 0; pointer-events: none; }
+
+    .loader {
+        width: 50px;
+        height: 50px;
+        border: 3px solid rgba(99, 102, 241, 0.15);
+        border-top-color: var(--accent-gold);
+        border-right-color: var(--accent-purple);
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loading-text {
+        margin-top: 20px;
+        font-family: 'Orbitron', sans-serif;
+        color: var(--text-secondary);
+        letter-spacing: 4px;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        animation: textShine 2s linear infinite;
+        background: linear-gradient(90deg, #71717a, #a1a1aa, #71717a);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .session-info {
+        position: fixed;
+        bottom: 5px;
+        left: 5px;
+        font-size: 0.55rem;
+        color: rgba(255,255,255,0.1);
+        z-index: 1;
+        font-family: monospace;
+    }
+
+    @media (max-width: 390px) {
+        .case-container { height: 115px; }
+        .prize-item { width: 90px; height: 90px; }
+        .prize-emoji { font-size: 2.2rem; }
+        .pointer-line { height: 115px; }
+        .brand-text { font-size: 1.7rem; }
+        .balance-card { padding: 12px 18px; min-width: 125px; }
+        .balance-icon-wrap { width: 38px; height: 38px; }
+        .balance-value { font-size: 1.1rem; }
+        .case-hero { width: 140px; height: 140px; }
+        .case-emoji { font-size: 4.5rem; }
+        .case-display-image { width: 100px; height: 100px; }
+        .modal { padding: 30px 22px; }
+        .modal-balance { gap: 8px; }
+        .modal-balance-item { padding: 8px 12px; }
+    }
+
+    @media (max-width: 380px) {
+        .case-container { height: 110px; }
+        .prize-item { width: 85px; height: 85px; }
+        .prize-emoji { font-size: 1.8rem; }
+        .brand-text { font-size: 1.5rem; }
+        .pointer-line { height: 110px; }
+        .balance-container { gap: 10px; }
+        .balance-card { padding: 10px 14px; min-width: 115px; gap: 10px; }
+        .balance-icon-wrap { width: 34px; height: 34px; }
+        .balance-icon { font-size: 1.2rem; }
+        .balance-value { font-size: 1rem; }
+        .case-hero { width: 120px; height: 120px; }
+        .case-emoji { font-size: 4rem; }
+        .case-display-image { width: 85px; height: 85px; }
+        .modal-balance { flex-direction: column; gap: 10px; }
+    }
+
+    @supports (padding: max(0px)) {
+        body {
+            padding-left: max(20px, env(safe-area-inset-left));
+            padding-right: max(20px, env(safe-area-inset-right));
+            padding-bottom: max(100px, env(safe-area-inset-bottom));
         }
+    }
 
-        .prizes-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-        }
+    @media (max-width: 768px) {
+        .bg-orb-1, .bg-orb-2, .bg-orb-4, .bg-orb-5 { animation: none; }
+        .star { animation-duration: 4s; }
+    }
+</style>
 
-        .prizes-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
-        .prizes-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
-        .prizes-grid.cols-5 { grid-template-columns: repeat(5, 1fr); }
-        .prizes-grid.cols-6 { grid-template-columns: repeat(3, 1fr); }
-        .prizes-grid.cols-7 { grid-template-columns: repeat(4, 1fr); }
+</head> <body> <div class="loading-overlay" id="loadingOverlay"> <div class="loader"></div> <div class="loading-text">Loading</div> </div>
 
-        .prize-card {
-            background: linear-gradient(145deg, rgba(20, 20, 40, 0.9), rgba(10, 10, 25, 0.95));
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 16px;
-            padding: 10px;
-            padding-bottom: 12px;
-            text-align: center;
-            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-            animation: prizeCardFloat 4s ease-in-out infinite;
-        }
+text
 
-        .prize-card:nth-child(1) { animation-delay: 0s; }
-        .prize-card:nth-child(2) { animation-delay: 0.5s; }
-        .prize-card:nth-child(3) { animation-delay: 1s; }
-        .prize-card:nth-child(4) { animation-delay: 1.5s; }
-        .prize-card:nth-child(5) { animation-delay: 2s; }
-        .prize-card:nth-child(6) { animation-delay: 2.5s; }
-        .prize-card:nth-child(7) { animation-delay: 3s; }
+<div class="animated-bg">
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3" id="themeFog"></div>
+    <div class="bg-orb bg-orb-4"></div>
+    <div class="bg-orb bg-orb-5"></div>
+    <div class="bg-stars" id="bgStars"></div>
+</div>
 
-        @media (min-width: 769px) {
-            .prize-card:hover {
-                transform: translateY(-4px) scale(1.02);
-                border-color: var(--theme-color);
-                box-shadow: 0 12px 40px var(--theme-glow);
-                animation: none;
+
+
+<div class="header">
+    <div class="brand-container">
+        <h1 class="brand-text">Divine Case</h1>
+        <div class="brand-subtitle">Premium Loot Experience</div>
+    </div>
+    <div class="balance-container">
+        <div class="balance-card sapphires">
+            <div class="balance-icon-wrap">
+                <span class="balance-icon" id="sapphireIcon"></span>
+            </div>
+            <div class="balance-info">
+                <span class="balance-value" id="sapphires">0</span>
+                <span class="balance-label">Sapphires</span>
+            </div>
+        </div>
+        <div class="balance-card stars">
+            <div class="balance-icon-wrap">
+                <span class="balance-icon" id="starIcon"></span>
+            </div>
+            <div class="balance-info">
+                <span class="balance-value" id="stars-balance">0</span>
+                <span class="balance-label">Stars</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="menu-screen" id="menuScreen">
+    <div class="menu-title">Выберите кейс</div>
+    <div class="cases-grid" id="casesGrid"></div>
+</div>
+
+<div class="case-screen hidden" id="caseScreen">
+    <div class="case-display">
+        <div class="case-hero">
+            <div class="case-hero-glow"></div>
+            <div class="case-hero-glow-inner"></div>
+            <div class="case-hero-content">
+                <span class="case-emoji" id="currentCaseEmoji"></span>
+                <img class="case-display-image hidden" id="currentCaseImage" src="" alt="">
+            </div>
+        </div>
+        <div class="case-name" id="currentCaseName">Cosmic Case</div>
+    </div>
+
+    <div class="case-section">
+        <div class="case-container" id="caseContainer">
+            <div class="center-pointer">
+                <div class="pointer-arrow"></div>
+                <div class="pointer-line"></div>
+            </div>
+            <div class="bottom-pointer">
+                <div class="pointer-arrow"></div>
+            </div>
+            <div class="items-strip" id="itemsStrip"></div>
+        </div>
+    </div>
+
+    <button class="spin-button" id="spinBtn" onclick="openCase()">
+        <span>Открыть</span>
+        <span class="spin-cost" id="spinCost">100</span>
+    </button>
+
+    <button class="back-to-menu-btn" onclick="goToMenu()">Назад к кейсам</button>
+
+    <div class="status-message" id="statusMessage"></div>
+
+    <div class="info-section">
+        <div class="info-title">Возможные призы</div>
+        <div class="prizes-grid" id="prizesGrid"></div>
+    </div>
+</div>
+
+<div class="session-info" id="sessionInfo"></div>
+
+<!-- Fullscreen Confetti Overlay -->
+<div id="confettiOverlay"></div>
+
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modal">
+        <div class="modal-emoji" id="modalEmoji"></div>
+        <div class="modal-title" id="modalTitle">Поздравляем!</div>
+        <div class="modal-prize" id="modalPrize">+50</div>
+        <div class="modal-balance" id="modalBalance">
+            <div class="modal-balance-item sapphire">
+                <div class="modal-balance-icon" id="modalSapphireIcon"></div>
+                <span class="modal-balance-value" id="modalSapphires">0</span>
+            </div>
+            <div class="modal-balance-item star">
+                <div class="modal-balance-icon" id="modalStarIcon"></div>
+                <span class="modal-balance-value" id="modalStars">0</span>
+            </div>
+        </div>
+        <div class="modal-buttons">
+            <button class="modal-button theme-btn" id="spinAgainBtn" onclick="spinAgain()">Открыть ещё</button>
+            <button class="modal-button secondary" onclick="closeModal()">Закрыть</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const API_BASE = "https://deadveel.pythonanywhere.com";
+    const tg = window.Telegram?.WebApp;
+    const initData = tg?.initData || '';
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 769;
+
+    const GITHUB_USER = "deadveel-crypto";
+    const GITHUB_REPO = "divine-case-assets";
+    const GITHUB_BRANCH = "main";
+    const IMG_CDN = `https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${GITHUB_REPO}@${GITHUB_BRANCH}`;
+
+    const CUSTOM_ICONS = {
+        sapphire: null,
+        star: null
+    };
+
+    const CASES = [
+        { id: 'cosmic', name: 'Cosmic Case', emoji: null, image: `${IMG_CDN}/cases/cosmic.png`, cost: 100, tag: 'NEW', style: 'cosmic-style', theme: 'theme-cosmic' },
+        { id: 'stellar', name: 'Stellar Case', emoji: null, image: `${IMG_CDN}/cases/stellar.png`, cost: 250, tag: 'BEST', style: 'stellar-style', theme: 'theme-stellar' },
+        { id: 'golden', name: 'Golden Case', emoji: null, image: `${IMG_CDN}/cases/golden.png`, cost: 500, tag: 'HOT', style: 'golden-style', theme: 'theme-golden' },
+        { id: 'divine', name: 'Divine Case', emoji: null, image: `${IMG_CDN}/cases/divine.png`, cost: 1000, tag: 'VIP', style: 'divine-style', theme: 'theme-divine' }
+    ];
+
+    let STATE = {
+        userId: null,
+        username: '',
+        sapphires: 0,
+        stars: 0,
+        spinCost: 100,
+        canSpin: false,
+        isInitialized: false,
+        spinsCount: 0,
+        totalWon: 0,
+        isModalOpen: false,
+        currentScreen: 'menu',
+        selectedCase: null
+    };
+
+    let isSpinning = false;
+    let confettiActive = false;
+    const MAX_CONFETTI = 40;
+
+    const PRIZE_VISUALS = {
+        0: { stars: 0, emoji: null, rarity: "empty", image: `${IMG_CDN}/prizes/void.png`, name: "Void" },
+        15: { stars: 15, emoji: null, rarity: "stars-15", image: `${IMG_CDN}/prizes/glimmer.png`, name: "Glimmer" },
+        25: { stars: 25, emoji: null, rarity: "stars-25", image: `${IMG_CDN}/prizes/spark.png`, name: "Spark" },
+        50: { stars: 50, emoji: null, rarity: "stars-50", image: `${IMG_CDN}/prizes/radiance.png`, name: "Radiance" },
+        75: { stars: 75, emoji: null, rarity: "stars-75", image: `${IMG_CDN}/prizes/stardust.png`, name: "Stardust" },
+        100: { stars: 100, emoji: null, rarity: "stars-100", image: `${IMG_CDN}/prizes/aurora.png`, name: "Aurora" },
+        150: { stars: 150, emoji: null, rarity: "stars-150", image: `${IMG_CDN}/prizes/ember.png`, name: "Ember" },
+        250: { stars: 250, emoji: null, rarity: "stars-250", image: `${IMG_CDN}/prizes/lightning.jpeg`, name: "Lightning" },
+        500: { stars: 500, emoji: null, rarity: "stars-500", image: `${IMG_CDN}/prizes/supernova.png`, name: "Supernova" },
+        1000: { stars: 1000, emoji: null, rarity: "stars-1000", image: `${IMG_CDN}/prizes/galaxy.png`, name: "Galaxy" },
+        9999: { stars: 9999, emoji: null, rarity: "stars-9999", image: `${IMG_CDN}/prizes/divine_star.png`, name: "Divine Star" }
+    };
+
+    const CASE_CONFIG = {
+        cosmic: {
+            prizes: [0, 15, 25, 50, 75, 100],
+            getRandomPrize: () => {
+                const rand = Math.random() * 100;
+                if (rand < 93) return 0;
+                if (rand < 98) return 15;
+                return 25;
+            }
+        },
+        stellar: {
+            prizes: [0, 25, 50, 75, 100, 150, 250],
+            getRandomPrize: () => {
+                const rand = Math.random() * 100;
+                if (rand < 93) return 0;
+                if (rand < 98) return 25;
+                return 50;
+            }
+        },
+        golden: {
+            prizes: [0, 75, 100, 150, 250, 500],
+            getRandomPrize: () => {
+                const rand = Math.random() * 100;
+                if (rand < 93) return 0;
+                if (rand < 98) return 75;
+                return 100;
+            }
+        },
+        divine: {
+            prizes: [0, 100, 150, 250, 500, 1000, 9999],
+            getRandomPrize: () => {
+                const rand = Math.random() * 100;
+                if (rand < 93) return 0;
+                if (rand < 98) return 100;
+                return 150;
             }
         }
-
-        .prize-card.stars-15 { border-color: rgba(52, 211, 153, 0.4); background: linear-gradient(145deg, rgba(52, 211, 153, 0.12), rgba(15, 15, 35, 0.95)); }
-        .prize-card.stars-25 { border-color: rgba(45, 212, 191, 0.4); background: linear-gradient(145deg, rgba(45, 212, 191, 0.12), rgba(15, 15, 35, 0.95)); }
-        .prize-card.stars-50 { border-color: rgba(59, 130, 246, 0.4); background: linear-gradient(145deg, rgba(59, 130, 246, 0.12), rgba(15, 15, 35, 0.95)); }
-        .prize-card.stars-75 { border-color: rgba(99, 102, 241, 0.4); background: linear-gradient(145deg, rgba(99, 102, 241, 0.12), rgba(15, 15, 35, 0.95)); }
-        .prize-card.stars-100 { border-color: rgba(139, 92, 246, 0.45); background: linear-gradient(145deg, rgba(139, 92, 246, 0.12), rgba(15, 15, 35, 0.95)); }
-        .prize-card.stars-150 { border-color: rgba(168, 85, 247, 0.45); background: linear-gradient(145deg, rgba(168, 85, 247, 0.12), rgba(15, 15, 35, 0.95)); }
-        .prize-card.stars-250 { border-color: rgba(236, 72, 153, 0.45); background: linear-gradient(145deg, rgba(236, 72, 153, 0.12), rgba(15, 15, 35, 0.95)); }
-        .prize-card.stars-500 { border-color: rgba(251, 146, 60, 0.5); background: linear-gradient(145deg, rgba(251, 146, 60, 0.14), rgba(15, 15, 35, 0.95)); }
-        .prize-card.stars-1000 { border-color: rgba(251, 191, 36, 0.5); background: linear-gradient(145deg, rgba(251, 191, 36, 0.14), rgba(15, 15, 35, 0.95)); }
-        .prize-card.stars-9999 { border-color: rgba(239, 68, 68, 0.5); background: linear-gradient(145deg, rgba(239, 68, 68, 0.14), rgba(15, 15, 35, 0.95)); }
-
-        .prize-card.empty {
-            border-color: rgba(107, 114, 128, 0.25);
-            background: linear-gradient(145deg, rgba(55, 65, 81, 0.15), rgba(15, 15, 35, 0.95));
-            opacity: 0.6;
-        }
-
-        .prize-card.empty .prize-card-name {
-            background: linear-gradient(135deg, #6b7280, #9ca3af);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .prize-card-visual {
-            width: 100%;
-            aspect-ratio: 1;
-            border-radius: 12px;
-            overflow: hidden;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .prize-card-emoji { font-size: 2rem; filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.25)); }
-
-        .prize-card-image { width: 100%; height: 100%; object-fit: cover; }
-
-        .prize-card-name {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.65rem;
-            font-weight: 600;
-            background: linear-gradient(135deg, var(--theme-color-light), var(--theme-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-align: center;
-            letter-spacing: 0.5px;
-        }
-
-        .status-message {
-            background: linear-gradient(135deg, rgba(127, 29, 29, 0.7), rgba(69, 10, 10, 0.7));
-            border: 1px solid rgba(239, 68, 68, 0.4);
-            border-radius: 16px;
-            padding: 16px;
-            margin-top: 15px;
-            text-align: center;
-            font-size: 0.85rem;
-            display: none;
-            z-index: 10;
-            width: 100%;
-            max-width: 400px;
-        }
-
-        .status-message.success {
-            background: linear-gradient(135deg, rgba(21, 87, 36, 0.7), rgba(6, 78, 59, 0.7));
-            border-color: rgba(34, 197, 94, 0.4);
-        }
-
-        .status-message.show { display: block; animation: cardEnter 0.3s ease-out; }
-
-        /* ========== MODAL ========== */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.15s ease, visibility 0.15s ease;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-        }
-
-        .modal-overlay.show { opacity: 1; visibility: visible; }
-
-        .modal {
-            background: linear-gradient(180deg, rgba(20, 20, 50, 0.98) 0%, rgba(10, 10, 25, 0.99) 100%);
-            border-radius: 28px;
-            padding: 35px 30px;
-            text-align: center;
-            max-width: 320px;
-            width: 90%;
-            transform: scale(0.95);
-            transition: transform 0.15s ease-out;
-            border: 2px solid var(--theme-color);
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 0 80px var(--theme-glow), 0 25px 80px rgba(0, 0, 0, 0.8);
-        }
-
-        .modal::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--theme-color-light), transparent);
-        }
-
-        .modal-overlay.show .modal { transform: scale(1); }
-
-        .modal.win {
-            border-color: var(--theme-color);
-            box-shadow: 0 0 100px var(--theme-glow), 0 25px 80px rgba(0, 0, 0, 0.8);
-        }
-
-        .modal.lose {
-            border-color: rgba(107, 114, 128, 0.5);
-            box-shadow: 0 0 60px rgba(107, 114, 128, 0.4), 0 25px 80px rgba(0, 0, 0, 0.8);
-        }
-
-        /* Confetti container inside modal */
-        .confetti-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 50;
-            overflow: hidden;
-            border-radius: 28px;
-        }
-
-        .confetti {
-            position: absolute;
-            top: -20px;
-            width: 10px;
-            height: 10px;
-            pointer-events: none;
-            will-change: transform;
-            animation: confettiFall linear forwards;
-        }
-
-        .confetti.square {
-            border-radius: 2px;
-        }
-
-        .confetti.circle {
-            border-radius: 50%;
-        }
-
-        .confetti.star {
-            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-        }
-
-        .confetti.ribbon {
-            width: 6px;
-            height: 16px;
-            border-radius: 3px;
-        }
-
-        .modal-emoji {
-            font-size: 4.5rem;
-            margin-bottom: 15px;
-            filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5));
-            position: relative;
-            z-index: 2;
-        }
-
-        .modal-prize-image {
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-            margin-bottom: 15px;
-            border-radius: 22px;
-            border: 3px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
-            position: relative;
-            z-index: 2;
-        }
-
-        .modal.win .modal-prize-image {
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5), 0 0 60px var(--theme-glow);
-            border-color: var(--theme-color);
-            animation: pulseGlow 2s ease-in-out infinite;
-        }
-
-        .modal-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 12px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            position: relative;
-            z-index: 2;
-        }
-
-        .modal.win .modal-title {
-            background: linear-gradient(135deg, #fff, var(--theme-color-light), #fff);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: textShine 3s linear infinite;
-        }
-
-        .modal.lose .modal-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.8rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, #e5e7eb, #9ca3af, #6b7280, #9ca3af, #e5e7eb);
-            background-size: 300% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: textShine 4s linear infinite, emptyTextGlow 2.5s ease-in-out infinite;
-            letter-spacing: 6px;
-        }
-
-        .modal-prize {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.2rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, #fff, var(--theme-color-light), var(--theme-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 18px;
-            position: relative;
-            z-index: 2;
-            filter: drop-shadow(0 4px 15px var(--theme-glow));
-        }
-
-        .modal.lose .modal-prize {
-            font-size: 0.95rem;
-            font-weight: 600;
-            background: linear-gradient(135deg, #a1a1aa, #71717a);
-            -webkit-background-clip: text;
-            filter: none;
-        }
-
-        .modal-balance {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 20px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .modal-balance-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 12px 18px;
-            background: linear-gradient(145deg, rgba(25, 25, 55, 0.95), rgba(12, 12, 30, 0.98));
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            position: relative;
-        }
-
-        .modal-balance-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
-        }
-
-        .modal-balance-item.sapphire {
-            border-color: rgba(99, 102, 241, 0.4);
-        }
-
-        .modal-balance-item.star {
-            border-color: rgba(251, 191, 36, 0.4);
-        }
-
-        .modal-balance-icon {
-            width: 22px;
-            height: 22px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-            flex-shrink: 0;
-        }
-
-        .modal-balance-icon img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        .modal-balance-value {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 700;
-            line-height: 1;
-        }
-
-        .modal-balance-item.sapphire .modal-balance-value {
-            background: linear-gradient(135deg, #c4b5fd, #818cf8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .modal-balance-item.star .modal-balance-value {
-            background: linear-gradient(135deg, #fef3c7, #fbbf24);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .modal-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .modal-button {
-            background: linear-gradient(135deg, var(--theme-color), var(--theme-color-light));
-            border: none;
-            padding: 16px 32px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            color: #0a0a14;
-            border-radius: 14px;
-            cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            text-transform: uppercase;
-            -webkit-tap-highlight-color: transparent;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .modal-button:active { transform: scale(0.97); }
-
-        @media (min-width: 769px) {
-            .modal-button:hover { 
-                transform: scale(1.03); 
-                box-shadow: 0 12px 40px var(--theme-glow); 
-            }
-        }
-
-        .modal-button.secondary {
-            background: transparent;
-            border: 2px solid rgba(255, 255, 255, 0.15);
-            color: var(--text-secondary);
-            padding: 14px 32px;
-        }
-
-        .modal-button.secondary:hover, .modal-button.secondary:active {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(255, 255, 255, 0.3);
-            color: white;
-        }
-
-        .modal-button.theme-btn { 
-            background: linear-gradient(135deg, var(--theme-color), var(--theme-color-light)); 
-            color: #1a1a2e;
-            box-shadow: 0 8px 30px var(--theme-glow);
-        }
-
-        .modal-button.theme-btn:hover { 
-            box-shadow: 0 12px 50px var(--theme-glow); 
-        }
-
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--bg-primary);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 200;
-            transition: opacity 0.4s ease;
-        }
-
-        .loading-overlay.hidden { opacity: 0; pointer-events: none; }
-
-        .loader {
-            width: 50px;
-            height: 50px;
-            border: 3px solid rgba(99, 102, 241, 0.15);
-            border-top-color: var(--accent-gold);
-            border-right-color: var(--accent-purple);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        .loading-text {
-            margin-top: 20px;
-            font-family: 'Orbitron', sans-serif;
-            color: var(--text-secondary);
-            letter-spacing: 4px;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            animation: textShine 2s linear infinite;
-            background: linear-gradient(90deg, #71717a, #a1a1aa, #71717a);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .session-info {
-            position: fixed;
-            bottom: 5px;
-            left: 5px;
-            font-size: 0.55rem;
-            color: rgba(255,255,255,0.1);
-            z-index: 1;
-            font-family: monospace;
-        }
-
-        @media (max-width: 390px) {
-            .case-container { height: 115px; }
-            .prize-item { width: 90px; height: 90px; }
-            .prize-emoji { font-size: 2.2rem; }
-            .pointer-line { height: 115px; }
-            .brand-text { font-size: 1.7rem; }
-            .balance-card { padding: 12px 18px; min-width: 125px; }
-            .balance-icon-wrap { width: 38px; height: 38px; }
-            .balance-value { font-size: 1.1rem; }
-            .case-hero { width: 140px; height: 140px; }
-            .case-emoji { font-size: 4.5rem; }
-            .case-display-image { width: 100px; height: 100px; }
-            .modal { padding: 30px 22px; }
-            .modal-balance { gap: 8px; }
-            .modal-balance-item { padding: 8px 12px; }
-        }
-
-        @media (max-width: 380px) {
-            .case-container { height: 110px; }
-            .prize-item { width: 85px; height: 85px; }
-            .prize-emoji { font-size: 1.8rem; }
-            .brand-text { font-size: 1.5rem; }
-            .pointer-line { height: 110px; }
-            .balance-container { gap: 10px; }
-            .balance-card { padding: 10px 14px; min-width: 115px; gap: 10px; }
-            .balance-icon-wrap { width: 34px; height: 34px; }
-            .balance-icon { font-size: 1.2rem; }
-            .balance-value { font-size: 1rem; }
-            .case-hero { width: 120px; height: 120px; }
-            .case-emoji { font-size: 4rem; }
-            .case-display-image { width: 85px; height: 85px; }
-            .modal-balance { flex-direction: column; gap: 10px; }
-        }
-
-        @supports (padding: max(0px)) {
-            body {
-                padding-left: max(20px, env(safe-area-inset-left));
-                padding-right: max(20px, env(safe-area-inset-right));
-                padding-bottom: max(100px, env(safe-area-inset-bottom));
-            }
-        }
-
-        @media (max-width: 768px) {
-            .bg-orb-1, .bg-orb-2, .bg-orb-4, .bg-orb-5 { animation: none; }
-            .star { animation-duration: 4s; }
-        }
-    </style>
-</head>
-<body>
-    <div class="loading-overlay" id="loadingOverlay">
-        <div class="loader"></div>
-        <div class="loading-text">Loading</div>
-    </div>
-
-    <div class="animated-bg">
-        <div class="bg-orb bg-orb-1"></div>
-        <div class="bg-orb bg-orb-2"></div>
-        <div class="bg-orb bg-orb-3" id="themeFog"></div>
-        <div class="bg-orb bg-orb-4"></div>
-        <div class="bg-orb bg-orb-5"></div>
-        <div class="bg-stars" id="bgStars"></div>
-    </div>
-
-    <div class="header">
-        <div class="brand-container">
-            <h1 class="brand-text">Divine Case</h1>
-            <div class="brand-subtitle">Premium Loot Experience</div>
-        </div>
-        <div class="balance-container">
-            <div class="balance-card sapphires">
-                <div class="balance-icon-wrap">
-                    <span class="balance-icon" id="sapphireIcon"></span>
-                </div>
-                <div class="balance-info">
-                    <span class="balance-value" id="sapphires">0</span>
-                    <span class="balance-label">Sapphires</span>
-                </div>
-            </div>
-            <div class="balance-card stars">
-                <div class="balance-icon-wrap">
-                    <span class="balance-icon" id="starIcon"></span>
-                </div>
-                <div class="balance-info">
-                    <span class="balance-value" id="stars-balance">0</span>
-                    <span class="balance-label">Stars</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="menu-screen" id="menuScreen">
-        <div class="menu-title">Выберите кейс</div>
-        <div class="cases-grid" id="casesGrid"></div>
-    </div>
-
-    <div class="case-screen hidden" id="caseScreen">
-        <div class="case-display">
-            <div class="case-hero">
-                <div class="case-hero-glow"></div>
-                <div class="case-hero-glow-inner"></div>
-                <div class="case-hero-content">
-                    <span class="case-emoji" id="currentCaseEmoji"></span>
-                    <img class="case-display-image hidden" id="currentCaseImage" src="" alt="">
-                </div>
-            </div>
-            <div class="case-name" id="currentCaseName">Cosmic Case</div>
-        </div>
-
-        <div class="case-section">
-            <div class="case-container" id="caseContainer">
-                <div class="center-pointer">
-                    <div class="pointer-arrow"></div>
-                    <div class="pointer-line"></div>
-                </div>
-                <div class="bottom-pointer">
-                    <div class="pointer-arrow"></div>
-                </div>
-                <div class="items-strip" id="itemsStrip"></div>
-            </div>
-        </div>
-
-        <button class="spin-button" id="spinBtn" onclick="openCase()">
-            <span>Открыть</span>
-            <span class="spin-cost" id="spinCost">100</span>
-        </button>
-
-        <button class="back-to-menu-btn" onclick="goToMenu()">Назад к кейсам</button>
-
-        <div class="status-message" id="statusMessage"></div>
-
-        <div class="info-section">
-            <div class="info-title">Возможные призы</div>
-            <div class="prizes-grid" id="prizesGrid"></div>
-        </div>
-    </div>
-
-    <div class="session-info" id="sessionInfo"></div>
-
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal" id="modal">
-            <!-- Confetti container INSIDE modal -->
-            <div class="confetti-container" id="confettiContainer"></div>
-            
-            <div class="modal-emoji" id="modalEmoji"></div>
-            <div class="modal-title" id="modalTitle">Поздравляем!</div>
-            <div class="modal-prize" id="modalPrize">+50</div>
-            <div class="modal-balance" id="modalBalance">
-                <div class="modal-balance-item sapphire">
-                    <div class="modal-balance-icon" id="modalSapphireIcon"></div>
-                    <span class="modal-balance-value" id="modalSapphires">0</span>
-                </div>
-                <div class="modal-balance-item star">
-                    <div class="modal-balance-icon" id="modalStarIcon"></div>
-                    <span class="modal-balance-value" id="modalStars">0</span>
-                </div>
-            </div>
-            <div class="modal-buttons">
-                <button class="modal-button theme-btn" id="spinAgainBtn" onclick="spinAgain()">Открыть ещё</button>
-                <button class="modal-button secondary" onclick="closeModal()">Закрыть</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        const API_BASE = "https://deadveel.pythonanywhere.com";
-        const tg = window.Telegram?.WebApp;
-        const initData = tg?.initData || '';
-        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 769;
-
-        const GITHUB_USER = "deadveel-crypto";
-        const GITHUB_REPO = "divine-case-assets";
-        const GITHUB_BRANCH = "main";
-        const IMG_CDN = `https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${GITHUB_REPO}@${GITHUB_BRANCH}`;
-
-        const CUSTOM_ICONS = {
-            sapphire: null,
-            star: null
+    };
+
+    function getExpensivePrizeForCase() {
+        const caseId = STATE.selectedCase?.id || 'cosmic';
+        const expensivePrizes = {
+            cosmic: [PRIZE_VISUALS[50], PRIZE_VISUALS[75], PRIZE_VISUALS[100]],
+            stellar: [PRIZE_VISUALS[100], PRIZE_VISUALS[150], PRIZE_VISUALS[250]],
+            golden: [PRIZE_VISUALS[250], PRIZE_VISUALS[500], PRIZE_VISUALS[150]],
+            divine: [PRIZE_VISUALS[500], PRIZE_VISUALS[1000], PRIZE_VISUALS[9999]]
         };
+        const prizes = expensivePrizes[caseId] || expensivePrizes.cosmic;
+        const rand = Math.random();
+        if (rand < 0.5) return prizes[0];
+        if (rand < 0.8) return prizes[1];
+        return prizes[2];
+    }
 
-        const CASES = [
-            { id: 'cosmic', name: 'Cosmic Case', emoji: null, image: `${IMG_CDN}/cases/cosmic.png`, cost: 100, tag: 'NEW', style: 'cosmic-style', theme: 'theme-cosmic' },
-            { id: 'stellar', name: 'Stellar Case', emoji: null, image: `${IMG_CDN}/cases/stellar.png`, cost: 250, tag: 'BEST', style: 'stellar-style', theme: 'theme-stellar' },
-            { id: 'golden', name: 'Golden Case', emoji: null, image: `${IMG_CDN}/cases/golden.png`, cost: 500, tag: 'HOT', style: 'golden-style', theme: 'theme-golden' },
-            { id: 'divine', name: 'Divine Case', emoji: null, image: `${IMG_CDN}/cases/divine.png`, cost: 1000, tag: 'VIP', style: 'divine-style', theme: 'theme-divine' }
-        ];
-
-        let STATE = {
-            userId: null,
-            username: '',
-            sapphires: 0,
-            stars: 0,
-            spinCost: 100,
-            canSpin: false,
-            isInitialized: false,
-            spinsCount: 0,
-            totalWon: 0,
-            isModalOpen: false,
-            currentScreen: 'menu',
-            selectedCase: null
+    function getNonZeroPrizeForDisplay() {
+        const caseId = STATE.selectedCase?.id || 'cosmic';
+        const prizePools = {
+            cosmic: [
+                { prize: PRIZE_VISUALS[15], weight: 25 },
+                { prize: PRIZE_VISUALS[25], weight: 25 },
+                { prize: PRIZE_VISUALS[50], weight: 20 },
+                { prize: PRIZE_VISUALS[75], weight: 18 },
+                { prize: PRIZE_VISUALS[100], weight: 12 }
+            ],
+            stellar: [
+                { prize: PRIZE_VISUALS[25], weight: 18 },
+                { prize: PRIZE_VISUALS[50], weight: 18 },
+                { prize: PRIZE_VISUALS[75], weight: 18 },
+                { prize: PRIZE_VISUALS[100], weight: 18 },
+                { prize: PRIZE_VISUALS[150], weight: 15 },
+                { prize: PRIZE_VISUALS[250], weight: 13 }
+            ],
+            golden: [
+                { prize: PRIZE_VISUALS[75], weight: 22 },
+                { prize: PRIZE_VISUALS[100], weight: 22 },
+                { prize: PRIZE_VISUALS[150], weight: 22 },
+                { prize: PRIZE_VISUALS[250], weight: 20 },
+                { prize: PRIZE_VISUALS[500], weight: 14 }
+            ],
+            divine: [
+                { prize: PRIZE_VISUALS[100], weight: 18 },
+                { prize: PRIZE_VISUALS[150], weight: 18 },
+                { prize: PRIZE_VISUALS[250], weight: 18 },
+                { prize: PRIZE_VISUALS[500], weight: 18 },
+                { prize: PRIZE_VISUALS[1000], weight: 18 },
+                { prize: PRIZE_VISUALS[9999], weight: 10 }
+            ]
         };
-
-        let isSpinning = false;
-        let confettiActive = false;
-        let confettiInterval = null;
-
-        const PRIZE_VISUALS = {
-            0: { stars: 0, emoji: null, rarity: "empty", image: `${IMG_CDN}/prizes/void.png`, name: "Void" },
-            15: { stars: 15, emoji: null, rarity: "stars-15", image: `${IMG_CDN}/prizes/glimmer.png`, name: "Glimmer" },
-            25: { stars: 25, emoji: null, rarity: "stars-25", image: `${IMG_CDN}/prizes/spark.png`, name: "Spark" },
-            50: { stars: 50, emoji: null, rarity: "stars-50", image: `${IMG_CDN}/prizes/radiance.png`, name: "Radiance" },
-            75: { stars: 75, emoji: null, rarity: "stars-75", image: `${IMG_CDN}/prizes/stardust.png`, name: "Stardust" },
-            100: { stars: 100, emoji: null, rarity: "stars-100", image: `${IMG_CDN}/prizes/aurora.png`, name: "Aurora" },
-            150: { stars: 150, emoji: null, rarity: "stars-150", image: `${IMG_CDN}/prizes/ember.png`, name: "Ember" },
-            250: { stars: 250, emoji: null, rarity: "stars-250", image: `${IMG_CDN}/prizes/lightning.jpeg`, name: "Lightning" },
-            500: { stars: 500, emoji: null, rarity: "stars-500", image: `${IMG_CDN}/prizes/supernova.png`, name: "Supernova" },
-            1000: { stars: 1000, emoji: null, rarity: "stars-1000", image: `${IMG_CDN}/prizes/galaxy.png`, name: "Galaxy" },
-            9999: { stars: 9999, emoji: null, rarity: "stars-9999", image: `${IMG_CDN}/prizes/divine_star.png`, name: "Divine Star" }
-        };
-
-        const CASE_CONFIG = {
-            cosmic: {
-                prizes: [0, 15, 25, 50, 75, 100],
-                getRandomPrize: () => {
-                    const rand = Math.random() * 100;
-                    if (rand < 93) return 0;
-                    if (rand < 98) return 15;
-                    return 25;
-                }
-            },
-            stellar: {
-                prizes: [0, 25, 50, 75, 100, 150, 250],
-                getRandomPrize: () => {
-                    const rand = Math.random() * 100;
-                    if (rand < 93) return 0;
-                    if (rand < 98) return 25;
-                    return 50;
-                }
-            },
-            golden: {
-                prizes: [0, 75, 100, 150, 250, 500],
-                getRandomPrize: () => {
-                    const rand = Math.random() * 100;
-                    if (rand < 93) return 0;
-                    if (rand < 98) return 75;
-                    return 100;
-                }
-            },
-            divine: {
-                prizes: [0, 100, 150, 250, 500, 1000, 9999],
-                getRandomPrize: () => {
-                    const rand = Math.random() * 100;
-                    if (rand < 93) return 0;
-                    if (rand < 98) return 100;
-                    return 150;
-                }
-            }
-        };
-
-        // Confetti colors
-        const confettiColors = [
-            '#fbbf24', '#f59e0b', '#fcd34d',
-            '#6366f1', '#818cf8', '#a78bfa',
-            '#ec4899', '#f472b6', '#fb7185',
-            '#22d3ee', '#67e8f9', '#06b6d4',
-            '#10b981', '#34d399', '#6ee7b7',
-            '#ef4444', '#f87171', '#fca5a5',
-            '#ffffff', '#e2e8f0'
-        ];
-
-        const confettiShapes = ['square', 'circle', 'star', 'ribbon'];
-
-        function createConfetti(container, isWin) {
-            if (!container || !confettiActive) return;
-
-            const confetti = document.createElement('div');
-            const shape = confettiShapes[Math.floor(Math.random() * confettiShapes.length)];
-            confetti.className = `confetti ${shape}`;
-
-            const color = isWin 
-                ? confettiColors[Math.floor(Math.random() * confettiColors.length)]
-                : ['#6b7280', '#9ca3af', '#d1d5db', '#e5e7eb'][Math.floor(Math.random() * 4)];
-            
-            const size = 6 + Math.random() * 8;
-            const left = Math.random() * 100;
-            const duration = 3 + Math.random() * 2;
-            const delay = Math.random() * 0.3;
-            const rotateStart = Math.random() * 360;
-            const swayAmount = 10 + Math.random() * 20;
-
-            confetti.style.cssText = `
-                left: ${left}%;
-                width: ${size}px;
-                height: ${shape === 'ribbon' ? size * 2 : size}px;
-                background: ${color};
-                box-shadow: 0 0 ${size/2}px ${color};
-                animation-duration: ${duration}s;
-                animation-delay: ${delay}s;
-                transform: rotate(${rotateStart}deg);
-            `;
-
-            container.appendChild(confetti);
-
-            // Remove after animation
-            setTimeout(() => {
-                if (confetti.parentNode) {
-                    confetti.remove();
-                }
-            }, (duration + delay) * 1000);
+        const pool = prizePools[caseId] || prizePools.cosmic;
+        const totalWeight = pool.reduce((sum, p) => sum + p.weight, 0);
+        let rand = Math.random() * totalWeight;
+        for (const item of pool) {
+            rand -= item.weight;
+            if (rand <= 0) return item.prize;
         }
+        return pool[0].prize;
+    }
 
-        function startConfetti(isWin = true) {
-            confettiActive = true;
-            const container = document.getElementById('confettiContainer');
-            if (!container) return;
+    function getItemWidth() {
+        const screenWidth = window.innerWidth;
+        if (screenWidth <= 380) return 97;
+        if (screenWidth <= 390) return 102;
+        return 112;
+    }
 
-            // Clear previous
-            container.innerHTML = '';
+    let ITEM_WIDTH = getItemWidth();
+    const VISIBLE_ITEMS = isMobile ? 40 : 50;
 
-            // Initial burst
-            for (let i = 0; i < 25; i++) {
-                setTimeout(() => {
-                    if (confettiActive) createConfetti(container, isWin);
-                }, i * 40);
+    window.addEventListener('resize', () => { ITEM_WIDTH = getItemWidth(); });
+
+    async function apiRequest(path, options = {}) {
+        const res = await fetch(API_BASE + path, {
+            ...options,
+            headers: {
+                "Content-Type": "application/json",
+                "X-Telegram-Init-Data": initData,
+                ...(options.headers || {})
             }
-
-            // Continuous confetti
-            confettiInterval = setInterval(() => {
-                if (confettiActive && container.children.length < 50) {
-                    createConfetti(container, isWin);
-                    if (Math.random() > 0.5) createConfetti(container, isWin);
-                }
-            }, 100);
+        });
+        const data = await res.json();
+        if (!res.ok || data.success === false) {
+            throw new Error(data.error || "API error");
         }
+        return data;
+    }
 
-        function stopConfetti() {
-            confettiActive = false;
-            if (confettiInterval) {
-                clearInterval(confettiInterval);
-                confettiInterval = null;
-            }
-            const container = document.getElementById('confettiContainer');
-            if (container) {
-                container.innerHTML = '';
-            }
-        }
-
-        function getExpensivePrizeForCase() {
-            const caseId = STATE.selectedCase?.id || 'cosmic';
-            const expensivePrizes = {
-                cosmic: [PRIZE_VISUALS[50], PRIZE_VISUALS[75], PRIZE_VISUALS[100]],
-                stellar: [PRIZE_VISUALS[100], PRIZE_VISUALS[150], PRIZE_VISUALS[250]],
-                golden: [PRIZE_VISUALS[250], PRIZE_VISUALS[500], PRIZE_VISUALS[150]],
-                divine: [PRIZE_VISUALS[500], PRIZE_VISUALS[1000], PRIZE_VISUALS[9999]]
-            };
-            const prizes = expensivePrizes[caseId] || expensivePrizes.cosmic;
-            const rand = Math.random();
-            if (rand < 0.5) return prizes[0];
-            if (rand < 0.8) return prizes[1];
-            return prizes[2];
-        }
-
-        function getNonZeroPrizeForDisplay() {
-            const caseId = STATE.selectedCase?.id || 'cosmic';
-            const prizePools = {
-                cosmic: [
-                    { prize: PRIZE_VISUALS[15], weight: 25 },
-                    { prize: PRIZE_VISUALS[25], weight: 25 },
-                    { prize: PRIZE_VISUALS[50], weight: 20 },
-                    { prize: PRIZE_VISUALS[75], weight: 18 },
-                    { prize: PRIZE_VISUALS[100], weight: 12 }
-                ],
-                stellar: [
-                    { prize: PRIZE_VISUALS[25], weight: 18 },
-                    { prize: PRIZE_VISUALS[50], weight: 18 },
-                    { prize: PRIZE_VISUALS[75], weight: 18 },
-                    { prize: PRIZE_VISUALS[100], weight: 18 },
-                    { prize: PRIZE_VISUALS[150], weight: 15 },
-                    { prize: PRIZE_VISUALS[250], weight: 13 }
-                ],
-                golden: [
-                    { prize: PRIZE_VISUALS[75], weight: 22 },
-                    { prize: PRIZE_VISUALS[100], weight: 22 },
-                    { prize: PRIZE_VISUALS[150], weight: 22 },
-                    { prize: PRIZE_VISUALS[250], weight: 20 },
-                    { prize: PRIZE_VISUALS[500], weight: 14 }
-                ],
-                divine: [
-                    { prize: PRIZE_VISUALS[100], weight: 18 },
-                    { prize: PRIZE_VISUALS[150], weight: 18 },
-                    { prize: PRIZE_VISUALS[250], weight: 18 },
-                    { prize: PRIZE_VISUALS[500], weight: 18 },
-                    { prize: PRIZE_VISUALS[1000], weight: 18 },
-                    { prize: PRIZE_VISUALS[9999], weight: 10 }
-                ]
-            };
-            const pool = prizePools[caseId] || prizePools.cosmic;
-            const totalWeight = pool.reduce((sum, p) => sum + p.weight, 0);
-            let rand = Math.random() * totalWeight;
-            for (const item of pool) {
-                rand -= item.weight;
-                if (rand <= 0) return item.prize;
-            }
-            return pool[0].prize;
-        }
-
-        function getItemWidth() {
-            const screenWidth = window.innerWidth;
-            if (screenWidth <= 380) return 97;
-            if (screenWidth <= 390) return 102;
-            return 112;
-        }
-
-        let ITEM_WIDTH = getItemWidth();
-        const VISIBLE_ITEMS = isMobile ? 40 : 50;
-
-        window.addEventListener('resize', () => { ITEM_WIDTH = getItemWidth(); });
-
-        async function apiRequest(path, options = {}) {
-            const res = await fetch(API_BASE + path, {
-                ...options,
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-Telegram-Init-Data": initData,
-                    ...(options.headers || {})
-                }
-            });
-            const data = await res.json();
-            if (!res.ok || data.success === false) {
-                throw new Error(data.error || "API error");
-            }
-            return data;
-        }
-
-        async function loadBalance() {
-            try {
-                const data = await apiRequest("/api/balance");
-                STATE.sapphires = data.sapphires;
-                STATE.stars = data.stars;
-                STATE.canSpin = data.can_spin;
-                updateUI();
-                return true;
-            } catch (e) {
-                console.error("Balance error:", e);
-                showFatalError("Ошибка загрузки баланса:\n" + e.message);
-                return false;
-            }
-        }
-
-        function setupCustomIcons() {
-            const sapphireIcon = document.getElementById('sapphireIcon');
-            const starIcon = document.getElementById('starIcon');
-            const modalSapphireIcon = document.getElementById('modalSapphireIcon');
-            const modalStarIcon = document.getElementById('modalStarIcon');
-            
-            if (CUSTOM_ICONS.sapphire) {
-                sapphireIcon.innerHTML = `<img src="${CUSTOM_ICONS.sapphire}" class="balance-icon-img" alt="" onerror="this.parentElement.innerHTML='💎'">`;
-                modalSapphireIcon.innerHTML = `<img src="${CUSTOM_ICONS.sapphire}" alt="" onerror="this.parentElement.innerHTML='💎'">`;
-            } else {
-                sapphireIcon.innerHTML = '💎';
-                modalSapphireIcon.innerHTML = '💎';
-            }
-            
-            if (CUSTOM_ICONS.star) {
-                starIcon.innerHTML = `<img src="${CUSTOM_ICONS.star}" class="balance-icon-img" alt="" onerror="this.parentElement.innerHTML='⭐'">`;
-                modalStarIcon.innerHTML = `<img src="${CUSTOM_ICONS.star}" alt="" onerror="this.parentElement.innerHTML='⭐'">`;
-            } else {
-                starIcon.innerHTML = '⭐';
-                modalStarIcon.innerHTML = '⭐';
-            }
-        }
-
-        function preloadImages() {
-            const imageUrls = [];
-            CASES.forEach(c => { if (c.image) imageUrls.push(c.image); });
-            Object.values(PRIZE_VISUALS).forEach(p => { if (p.image) imageUrls.push(p.image); });
-            if (CUSTOM_ICONS.sapphire) imageUrls.push(CUSTOM_ICONS.sapphire);
-            if (CUSTOM_ICONS.star) imageUrls.push(CUSTOM_ICONS.star);
-            imageUrls.forEach(url => { const img = new Image(); img.src = url; });
-        }
-
-        async function init() {
-            if (!initData) {
-                showFatalError("Telegram initData не получен.\nОткрой страницу только через бота.");
-                return;
-            }
-
-            if (tg) {
-                tg.ready();
-                tg.expand();
-                if (tg.initDataUnsafe?.user) {
-                    STATE.userId = tg.initDataUnsafe.user.id;
-                    STATE.username = tg.initDataUnsafe.user.username || '';
-                }
-                tg.BackButton.show();
-                tg.BackButton.onClick(() => handleBackButton());
-            }
-
-            generateStars();
-            generateCasesGrid();
-            setupCustomIcons();
-            preloadImages();
-
-            const balanceLoaded = await loadBalance();
-            if (!balanceLoaded) return;
-
-            STATE.isInitialized = true;
-            setTimeout(() => { document.getElementById('loadingOverlay').classList.add('hidden'); }, 400);
-            updateSessionInfo();
-        }
-
-        function generateCasesGrid() {
-            const grid = document.getElementById('casesGrid');
-            grid.innerHTML = CASES.map(caseItem => `
-                <div class="case-card ${caseItem.style}" onclick="selectCase('${caseItem.id}')">
-                    <div class="case-card-bg"></div>
-                    <div class="case-card-glow"></div>
-                    ${caseItem.tag ? `<div class="case-card-tag">${caseItem.tag}</div>` : ''}
-                    <div class="case-card-image-container">
-                        <img src="${caseItem.image}" alt="${caseItem.name}" class="case-card-image" loading="lazy" onerror="this.style.display='none'">
-                    </div>
-                    <div class="case-card-name">${caseItem.name}</div>
-                    <div class="case-card-price">
-                        <span class="case-card-price-text">${caseItem.cost}</span>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function selectCase(caseId) {
-            const selectedCase = CASES.find(c => c.id === caseId);
-            if (!selectedCase) return;
-
-            STATE.selectedCase = selectedCase;
-            STATE.spinCost = selectedCase.cost;
-            document.body.className = selectedCase.theme;
-
-            const emojiEl = document.getElementById('currentCaseEmoji');
-            const imageEl = document.getElementById('currentCaseImage');
-
-            if (selectedCase.image) {
-                emojiEl.classList.add('hidden');
-                imageEl.classList.remove('hidden');
-                imageEl.src = selectedCase.image;
-                imageEl.onerror = () => {
-                    imageEl.classList.add('hidden');
-                };
-            } else {
-                imageEl.classList.add('hidden');
-                emojiEl.classList.remove('hidden');
-            }
-
-            document.getElementById('currentCaseName').textContent = selectedCase.name;
-            document.getElementById('spinCost').textContent = selectedCase.cost;
-
-            showScreen('case');
-            generateItemsStrip();
-            generatePrizesGrid();
+    async function loadBalance() {
+        try {
+            const data = await apiRequest("/api/balance");
+            STATE.sapphires = data.sapphires;
+            STATE.stars = data.stars;
+            STATE.canSpin = data.can_spin;
             updateUI();
-            haptic('impact');
+            return true;
+        } catch (e) {
+            console.error("Balance error:", e);
+            showFatalError("Ошибка загрузки баланса:\n" + e.message);
+            return false;
+        }
+    }
+
+    function setupCustomIcons() {
+        const sapphireIcon = document.getElementById('sapphireIcon');
+        const starIcon = document.getElementById('starIcon');
+        const modalSapphireIcon = document.getElementById('modalSapphireIcon');
+        const modalStarIcon = document.getElementById('modalStarIcon');
+        
+        if (CUSTOM_ICONS.sapphire) {
+            sapphireIcon.innerHTML = `<img src="${CUSTOM_ICONS.sapphire}" class="balance-icon-img" alt="" onerror="this.parentElement.innerHTML='💎'">`;
+            modalSapphireIcon.innerHTML = `<img src="${CUSTOM_ICONS.sapphire}" alt="" onerror="this.parentElement.innerHTML='💎'">`;
+        } else {
+            sapphireIcon.innerHTML = '💎';
+            modalSapphireIcon.innerHTML = '💎';
+        }
+        
+        if (CUSTOM_ICONS.star) {
+            starIcon.innerHTML = `<img src="${CUSTOM_ICONS.star}" class="balance-icon-img" alt="" onerror="this.parentElement.innerHTML='⭐'">`;
+            modalStarIcon.innerHTML = `<img src="${CUSTOM_ICONS.star}" alt="" onerror="this.parentElement.innerHTML='⭐'">`;
+        } else {
+            starIcon.innerHTML = '⭐';
+            modalStarIcon.innerHTML = '⭐';
+        }
+    }
+
+    function preloadImages() {
+        const imageUrls = [];
+        CASES.forEach(c => { if (c.image) imageUrls.push(c.image); });
+        Object.values(PRIZE_VISUALS).forEach(p => { if (p.image) imageUrls.push(p.image); });
+        if (CUSTOM_ICONS.sapphire) imageUrls.push(CUSTOM_ICONS.sapphire);
+        if (CUSTOM_ICONS.star) imageUrls.push(CUSTOM_ICONS.star);
+        imageUrls.forEach(url => { const img = new Image(); img.src = url; });
+    }
+
+    async function init() {
+        if (!initData) {
+            showFatalError("Telegram initData не получен.\nОткрой страницу только через бота.");
+            return;
         }
 
-        function showScreen(screen) {
-            STATE.currentScreen = screen;
-            const menuScreen = document.getElementById('menuScreen');
-            const caseScreen = document.getElementById('caseScreen');
-
-            if (screen === 'menu') {
-                menuScreen.classList.remove('hidden');
-                caseScreen.classList.add('hidden');
-                document.body.className = '';
-            } else {
-                menuScreen.classList.add('hidden');
-                caseScreen.classList.remove('hidden');
+        if (tg) {
+            tg.ready();
+            tg.expand();
+            if (tg.initDataUnsafe?.user) {
+                STATE.userId = tg.initDataUnsafe.user.id;
+                STATE.username = tg.initDataUnsafe.user.username || '';
             }
+            tg.BackButton.show();
+            tg.BackButton.onClick(() => handleBackButton());
         }
 
-        function goToMenu() {
-            closeModal();
-            showScreen('menu');
-            STATE.selectedCase = null;
-            haptic('selection');
-        }
+        generateStars();
+        generateCasesGrid();
+        setupCustomIcons();
+        preloadImages();
 
-        function handleBackButton() {
-            if (STATE.isModalOpen) closeModal();
-            else if (STATE.currentScreen === 'case') goToMenu();
-            else if (tg?.close) tg.close();
-        }
+        const balanceLoaded = await loadBalance();
+        if (!balanceLoaded) return;
 
-        function generatePrizesGrid() {
-            const grid = document.getElementById('prizesGrid');
-            const caseId = STATE.selectedCase?.id || 'cosmic';
-            const config = CASE_CONFIG[caseId];
+        STATE.isInitialized = true;
+        setTimeout(() => { document.getElementById('loadingOverlay').classList.add('hidden'); }, 400);
+        updateSessionInfo();
+    }
 
-            const displayPrizes = config.prizes.filter(s => s > 0).sort((a, b) => b - a).map(stars => PRIZE_VISUALS[stars]);
-            displayPrizes.push(PRIZE_VISUALS[0]);
-
-            grid.className = 'prizes-grid';
-            const count = displayPrizes.length;
-            if (count <= 5) grid.classList.add('cols-' + count);
-            else if (count === 6) grid.classList.add('cols-6');
-            else grid.classList.add('cols-7');
-
-            grid.innerHTML = displayPrizes.map(prize => `
-                <div class="prize-card ${prize.stars === 0 ? 'empty' : 'stars-' + prize.stars}">
-                    <div class="prize-card-visual">
-                        <img src="${prize.image}" alt="${prize.name}" class="prize-card-image" loading="lazy" onerror="this.style.display='none'">
-                    </div>
-                    <div class="prize-card-name">${prize.stars === 0 ? 'Пусто' : prize.stars}</div>
+    function generateCasesGrid() {
+        const grid = document.getElementById('casesGrid');
+        grid.innerHTML = CASES.map(caseItem => `
+            <div class="case-card ${caseItem.style}" onclick="selectCase('${caseItem.id}')">
+                <div class="case-card-bg"></div>
+                <div class="case-card-glow"></div>
+                ${caseItem.tag ? `<div class="case-card-tag">${caseItem.tag}</div>` : ''}
+                <div class="case-card-image-container">
+                    <img src="${caseItem.image}" alt="${caseItem.name}" class="case-card-image" loading="lazy" onerror="this.style.display='none'">
                 </div>
-            `).join('');
-        }
-
-        function showFatalError(message) {
-            document.getElementById('loadingOverlay').innerHTML = `
-                <div style="text-align: center; padding: 20px;">
-                    <div style="font-size: 3rem; margin-bottom: 20px;">X</div>
-                    <div style="color: #ef4444; font-size: 1.1rem; font-weight: 600; margin-bottom: 10px;">Ошибка</div>
-                    <div style="color: #a1a1aa; font-size: 0.9rem; white-space: pre-wrap;">${message}</div>
-                    <button onclick="window.location.reload()" style="margin-top: 20px; background: linear-gradient(135deg, #6366f1, #4338ca); border: none; padding: 12px 24px; color: white; border-radius: 12px; font-weight: 600; cursor: pointer;">Попробовать снова</button>
+                <div class="case-card-name">${caseItem.name}</div>
+                <div class="case-card-price">
+                    <span class="case-card-price-text">${caseItem.cost}</span>
                 </div>
-            `;
+            </div>
+        `).join('');
+    }
+
+    function selectCase(caseId) {
+        const selectedCase = CASES.find(c => c.id === caseId);
+        if (!selectedCase) return;
+
+        STATE.selectedCase = selectedCase;
+        STATE.spinCost = selectedCase.cost;
+        document.body.className = selectedCase.theme;
+
+        const emojiEl = document.getElementById('currentCaseEmoji');
+        const imageEl = document.getElementById('currentCaseImage');
+
+        if (selectedCase.image) {
+            emojiEl.classList.add('hidden');
+            imageEl.classList.remove('hidden');
+            imageEl.src = selectedCase.image;
+            imageEl.onerror = () => {
+                imageEl.classList.add('hidden');
+            };
+        } else {
+            imageEl.classList.add('hidden');
+            emojiEl.classList.remove('hidden');
         }
 
-        function getRandomPrize() {
-            const caseId = STATE.selectedCase?.id || 'cosmic';
-            return CASE_CONFIG[caseId].getRandomPrize();
+        document.getElementById('currentCaseName').textContent = selectedCase.name;
+        document.getElementById('spinCost').textContent = selectedCase.cost;
+
+        showScreen('case');
+        generateItemsStrip();
+        generatePrizesGrid();
+        updateUI();
+        haptic('impact');
+    }
+
+    function showScreen(screen) {
+        STATE.currentScreen = screen;
+        const menuScreen = document.getElementById('menuScreen');
+        const caseScreen = document.getElementById('caseScreen');
+
+        if (screen === 'menu') {
+            menuScreen.classList.remove('hidden');
+            caseScreen.classList.add('hidden');
+            document.body.className = '';
+        } else {
+            menuScreen.classList.add('hidden');
+            caseScreen.classList.remove('hidden');
         }
+    }
 
-        function generateItemsStrip(winningPrize = null, winningIndex = null) {
-            const strip = document.getElementById('itemsStrip');
-            strip.innerHTML = '';
-            strip.classList.remove('animating');
-            strip.style.transform = 'translateX(0)';
+    function goToMenu() {
+        closeModal();
+        showScreen('menu');
+        STATE.selectedCase = null;
+        haptic('selection');
+    }
 
-            const fragment = document.createDocumentFragment();
-            let prevWasZero = false;
-            
-            for (let i = 0; i < VISIBLE_ITEMS; i++) {
-                let prize;
+    function handleBackButton() {
+        if (STATE.isModalOpen) closeModal();
+        else if (STATE.currentScreen === 'case') goToMenu();
+        else if (tg?.close) tg.close();
+    }
 
-                if (winningIndex !== null && i === winningIndex) {
-                    prize = winningPrize;
-                    prevWasZero = (prize.stars === 0);
-                } else if (winningIndex !== null && Math.abs(i - winningIndex) === 1 && winningPrize && winningPrize.stars === 0) {
-                    prize = getExpensivePrizeForCase();
-                    prevWasZero = false;
-                } else if (winningIndex !== null && Math.abs(i - winningIndex) === 2 && winningPrize && winningPrize.stars === 0) {
+    function generatePrizesGrid() {
+        const grid = document.getElementById('prizesGrid');
+        const caseId = STATE.selectedCase?.id || 'cosmic';
+        const config = CASE_CONFIG[caseId];
+
+        const displayPrizes = config.prizes.filter(s => s > 0).sort((a, b) => b - a).map(stars => PRIZE_VISUALS[stars]);
+        displayPrizes.push(PRIZE_VISUALS[0]);
+
+        grid.className = 'prizes-grid';
+        const count = displayPrizes.length;
+        if (count <= 5) grid.classList.add('cols-' + count);
+        else if (count === 6) grid.classList.add('cols-6');
+        else grid.classList.add('cols-7');
+
+        grid.innerHTML = displayPrizes.map(prize => `
+            <div class="prize-card ${prize.stars === 0 ? 'empty' : 'stars-' + prize.stars}">
+                <div class="prize-card-visual">
+                    <img src="${prize.image}" alt="${prize.name}" class="prize-card-image" loading="lazy" onerror="this.style.display='none'">
+                </div>
+                <div class="prize-card-name">${prize.stars === 0 ? 'Пусто' : prize.stars}</div>
+            </div>
+        `).join('');
+    }
+
+    function showFatalError(message) {
+        document.getElementById('loadingOverlay').innerHTML = `
+            <div style="text-align: center; padding: 20px;">
+                <div style="font-size: 3rem; margin-bottom: 20px;">X</div>
+                <div style="color: #ef4444; font-size: 1.1rem; font-weight: 600; margin-bottom: 10px;">Ошибка</div>
+                <div style="color: #a1a1aa; font-size: 0.9rem; white-space: pre-wrap;">${message}</div>
+                <button onclick="window.location.reload()" style="margin-top: 20px; background: linear-gradient(135deg, #6366f1, #4338ca); border: none; padding: 12px 24px; color: white; border-radius: 12px; font-weight: 600; cursor: pointer;">Попробовать снова</button>
+            </div>
+        `;
+    }
+
+    function getRandomPrize() {
+        const caseId = STATE.selectedCase?.id || 'cosmic';
+        return CASE_CONFIG[caseId].getRandomPrize();
+    }
+
+    function generateItemsStrip(winningPrize = null, winningIndex = null) {
+        const strip = document.getElementById('itemsStrip');
+        strip.innerHTML = '';
+        strip.classList.remove('animating');
+        strip.style.transform = 'translateX(0)';
+
+        const fragment = document.createDocumentFragment();
+        let prevWasZero = false;
+        
+        for (let i = 0; i < VISIBLE_ITEMS; i++) {
+            let prize;
+
+            if (winningIndex !== null && i === winningIndex) {
+                prize = winningPrize;
+                prevWasZero = (prize.stars === 0);
+            } else if (winningIndex !== null && Math.abs(i - winningIndex) === 1 && winningPrize && winningPrize.stars === 0) {
+                prize = getExpensivePrizeForCase();
+                prevWasZero = false;
+            } else if (winningIndex !== null && Math.abs(i - winningIndex) === 2 && winningPrize && winningPrize.stars === 0) {
+                prize = getNonZeroPrizeForDisplay();
+                prevWasZero = false;
+            } else {
+                const shouldBeZero = Math.random() < 0.2;
+                if (shouldBeZero && !prevWasZero) {
+                    prize = PRIZE_VISUALS[0];
+                    prevWasZero = true;
+                } else {
                     prize = getNonZeroPrizeForDisplay();
                     prevWasZero = false;
-                } else {
-                    const shouldBeZero = Math.random() < 0.2;
-                    if (shouldBeZero && !prevWasZero) {
-                        prize = PRIZE_VISUALS[0];
-                        prevWasZero = true;
-                    } else {
-                        prize = getNonZeroPrizeForDisplay();
-                        prevWasZero = false;
-                    }
-                }
-
-                const item = document.createElement('div');
-                item.className = `prize-item rarity-${prize.rarity}`;
-                if (prize.image) item.classList.add('has-image');
-                item.dataset.index = i;
-                item.dataset.stars = prize.stars;
-
-                if (prize.image) {
-                    const img = document.createElement('img');
-                    img.src = prize.image;
-                    img.alt = '';
-                    img.className = 'prize-image';
-                    img.loading = 'eager';
-                    img.onerror = function() { this.style.display = 'none'; };
-                    item.appendChild(img);
-                }
-
-                fragment.appendChild(item);
-            }
-
-            strip.appendChild(fragment);
-        }
-
-        async function runAnimation(winningPrize) {
-            const winningIndex = 30 + Math.floor(Math.random() * 5);
-
-            generateItemsStrip(winningPrize, winningIndex);
-
-            const container = document.getElementById('caseContainer');
-            const strip = document.getElementById('itemsStrip');
-            const containerWidth = container.offsetWidth;
-            const centerPosition = containerWidth / 2;
-            const targetPosition = (winningIndex * ITEM_WIDTH) + (ITEM_WIDTH / 2) - centerPosition;
-            
-            let randomOffset;
-            
-            if (winningPrize.stars === 0) {
-                const edgeChance = Math.random();
-                if (edgeChance < 0.45) {
-                    const direction = Math.random() > 0.5 ? 1 : -1;
-                    randomOffset = direction * (ITEM_WIDTH * 0.38 + Math.random() * 8);
-                } else if (edgeChance < 0.75) {
-                    const direction = Math.random() > 0.5 ? 1 : -1;
-                    randomOffset = direction * (ITEM_WIDTH * 0.25 + Math.random() * 10);
-                } else {
-                    randomOffset = (Math.random() - 0.5) * 35;
-                }
-            } else {
-                randomOffset = (Math.random() - 0.5) * 20;
-            }
-            
-            const finalPosition = targetPosition + randomOffset;
-
-            strip.style.transform = `translateX(${containerWidth}px)`;
-            strip.offsetHeight;
-
-            requestAnimationFrame(() => {
-                strip.classList.add('animating');
-                strip.style.transform = `translateX(-${finalPosition}px)`;
-            });
-
-            if (!isMobile) {
-                playTickSounds();
-            } else {
-                setTimeout(() => haptic('selection'), 500);
-                setTimeout(() => haptic('selection'), 2000);
-                setTimeout(() => haptic('selection'), 4000);
-            }
-
-            await new Promise(resolve => setTimeout(resolve, 5100));
-
-            const winnerItem = strip.querySelector(`[data-index="${winningIndex}"]`);
-            if (winnerItem) winnerItem.classList.add('winner');
-        }
-
-        async function openCase() {
-            if (isSpinning || STATE.isModalOpen) return;
-
-            const currentCost = STATE.selectedCase?.cost || STATE.spinCost;
-
-            if (STATE.sapphires < currentCost) {
-                showStatus('Недостаточно сапфиров!', 'error');
-                haptic('error');
-                return;
-            }
-
-            isSpinning = true;
-            hideStatus();
-            document.getElementById('spinBtn').disabled = true;
-            haptic('impact');
-
-            const prizeStars = getRandomPrize();
-            const prize = PRIZE_VISUALS[prizeStars] || PRIZE_VISUALS[0];
-
-            STATE.sapphires -= currentCost;
-            STATE.spinsCount++;
-            updateUI();
-
-            const animationPromise = runAnimation(prize);
-            
-            let spinSuccess = false;
-            const spinPromise = (async () => {
-                try {
-                    await apiRequest("/api/spin", {
-                        method: "POST",
-                        body: JSON.stringify({ cost: currentCost, case_id: STATE.selectedCase?.id || 'cosmic' })
-                    });
-                    spinSuccess = true;
-                } catch (e) {
-                    console.error("Spin error:", e);
-                    showStatus('Ошибка: ' + e.message, 'error');
-                    haptic('error');
-                    await loadBalance();
-                }
-            })();
-
-            await Promise.all([animationPromise, spinPromise]);
-
-            let apiSuccess = false;
-            if (spinSuccess) {
-                try {
-                    const claimData = await apiRequest("/api/claim", {
-                        method: "POST",
-                        body: JSON.stringify({
-                            stars: prizeStars,
-                            case_id: STATE.selectedCase?.id || 'cosmic'
-                        })
-                    });
-
-                    STATE.sapphires = claimData.new_sapphires;
-                    STATE.stars = claimData.new_stars;
-                    STATE.canSpin = claimData.can_spin;
-
-                    if (prizeStars > 0) STATE.totalWon += prizeStars;
-                    apiSuccess = true;
-                    updateUI();
-                } catch (e) {
-                    console.error("Claim error:", e);
-                    showStatus('Ошибка: ' + e.message, 'error');
-                    haptic('error');
-                    await loadBalance();
                 }
             }
 
-            if (apiSuccess) {
-                showResult(prize);
-            }
-
-            isSpinning = false;
-            updateSessionInfo();
-        }
-
-        function playTickSounds() {
-            let tickCount = 0;
-            const maxTicks = 35;
-
-            const tickInterval = setInterval(() => {
-                tickCount++;
-                if (tickCount > maxTicks) {
-                    clearInterval(tickInterval);
-                    return;
-                }
-                if (tickCount < 18) haptic('selection');
-            }, 120);
-        }
-
-        function showResult(prize) {
-            STATE.isModalOpen = true;
-            document.getElementById('spinBtn').disabled = true;
-
-            const overlay = document.getElementById('modalOverlay');
-            const modal = document.getElementById('modal');
-            const emoji = document.getElementById('modalEmoji');
-            const title = document.getElementById('modalTitle');
-            const prizeText = document.getElementById('modalPrize');
-            const spinAgainBtn = document.getElementById('spinAgainBtn');
-
-            stopConfetti();
-            modal.classList.remove('win', 'lose');
+            const item = document.createElement('div');
+            item.className = `prize-item rarity-${prize.rarity}`;
+            if (prize.image) item.classList.add('has-image');
+            item.dataset.index = i;
+            item.dataset.stars = prize.stars;
 
             if (prize.image) {
-                emoji.innerHTML = `<img src="${prize.image}" class="modal-prize-image" onerror="this.style.display='none'">`;
+                const img = document.createElement('img');
+                img.src = prize.image;
+                img.alt = '';
+                img.className = 'prize-image';
+                img.loading = 'eager';
+                img.onerror = function() { this.style.display = 'none'; };
+                item.appendChild(img);
+            }
+
+            fragment.appendChild(item);
+        }
+
+        strip.appendChild(fragment);
+    }
+
+    async function runAnimation(winningPrize) {
+        const winningIndex = 30 + Math.floor(Math.random() * 5);
+
+        generateItemsStrip(winningPrize, winningIndex);
+
+        const container = document.getElementById('caseContainer');
+        const strip = document.getElementById('itemsStrip');
+        const containerWidth = container.offsetWidth;
+        const centerPosition = containerWidth / 2;
+        const targetPosition = (winningIndex * ITEM_WIDTH) + (ITEM_WIDTH / 2) - centerPosition;
+        
+        let randomOffset;
+        
+        if (winningPrize.stars === 0) {
+            const edgeChance = Math.random();
+            if (edgeChance < 0.45) {
+                const direction = Math.random() > 0.5 ? 1 : -1;
+                randomOffset = direction * (ITEM_WIDTH * 0.38 + Math.random() * 8);
+            } else if (edgeChance < 0.75) {
+                const direction = Math.random() > 0.5 ? 1 : -1;
+                randomOffset = direction * (ITEM_WIDTH * 0.25 + Math.random() * 10);
             } else {
-                emoji.innerHTML = '';
+                randomOffset = (Math.random() - 0.5) * 35;
             }
-
-            const isWin = prize.stars > 0;
-
-            if (isWin) {
-                modal.classList.add('win');
-                
-                if (prize.stars >= 9999) {
-                    title.textContent = 'ДЖЕКПОТ!';
-                } else if (prize.stars >= 1000) {
-                    title.textContent = 'ДЖЕКПОТ!';
-                } else if (prize.stars >= 500) {
-                    title.textContent = 'Невероятно!';
-                } else if (prize.stars >= 100) {
-                    title.textContent = 'Отлично!';
-                } else {
-                    title.textContent = 'Поздравляем!';
-                }
-                
-                prizeText.textContent = `+${prize.stars}`;
-                haptic('success');
-            } else {
-                modal.classList.add('lose');
-                title.textContent = 'Пусто...';
-                prizeText.textContent = 'Попробуй ещё раз!';
-                haptic('error');
-            }
-
-            document.getElementById('modalSapphires').textContent = STATE.sapphires;
-            document.getElementById('modalStars').textContent = STATE.stars;
-
-            const canSpinAgain = STATE.sapphires >= STATE.spinCost && STATE.canSpin;
-            spinAgainBtn.style.display = canSpinAgain ? 'block' : 'none';
-
-            overlay.classList.add('show');
-            
-            // Start confetti for BOTH win and lose
-            setTimeout(() => {
-                startConfetti(isWin);
-            }, 100);
+        } else {
+            randomOffset = (Math.random() - 0.5) * 20;
         }
+        
+        const finalPosition = targetPosition + randomOffset;
 
-        function spinAgain() {
-            closeModal();
-            requestAnimationFrame(() => {
-                generateItemsStrip();
-                openCase();
-            });
-        }
+        strip.style.transform = `translateX(${containerWidth}px)`;
+        strip.offsetHeight;
 
-        function closeModal() {
-            STATE.isModalOpen = false;
-            stopConfetti();
-            document.getElementById('modalOverlay').classList.remove('show');
-            document.getElementById('modal').classList.remove('win', 'lose');
-            updateUI();
-        }
-
-        function updateUI() {
-            const sapphiresEl = document.getElementById('sapphires');
-            const starsEl = document.getElementById('stars-balance');
-            
-            const oldSapphires = parseInt(sapphiresEl.textContent) || 0;
-            const oldStars = parseInt(starsEl.textContent) || 0;
-            
-            sapphiresEl.textContent = STATE.sapphires;
-            starsEl.textContent = STATE.stars;
-            
-            if (oldSapphires !== STATE.sapphires) {
-                sapphiresEl.classList.add('updated');
-                setTimeout(() => sapphiresEl.classList.remove('updated'), 400);
-            }
-            if (oldStars !== STATE.stars) {
-                starsEl.classList.add('updated');
-                setTimeout(() => starsEl.classList.remove('updated'), 400);
-            }
-
-            const canSpin = STATE.sapphires >= STATE.spinCost &&
-                           !isSpinning &&
-                           !STATE.isModalOpen &&
-                           STATE.canSpin !== false;
-
-            document.getElementById('spinBtn').disabled = !canSpin;
-        }
-
-        function updateSessionInfo() {
-            document.getElementById('sessionInfo').textContent =
-                `ID:${STATE.userId || '?'} | Spins:${STATE.spinsCount} | Won:${STATE.totalWon}`;
-        }
-
-        function showStatus(message, type = 'error') {
-            const el = document.getElementById('statusMessage');
-            el.innerHTML = message;
-            el.className = `status-message show ${type === 'success' ? 'success' : ''}`;
-            setTimeout(() => hideStatus(), 4000);
-        }
-
-        function hideStatus() {
-            document.getElementById('statusMessage').classList.remove('show');
-        }
-
-        function generateStars() {
-            const container = document.getElementById('bgStars');
-            const starCount = isMobile ? 60 : 100;
-            const fragment = document.createDocumentFragment();
-
-            for (let i = 0; i < starCount; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                const size = Math.random() * 2.5 + 0.5;
-                const isBig = size > 2;
-                if (isBig) star.classList.add('big');
-                
-                star.style.cssText = `
-                    left: ${Math.random() * 100}%;
-                    top: ${Math.random() * 100}%;
-                    opacity: ${Math.random() * 0.5 + 0.2};
-                    width: ${size}px;
-                    height: ${size}px;
-                    animation-delay: ${Math.random() * 3}s;
-                    animation-duration: ${2 + Math.random() * 2}s;
-                `;
-                fragment.appendChild(star);
-            }
-
-            container.appendChild(fragment);
-        }
-
-        function haptic(type) {
-            if (tg?.HapticFeedback) {
-                try {
-                    if (type === 'success') tg.HapticFeedback.notificationOccurred('success');
-                    else if (type === 'error') tg.HapticFeedback.notificationOccurred('error');
-                    else if (type === 'impact') tg.HapticFeedback.impactOccurred('heavy');
-                    else if (type === 'selection') tg.HapticFeedback.selectionChanged();
-                } catch (e) {}
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', init);
-
-        document.getElementById('modalOverlay').addEventListener('click', (e) => {
-            if (e.target.id === 'modalOverlay') closeModal();
+        requestAnimationFrame(() => {
+            strip.classList.add('animating');
+            strip.style.transform = `translateX(-${finalPosition}px)`;
         });
 
         if (!isMobile) {
-            document.addEventListener('keydown', (e) => {
-                if (e.code === 'Space' && !isSpinning && !STATE.isModalOpen && STATE.currentScreen === 'case') {
-                    e.preventDefault();
-                    openCase();
-                }
-                if (e.code === 'Escape') handleBackButton();
-            });
+            playTickSounds();
+        } else {
+            setTimeout(() => haptic('selection'), 500);
+            setTimeout(() => haptic('selection'), 2000);
+            setTimeout(() => haptic('selection'), 4000);
         }
 
-        document.addEventListener('touchend', (e) => {
-            const now = Date.now();
-            if (now - lastTouchEnd <= 300) e.preventDefault();
-            lastTouchEnd = now;
-        }, { passive: false });
+        await new Promise(resolve => setTimeout(resolve, 5100));
 
-        let lastTouchEnd = 0;
+        const winnerItem = strip.querySelector(`[data-index="${winningIndex}"]`);
+        if (winnerItem) winnerItem.classList.add('winner');
+    }
 
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                document.body.classList.add('paused');
-                stopConfetti();
-            } else {
-                document.body.classList.remove('paused');
-                if (STATE.isModalOpen) {
-                    const modal = document.getElementById('modal');
-                    const isWin = modal.classList.contains('win');
-                    startConfetti(isWin);
-                }
+    async function openCase() {
+        if (isSpinning || STATE.isModalOpen) return;
+
+        const currentCost = STATE.selectedCase?.cost || STATE.spinCost;
+
+        if (STATE.sapphires < currentCost) {
+            showStatus('Недостаточно сапфиров!', 'error');
+            haptic('error');
+            return;
+        }
+
+        isSpinning = true;
+        hideStatus();
+        document.getElementById('spinBtn').disabled = true;
+        haptic('impact');
+
+        const prizeStars = getRandomPrize();
+        const prize = PRIZE_VISUALS[prizeStars] || PRIZE_VISUALS[0];
+
+        STATE.sapphires -= currentCost;
+        STATE.spinsCount++;
+        updateUI();
+
+        const animationPromise = runAnimation(prize);
+        
+        let spinSuccess = false;
+        const spinPromise = (async () => {
+            try {
+                await apiRequest("/api/spin", {
+                    method: "POST",
+                    body: JSON.stringify({ cost: currentCost, case_id: STATE.selectedCase?.id || 'cosmic' })
+                });
+                spinSuccess = true;
+            } catch (e) {
+                console.error("Spin error:", e);
+                showStatus('Ошибка: ' + e.message, 'error');
+                haptic('error');
+                await loadBalance();
             }
+        })();
+
+        await Promise.all([animationPromise, spinPromise]);
+
+        let apiSuccess = false;
+        if (spinSuccess) {
+            try {
+                const claimData = await apiRequest("/api/claim", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        stars: prizeStars,
+                        case_id: STATE.selectedCase?.id || 'cosmic'
+                    })
+                });
+
+                STATE.sapphires = claimData.new_sapphires;
+                STATE.stars = claimData.new_stars;
+                STATE.canSpin = claimData.can_spin;
+
+                if (prizeStars > 0) STATE.totalWon += prizeStars;
+                apiSuccess = true;
+                updateUI();
+            } catch (e) {
+                console.error("Claim error:", e);
+                showStatus('Ошибка: ' + e.message, 'error');
+                haptic('error');
+                await loadBalance();
+            }
+        }
+
+        if (apiSuccess) {
+            showResult(prize);
+        }
+
+        isSpinning = false;
+        updateSessionInfo();
+    }
+
+    function playTickSounds() {
+        let tickCount = 0;
+        const maxTicks = 35;
+
+        const tickInterval = setInterval(() => {
+            tickCount++;
+            if (tickCount > maxTicks) {
+                clearInterval(tickInterval);
+                return;
+            }
+            if (tickCount < 18) haptic('selection');
+        }, 120);
+    }
+
+    function showResult(prize) {
+        STATE.isModalOpen = true;
+        document.getElementById('spinBtn').disabled = true;
+
+        const overlay = document.getElementById('modalOverlay');
+        const modal = document.getElementById('modal');
+        const emoji = document.getElementById('modalEmoji');
+        const title = document.getElementById('modalTitle');
+        const prizeText = document.getElementById('modalPrize');
+        const spinAgainBtn = document.getElementById('spinAgainBtn');
+
+        stopConfetti();
+        modal.classList.remove('win', 'lose');
+
+        if (prize.image) {
+            emoji.innerHTML = `<img src="${prize.image}" class="modal-prize-image" onerror="this.style.display='none'">`;
+        } else {
+            emoji.innerHTML = '';
+        }
+
+        if (prize.stars > 0) {
+            modal.classList.add('win');
+            
+            if (prize.stars >= 9999) {
+                title.textContent = 'ДЖЕКПОТ!';
+            } else if (prize.stars >= 1000) {
+                title.textContent = 'ДЖЕКПОТ!';
+            } else if (prize.stars >= 500) {
+                title.textContent = 'Невероятно!';
+            } else if (prize.stars >= 100) {
+                title.textContent = 'Отлично!';
+            } else {
+                title.textContent = 'Поздравляем!';
+            }
+            
+            prizeText.textContent = `+${prize.stars}`;
+            haptic('success');
+            startConfetti();
+        } else {
+            modal.classList.add('lose');
+            title.textContent = 'Пусто...';
+            prizeText.textContent = 'Попробуй ещё раз!';
+            haptic('error');
+        }
+
+        document.getElementById('modalSapphires').textContent = STATE.sapphires;
+        document.getElementById('modalStars').textContent = STATE.stars;
+
+        const canSpinAgain = STATE.sapphires >= STATE.spinCost && STATE.canSpin;
+        spinAgainBtn.style.display = canSpinAgain ? 'block' : 'none';
+
+        overlay.classList.add('show');
+    }
+
+    // ============ NEW CONFETTI SYSTEM ============
+    const confettiColors = [
+        '#fbbf24', '#f59e0b', '#fcd34d', // Gold
+        '#6366f1', '#818cf8', '#a78bfa', // Purple
+        '#ec4899', '#f472b6', '#fb7185', // Pink
+        '#22d3ee', '#67e8f9', '#06b6d4', // Cyan
+        '#10b981', '#34d399', '#6ee7b7', // Green
+        '#ef4444', '#f87171', '#fca5a5', // Red
+        '#ffffff', '#e2e8f0'              // White
+    ];
+
+    const confettiShapes = ['square', 'circle', 'star', 'ribbon'];
+    let confettiInterval = null;
+    let confettiPieces = [];
+    const MAX_CONFETTI_PIECES = 60;
+
+    function createConfetti() {
+        const overlay = document.getElementById('confettiOverlay');
+        if (!overlay || !confettiActive) return;
+
+        // Limit confetti count
+        if (confettiPieces.length >= MAX_CONFETTI_PIECES) {
+            const oldPiece = confettiPieces.shift();
+            if (oldPiece && oldPiece.parentNode) {
+                oldPiece.remove();
+            }
+        }
+
+        const confetti = document.createElement('div');
+        const inner = document.createElement('div');
+        inner.className = 'confetti-inner';
+
+        const shape = confettiShapes[Math.floor(Math.random() * confettiShapes.length)];
+        confetti.className = `confetti ${shape}`;
+
+        const color = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+        const size = 8 + Math.random() * 10;
+        const left = Math.random() * 100;
+        const duration = 6 + Math.random() * 4; // 6-10 seconds - slower fall
+        const swayDuration = 2 + Math.random() * 2;
+        const delay = Math.random() * 0.5;
+        const rotateStart = Math.random() * 360;
+
+        inner.style.background = color;
+        inner.style.boxShadow = `0 0 ${size/2}px ${color}`;
+
+        confetti.style.cssText = `
+            left: ${left}%;
+            width: ${size}px;
+            height: ${shape === 'ribbon' ? size * 2 : size}px;
+            animation: confettiDrop ${duration}s linear forwards, confettiSway ${swayDuration}s ease-in-out infinite;
+            animation-delay: ${delay}s;
+            transform: rotateZ(${rotateStart}deg);
+            opacity: 0;
+        `;
+
+        // Fade in after delay
+        setTimeout(() => {
+            confetti.style.opacity = '1';
+        }, delay * 1000);
+
+        confetti.appendChild(inner);
+        overlay.appendChild(confetti);
+        confettiPieces.push(confetti);
+
+        // Remove after animation
+        setTimeout(() => {
+            if (confetti.parentNode) {
+                confetti.remove();
+            }
+            const index = confettiPieces.indexOf(confetti);
+            if (index > -1) {
+                confettiPieces.splice(index, 1);
+            }
+        }, (duration + delay) * 1000);
+    }
+
+    function startConfetti() {
+        confettiActive = true;
+        const overlay = document.getElementById('confettiOverlay');
+        if (!overlay) return;
+
+        // Initial burst - create many confetti at once
+        for (let i = 0; i < 30; i++) {
+            setTimeout(() => {
+                if (confettiActive) createConfetti();
+            }, i * 50);
+        }
+
+        // Continue creating confetti
+        confettiInterval = setInterval(() => {
+            if (confettiActive) {
+                createConfetti();
+                // Create 2-3 at a time for more density
+                if (Math.random() > 0.5) createConfetti();
+            } else {
+                clearInterval(confettiInterval);
+            }
+        }, 150); // Create new confetti every 150ms
+    }
+
+    function stopConfetti() {
+        confettiActive = false;
+        
+        if (confettiInterval) {
+            clearInterval(confettiInterval);
+            confettiInterval = null;
+        }
+
+        // Clear all confetti
+        const overlay = document.getElementById('confettiOverlay');
+        if (overlay) {
+            overlay.innerHTML = '';
+        }
+        confettiPieces = [];
+    }
+
+    function spinAgain() {
+        closeModal();
+        requestAnimationFrame(() => {
+            generateItemsStrip();
+            openCase();
         });
-    </script>
-</body>
-</html>
+    }
+
+    function closeModal() {
+        STATE.isModalOpen = false;
+        stopConfetti();
+        document.getElementById('modalOverlay').classList.remove('show');
+        document.getElementById('modal').classList.remove('win', 'lose');
+        updateUI();
+    }
+
+    function updateUI() {
+        const sapphiresEl = document.getElementById('sapphires');
+        const starsEl = document.getElementById('stars-balance');
+        
+        const oldSapphires = parseInt(sapphiresEl.textContent) || 0;
+        const oldStars = parseInt(starsEl.textContent) || 0;
+        
+        sapphiresEl.textContent = STATE.sapphires;
+        starsEl.textContent = STATE.stars;
+        
+        if (oldSapphires !== STATE.sapphires) {
+            sapphiresEl.classList.add('updated');
+            setTimeout(() => sapphiresEl.classList.remove('updated'), 400);
+        }
+        if (oldStars !== STATE.stars) {
+            starsEl.classList.add('updated');
+            setTimeout(() => starsEl.classList.remove('updated'), 400);
+        }
+
+        const canSpin = STATE.sapphires >= STATE.spinCost &&
+                       !isSpinning &&
+                       !STATE.isModalOpen &&
+                       STATE.canSpin !== false;
+
+        document.getElementById('spinBtn').disabled = !canSpin;
+    }
+
+    function updateSessionInfo() {
+        document.getElementById('sessionInfo').textContent =
+            `ID:${STATE.userId || '?'} | Spins:${STATE.spinsCount} | Won:${STATE.totalWon}`;
+    }
+
+    function showStatus(message, type = 'error') {
+        const el = document.getElementById('statusMessage');
+        el.innerHTML = message;
+        el.className = `status-message show ${type === 'success' ? 'success' : ''}`;
+        setTimeout(() => hideStatus(), 4000);
+    }
+
+    function hideStatus() {
+        document.getElementById('statusMessage').classList.remove('show');
+    }
+
+    function generateStars() {
+        const container = document.getElementById('bgStars');
+        const starCount = isMobile ? 60 : 100;
+        const fragment = document.createDocumentFragment();
+
+        for (let i = 0; i < starCount; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            const size = Math.random() * 2.5 + 0.5;
+            const isBig = size > 2;
+            if (isBig) star.classList.add('big');
+            
+            star.style.cssText = `
+                left: ${Math.random() * 100}%;
+                top: ${Math.random() * 100}%;
+                opacity: ${Math.random() * 0.5 + 0.2};
+                width: ${size}px;
+                height: ${size}px;
+                animation-delay: ${Math.random() * 3}s;
+                animation-duration: ${2 + Math.random() * 2}s;
+            `;
+            fragment.appendChild(star);
+        }
+
+        container.appendChild(fragment);
+    }
+
+    function haptic(type) {
+        if (tg?.HapticFeedback) {
+            try {
+                if (type === 'success') tg.HapticFeedback.notificationOccurred('success');
+                else if (type === 'error') tg.HapticFeedback.notificationOccurred('error');
+                else if (type === 'impact') tg.HapticFeedback.impactOccurred('heavy');
+                else if (type === 'selection') tg.HapticFeedback.selectionChanged();
+            } catch (e) {}
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+
+    document.getElementById('modalOverlay').addEventListener('click', (e) => {
+        if (e.target.id === 'modalOverlay') closeModal();
+    });
+
+    if (!isMobile) {
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space' && !isSpinning && !STATE.isModalOpen && STATE.currentScreen === 'case') {
+                e.preventDefault();
+                openCase();
+            }
+            if (e.code === 'Escape') handleBackButton();
+        });
+    }
+
+    document.addEventListener('touchend', (e) => {
+        const now = Date.now();
+        if (now - lastTouchEnd <= 300) e.preventDefault();
+        lastTouchEnd = now;
+    }, { passive: false });
+
+    let lastTouchEnd = 0;
+
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            document.body.classList.add('paused');
+            stopConfetti();
+        } else {
+            document.body.classList.remove('paused');
+            if (STATE.isModalOpen && document.getElementById('modal').classList.contains('win')) {
+                startConfetti();
+            }
+        }
+    });
+</script>
+
+</body> </html>
