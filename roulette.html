@@ -7,7 +7,13 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
         :root {
             --bg-primary: #05050a;
             --bg-secondary: #0a0a14;
@@ -23,6 +29,7 @@
             --theme-color-light: #818cf8;
             --theme-glow: rgba(99, 102, 241, 0.5);
         }
+
         body {
             background: var(--bg-primary);
             min-height: 100vh;
@@ -35,6 +42,7 @@
             padding-bottom: 100px;
             position: relative;
         }
+
         .animated-bg {
             position: fixed;
             top: 0;
@@ -45,12 +53,14 @@
             overflow: hidden;
             background: radial-gradient(ellipse at top, #0a0a18 0%, #050508 50%, #020203 100%);
         }
+
         .bg-orb {
             position: absolute;
             border-radius: 50%;
             filter: blur(80px);
             opacity: 0.5;
         }
+
         .bg-orb-1 {
             width: 500px;
             height: 500px;
@@ -59,6 +69,7 @@
             right: -150px;
             animation: floatOrb 12s ease-in-out infinite;
         }
+
         .bg-orb-2 {
             width: 450px;
             height: 450px;
@@ -67,6 +78,7 @@
             left: -100px;
             animation: floatOrb 15s ease-in-out infinite reverse;
         }
+
         .bg-orb-3 {
             width: 700px;
             height: 700px;
@@ -78,6 +90,7 @@
             transition: background 0.5s ease;
             animation: pulseOrb 6s ease-in-out infinite;
         }
+
         .bg-orb-4 {
             width: 300px;
             height: 300px;
@@ -86,6 +99,7 @@
             right: 10%;
             animation: floatOrb 18s ease-in-out infinite;
         }
+
         .bg-orb-5 {
             width: 250px;
             height: 250px;
@@ -94,14 +108,17 @@
             left: 5%;
             animation: floatOrb 20s ease-in-out infinite reverse;
         }
+
         @keyframes floatOrb {
             0%, 100% { transform: translateY(0) scale(1); }
             50% { transform: translateY(-30px) scale(1.05); }
         }
+
         @keyframes pulseOrb {
             0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
             50% { opacity: 0.5; transform: translate(-50%, -50%) scale(1.1); }
         }
+
         .bg-stars {
             position: absolute;
             top: 0;
@@ -110,59 +127,78 @@
             bottom: 0;
             pointer-events: none;
         }
+
         .star {
             position: absolute;
             background: white;
             border-radius: 50%;
             animation: twinkle 3s ease-in-out infinite;
         }
+
         .star.big {
             box-shadow: 0 0 6px 2px rgba(255, 255, 255, 0.3);
         }
+
         @keyframes twinkle {
             0%, 100% { opacity: 0.2; transform: scale(1); }
             50% { opacity: 0.8; transform: scale(1.2); }
         }
+
         @keyframes textShine {
             0% { background-position: -200% center; }
             100% { background-position: 200% center; }
         }
+
         @keyframes cardEnter {
             0% { opacity: 0; transform: translateY(30px) scale(0.95); }
             100% { opacity: 1; transform: translateY(0) scale(1); }
         }
+
         @keyframes subtleFloat {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
         }
+
         @keyframes pulseGlow {
             0%, 100% { opacity: 0.5; transform: scale(1); }
             50% { opacity: 0.8; transform: scale(1.05); }
         }
+
         @keyframes breatheGlow {
             0%, 100% { filter: blur(40px); opacity: 0.6; }
             50% { filter: blur(50px); opacity: 0.8; }
         }
+
         @keyframes buttonPulse {
             0%, 100% { box-shadow: 0 15px 50px var(--theme-glow), 0 0 30px var(--theme-glow); }
             50% { box-shadow: 0 20px 60px var(--theme-glow), 0 0 50px var(--theme-glow), 0 0 80px var(--theme-glow); }
         }
+
         @keyframes tagPulse {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.05); }
         }
+
         @keyframes borderGlow {
             0%, 100% { border-color: rgba(255, 255, 255, 0.08); }
             50% { border-color: rgba(255, 255, 255, 0.2); }
         }
+
         @keyframes iconBounce {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.1); }
         }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
         @keyframes rotateGlow {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
         @keyframes emptyTextGlow {
             0%, 100% { 
                 text-shadow: 0 0 20px rgba(156, 163, 175, 0.6), 0 0 40px rgba(156, 163, 175, 0.4);
@@ -173,10 +209,43 @@
                 opacity: 1;
             }
         }
+
+        /* Confetti animations */
+        @keyframes confettiDrop {
+    0% {
+        transform: translateY(-10px) rotateZ(0deg) rotateX(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(120vh) rotateZ(720deg) rotateX(360deg);
+        opacity: 0.6;
+    }
+}
+
+@keyframes confettiSway {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(20px); }
+    75% { transform: translateX(-20px); }
+}
+
+        @keyframes confettiGlow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.5); }
+        }
+
+        @keyframes prizeCardFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
         @keyframes valueCountUp {
             0% { transform: scale(1.3); opacity: 0.5; }
             100% { transform: scale(1); opacity: 1; }
         }
+
         .header {
             text-align: center;
             margin-bottom: 25px;
@@ -185,7 +254,9 @@
             max-width: 400px;
             animation: cardEnter 0.6s ease-out;
         }
+
         .brand-container { margin-bottom: 25px; }
+
         .brand-text {
             font-family: 'Orbitron', sans-serif;
             font-weight: 900;
@@ -199,6 +270,7 @@
             background-clip: text;
             animation: textShine 4s linear infinite;
         }
+
         .brand-subtitle {
             font-family: 'Rajdhani', sans-serif;
             font-size: 0.7rem;
@@ -206,26 +278,15 @@
             color: var(--text-secondary);
             text-transform: uppercase;
             margin-top: 5px;
+            animation: borderGlow 3s ease-in-out infinite;
         }
-        .demo-badge {
-            display: inline-block;
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            color: #1a1a2e;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.6rem;
-            font-weight: 700;
-            padding: 4px 12px;
-            border-radius: 20px;
-            margin-top: 8px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
-        }
+
         .balance-container {
             display: flex;
             justify-content: center;
             gap: 16px;
         }
+
         .balance-card {
             position: relative;
             display: flex;
@@ -239,9 +300,11 @@
             min-width: 140px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
+
         .balance-card:hover {
             transform: translateY(-3px);
         }
+
         .balance-card::before {
             content: '';
             position: absolute;
@@ -251,10 +314,13 @@
             height: 1px;
             background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
         }
+
         .balance-card.sapphires {
             border-color: rgba(99, 102, 241, 0.3);
             box-shadow: 0 8px 32px rgba(99, 102, 241, 0.2), inset 0 1px 0 rgba(129, 140, 248, 0.15), 0 0 60px rgba(99, 102, 241, 0.15);
+            animation: borderGlow 4s ease-in-out infinite;
         }
+
         .balance-card.sapphires::after {
             content: '';
             position: absolute;
@@ -262,10 +328,12 @@
             background: radial-gradient(ellipse at bottom left, rgba(99, 102, 241, 0.15), transparent 60%);
             pointer-events: none;
         }
+
         .balance-card.stars {
             border-color: rgba(251, 191, 36, 0.3);
             box-shadow: 0 8px 32px rgba(251, 191, 36, 0.15), inset 0 1px 0 rgba(251, 191, 36, 0.15), 0 0 60px rgba(251, 191, 36, 0.1);
         }
+
         .balance-card.stars::after {
             content: '';
             position: absolute;
@@ -273,6 +341,7 @@
             background: radial-gradient(ellipse at bottom left, rgba(251, 191, 36, 0.15), transparent 60%);
             pointer-events: none;
         }
+
         .balance-icon-wrap {
             position: relative;
             width: 42px;
@@ -282,27 +351,34 @@
             justify-content: center;
             border-radius: 12px;
             flex-shrink: 0;
+            animation: iconBounce 3s ease-in-out infinite;
         }
+
         .balance-card.sapphires .balance-icon-wrap {
             background: linear-gradient(145deg, rgba(99, 102, 241, 0.3), rgba(99, 102, 241, 0.15));
             box-shadow: 0 0 25px rgba(99, 102, 241, 0.4);
         }
+
         .balance-card.stars .balance-icon-wrap {
             background: linear-gradient(145deg, rgba(251, 191, 36, 0.3), rgba(251, 191, 36, 0.15));
             box-shadow: 0 0 25px rgba(251, 191, 36, 0.4);
+            animation-delay: 0.5s;
         }
+
         .balance-icon {
             font-size: 1.4rem;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
             position: relative;
             z-index: 1;
         }
+
         .balance-icon-img {
             width: 28px;
             height: 28px;
             object-fit: contain;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
         }
+
         .balance-info {
             display: flex;
             flex-direction: column;
@@ -310,6 +386,7 @@
             position: relative;
             z-index: 1;
         }
+
         .balance-value {
             font-family: 'Orbitron', sans-serif;
             font-size: 1.25rem;
@@ -317,21 +394,25 @@
             line-height: 1;
             transition: transform 0.3s ease;
         }
+
         .balance-value.updated {
             animation: valueCountUp 0.4s ease-out;
         }
+
         .balance-card.sapphires .balance-value {
             background: linear-gradient(135deg, #c4b5fd, #818cf8);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
+
         .balance-card.stars .balance-value {
             background: linear-gradient(135deg, #fef3c7, #fbbf24);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
+
         .balance-label {
             font-family: 'Rajdhani', sans-serif;
             font-size: 0.65rem;
@@ -339,13 +420,16 @@
             text-transform: uppercase;
             letter-spacing: 1.5px;
         }
+
         .menu-screen {
             z-index: 10;
             width: 100%;
             max-width: 400px;
             animation: cardEnter 0.6s ease-out;
         }
+
         .menu-screen.hidden { display: none; }
+
         .menu-title {
             text-align: center;
             font-family: 'Rajdhani', sans-serif;
@@ -356,6 +440,7 @@
             text-transform: uppercase;
             position: relative;
         }
+
         .menu-title::before, .menu-title::after {
             content: '';
             position: absolute;
@@ -364,13 +449,16 @@
             height: 1px;
             background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.5));
         }
+
         .menu-title::before { left: 20px; }
         .menu-title::after { right: 20px; transform: rotate(180deg); }
+
         .cases-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 16px;
         }
+
         .case-card {
             position: relative;
             border-radius: 28px;
@@ -384,10 +472,12 @@
             border: none;
             animation: cardEnter 0.5s ease-out backwards;
         }
+
         .case-card:nth-child(1) { animation-delay: 0.1s; }
         .case-card:nth-child(2) { animation-delay: 0.2s; }
         .case-card:nth-child(3) { animation-delay: 0.3s; }
         .case-card:nth-child(4) { animation-delay: 0.4s; }
+
         .case-card::before {
             content: '';
             position: absolute;
@@ -400,6 +490,7 @@
             mask-composite: exclude;
             pointer-events: none;
         }
+
         .case-card-bg {
             position: absolute;
             inset: 0;
@@ -407,6 +498,7 @@
             background: linear-gradient(145deg, rgba(15, 15, 35, 0.9), rgba(8, 8, 20, 0.95));
             z-index: 0;
         }
+
         .case-card-glow {
             position: absolute;
             inset: -40px;
@@ -418,28 +510,36 @@
             transition: all 0.4s ease;
             animation: breatheGlow 4s ease-in-out infinite;
         }
+
         .case-card:hover .case-card-glow,
         .case-card:active .case-card-glow {
             opacity: 1;
             filter: blur(50px);
             transform: scale(1.15);
         }
+
         .case-card.cosmic-style .case-card-glow {
             background: radial-gradient(circle, rgba(99, 102, 241, 0.8) 0%, rgba(99, 102, 241, 0.4) 40%, transparent 70%);
         }
+
         .case-card.stellar-style .case-card-glow {
             background: radial-gradient(circle, rgba(236, 72, 153, 0.8) 0%, rgba(236, 72, 153, 0.4) 40%, transparent 70%);
         }
+
         .case-card.golden-style .case-card-glow {
             background: radial-gradient(circle, rgba(251, 191, 36, 0.8) 0%, rgba(251, 191, 36, 0.4) 40%, transparent 70%);
         }
+
         .case-card.divine-style .case-card-glow {
             background: radial-gradient(circle, rgba(34, 211, 238, 0.8) 0%, rgba(34, 211, 238, 0.4) 40%, transparent 70%);
         }
+
         .case-card:active { transform: scale(0.97); }
+
         @media (min-width: 769px) {
             .case-card:hover { transform: translateY(-8px) scale(1.02); }
         }
+
         .case-card.cosmic-style { box-shadow: 0 10px 40px rgba(99, 102, 241, 0.25), 0 0 80px rgba(99, 102, 241, 0.15); }
         .case-card.cosmic-style:hover { box-shadow: 0 20px 60px rgba(99, 102, 241, 0.4), 0 0 100px rgba(99, 102, 241, 0.25); }
         .case-card.cosmic-style .case-card-name {
@@ -447,6 +547,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+
         .case-card.stellar-style { box-shadow: 0 10px 40px rgba(236, 72, 153, 0.25), 0 0 80px rgba(236, 72, 153, 0.15); }
         .case-card.stellar-style:hover { box-shadow: 0 20px 60px rgba(236, 72, 153, 0.4), 0 0 100px rgba(236, 72, 153, 0.25); }
         .case-card.stellar-style .case-card-name {
@@ -454,6 +555,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+
         .case-card.golden-style { box-shadow: 0 10px 40px rgba(251, 191, 36, 0.3), 0 0 80px rgba(251, 191, 36, 0.15); }
         .case-card.golden-style:hover { box-shadow: 0 20px 60px rgba(251, 191, 36, 0.45), 0 0 100px rgba(251, 191, 36, 0.25); }
         .case-card.golden-style .case-card-name {
@@ -461,6 +563,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+
         .case-card.divine-style { box-shadow: 0 10px 40px rgba(34, 211, 238, 0.3), 0 0 80px rgba(34, 211, 238, 0.15); }
         .case-card.divine-style:hover { box-shadow: 0 20px 60px rgba(34, 211, 238, 0.45), 0 0 100px rgba(34, 211, 238, 0.25); }
         .case-card.divine-style .case-card-name {
@@ -468,6 +571,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+
         .case-card-image-container {
             position: relative;
             width: 100px;
@@ -475,6 +579,15 @@
             margin: 0 auto 16px;
             z-index: 2;
         }
+
+        .case-card-emoji {
+            font-size: 4rem;
+            filter: drop-shadow(0 8px 25px rgba(0, 0, 0, 0.5));
+            position: relative;
+            z-index: 1;
+            animation: subtleFloat 4s ease-in-out infinite;
+        }
+
         .case-card-image {
             width: 90px;
             height: 90px;
@@ -487,13 +600,16 @@
             animation: subtleFloat 4s ease-in-out infinite;
             transition: transform 0.3s ease;
         }
+
         .case-card:hover .case-card-image {
             transform: scale(1.05);
         }
+
         .case-card:nth-child(1) .case-card-image { animation-delay: 0s; }
         .case-card:nth-child(2) .case-card-image { animation-delay: 1s; }
         .case-card:nth-child(3) .case-card-image { animation-delay: 2s; }
         .case-card:nth-child(4) .case-card-image { animation-delay: 3s; }
+
         .case-card-name {
             font-family: 'Orbitron', sans-serif;
             font-size: 0.8rem;
@@ -504,6 +620,7 @@
             position: relative;
             z-index: 2;
         }
+
         .case-card-price {
             font-family: 'Orbitron', sans-serif;
             font-size: 0.9rem;
@@ -515,10 +632,12 @@
             position: relative;
             z-index: 2;
         }
+
         .case-card-price-text {
             color: #c4b5fd;
             text-shadow: 0 0 20px rgba(139, 92, 246, 0.7);
         }
+
         .case-card-tag {
             position: absolute;
             top: 12px;
@@ -533,26 +652,31 @@
             z-index: 3;
             animation: tagPulse 2s ease-in-out infinite;
         }
+
         .case-card.cosmic-style .case-card-tag {
             background: linear-gradient(135deg, #6366f1, #818cf8);
             color: #fff;
             box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
         }
+
         .case-card.stellar-style .case-card-tag {
             background: linear-gradient(135deg, #ec4899, #f472b6);
             color: #fff;
             box-shadow: 0 0 20px rgba(236, 72, 153, 0.5);
         }
+
         .case-card.golden-style .case-card-tag {
             background: linear-gradient(135deg, #fbbf24, #f59e0b);
             color: #1a1a2e;
             box-shadow: 0 0 20px rgba(251, 191, 36, 0.5);
         }
+
         .case-card.divine-style .case-card-tag {
             background: linear-gradient(135deg, #22d3ee, #06b6d4);
             color: #042f2e;
             box-shadow: 0 0 20px rgba(34, 211, 238, 0.5);
         }
+
         .case-screen {
             z-index: 10;
             width: 100%;
@@ -561,39 +685,47 @@
             flex-direction: column;
             align-items: center;
         }
+
         .case-screen.hidden { display: none; }
+
         body.theme-cosmic {
             --theme-color: #6366f1;
             --theme-color-light: #818cf8;
             --theme-glow: rgba(99, 102, 241, 0.5);
         }
+
         body.theme-stellar {
             --theme-color: #ec4899;
             --theme-color-light: #f472b6;
             --theme-glow: rgba(236, 72, 153, 0.5);
         }
+
         body.theme-golden {
             --theme-color: #fbbf24;
             --theme-color-light: #fcd34d;
             --theme-glow: rgba(251, 191, 36, 0.5);
         }
+
         body.theme-divine {
             --theme-color: #22d3ee;
             --theme-color-light: #67e8f9;
             --theme-glow: rgba(34, 211, 238, 0.5);
         }
+
         .case-display {
             text-align: center;
             margin-bottom: 25px;
             z-index: 10;
             animation: cardEnter 0.6s ease-out 0.1s both;
         }
+
         .case-hero {
             position: relative;
             width: 160px;
             height: 160px;
             margin: 0 auto 20px;
         }
+
         .case-hero-glow {
             position: absolute;
             inset: -60px;
@@ -603,6 +735,7 @@
             opacity: 0.8;
             animation: pulseGlow 3s ease-in-out infinite;
         }
+
         .case-hero-glow-inner {
             position: absolute;
             inset: -30px;
@@ -612,6 +745,7 @@
             opacity: 0.4;
             animation: rotateGlow 20s linear infinite;
         }
+
         .case-hero-content {
             position: relative;
             width: 100%;
@@ -622,11 +756,14 @@
             z-index: 2;
             animation: subtleFloat 4s ease-in-out infinite;
         }
+
         .case-emoji {
             font-size: 5.5rem;
             filter: drop-shadow(0 10px 40px var(--theme-glow));
         }
+
         .case-emoji.hidden { display: none; }
+
         .case-display-image {
             width: 120px;
             height: 120px;
@@ -636,10 +773,13 @@
             border: 3px solid rgba(255, 255, 255, 0.2);
             transition: transform 0.3s ease;
         }
+
         .case-display-image:hover {
             transform: scale(1.05) rotate(2deg);
         }
+
         .case-display-image.hidden { display: none; }
+
         .case-name {
             font-family: 'Orbitron', sans-serif;
             font-size: 1.2rem;
@@ -658,15 +798,23 @@
             background-clip: text;
             letter-spacing: 3px;
             text-transform: uppercase;
-            animation: textShine 6s ease-in-out infinite;
+            animation: smoothShine 6s ease-in-out infinite;
             background-size: 300% auto;
         }
+
+        @keyframes smoothShine {
+            0% { background-position: 0% center; }
+            50% { background-position: 100% center; }
+            100% { background-position: 0% center; }
+        }
+
         .case-section {
             width: 100%;
             max-width: 400px;
             z-index: 10;
             animation: cardEnter 0.6s ease-out 0.2s both;
         }
+
         .case-container {
             position: relative;
             width: 100%;
@@ -676,7 +824,9 @@
             overflow: hidden;
             border: 2px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 0 50px var(--theme-glow), inset 0 0 30px rgba(0,0,0,0.3);
+            animation: borderGlow 4s ease-in-out infinite;
         }
+
         .case-container::before {
             content: '';
             position: absolute;
@@ -688,6 +838,7 @@
             z-index: 10;
             pointer-events: none;
         }
+
         .center-pointer {
             position: absolute;
             top: 0;
@@ -698,6 +849,7 @@
             flex-direction: column;
             align-items: center;
         }
+
         .pointer-arrow {
             width: 0;
             height: 0;
@@ -707,12 +859,14 @@
             filter: drop-shadow(0 0 15px var(--theme-color));
             animation: pulseGlow 2s ease-in-out infinite;
         }
+
         .pointer-line {
             width: 3px;
             height: 130px;
             background: linear-gradient(180deg, var(--theme-color), transparent);
             opacity: 0.5;
         }
+
         .bottom-pointer {
             position: absolute;
             bottom: 0;
@@ -720,10 +874,12 @@
             transform: translateX(-50%);
             z-index: 20;
         }
+
         .bottom-pointer .pointer-arrow {
             border-top: none;
             border-bottom: 22px solid var(--theme-color);
         }
+
         .items-strip {
             display: flex;
             align-items: center;
@@ -733,9 +889,11 @@
             left: 0;
             will-change: transform;
         }
+
         .items-strip.animating {
             transition: transform 5s cubic-bezier(0.15, 0.85, 0.25, 1);
         }
+
         .prize-item {
             flex-shrink: 0;
             width: 100px;
@@ -750,61 +908,79 @@
             border: 2px solid rgba(255, 255, 255, 0.1);
             transition: transform 0.2s ease;
         }
+
         .prize-item.has-image { background: transparent !important; }
+
         .prize-item.rarity-empty {
             background: linear-gradient(145deg, rgba(55, 65, 81, 0.7), rgba(31, 41, 55, 0.8));
             border-color: rgba(107, 114, 128, 0.4);
         }
+
         .prize-item.rarity-stars-15 {
             background: linear-gradient(145deg, rgba(52, 211, 153, 0.8), rgba(16, 185, 129, 0.85));
             border-color: rgba(52, 211, 153, 0.6);
             box-shadow: 0 0 20px rgba(52, 211, 153, 0.4);
         }
+
         .prize-item.rarity-stars-25 {
             background: linear-gradient(145deg, rgba(45, 212, 191, 0.8), rgba(20, 184, 166, 0.85));
             border-color: rgba(45, 212, 191, 0.6);
             box-shadow: 0 0 20px rgba(45, 212, 191, 0.4);
         }
+
         .prize-item.rarity-stars-50 {
             background: linear-gradient(145deg, rgba(59, 130, 246, 0.85), rgba(37, 99, 235, 0.9));
             border-color: rgba(59, 130, 246, 0.6);
             box-shadow: 0 0 25px rgba(59, 130, 246, 0.45);
         }
+
         .prize-item.rarity-stars-75 {
             background: linear-gradient(145deg, rgba(99, 102, 241, 0.85), rgba(79, 70, 229, 0.9));
             border-color: rgba(99, 102, 241, 0.6);
             box-shadow: 0 0 25px rgba(99, 102, 241, 0.45);
         }
+
         .prize-item.rarity-stars-100 {
             background: linear-gradient(145deg, rgba(139, 92, 246, 0.85), rgba(124, 58, 237, 0.9));
             border-color: rgba(139, 92, 246, 0.6);
             box-shadow: 0 0 30px rgba(139, 92, 246, 0.5);
         }
+
         .prize-item.rarity-stars-150 {
             background: linear-gradient(145deg, rgba(168, 85, 247, 0.85), rgba(147, 51, 234, 0.9));
             border-color: rgba(168, 85, 247, 0.65);
             box-shadow: 0 0 30px rgba(168, 85, 247, 0.5);
         }
+
         .prize-item.rarity-stars-250 {
             background: linear-gradient(145deg, rgba(236, 72, 153, 0.85), rgba(219, 39, 119, 0.9));
             border-color: rgba(236, 72, 153, 0.65);
             box-shadow: 0 0 35px rgba(236, 72, 153, 0.55);
         }
+
         .prize-item.rarity-stars-500 {
             background: linear-gradient(145deg, rgba(251, 146, 60, 0.9), rgba(249, 115, 22, 0.92));
             border-color: rgba(251, 146, 60, 0.7);
             box-shadow: 0 0 40px rgba(251, 146, 60, 0.6);
         }
+
         .prize-item.rarity-stars-1000 {
             background: linear-gradient(145deg, rgba(251, 191, 36, 0.9), rgba(245, 158, 11, 0.92));
             border-color: rgba(251, 191, 36, 0.75);
             box-shadow: 0 0 45px rgba(251, 191, 36, 0.65);
         }
+
         .prize-item.rarity-stars-9999 {
             background: linear-gradient(145deg, rgba(239, 68, 68, 0.9), rgba(220, 38, 38, 0.92));
             border-color: rgba(239, 68, 68, 0.8);
             box-shadow: 0 0 50px rgba(239, 68, 68, 0.7), 0 0 80px rgba(251, 191, 36, 0.4);
         }
+
+        .prize-emoji {
+            font-size: 2.5rem;
+            filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.3));
+        }
+
         .prize-image {
             position: absolute;
             top: 0;
@@ -816,16 +992,19 @@
             object-fit: cover;
             border-radius: 16px;
         }
+
         .prize-item.winner {
             animation: winnerPop 0.5s ease-out;
             border-color: var(--theme-color) !important;
             box-shadow: 0 0 60px var(--theme-glow) !important;
         }
+
         @keyframes winnerPop {
             0% { transform: scale(1); }
             50% { transform: scale(1.12); }
             100% { transform: scale(1); }
         }
+
         .spin-button {
             background: linear-gradient(135deg, var(--theme-color), var(--theme-color-light));
             border: none;
@@ -848,7 +1027,9 @@
             -webkit-tap-highlight-color: transparent;
             animation: cardEnter 0.6s ease-out 0.3s both, buttonPulse 3s ease-in-out infinite 1s;
         }
+
         .spin-button:active:not(:disabled) { transform: scale(0.97); }
+
         @media (min-width: 769px) {
             .spin-button:hover:not(:disabled) {
                 transform: translateY(-4px) scale(1.02);
@@ -856,12 +1037,14 @@
                 animation: none;
             }
         }
+
         .spin-button:disabled {
             background: linear-gradient(135deg, #374151, #1f2937);
             cursor: not-allowed;
             box-shadow: none;
             animation: none;
         }
+
         .spin-cost {
             background: rgba(0, 0, 0, 0.25);
             padding: 8px 16px;
@@ -869,6 +1052,7 @@
             font-size: 0.8rem;
             letter-spacing: 1px;
         }
+
         .back-to-menu-btn {
             background: transparent;
             border: 1px solid rgba(255, 255, 255, 0.15);
@@ -885,11 +1069,13 @@
             letter-spacing: 1px;
             -webkit-tap-highlight-color: transparent;
         }
+
         .back-to-menu-btn:hover, .back-to-menu-btn:active {
             border-color: var(--theme-color);
             color: var(--text-primary);
             box-shadow: 0 0 30px var(--theme-glow);
         }
+
         .info-section {
             margin-top: 35px;
             width: 100%;
@@ -897,6 +1083,7 @@
             z-index: 10;
             animation: cardEnter 0.6s ease-out 0.4s both;
         }
+
         .info-title {
             text-align: center;
             font-family: 'Rajdhani', sans-serif;
@@ -906,16 +1093,19 @@
             letter-spacing: 3px;
             text-transform: uppercase;
         }
+
         .prizes-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 12px;
         }
+
         .prizes-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
         .prizes-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
         .prizes-grid.cols-5 { grid-template-columns: repeat(5, 1fr); }
         .prizes-grid.cols-6 { grid-template-columns: repeat(3, 1fr); }
         .prizes-grid.cols-7 { grid-template-columns: repeat(4, 1fr); }
+
         .prize-card {
             background: linear-gradient(145deg, rgba(20, 20, 40, 0.9), rgba(10, 10, 25, 0.95));
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -924,14 +1114,26 @@
             padding-bottom: 12px;
             text-align: center;
             transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            animation: prizeCardFloat 4s ease-in-out infinite;
         }
+
+        .prize-card:nth-child(1) { animation-delay: 0s; }
+        .prize-card:nth-child(2) { animation-delay: 0.5s; }
+        .prize-card:nth-child(3) { animation-delay: 1s; }
+        .prize-card:nth-child(4) { animation-delay: 1.5s; }
+        .prize-card:nth-child(5) { animation-delay: 2s; }
+        .prize-card:nth-child(6) { animation-delay: 2.5s; }
+        .prize-card:nth-child(7) { animation-delay: 3s; }
+
         @media (min-width: 769px) {
             .prize-card:hover {
                 transform: translateY(-4px) scale(1.02);
                 border-color: var(--theme-color);
                 box-shadow: 0 12px 40px var(--theme-glow);
+                animation: none;
             }
         }
+
         .prize-card.stars-15 { border-color: rgba(52, 211, 153, 0.4); background: linear-gradient(145deg, rgba(52, 211, 153, 0.12), rgba(15, 15, 35, 0.95)); }
         .prize-card.stars-25 { border-color: rgba(45, 212, 191, 0.4); background: linear-gradient(145deg, rgba(45, 212, 191, 0.12), rgba(15, 15, 35, 0.95)); }
         .prize-card.stars-50 { border-color: rgba(59, 130, 246, 0.4); background: linear-gradient(145deg, rgba(59, 130, 246, 0.12), rgba(15, 15, 35, 0.95)); }
@@ -942,16 +1144,19 @@
         .prize-card.stars-500 { border-color: rgba(251, 146, 60, 0.5); background: linear-gradient(145deg, rgba(251, 146, 60, 0.14), rgba(15, 15, 35, 0.95)); }
         .prize-card.stars-1000 { border-color: rgba(251, 191, 36, 0.5); background: linear-gradient(145deg, rgba(251, 191, 36, 0.14), rgba(15, 15, 35, 0.95)); }
         .prize-card.stars-9999 { border-color: rgba(239, 68, 68, 0.5); background: linear-gradient(145deg, rgba(239, 68, 68, 0.14), rgba(15, 15, 35, 0.95)); }
+
         .prize-card.empty {
             border-color: rgba(107, 114, 128, 0.25);
             background: linear-gradient(145deg, rgba(55, 65, 81, 0.15), rgba(15, 15, 35, 0.95));
             opacity: 0.6;
         }
+
         .prize-card.empty .prize-card-name {
             background: linear-gradient(135deg, #6b7280, #9ca3af);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+
         .prize-card-visual {
             width: 100%;
             aspect-ratio: 1;
@@ -964,7 +1169,11 @@
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
+
+        .prize-card-emoji { font-size: 2rem; filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.25)); }
+
         .prize-card-image { width: 100%; height: 100%; object-fit: cover; }
+
         .prize-card-name {
             font-family: 'Orbitron', sans-serif;
             font-size: 0.65rem;
@@ -975,6 +1184,7 @@
             text-align: center;
             letter-spacing: 0.5px;
         }
+
         .status-message {
             background: linear-gradient(135deg, rgba(127, 29, 29, 0.7), rgba(69, 10, 10, 0.7));
             border: 1px solid rgba(239, 68, 68, 0.4);
@@ -988,12 +1198,15 @@
             width: 100%;
             max-width: 400px;
         }
+
         .status-message.success {
             background: linear-gradient(135deg, rgba(21, 87, 36, 0.7), rgba(6, 78, 59, 0.7));
             border-color: rgba(34, 197, 94, 0.4);
         }
+
         .status-message.show { display: block; animation: cardEnter 0.3s ease-out; }
-        /* ========== MODAL ========== */
+
+        /* ========== MODAL - INSTANT ========== */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -1011,7 +1224,9 @@
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
         }
+
         .modal-overlay.show { opacity: 1; visibility: visible; }
+
         .modal {
             background: linear-gradient(180deg, rgba(20, 20, 50, 0.98) 0%, rgba(10, 10, 25, 0.99) 100%);
             border-radius: 28px;
@@ -1026,6 +1241,7 @@
             overflow: hidden;
             box-shadow: 0 0 80px var(--theme-glow), 0 25px 80px rgba(0, 0, 0, 0.8);
         }
+
         .modal::before {
             content: '';
             position: absolute;
@@ -1035,15 +1251,65 @@
             height: 2px;
             background: linear-gradient(90deg, transparent, var(--theme-color-light), transparent);
         }
+
         .modal-overlay.show .modal { transform: scale(1); }
+
         .modal.win {
             border-color: var(--theme-color);
             box-shadow: 0 0 100px var(--theme-glow), 0 25px 80px rgba(0, 0, 0, 0.8);
         }
+
         .modal.lose {
             border-color: rgba(107, 114, 128, 0.5);
             box-shadow: 0 0 60px rgba(107, 114, 128, 0.4), 0 25px 80px rgba(0, 0, 0, 0.8);
         }
+
+        /* Modal confetti container */
+        #confettiOverlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+            border-radius: 28px;
+        }
+
+        .confetti {
+            position: absolute;
+            top: -20px;
+            width: 12px;
+            height: 12px;
+            pointer-events: none;
+            will-change: transform;
+        }
+
+        .confetti-inner {
+            width: 100%;
+            height: 100%;
+            animation: confettiGlow 2s ease-in-out infinite;
+        }
+
+        .confetti.square .confetti-inner {
+            border-radius: 2px;
+        }
+
+        .confetti.circle .confetti-inner {
+            border-radius: 50%;
+        }
+
+        .confetti.star .confetti-inner {
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+        }
+
+        .confetti.ribbon .confetti-inner {
+            width: 8px;
+            height: 20px;
+            border-radius: 4px;
+        }
+
         .modal-emoji {
             font-size: 4.5rem;
             margin-bottom: 15px;
@@ -1051,6 +1317,7 @@
             position: relative;
             z-index: 2;
         }
+
         .modal-prize-image {
             width: 100px;
             height: 100px;
@@ -1062,10 +1329,13 @@
             position: relative;
             z-index: 2;
         }
+
         .modal.win .modal-prize-image {
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5), 0 0 40px var(--theme-glow);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5), 0 0 60px var(--theme-glow);
             border-color: var(--theme-color);
+            animation: pulseGlow 2s ease-in-out infinite;
         }
+
         .modal-title {
             font-family: 'Orbitron', sans-serif;
             font-size: 1.3rem;
@@ -1076,6 +1346,7 @@
             position: relative;
             z-index: 2;
         }
+
         .modal.win .modal-title {
             background: linear-gradient(135deg, #fff, var(--theme-color-light), #fff);
             background-size: 200% auto;
@@ -1083,6 +1354,7 @@
             -webkit-text-fill-color: transparent;
             animation: textShine 3s linear infinite;
         }
+
         .modal.lose .modal-title {
             font-family: 'Orbitron', sans-serif;
             font-size: 1.8rem;
@@ -1094,6 +1366,7 @@
             animation: textShine 4s linear infinite, emptyTextGlow 2.5s ease-in-out infinite;
             letter-spacing: 6px;
         }
+
         .modal-prize {
             font-family: 'Orbitron', sans-serif;
             font-size: 2.2rem;
@@ -1106,6 +1379,7 @@
             z-index: 2;
             filter: drop-shadow(0 4px 15px var(--theme-glow));
         }
+
         .modal.lose .modal-prize {
             font-size: 0.95rem;
             font-weight: 600;
@@ -1113,6 +1387,7 @@
             -webkit-background-clip: text;
             filter: none;
         }
+
         .modal-balance {
             display: flex;
             justify-content: center;
@@ -1121,6 +1396,7 @@
             position: relative;
             z-index: 2;
         }
+
         .modal-balance-item {
             display: flex;
             align-items: center;
@@ -1130,7 +1406,11 @@
             border-radius: 16px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             position: relative;
+            /* No animations or transforms */
+            transform: none !important;
+            animation: none !important;
         }
+
         .modal-balance-item::before {
             content: '';
             position: absolute;
@@ -1140,14 +1420,19 @@
             height: 1px;
             background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
         }
+
         .modal-balance-item.sapphire {
             border-color: rgba(99, 102, 241, 0.4);
-            box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+            transform: none !important;
+            animation: none !important;
         }
+
         .modal-balance-item.star {
             border-color: rgba(251, 191, 36, 0.4);
-            box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+            transform: none !important;
+            animation: none !important;
         }
+
         .modal-balance-icon {
             width: 22px;
             height: 22px;
@@ -1157,29 +1442,36 @@
             font-size: 1.1rem;
             flex-shrink: 0;
         }
+
         .modal-balance-icon img {
             width: 100%;
             height: 100%;
             object-fit: contain;
         }
+
         .modal-balance-value {
             font-family: 'Orbitron', sans-serif;
             font-size: 1.1rem;
             font-weight: 700;
             line-height: 1;
+            transform: none !important;
+            animation: none !important;
         }
+
         .modal-balance-item.sapphire .modal-balance-value {
             background: linear-gradient(135deg, #c4b5fd, #818cf8);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
+
         .modal-balance-item.star .modal-balance-value {
             background: linear-gradient(135deg, #fef3c7, #fbbf24);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
+
         .modal-buttons {
             display: flex;
             flex-direction: column;
@@ -1187,6 +1479,7 @@
             position: relative;
             z-index: 2;
         }
+
         .modal-button {
             background: linear-gradient(135deg, var(--theme-color), var(--theme-color-light));
             border: none;
@@ -1204,32 +1497,39 @@
             position: relative;
             overflow: hidden;
         }
+
         .modal-button:active { transform: scale(0.97); }
+
         @media (min-width: 769px) {
             .modal-button:hover { 
                 transform: scale(1.03); 
                 box-shadow: 0 12px 40px var(--theme-glow); 
             }
         }
+
         .modal-button.secondary {
             background: transparent;
             border: 2px solid rgba(255, 255, 255, 0.15);
             color: var(--text-secondary);
             padding: 14px 32px;
         }
+
         .modal-button.secondary:hover, .modal-button.secondary:active {
             background: rgba(255, 255, 255, 0.05);
             border-color: rgba(255, 255, 255, 0.3);
             color: white;
         }
+
         .modal-button.theme-btn { 
             background: linear-gradient(135deg, var(--theme-color), var(--theme-color-light)); 
             color: #1a1a2e;
             box-shadow: 0 8px 30px var(--theme-glow);
         }
+
         .modal-button.theme-btn:hover { 
             box-shadow: 0 12px 50px var(--theme-glow); 
         }
+
         .loading-overlay {
             position: fixed;
             top: 0;
@@ -1244,7 +1544,9 @@
             z-index: 200;
             transition: opacity 0.4s ease;
         }
+
         .loading-overlay.hidden { opacity: 0; pointer-events: none; }
+
         .loader {
             width: 50px;
             height: 50px;
@@ -1254,7 +1556,9 @@
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
         }
+
         @keyframes spin { to { transform: rotate(360deg); } }
+
         .loading-text {
             margin-top: 20px;
             font-family: 'Orbitron', sans-serif;
@@ -1268,6 +1572,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+
         .session-info {
             position: fixed;
             bottom: 5px;
@@ -1277,66 +1582,28 @@
             z-index: 1;
             font-family: monospace;
         }
-        /* ========== CONFETTI CONTAINER ========== */
-        .confetti-container {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            z-index: 4;            /* было 1 — из-за этого было "за кнопкой" */
-            overflow: hidden;
-            border-radius: inherit;
-            contain: layout paint;
-        }
-        .confetti {
-            position: absolute;
-            left: 0;
-            top: 0;
-            will-change: transform, opacity;
-            z-index: 1;
-        }
-        /* Формы конфетти */
-        .confetti.shape-star { clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); }
-        .confetti.shape-heart { clip-path: polygon(50% 85%, 15% 55%, 0% 35%, 5% 15%, 25% 0%, 50% 15%, 75% 0%, 95% 15%, 100% 35%, 85% 55%); }
-        .confetti.shape-diamond { clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); }
-        .confetti.shape-triangle { clip-path: polygon(50% 0%, 0% 100%, 100% 100%); }
-        .confetti.shape-hexagon { clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%); }
-        .confetti.shape-ribbon { border-radius: 1px; }
-        .confetti.shape-circle { border-radius: 50%; }
 
-        /* Анимация с физикой: выстрел вверх и падение вниз */
-        @keyframes confettiPop {
-            0% {
-                transform: translate3d(0, 0, 0) scale(0.5) rotateX(0) rotateY(0);
-                opacity: 1;
-            }
-            15% {
-                /* Пик взрыва: вылетаем вверх */
-                transform: translate3d(var(--drift-peak), var(--peak-y), 0) scale(1.1) rotateX(var(--rot-x-peak)) rotateY(var(--rot-y-peak));
-                opacity: 1;
-            }
-            100% {
-                /* Падение вниз с вращением */
-                transform: translate3d(var(--drift-end), 200px, 0) scale(0.8) rotateX(var(--rot-x-end)) rotateY(var(--rot-y-end));
-                opacity: 0;
-            }
-        }
         @media (max-width: 390px) {
             .case-container { height: 115px; }
             .prize-item { width: 90px; height: 90px; }
+            .prize-emoji { font-size: 2.2rem; }
             .pointer-line { height: 115px; }
             .brand-text { font-size: 1.7rem; }
             .balance-card { padding: 12px 18px; min-width: 125px; }
             .balance-icon-wrap { width: 38px; height: 38px; }
             .balance-value { font-size: 1.1rem; }
             .case-hero { width: 140px; height: 140px; }
+            .case-emoji { font-size: 4.5rem; }
             .case-display-image { width: 100px; height: 100px; }
             .modal { padding: 30px 22px; }
             .modal-balance { gap: 8px; }
             .modal-balance-item { padding: 8px 12px; }
         }
+
         @media (max-width: 380px) {
             .case-container { height: 110px; }
             .prize-item { width: 85px; height: 85px; }
+            .prize-emoji { font-size: 1.8rem; }
             .brand-text { font-size: 1.5rem; }
             .pointer-line { height: 110px; }
             .balance-container { gap: 10px; }
@@ -1345,9 +1612,11 @@
             .balance-icon { font-size: 1.2rem; }
             .balance-value { font-size: 1rem; }
             .case-hero { width: 120px; height: 120px; }
+            .case-emoji { font-size: 4rem; }
             .case-display-image { width: 85px; height: 85px; }
             .modal-balance { flex-direction: column; gap: 10px; }
         }
+
         @supports (padding: max(0px)) {
             body {
                 padding-left: max(20px, env(safe-area-inset-left));
@@ -1355,6 +1624,7 @@
                 padding-bottom: max(100px, env(safe-area-inset-bottom));
             }
         }
+
         @media (max-width: 768px) {
             .bg-orb-1, .bg-orb-2, .bg-orb-4, .bg-orb-5 { animation: none; }
             .star { animation-duration: 4s; }
@@ -1366,6 +1636,7 @@
         <div class="loader"></div>
         <div class="loading-text">Loading</div>
     </div>
+
     <div class="animated-bg">
         <div class="bg-orb bg-orb-1"></div>
         <div class="bg-orb bg-orb-2"></div>
@@ -1374,16 +1645,18 @@
         <div class="bg-orb bg-orb-5"></div>
         <div class="bg-stars" id="bgStars"></div>
     </div>
+
+
+
     <div class="header">
         <div class="brand-container">
             <h1 class="brand-text">Divine Case</h1>
             <div class="brand-subtitle">Premium Loot Experience</div>
-            <div class="demo-badge" id="demoBadge" style="display: none;">DEMO MODE</div>
         </div>
         <div class="balance-container">
             <div class="balance-card sapphires">
                 <div class="balance-icon-wrap">
-                    <span class="balance-icon" id="sapphireIcon">💎</span>
+                    <span class="balance-icon" id="sapphireIcon"></span>
                 </div>
                 <div class="balance-info">
                     <span class="balance-value" id="sapphires">0</span>
@@ -1392,7 +1665,7 @@
             </div>
             <div class="balance-card stars">
                 <div class="balance-icon-wrap">
-                    <span class="balance-icon" id="starIcon">⭐</span>
+                    <span class="balance-icon" id="starIcon"></span>
                 </div>
                 <div class="balance-info">
                     <span class="balance-value" id="stars-balance">0</span>
@@ -1401,10 +1674,12 @@
             </div>
         </div>
     </div>
+
     <div class="menu-screen" id="menuScreen">
         <div class="menu-title">Выберите кейс</div>
         <div class="cases-grid" id="casesGrid"></div>
     </div>
+
     <div class="case-screen hidden" id="caseScreen">
         <div class="case-display">
             <div class="case-hero">
@@ -1417,6 +1692,7 @@
             </div>
             <div class="case-name" id="currentCaseName">Cosmic Case</div>
         </div>
+
         <div class="case-section">
             <div class="case-container" id="caseContainer">
                 <div class="center-pointer">
@@ -1429,31 +1705,37 @@
                 <div class="items-strip" id="itemsStrip"></div>
             </div>
         </div>
+
         <button class="spin-button" id="spinBtn" onclick="openCase()">
             <span>Открыть</span>
             <span class="spin-cost" id="spinCost">100</span>
         </button>
+
         <button class="back-to-menu-btn" onclick="goToMenu()">Назад к кейсам</button>
+
         <div class="status-message" id="statusMessage"></div>
+
         <div class="info-section">
             <div class="info-title">Возможные призы</div>
             <div class="prizes-grid" id="prizesGrid"></div>
         </div>
     </div>
+
     <div class="session-info" id="sessionInfo"></div>
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal" id="modal">
-            <div class="confetti-container" id="confettiContainer"></div>
-            <div class="modal-emoji" id="modalEmoji"></div>
+
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modal">
+        <div id="confettiOverlay"></div>
+        <div class="modal-emoji" id="modalEmoji"></div>
             <div class="modal-title" id="modalTitle">Поздравляем!</div>
             <div class="modal-prize" id="modalPrize">+50</div>
             <div class="modal-balance" id="modalBalance">
                 <div class="modal-balance-item sapphire">
-                    <div class="modal-balance-icon" id="modalSapphireIcon">💎</div>
+                    <div class="modal-balance-icon" id="modalSapphireIcon"></div>
                     <span class="modal-balance-value" id="modalSapphires">0</span>
                 </div>
                 <div class="modal-balance-item star">
-                    <div class="modal-balance-icon" id="modalStarIcon">⭐</div>
+                    <div class="modal-balance-icon" id="modalStarIcon"></div>
                     <span class="modal-balance-value" id="modalStars">0</span>
                 </div>
             </div>
@@ -1463,30 +1745,37 @@
             </div>
         </div>
     </div>
+
     <script>
         const API_BASE = "https://deadveel.pythonanywhere.com";
         const tg = window.Telegram?.WebApp;
         const initData = tg?.initData || '';
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 769;
-        // Demo mode detection
-        const DEMO_MODE = !initData || initData.length < 10;
+
         const GITHUB_USER = "deadveel-crypto";
         const GITHUB_REPO = "divine-case-assets";
         const GITHUB_BRANCH = "main";
         const IMG_CDN = `https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${GITHUB_REPO}@${GITHUB_BRANCH}`;
+
+        const CUSTOM_ICONS = {
+            sapphire: null,
+            star: null
+        };
+
         const CASES = [
-            { id: 'cosmic', name: 'Cosmic Case', image: `${IMG_CDN}/cases/cosmic.png`, cost: 100, tag: 'NEW', style: 'cosmic-style', theme: 'theme-cosmic' },
-            { id: 'stellar', name: 'Stellar Case', image: `${IMG_CDN}/cases/stellar.png`, cost: 250, tag: 'BEST', style: 'stellar-style', theme: 'theme-stellar' },
-            { id: 'golden', name: 'Golden Case', image: `${IMG_CDN}/cases/golden.png`, cost: 500, tag: 'HOT', style: 'golden-style', theme: 'theme-golden' },
-            { id: 'divine', name: 'Divine Case', image: `${IMG_CDN}/cases/divine.png`, cost: 1000, tag: 'VIP', style: 'divine-style', theme: 'theme-divine' }
+            { id: 'cosmic', name: 'Cosmic Case', emoji: null, image: `${IMG_CDN}/cases/cosmic.png`, cost: 100, tag: 'NEW', style: 'cosmic-style', theme: 'theme-cosmic' },
+            { id: 'stellar', name: 'Stellar Case', emoji: null, image: `${IMG_CDN}/cases/stellar.png`, cost: 250, tag: 'BEST', style: 'stellar-style', theme: 'theme-stellar' },
+            { id: 'golden', name: 'Golden Case', emoji: null, image: `${IMG_CDN}/cases/golden.png`, cost: 500, tag: 'HOT', style: 'golden-style', theme: 'theme-golden' },
+            { id: 'divine', name: 'Divine Case', emoji: null, image: `${IMG_CDN}/cases/divine.png`, cost: 1000, tag: 'VIP', style: 'divine-style', theme: 'theme-divine' }
         ];
+
         let STATE = {
             userId: null,
             username: '',
             sapphires: 0,
             stars: 0,
             spinCost: 100,
-            canSpin: true,
+            canSpin: false,
             isInitialized: false,
             spinsCount: 0,
             totalWon: 0,
@@ -1494,29 +1783,29 @@
             currentScreen: 'menu',
             selectedCase: null
         };
+
         let isSpinning = false;
+        let confettiActive = false;
+        const MAX_CONFETTI = 40;
+
         const PRIZE_VISUALS = {
-            0: { stars: 0, rarity: "empty", image: `${IMG_CDN}/prizes/void.png`, name: "Void" },
-            15: { stars: 15, rarity: "stars-15", image: `${IMG_CDN}/prizes/glimmer.png`, name: "Glimmer" },
-            25: { stars: 25, rarity: "stars-25", image: `${IMG_CDN}/prizes/spark.png`, name: "Spark" },
-            50: { stars: 50, rarity: "stars-50", image: `${IMG_CDN}/prizes/radiance.png`, name: "Radiance" },
-            75: { stars: 75, rarity: "stars-75", image: `${IMG_CDN}/prizes/stardust.png`, name: "Stardust" },
-            100: { stars: 100, rarity: "stars-100", image: `${IMG_CDN}/prizes/aurora.png`, name: "Aurora" },
-            150: { stars: 150, rarity: "stars-150", image: `${IMG_CDN}/prizes/ember.png`, name: "Ember" },
-            250: { stars: 250, rarity: "stars-250", image: `${IMG_CDN}/prizes/lightning.jpeg`, name: "Lightning" },
-            500: { stars: 500, rarity: "stars-500", image: `${IMG_CDN}/prizes/supernova.png`, name: "Supernova" },
-            1000: { stars: 1000, rarity: "stars-1000", image: `${IMG_CDN}/prizes/galaxy.png`, name: "Galaxy" },
-            9999: { stars: 9999, rarity: "stars-9999", image: `${IMG_CDN}/prizes/divine_star.png`, name: "Divine Star" }
+            0: { stars: 0, emoji: null, rarity: "empty", image: `${IMG_CDN}/prizes/void.png`, name: "Void" },
+            15: { stars: 15, emoji: null, rarity: "stars-15", image: `${IMG_CDN}/prizes/glimmer.png`, name: "Glimmer" },
+            25: { stars: 25, emoji: null, rarity: "stars-25", image: `${IMG_CDN}/prizes/spark.png`, name: "Spark" },
+            50: { stars: 50, emoji: null, rarity: "stars-50", image: `${IMG_CDN}/prizes/radiance.png`, name: "Radiance" },
+            75: { stars: 75, emoji: null, rarity: "stars-75", image: `${IMG_CDN}/prizes/stardust.png`, name: "Stardust" },
+            100: { stars: 100, emoji: null, rarity: "stars-100", image: `${IMG_CDN}/prizes/aurora.png`, name: "Aurora" },
+            150: { stars: 150, emoji: null, rarity: "stars-150", image: `${IMG_CDN}/prizes/ember.png`, name: "Ember" },
+            250: { stars: 250, emoji: null, rarity: "stars-250", image: `${IMG_CDN}/prizes/lightning.jpeg`, name: "Lightning" },
+            500: { stars: 500, emoji: null, rarity: "stars-500", image: `${IMG_CDN}/prizes/supernova.png`, name: "Supernova" },
+            1000: { stars: 1000, emoji: null, rarity: "stars-1000", image: `${IMG_CDN}/prizes/galaxy.png`, name: "Galaxy" },
+            9999: { stars: 9999, emoji: null, rarity: "stars-9999", image: `${IMG_CDN}/prizes/divine_star.png`, name: "Divine Star" }
         };
-        const TEST_MODE = true;
+
         const CASE_CONFIG = {
             cosmic: {
                 prizes: [0, 15, 25, 50, 75, 100],
                 getRandomPrize: () => {
-                    if (TEST_MODE) {
-                        const wins = [25, 50, 75, 100];
-                        return wins[Math.floor(Math.random() * wins.length)];
-                    }
                     const rand = Math.random() * 100;
                     if (rand < 93) return 0;
                     if (rand < 98) return 15;
@@ -1526,10 +1815,6 @@
             stellar: {
                 prizes: [0, 25, 50, 75, 100, 150, 250],
                 getRandomPrize: () => {
-                    if (TEST_MODE) {
-                        const wins = [50, 75, 100, 150, 250];
-                        return wins[Math.floor(Math.random() * wins.length)];
-                    }
                     const rand = Math.random() * 100;
                     if (rand < 93) return 0;
                     if (rand < 98) return 25;
@@ -1539,10 +1824,6 @@
             golden: {
                 prizes: [0, 75, 100, 150, 250, 500],
                 getRandomPrize: () => {
-                    if (TEST_MODE) {
-                        const wins = [100, 150, 250, 500];
-                        return wins[Math.floor(Math.random() * wins.length)];
-                    }
                     const rand = Math.random() * 100;
                     if (rand < 93) return 0;
                     if (rand < 98) return 75;
@@ -1552,10 +1833,6 @@
             divine: {
                 prizes: [0, 100, 150, 250, 500, 1000, 9999],
                 getRandomPrize: () => {
-                    if (TEST_MODE) {
-                        const wins = [150, 250, 500, 1000, 9999];
-                        return wins[Math.floor(Math.random() * wins.length)];
-                    }
                     const rand = Math.random() * 100;
                     if (rand < 93) return 0;
                     if (rand < 98) return 100;
@@ -1564,237 +1841,6 @@
             }
         };
 
-        // ============ CONFETTI (REALISTIC PHYSICS, CLIPPED TO MODAL) ============
-let confettiParticles = [];
-let confettiRafId = null;
-let confettiLastTs = 0;
-let confettiSpawnTimeouts = [];
-
-function getThemeColors() {
-    const style = getComputedStyle(document.body);
-    const themeColor = style.getPropertyValue('--theme-color').trim() || '#6366f1';
-    const themeColorLight = style.getPropertyValue('--theme-color-light').trim() || '#818cf8';
-    return [
-        '#FFFFFF', '#FFFEF0', themeColor, themeColorLight,
-        '#FFD700', '#FFEC8B', '#E0FFFF', '#FFB6C1', '#98FB98'
-    ];
-}
-
-function createConfettiParticle(container, colors) {
-    const el = document.createElement('div');
-
-    // Форма/размер
-    const shapeRand = Math.random();
-    let shape, w, h;
-
-    if (shapeRand < 0.18) { shape = 'star'; w = h = 8 + Math.random() * 10; }
-    else if (shapeRand < 0.32) { shape = 'heart'; w = h = 7 + Math.random() * 9; }
-    else if (shapeRand < 0.46) { shape = 'diamond'; w = h = 7 + Math.random() * 9; }
-    else if (shapeRand < 0.60) { shape = 'triangle'; w = h = 7 + Math.random() * 9; }
-    else if (shapeRand < 0.78) { shape = 'ribbon'; w = 4 + Math.random() * 5; h = 14 + Math.random() * 18; }
-    else { shape = 'circle'; w = h = 6 + Math.random() * 8; }
-
-    el.className = `confetti shape-${shape}`;
-
-    const color = colors[Math.floor(Math.random() * colors.length)];
-
-    el.style.width = `${w}px`;
-    el.style.height = `${h}px`;
-    el.style.background = color;
-    el.style.boxShadow = `0 0 ${Math.max(3, w / 2)}px ${color}66`;
-
-    container.appendChild(el);
-
-    const cw = container.clientWidth;
-    const ch = container.clientHeight;
-
-    // Точка "взрыва": чуть ниже центра (смотрится естественнее в модалке)
-    const originX = cw * (0.08 + Math.random() * 0.84); // 8%..92% ширины
-    const originY = ch - (2 + Math.random() * 6);       // прямо у низа (внутри клипа)
-
-    // Направление: веером вверх в разные стороны
-    // Угол от ~-160° до ~-20° (в радианах)
-    const angle = (-Math.PI / 2) + (Math.random() - 0.5) * (Math.PI * 0.9);
-
-    // Начальная скорость (импульс): большая вначале, дальше замедление
-    const baseSpeed = isMobile ? 850 : 1050;
-    const speed = baseSpeed + Math.random() * (isMobile ? 650 : 850);
-
-    // Скорости
-    let vx = Math.cos(angle) * speed;
-    let vy = Math.sin(angle) * speed;
-
-    // Немного "взрыва" в стороны от центра
-    vx += (Math.random() - 0.5) * 250;
-
-    // Ветер/дрейф (постоянная составляющая + лёгкая вариативность)
-    const wind = (Math.random() - 0.5) * (isMobile ? 60 : 90);
-
-    // Вращение/наклон
-    let rotZ = Math.random() * 360;
-    const rotSpeed = (Math.random() * 720 - 360); // deg/sec
-    let tiltX = Math.random() * 360;
-    let tiltY = Math.random() * 360;
-    const tiltSpeedX = (Math.random() * 360 - 180);
-    const tiltSpeedY = (Math.random() * 360 - 180);
-
-    // "Вес"/сопротивление: разные частицы ведут себя чуть по-разному
-    const drag = 0.985 + Math.random() * 0.01; // ближе к 1 = медленнее теряет скорость
-    const gravity = 1700 + Math.random() * 500; // px/s^2
-
-    const life = 2.4 + Math.random() * 1.2; // seconds
-    const start = performance.now();
-
-    return {
-        el,
-        x: originX,
-        y: originY,
-        vx, vy,
-        wind,
-        rotZ, rotSpeed,
-        tiltX, tiltY,
-        tiltSpeedX, tiltSpeedY,
-        drag,
-        gravity,
-        life,
-        start,
-        dead: false
-    };
-}
-
-function renderParticle(p) {
-    // transform: translate + 3d rotate (выглядит "живее")
-    p.el.style.transform =
-        `translate3d(${p.x}px, ${p.y}px, 0)` +
-        ` rotateZ(${p.rotZ}deg)` +
-        ` rotateX(${p.tiltX}deg)` +
-        ` rotateY(${p.tiltY}deg)`;
-}
-
-function confettiLoop(ts) {
-    if (!confettiLastTs) confettiLastTs = ts;
-    const dt = Math.min(0.033, (ts - confettiLastTs) / 1000); // cap ~30fps step
-    confettiLastTs = ts;
-
-    const container = document.getElementById('confettiContainer');
-    if (!container || !STATE.isModalOpen) {
-        stopConfetti();
-        return;
-    }
-
-    const cw = container.clientWidth;
-    const ch = container.clientHeight;
-
-    for (const p of confettiParticles) {
-        if (p.dead) continue;
-
-        const age = (ts - p.start) / 1000;
-
-        // Физика:
-        // 1) сопротивление воздуха (замедляет, особенно заметно на подъёме)
-        p.vx *= Math.pow(p.drag, 60 * dt);
-        p.vy *= Math.pow(p.drag, 60 * dt);
-
-        // 2) ветер
-        p.vx += p.wind * dt;
-
-        // 3) гравитация (делает "пик" и затем падение)
-        p.vy += p.gravity * dt;
-
-        // интеграция
-        p.x += p.vx * dt;
-        p.y += p.vy * dt;
-
-        // вращение
-        p.rotZ += p.rotSpeed * dt;
-        p.tiltX += p.tiltSpeedX * dt;
-        p.tiltY += p.tiltSpeedY * dt;
-
-        // прозрачность: красиво затухает к концу жизни
-        if (age > p.life * 0.7) {
-            const t = (age - p.life * 0.7) / (p.life * 0.3);
-            p.el.style.opacity = String(Math.max(0, 1 - t));
-        } else {
-            p.el.style.opacity = '1';
-        }
-
-        renderParticle(p);
-
-        // условия смерти (внутри модалки оно всё равно будет обрезано, но удаляем для производительности)
-        if (
-            age > p.life ||
-            p.y > ch + 80 ||
-            p.x < -120 || p.x > cw + 120
-        ) {
-            p.dead = true;
-            if (p.el && p.el.parentNode) p.el.remove();
-        }
-    }
-
-    // чистим массив
-    confettiParticles = confettiParticles.filter(p => !p.dead);
-
-    if (confettiParticles.length > 0) {
-        confettiRafId = requestAnimationFrame(confettiLoop);
-    } else {
-        confettiRafId = null;
-    }
-}
-
-function startConfetti() {
-    const container = document.getElementById('confettiContainer');
-    if (!container) return;
-
-    stopConfetti();
-    container.innerHTML = '';
-
-    const colors = getThemeColors();
-    const total = isMobile ? 95 : 140;
-
-    // Делаем "залп": часть сразу, часть чуть позже — выглядит натуральнее
-    const firstBurst = Math.round(total * 0.60);
-    const secondBurst = Math.round(total * 0.30);
-    const thirdBurst  = total - firstBurst - secondBurst;
-
-    for (let i = 0; i < firstBurst; i++) {
-        confettiParticles.push(createConfettiParticle(container, colors));
-        }
-
-
-    confettiSpawnTimeouts.push(setTimeout(() => {
-        const c = document.getElementById('confettiContainer');
-        if (!c || !STATE.isModalOpen) return;
-        for (let i = 0; i < secondBurst; i++) {
-            confettiParticles.push(createConfettiParticle(c, colors));
-        }
-    }, 120));
-
-    confettiSpawnTimeouts.push(setTimeout(() => {
-        const c = document.getElementById('confettiContainer');
-        if (!c || !STATE.isModalOpen) return;
-        for (let i = 0; i < thirdBurst; i++) {
-            confettiParticles.push(createConfettiParticle(c, colors));
-        }
-    }, 240));
-
-    confettiLastTs = 0;
-    confettiRafId = requestAnimationFrame(confettiLoop);
-}
-
-function stopConfetti() {
-    confettiSpawnTimeouts.forEach(t => clearTimeout(t));
-    confettiSpawnTimeouts = [];
-
-    if (confettiRafId) cancelAnimationFrame(confettiRafId);
-    confettiRafId = null;
-    confettiLastTs = 0;
-
-    confettiParticles = [];
-    const container = document.getElementById('confettiContainer');
-    if (container) container.innerHTML = '';
-}
-
-        // ============ HELPERS ============
         function getExpensivePrizeForCase() {
             const caseId = STATE.selectedCase?.id || 'cosmic';
             const expensivePrizes = {
@@ -1809,6 +1855,7 @@ function stopConfetti() {
             if (rand < 0.8) return prizes[1];
             return prizes[2];
         }
+
         function getNonZeroPrizeForDisplay() {
             const caseId = STATE.selectedCase?.id || 'cosmic';
             const prizePools = {
@@ -1852,20 +1899,20 @@ function stopConfetti() {
             }
             return pool[0].prize;
         }
+
         function getItemWidth() {
             const screenWidth = window.innerWidth;
             if (screenWidth <= 380) return 97;
             if (screenWidth <= 390) return 102;
             return 112;
         }
+
         let ITEM_WIDTH = getItemWidth();
         const VISIBLE_ITEMS = isMobile ? 40 : 50;
+
         window.addEventListener('resize', () => { ITEM_WIDTH = getItemWidth(); });
-        // ============ API ============
+
         async function apiRequest(path, options = {}) {
-            if (DEMO_MODE) {
-                return simulateApiResponse(path, options);
-            }
             const res = await fetch(API_BASE + path, {
                 ...options,
                 headers: {
@@ -1880,38 +1927,9 @@ function stopConfetti() {
             }
             return data;
         }
-        function simulateApiResponse(path, options) {
-            return new Promise(resolve => {
-                setTimeout(() => {
-                    if (path === '/api/balance') {
-                        resolve({
-                            sapphires: STATE.sapphires || 5000,
-                            stars: STATE.stars || 0,
-                            can_spin: true
-                        });
-                    } else if (path === '/api/spin') {
-                        resolve({ success: true });
-                    } else if (path === '/api/claim') {
-                        const body = JSON.parse(options.body || '{}');
-                        const starsWon = body.stars || 0;
-                        resolve({
-                            new_sapphires: STATE.sapphires,
-                            new_stars: STATE.stars + starsWon,
-                            can_spin: true
-                        });
-                    }
-                }, 100);
-            });
-        }
+
         async function loadBalance() {
             try {
-                if (DEMO_MODE) {
-                    STATE.sapphires = 5000;
-                    STATE.stars = 0;
-                    STATE.canSpin = true;
-                    updateUI();
-                    return true;
-                }
                 const data = await apiRequest("/api/balance");
                 STATE.sapphires = data.sapphires;
                 STATE.stars = data.stars;
@@ -1920,53 +1938,73 @@ function stopConfetti() {
                 return true;
             } catch (e) {
                 console.error("Balance error:", e);
-                if (DEMO_MODE) {
-                    STATE.sapphires = 5000;
-                    STATE.stars = 0;
-                    STATE.canSpin = true;
-                    updateUI();
-                    return true;
-                }
                 showFatalError("Ошибка загрузки баланса:\n" + e.message);
                 return false;
             }
         }
-        // ============ INIT ============
-        async function init() {
-            if (DEMO_MODE) {
-                document.getElementById('demoBadge').style.display = 'inline-block';
-                STATE.userId = 'demo_user';
-                STATE.username = 'demo';
-                STATE.sapphires = 5000;
-                STATE.stars = 0;
-                STATE.canSpin = true;
+
+        function setupCustomIcons() {
+            const sapphireIcon = document.getElementById('sapphireIcon');
+            const starIcon = document.getElementById('starIcon');
+            const modalSapphireIcon = document.getElementById('modalSapphireIcon');
+            const modalStarIcon = document.getElementById('modalStarIcon');
+            
+            if (CUSTOM_ICONS.sapphire) {
+                sapphireIcon.innerHTML = `<img src="${CUSTOM_ICONS.sapphire}" class="balance-icon-img" alt="" onerror="this.parentElement.innerHTML='💎'">`;
+                modalSapphireIcon.innerHTML = `<img src="${CUSTOM_ICONS.sapphire}" alt="" onerror="this.parentElement.innerHTML='💎'">`;
             } else {
-                if (tg) {
-                    tg.ready();
-                    tg.expand();
-                    if (tg.initDataUnsafe?.user) {
-                        STATE.userId = tg.initDataUnsafe.user.id;
-                        STATE.username = tg.initDataUnsafe.user.username || '';
-                    }
-                    tg.BackButton.show();
-                    tg.BackButton.onClick(() => handleBackButton());
-                }
+                sapphireIcon.innerHTML = '💎';
+                modalSapphireIcon.innerHTML = '💎';
             }
-            generateStars();
-            generateCasesGrid();
-            preloadImages();
-            const balanceLoaded = await loadBalance();
-            if (!balanceLoaded && !DEMO_MODE) return;
-            STATE.isInitialized = true;
-            setTimeout(() => { document.getElementById('loadingOverlay').classList.add('hidden'); }, 400);
-            updateSessionInfo();
+            
+            if (CUSTOM_ICONS.star) {
+                starIcon.innerHTML = `<img src="${CUSTOM_ICONS.star}" class="balance-icon-img" alt="" onerror="this.parentElement.innerHTML='⭐'">`;
+                modalStarIcon.innerHTML = `<img src="${CUSTOM_ICONS.star}" alt="" onerror="this.parentElement.innerHTML='⭐'">`;
+            } else {
+                starIcon.innerHTML = '⭐';
+                modalStarIcon.innerHTML = '⭐';
+            }
         }
+
         function preloadImages() {
             const imageUrls = [];
             CASES.forEach(c => { if (c.image) imageUrls.push(c.image); });
             Object.values(PRIZE_VISUALS).forEach(p => { if (p.image) imageUrls.push(p.image); });
+            if (CUSTOM_ICONS.sapphire) imageUrls.push(CUSTOM_ICONS.sapphire);
+            if (CUSTOM_ICONS.star) imageUrls.push(CUSTOM_ICONS.star);
             imageUrls.forEach(url => { const img = new Image(); img.src = url; });
         }
+
+        async function init() {
+            if (!initData) {
+                showFatalError("Telegram initData не получен.\nОткрой страницу только через бота.");
+                return;
+            }
+
+            if (tg) {
+                tg.ready();
+                tg.expand();
+                if (tg.initDataUnsafe?.user) {
+                    STATE.userId = tg.initDataUnsafe.user.id;
+                    STATE.username = tg.initDataUnsafe.user.username || '';
+                }
+                tg.BackButton.show();
+                tg.BackButton.onClick(() => handleBackButton());
+            }
+
+            generateStars();
+            generateCasesGrid();
+            setupCustomIcons();
+            preloadImages();
+
+            const balanceLoaded = await loadBalance();
+            if (!balanceLoaded) return;
+
+            STATE.isInitialized = true;
+            setTimeout(() => { document.getElementById('loadingOverlay').classList.add('hidden'); }, 400);
+            updateSessionInfo();
+        }
+
         function generateCasesGrid() {
             const grid = document.getElementById('casesGrid');
             grid.innerHTML = CASES.map(caseItem => `
@@ -1984,34 +2022,45 @@ function stopConfetti() {
                 </div>
             `).join('');
         }
+
         function selectCase(caseId) {
             const selectedCase = CASES.find(c => c.id === caseId);
             if (!selectedCase) return;
+
             STATE.selectedCase = selectedCase;
             STATE.spinCost = selectedCase.cost;
             document.body.className = selectedCase.theme;
+
             const emojiEl = document.getElementById('currentCaseEmoji');
             const imageEl = document.getElementById('currentCaseImage');
+
             if (selectedCase.image) {
                 emojiEl.classList.add('hidden');
                 imageEl.classList.remove('hidden');
                 imageEl.src = selectedCase.image;
+                imageEl.onerror = () => {
+                    imageEl.classList.add('hidden');
+                };
             } else {
                 imageEl.classList.add('hidden');
                 emojiEl.classList.remove('hidden');
             }
+
             document.getElementById('currentCaseName').textContent = selectedCase.name;
             document.getElementById('spinCost').textContent = selectedCase.cost;
+
             showScreen('case');
             generateItemsStrip();
             generatePrizesGrid();
             updateUI();
             haptic('impact');
         }
+
         function showScreen(screen) {
             STATE.currentScreen = screen;
             const menuScreen = document.getElementById('menuScreen');
             const caseScreen = document.getElementById('caseScreen');
+
             if (screen === 'menu') {
                 menuScreen.classList.remove('hidden');
                 caseScreen.classList.add('hidden');
@@ -2021,28 +2070,34 @@ function stopConfetti() {
                 caseScreen.classList.remove('hidden');
             }
         }
+
         function goToMenu() {
             closeModal();
             showScreen('menu');
             STATE.selectedCase = null;
             haptic('selection');
         }
+
         function handleBackButton() {
             if (STATE.isModalOpen) closeModal();
             else if (STATE.currentScreen === 'case') goToMenu();
             else if (tg?.close) tg.close();
         }
+
         function generatePrizesGrid() {
             const grid = document.getElementById('prizesGrid');
             const caseId = STATE.selectedCase?.id || 'cosmic';
             const config = CASE_CONFIG[caseId];
+
             const displayPrizes = config.prizes.filter(s => s > 0).sort((a, b) => b - a).map(stars => PRIZE_VISUALS[stars]);
             displayPrizes.push(PRIZE_VISUALS[0]);
+
             grid.className = 'prizes-grid';
             const count = displayPrizes.length;
             if (count <= 5) grid.classList.add('cols-' + count);
             else if (count === 6) grid.classList.add('cols-6');
             else grid.classList.add('cols-7');
+
             grid.innerHTML = displayPrizes.map(prize => `
                 <div class="prize-card ${prize.stars === 0 ? 'empty' : 'stars-' + prize.stars}">
                     <div class="prize-card-visual">
@@ -2052,30 +2107,35 @@ function stopConfetti() {
                 </div>
             `).join('');
         }
+
         function showFatalError(message) {
             document.getElementById('loadingOverlay').innerHTML = `
                 <div style="text-align: center; padding: 20px;">
-                    <div style="font-size: 3rem; margin-bottom: 20px;">❌</div>
+                    <div style="font-size: 3rem; margin-bottom: 20px;">X</div>
                     <div style="color: #ef4444; font-size: 1.1rem; font-weight: 600; margin-bottom: 10px;">Ошибка</div>
                     <div style="color: #a1a1aa; font-size: 0.9rem; white-space: pre-wrap;">${message}</div>
                     <button onclick="window.location.reload()" style="margin-top: 20px; background: linear-gradient(135deg, #6366f1, #4338ca); border: none; padding: 12px 24px; color: white; border-radius: 12px; font-weight: 600; cursor: pointer;">Попробовать снова</button>
                 </div>
             `;
         }
+
         function getRandomPrize() {
             const caseId = STATE.selectedCase?.id || 'cosmic';
             return CASE_CONFIG[caseId].getRandomPrize();
         }
+
         function generateItemsStrip(winningPrize = null, winningIndex = null) {
             const strip = document.getElementById('itemsStrip');
             strip.innerHTML = '';
             strip.classList.remove('animating');
             strip.style.transform = 'translateX(0)';
+
             const fragment = document.createDocumentFragment();
             let prevWasZero = false;
             
             for (let i = 0; i < VISIBLE_ITEMS; i++) {
                 let prize;
+
                 if (winningIndex !== null && i === winningIndex) {
                     prize = winningPrize;
                     prevWasZero = (prize.stars === 0);
@@ -2095,40 +2155,67 @@ function stopConfetti() {
                         prevWasZero = false;
                     }
                 }
+
                 const item = document.createElement('div');
                 item.className = `prize-item rarity-${prize.rarity}`;
                 if (prize.image) item.classList.add('has-image');
                 item.dataset.index = i;
                 item.dataset.stars = prize.stars;
+
                 if (prize.image) {
                     const img = document.createElement('img');
                     img.src = prize.image;
                     img.alt = '';
                     img.className = 'prize-image';
                     img.loading = 'eager';
+                    img.onerror = function() { this.style.display = 'none'; };
                     item.appendChild(img);
                 }
+
                 fragment.appendChild(item);
             }
+
             strip.appendChild(fragment);
         }
+
         async function runAnimation(winningPrize) {
             const winningIndex = 30 + Math.floor(Math.random() * 5);
+
             generateItemsStrip(winningPrize, winningIndex);
+
             const container = document.getElementById('caseContainer');
             const strip = document.getElementById('itemsStrip');
             const containerWidth = container.offsetWidth;
             const centerPosition = containerWidth / 2;
             const targetPosition = (winningIndex * ITEM_WIDTH) + (ITEM_WIDTH / 2) - centerPosition;
             
-            let randomOffset = (Math.random() - 0.5) * 20;
+            let randomOffset;
+            
+            if (winningPrize.stars === 0) {
+                const edgeChance = Math.random();
+                if (edgeChance < 0.45) {
+                    const direction = Math.random() > 0.5 ? 1 : -1;
+                    randomOffset = direction * (ITEM_WIDTH * 0.38 + Math.random() * 8);
+                } else if (edgeChance < 0.75) {
+                    const direction = Math.random() > 0.5 ? 1 : -1;
+                    randomOffset = direction * (ITEM_WIDTH * 0.25 + Math.random() * 10);
+                } else {
+                    randomOffset = (Math.random() - 0.5) * 35;
+                }
+            } else {
+                randomOffset = (Math.random() - 0.5) * 20;
+            }
+            
             const finalPosition = targetPosition + randomOffset;
+
             strip.style.transform = `translateX(${containerWidth}px)`;
             strip.offsetHeight;
+
             requestAnimationFrame(() => {
                 strip.classList.add('animating');
                 strip.style.transform = `translateX(-${finalPosition}px)`;
             });
+
             if (!isMobile) {
                 playTickSounds();
             } else {
@@ -2136,27 +2223,36 @@ function stopConfetti() {
                 setTimeout(() => haptic('selection'), 2000);
                 setTimeout(() => haptic('selection'), 4000);
             }
+
             await new Promise(resolve => setTimeout(resolve, 5100));
+
             const winnerItem = strip.querySelector(`[data-index="${winningIndex}"]`);
             if (winnerItem) winnerItem.classList.add('winner');
         }
+
         async function openCase() {
             if (isSpinning || STATE.isModalOpen) return;
+
             const currentCost = STATE.selectedCase?.cost || STATE.spinCost;
+
             if (STATE.sapphires < currentCost) {
                 showStatus('Недостаточно сапфиров!', 'error');
                 haptic('error');
                 return;
             }
+
             isSpinning = true;
             hideStatus();
             document.getElementById('spinBtn').disabled = true;
             haptic('impact');
+
             const prizeStars = getRandomPrize();
             const prize = PRIZE_VISUALS[prizeStars] || PRIZE_VISUALS[0];
+
             STATE.sapphires -= currentCost;
             STATE.spinsCount++;
             updateUI();
+
             const animationPromise = runAnimation(prize);
             
             let spinSuccess = false;
@@ -2169,16 +2265,14 @@ function stopConfetti() {
                     spinSuccess = true;
                 } catch (e) {
                     console.error("Spin error:", e);
-                    if (!DEMO_MODE) {
-                        showStatus('Ошибка: ' + e.message, 'error');
-                        haptic('error');
-                        await loadBalance();
-                    } else {
-                        spinSuccess = true;
-                    }
+                    showStatus('Ошибка: ' + e.message, 'error');
+                    haptic('error');
+                    await loadBalance();
                 }
             })();
+
             await Promise.all([animationPromise, spinPromise]);
+
             let apiSuccess = false;
             if (spinSuccess) {
                 try {
@@ -2189,35 +2283,34 @@ function stopConfetti() {
                             case_id: STATE.selectedCase?.id || 'cosmic'
                         })
                     });
+
                     STATE.sapphires = claimData.new_sapphires;
                     STATE.stars = claimData.new_stars;
                     STATE.canSpin = claimData.can_spin;
+
                     if (prizeStars > 0) STATE.totalWon += prizeStars;
                     apiSuccess = true;
                     updateUI();
                 } catch (e) {
                     console.error("Claim error:", e);
-                    if (!DEMO_MODE) {
-                        showStatus('Ошибка: ' + e.message, 'error');
-                        haptic('error');
-                        await loadBalance();
-                    } else {
-                        STATE.stars += prizeStars;
-                        if (prizeStars > 0) STATE.totalWon += prizeStars;
-                        apiSuccess = true;
-                        updateUI();
-                    }
+                    showStatus('Ошибка: ' + e.message, 'error');
+                    haptic('error');
+                    await loadBalance();
                 }
             }
+
             if (apiSuccess) {
                 showResult(prize);
             }
+
             isSpinning = false;
             updateSessionInfo();
         }
+
         function playTickSounds() {
             let tickCount = 0;
             const maxTicks = 35;
+
             const tickInterval = setInterval(() => {
                 tickCount++;
                 if (tickCount > maxTicks) {
@@ -2227,24 +2320,30 @@ function stopConfetti() {
                 if (tickCount < 18) haptic('selection');
             }, 120);
         }
+
         function showResult(prize) {
             STATE.isModalOpen = true;
             document.getElementById('spinBtn').disabled = true;
+
             const overlay = document.getElementById('modalOverlay');
             const modal = document.getElementById('modal');
             const emoji = document.getElementById('modalEmoji');
             const title = document.getElementById('modalTitle');
             const prizeText = document.getElementById('modalPrize');
             const spinAgainBtn = document.getElementById('spinAgainBtn');
+
             stopConfetti();
             modal.classList.remove('win', 'lose');
+
             if (prize.image) {
                 emoji.innerHTML = `<img src="${prize.image}" class="modal-prize-image" onerror="this.style.display='none'">`;
             } else {
                 emoji.innerHTML = '';
             }
+
             if (prize.stars > 0) {
                 modal.classList.add('win');
+                
                 if (prize.stars >= 9999) {
                     title.textContent = 'ДЖЕКПОТ!';
                 } else if (prize.stars >= 1000) {
@@ -2256,22 +2355,142 @@ function stopConfetti() {
                 } else {
                     title.textContent = 'Поздравляем!';
                 }
+                
                 prizeText.textContent = `+${prize.stars}`;
                 haptic('success');
-                // Запуск конфетти при победе
-                setTimeout(() => startConfetti(), 100);
+                startConfetti();
             } else {
                 modal.classList.add('lose');
                 title.textContent = 'Пусто...';
                 prizeText.textContent = 'Попробуй ещё раз!';
                 haptic('error');
             }
+
             document.getElementById('modalSapphires').textContent = STATE.sapphires;
             document.getElementById('modalStars').textContent = STATE.stars;
+
             const canSpinAgain = STATE.sapphires >= STATE.spinCost && STATE.canSpin;
             spinAgainBtn.style.display = canSpinAgain ? 'block' : 'none';
+
             overlay.classList.add('show');
         }
+
+        // ============ NEW CONFETTI SYSTEM ============
+        const confettiColors = [
+            '#fbbf24', '#f59e0b', '#fcd34d', // Gold
+            '#6366f1', '#818cf8', '#a78bfa', // Purple
+            '#ec4899', '#f472b6', '#fb7185', // Pink
+            '#22d3ee', '#67e8f9', '#06b6d4', // Cyan
+            '#10b981', '#34d399', '#6ee7b7', // Green
+            '#ef4444', '#f87171', '#fca5a5', // Red
+            '#ffffff', '#e2e8f0'              // White
+        ];
+
+        const confettiShapes = ['square', 'circle', 'star', 'ribbon'];
+        let confettiInterval = null;
+        let confettiPieces = [];
+        const MAX_CONFETTI_PIECES = 25;
+
+        function createConfetti() {
+    const modal = document.getElementById('modal');
+    const overlay = modal?.querySelector('#confettiOverlay');
+    if (!overlay || !confettiActive) return;
+
+    // Limit confetti count
+    if (confettiPieces.length >= MAX_CONFETTI_PIECES) {
+        const oldPiece = confettiPieces.shift();
+        if (oldPiece && oldPiece.parentNode) {
+            oldPiece.remove();
+        }
+    }
+
+    const confetti = document.createElement('div');
+    const inner = document.createElement('div');
+    inner.className = 'confetti-inner';
+
+    const shape = confettiShapes[Math.floor(Math.random() * confettiShapes.length)];
+    confetti.className = `confetti ${shape}`;
+
+    const color = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+    const size = 6 + Math.random() * 8;
+    const left = Math.random() * 100;
+    const duration = 8 + Math.random() * 4;
+    const swayDuration = 3 + Math.random() * 2;
+    const delay = Math.random() * 0.3;
+    const rotateStart = Math.random() * 360;
+
+    inner.style.background = color;
+    inner.style.boxShadow = `0 0 ${size/2}px ${color}`;
+
+    confetti.style.cssText = `
+        left: ${left}%;
+        width: ${size}px;
+        height: ${shape === 'ribbon' ? size * 2 : size}px;
+        animation: confettiDrop ${duration}s ease-in forwards, confettiSway ${swayDuration}s ease-in-out infinite;
+        animation-delay: ${delay}s;
+        transform: rotateZ(${rotateStart}deg);
+        opacity: 0;
+    `;
+
+    setTimeout(() => {
+        confetti.style.opacity = '1';
+    }, delay * 1000);
+
+    confetti.appendChild(inner);
+    overlay.appendChild(confetti);
+    confettiPieces.push(confetti);
+
+    setTimeout(() => {
+        if (confetti.parentNode) {
+            confetti.remove();
+        }
+        const index = confettiPieces.indexOf(confetti);
+        if (index > -1) {
+            confettiPieces.splice(index, 1);
+        }
+    }, (duration + delay) * 1000);
+}
+
+        function startConfetti() {
+    confettiActive = true;
+    const modal = document.getElementById('modal');
+    const overlay = modal?.querySelector('#confettiOverlay');
+    if (!overlay) return;
+
+    // Initial burst - create fewer confetti
+    for (let i = 0; i < 12; i++) {
+        setTimeout(() => {
+            if (confettiActive) createConfetti();
+        }, i * 80);
+    }
+
+    // Continue creating confetti slowly
+    confettiInterval = setInterval(() => {
+        if (confettiActive) {
+            createConfetti();
+        } else {
+            clearInterval(confettiInterval);
+        }
+    }, 400);
+}
+
+        function stopConfetti() {
+    confettiActive = false;
+    
+    if (confettiInterval) {
+        clearInterval(confettiInterval);
+        confettiInterval = null;
+    }
+
+    // Clear all confetti from modal
+    const modal = document.getElementById('modal');
+    const overlay = modal?.querySelector('#confettiOverlay');
+    if (overlay) {
+        overlay.innerHTML = '';
+    }
+    confettiPieces = [];
+}
+
         function spinAgain() {
             closeModal();
             requestAnimationFrame(() => {
@@ -2279,6 +2498,7 @@ function stopConfetti() {
                 openCase();
             });
         }
+
         function closeModal() {
             STATE.isModalOpen = false;
             stopConfetti();
@@ -2286,13 +2506,17 @@ function stopConfetti() {
             document.getElementById('modal').classList.remove('win', 'lose');
             updateUI();
         }
+
         function updateUI() {
             const sapphiresEl = document.getElementById('sapphires');
             const starsEl = document.getElementById('stars-balance');
+            
             const oldSapphires = parseInt(sapphiresEl.textContent) || 0;
             const oldStars = parseInt(starsEl.textContent) || 0;
+            
             sapphiresEl.textContent = STATE.sapphires;
             starsEl.textContent = STATE.stars;
+            
             if (oldSapphires !== STATE.sapphires) {
                 sapphiresEl.classList.add('updated');
                 setTimeout(() => sapphiresEl.classList.remove('updated'), 400);
@@ -2301,36 +2525,43 @@ function stopConfetti() {
                 starsEl.classList.add('updated');
                 setTimeout(() => starsEl.classList.remove('updated'), 400);
             }
+
             const canSpin = STATE.sapphires >= STATE.spinCost &&
-                        !isSpinning &&
-                        !STATE.isModalOpen &&
-                        STATE.canSpin !== false;
+                           !isSpinning &&
+                           !STATE.isModalOpen &&
+                           STATE.canSpin !== false;
+
             document.getElementById('spinBtn').disabled = !canSpin;
         }
+
         function updateSessionInfo() {
-            const modeText = DEMO_MODE ? 'DEMO' : 'LIVE';
             document.getElementById('sessionInfo').textContent =
-                `${modeText} | ID:${STATE.userId || '?'} | Spins:${STATE.spinsCount} | Won:${STATE.totalWon}`;
+                `ID:${STATE.userId || '?'} | Spins:${STATE.spinsCount} | Won:${STATE.totalWon}`;
         }
+
         function showStatus(message, type = 'error') {
             const el = document.getElementById('statusMessage');
             el.innerHTML = message;
             el.className = `status-message show ${type === 'success' ? 'success' : ''}`;
             setTimeout(() => hideStatus(), 4000);
         }
+
         function hideStatus() {
             document.getElementById('statusMessage').classList.remove('show');
         }
+
         function generateStars() {
             const container = document.getElementById('bgStars');
             const starCount = isMobile ? 60 : 100;
             const fragment = document.createDocumentFragment();
+
             for (let i = 0; i < starCount; i++) {
                 const star = document.createElement('div');
                 star.className = 'star';
                 const size = Math.random() * 2.5 + 0.5;
                 const isBig = size > 2;
                 if (isBig) star.classList.add('big');
+                
                 star.style.cssText = `
                     left: ${Math.random() * 100}%;
                     top: ${Math.random() * 100}%;
@@ -2342,8 +2573,10 @@ function stopConfetti() {
                 `;
                 fragment.appendChild(star);
             }
+
             container.appendChild(fragment);
         }
+
         function haptic(type) {
             if (tg?.HapticFeedback) {
                 try {
@@ -2354,11 +2587,13 @@ function stopConfetti() {
                 } catch (e) {}
             }
         }
-        // ============ EVENT LISTENERS ============
+
         document.addEventListener('DOMContentLoaded', init);
+
         document.getElementById('modalOverlay').addEventListener('click', (e) => {
             if (e.target.id === 'modalOverlay') closeModal();
         });
+
         if (!isMobile) {
             document.addEventListener('keydown', (e) => {
                 if (e.code === 'Space' && !isSpinning && !STATE.isModalOpen && STATE.currentScreen === 'case') {
@@ -2368,20 +2603,26 @@ function stopConfetti() {
                 if (e.code === 'Escape') handleBackButton();
             });
         }
-        let lastTouchEnd = 0;
+
         document.addEventListener('touchend', (e) => {
             const now = Date.now();
             if (now - lastTouchEnd <= 300) e.preventDefault();
             lastTouchEnd = now;
         }, { passive: false });
+
+        let lastTouchEnd = 0;
+
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
                 document.body.classList.add('paused');
                 stopConfetti();
             } else {
                 document.body.classList.remove('paused');
+                if (STATE.isModalOpen && document.getElementById('modal').classList.contains('win')) {
+                    startConfetti();
+                }
             }
         });
     </script>
-</body> 
+</body>
 </html>
