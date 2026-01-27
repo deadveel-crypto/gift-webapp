@@ -1279,26 +1279,30 @@
         }
         /* ========== CONFETTI CONTAINER ========== */
         .confetti-container {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            z-index: 1;
-            overflow: visible;
-        }
-        .confetti {
-            position: absolute;
-            bottom: 0;
-            will-change: transform, opacity;
-            z-index: 1;
-        }
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;          /* важно: не вылезать за рамки */
+    border-radius: inherit;    /* повторяем скругление модалки */
+    contain: layout paint;     /* чуть лучше производительность */
+}
+
+.confetti {
+    position: absolute;
+    left: 0;
+    top: 0;
+    will-change: transform, opacity;
+    z-index: 1;
+}
         /* Формы конфетти */
         .confetti.shape-star { clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); }
-        .confetti.shape-heart { clip-path: polygon(50% 85%, 15% 55%, 0% 35%, 5% 15%, 25% 0%, 50% 15%, 75% 0%, 95% 15%, 100% 35%, 85% 55%); }
-        .confetti.shape-diamond { clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); }
-        .confetti.shape-triangle { clip-path: polygon(50% 0%, 0% 100%, 100% 100%); }
-        .confetti.shape-hexagon { clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%); }
-        .confetti.shape-ribbon { border-radius: 1px; }
-        .confetti.shape-circle { border-radius: 50%; }
+.confetti.shape-heart { clip-path: polygon(50% 85%, 15% 55%, 0% 35%, 5% 15%, 25% 0%, 50% 15%, 75% 0%, 95% 15%, 100% 35%, 85% 55%); }
+.confetti.shape-diamond { clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); }
+.confetti.shape-triangle { clip-path: polygon(50% 0%, 0% 100%, 100% 100%); }
+.confetti.shape-hexagon { clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%); }
+.confetti.shape-ribbon { border-radius: 1px; }
+.confetti.shape-circle { border-radius: 50%; }
 
         /* Анимация с физикой: выстрел вверх и падение вниз */
         @keyframes confettiPop {
@@ -1561,105 +1565,225 @@
             }
         };
 
-        // ============ NEW CONFETTI SYSTEM (DOM + CSS PHYSICS) ============
-        let confettiTimeouts = [];
+        // ============ CONFETTI (REALISTIC PHYSICS, CLIPPED TO MODAL) ============
+let confettiParticles = [];
+let confettiRafId = null;
+let confettiLastTs = 0;
+let confettiSpawnTimeouts = [];
 
-        function getThemeColors() {
-            const style = getComputedStyle(document.body);
-            const themeColor = style.getPropertyValue('--theme-color').trim() || '#6366f1';
-            const themeColorLight = style.getPropertyValue('--theme-color-light').trim() || '#818cf8';
-            return [
-                '#FFFFFF', '#FFFEF0', themeColor, themeColorLight,
-                '#FFD700', '#FFEC8B', '#E0FFFF', '#FFB6C1', '#98FB98'
-            ];
+function getThemeColors() {
+    const style = getComputedStyle(document.body);
+    const themeColor = style.getPropertyValue('--theme-color').trim() || '#6366f1';
+    const themeColorLight = style.getPropertyValue('--theme-color-light').trim() || '#818cf8';
+    return [
+        '#FFFFFF', '#FFFEF0', themeColor, themeColorLight,
+        '#FFD700', '#FFEC8B', '#E0FFFF', '#FFB6C1', '#98FB98'
+    ];
+}
+
+function createConfettiParticle(container, colors) {
+    const el = document.createElement('div');
+
+    // Форма/размер
+    const shapeRand = Math.random();
+    let shape, w, h;
+
+    if (shapeRand < 0.18) { shape = 'star'; w = h = 8 + Math.random() * 10; }
+    else if (shapeRand < 0.32) { shape = 'heart'; w = h = 7 + Math.random() * 9; }
+    else if (shapeRand < 0.46) { shape = 'diamond'; w = h = 7 + Math.random() * 9; }
+    else if (shapeRand < 0.60) { shape = 'triangle'; w = h = 7 + Math.random() * 9; }
+    else if (shapeRand < 0.78) { shape = 'ribbon'; w = 4 + Math.random() * 5; h = 14 + Math.random() * 18; }
+    else { shape = 'circle'; w = h = 6 + Math.random() * 8; }
+
+    el.className = `confetti shape-${shape}`;
+
+    const color = colors[Math.floor(Math.random() * colors.length)];
+
+    el.style.width = `${w}px`;
+    el.style.height = `${h}px`;
+    el.style.background = color;
+    el.style.boxShadow = `0 0 ${Math.max(3, w / 2)}px ${color}66`;
+
+    container.appendChild(el);
+
+    const cw = container.clientWidth;
+    const ch = container.clientHeight;
+
+    // Точка "взрыва": чуть ниже центра (смотрится естественнее в модалке)
+    const originX = cw * (0.5 + (Math.random() - 0.5) * 0.10);
+    const originY = ch * (0.78 + (Math.random() - 0.5) * 0.06);
+
+    // Направление: веером вверх в разные стороны
+    // Угол от ~-160° до ~-20° (в радианах)
+    const angle = (-Math.PI) + (Math.random() * (Math.PI * 0.78)) + (Math.PI * 0.11);
+
+    // Начальная скорость (импульс): большая вначале, дальше замедление
+    const baseSpeed = isMobile ? 850 : 1050;
+    const speed = baseSpeed + Math.random() * (isMobile ? 650 : 850);
+
+    // Скорости
+    let vx = Math.cos(angle) * speed;
+    let vy = Math.sin(angle) * speed;
+
+    // Немного "взрыва" в стороны от центра
+    vx += (Math.random() - 0.5) * 250;
+
+    // Ветер/дрейф (постоянная составляющая + лёгкая вариативность)
+    const wind = (Math.random() - 0.5) * (isMobile ? 60 : 90);
+
+    // Вращение/наклон
+    let rotZ = Math.random() * 360;
+    const rotSpeed = (Math.random() * 720 - 360); // deg/sec
+    let tiltX = Math.random() * 360;
+    let tiltY = Math.random() * 360;
+    const tiltSpeedX = (Math.random() * 360 - 180);
+    const tiltSpeedY = (Math.random() * 360 - 180);
+
+    // "Вес"/сопротивление: разные частицы ведут себя чуть по-разному
+    const drag = 0.985 + Math.random() * 0.01; // ближе к 1 = медленнее теряет скорость
+    const gravity = 1700 + Math.random() * 500; // px/s^2
+
+    const life = 2.4 + Math.random() * 1.2; // seconds
+    const start = performance.now();
+
+    return {
+        el,
+        x: originX,
+        y: originY,
+        vx, vy,
+        wind,
+        rotZ, rotSpeed,
+        tiltX, tiltY,
+        tiltSpeedX, tiltSpeedY,
+        drag,
+        gravity,
+        life,
+        start,
+        dead: false
+    };
+}
+
+function renderParticle(p) {
+    // transform: translate + 3d rotate (выглядит "живее")
+    p.el.style.transform =
+        `translate3d(${p.x}px, ${p.y}px, 0)` +
+        ` rotateZ(${p.rotZ}deg)` +
+        ` rotateX(${p.tiltX}deg)` +
+        ` rotateY(${p.tiltY}deg)`;
+}
+
+function confettiLoop(ts) {
+    if (!confettiLastTs) confettiLastTs = ts;
+    const dt = Math.min(0.033, (ts - confettiLastTs) / 1000); // cap ~30fps step
+    confettiLastTs = ts;
+
+    const container = document.getElementById('confettiContainer');
+    if (!container || !STATE.isModalOpen) {
+        stopConfetti();
+        return;
+    }
+
+    const cw = container.clientWidth;
+    const ch = container.clientHeight;
+
+    for (const p of confettiParticles) {
+        if (p.dead) continue;
+
+        const age = (ts - p.start) / 1000;
+
+        // Физика:
+        // 1) сопротивление воздуха (замедляет, особенно заметно на подъёме)
+        p.vx *= Math.pow(p.drag, 60 * dt);
+        p.vy *= Math.pow(p.drag, 60 * dt);
+
+        // 2) ветер
+        p.vx += p.wind * dt;
+
+        // 3) гравитация (делает "пик" и затем падение)
+        p.vy += p.gravity * dt;
+
+        // интеграция
+        p.x += p.vx * dt;
+        p.y += p.vy * dt;
+
+        // вращение
+        p.rotZ += p.rotSpeed * dt;
+        p.tiltX += p.tiltSpeedX * dt;
+        p.tiltY += p.tiltSpeedY * dt;
+
+        // прозрачность: красиво затухает к концу жизни
+        if (age > p.life * 0.7) {
+            const t = (age - p.life * 0.7) / (p.life * 0.3);
+            p.el.style.opacity = String(Math.max(0, 1 - t));
+        } else {
+            p.el.style.opacity = '1';
         }
 
-        function createConfetti(container, colors) {
-            const confetti = document.createElement('div');
-            const color = colors[Math.floor(Math.random() * colors.length)];
-            
-            const shapeRand = Math.random();
-            let shape, width, height;
-            
-            if (shapeRand < 0.2) { shape = 'star'; width = height = Math.random() * 10 + 8; } 
-            else if (shapeRand < 0.35) { shape = 'heart'; width = height = Math.random() * 8 + 7; } 
-            else if (shapeRand < 0.5) { shape = 'diamond'; width = height = Math.random() * 8 + 7; } 
-            else if (shapeRand < 0.65) { shape = 'triangle'; width = height = Math.random() * 8 + 7; } 
-            else if (shapeRand < 0.8) { shape = 'ribbon'; width = Math.random() * 5 + 4; height = Math.random() * 16 + 14; } 
-            else { shape = 'circle'; width = height = Math.random() * 7 + 6; }
-            
-            confetti.className = `confetti shape-${shape}`;
-            
-            // ФИЗИКА
-            const startLeft = Math.random() * 100;
-            const distFromCenter = Math.abs(startLeft - 50);
-            
-            // Высота полета: чем ближе к центру, тем выше
-            const peakY = -(250 + Math.random() * 250 + (50 - distFromCenter) * 2);
-            
-            // Отклонение: вылетает веером от центра
-            const driftPeak = (Math.random() - 0.5) * 60 + (startLeft < 50 ? -20 : 20);
-            
-            // Финальный снос: добавляем ветер/хаос
-            const driftEnd = driftPeak + (Math.random() - 0.5) * 150;
-            
-            // 3D вращение
-            const rotXPeak = Math.random() * 360;
-            const rotYPeak = Math.random() * 360;
-            const rotXEnd = rotXPeak + (Math.random() * 720 - 360);
-            const rotYEnd = rotYPeak + (Math.random() * 720 - 360);
-            
-            const duration = 2.5 + Math.random() * 1.5; 
+        renderParticle(p);
 
-            confetti.style.cssText = `
-                left: ${startLeft}%;
-                width: ${width}px;
-                height: ${height}px;
-                background: ${color};
-                --peak-y: ${peakY}px;
-                --drift-peak: ${driftPeak}px;
-                --drift-end: ${driftEnd}px;
-                --rot-x-peak: ${rotXPeak}deg;
-                --rot-y-peak: ${rotYPeak}deg;
-                --rot-x-end: ${rotXEnd}deg;
-                --rot-y-end: ${rotYEnd}deg;
-                animation: confettiPop ${duration}s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-                box-shadow: 0 0 ${width/2}px ${color}80;
-            `;
-            
-            container.appendChild(confetti);
-            
-            // Удаление после завершения
-            const timeout = setTimeout(() => {
-                if (confetti.parentNode) confetti.remove();
-            }, duration * 1000 + 100);
-            
-            confettiTimeouts.push(timeout);
+        // условия смерти (внутри модалки оно всё равно будет обрезано, но удаляем для производительности)
+        if (
+            age > p.life ||
+            p.y > ch + 80 ||
+            p.x < -120 || p.x > cw + 120
+        ) {
+            p.dead = true;
+            if (p.el && p.el.parentNode) p.el.remove();
         }
+    }
 
-        function startConfetti() {
-            const container = document.getElementById('confettiContainer');
-            if (!container) return;
-            stopConfetti(); // Очистка старых
-            container.innerHTML = '';
-            
-            const colors = getThemeColors();
-            const burstCount = isMobile ? 45 : 60;
-            
-            for (let i = 0; i < burstCount; i++) {
-                // Небольшая задержка для естественности залпа
-                setTimeout(() => {
-                    createConfetti(container, colors);
-                }, Math.random() * 200);
-            }
-        }
+    // чистим массив
+    confettiParticles = confettiParticles.filter(p => !p.dead);
 
-        function stopConfetti() {
-            confettiTimeouts.forEach(t => clearTimeout(t));
-            confettiTimeouts = [];
-            const container = document.getElementById('confettiContainer');
-            if (container) container.innerHTML = '';
+    if (confettiParticles.length > 0) {
+        confettiRafId = requestAnimationFrame(confettiLoop);
+    } else {
+        confettiRafId = null;
+    }
+}
+
+function startConfetti() {
+    const container = document.getElementById('confettiContainer');
+    if (!container) return;
+
+    stopConfetti();
+    container.innerHTML = '';
+
+    const colors = getThemeColors();
+    const total = isMobile ? 55 : 80;
+
+    // Делаем "залп": часть сразу, часть чуть позже — выглядит натуральнее
+    const firstBurst = Math.round(total * 0.65);
+    const secondBurst = total - firstBurst;
+
+    for (let i = 0; i < firstBurst; i++) {
+        confettiParticles.push(createConfettiParticle(container, colors));
+    }
+
+    confettiSpawnTimeouts.push(setTimeout(() => {
+        const c = document.getElementById('confettiContainer');
+        if (!c || !STATE.isModalOpen) return;
+        for (let i = 0; i < secondBurst; i++) {
+            confettiParticles.push(createConfettiParticle(c, colors));
         }
+    }, 120));
+
+    confettiLastTs = 0;
+    confettiRafId = requestAnimationFrame(confettiLoop);
+}
+
+function stopConfetti() {
+    confettiSpawnTimeouts.forEach(t => clearTimeout(t));
+    confettiSpawnTimeouts = [];
+
+    if (confettiRafId) cancelAnimationFrame(confettiRafId);
+    confettiRafId = null;
+    confettiLastTs = 0;
+
+    confettiParticles = [];
+    const container = document.getElementById('confettiContainer');
+    if (container) container.innerHTML = '';
+}
 
         // ============ HELPERS ============
         function getExpensivePrizeForCase() {
