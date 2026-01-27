@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Divine Case</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -210,32 +211,6 @@
             }
         }
 
-        /* Confetti animations */
-        @keyframes confettiDrop {
-    0% {
-        transform: translateY(-10px) rotateZ(0deg) rotateX(0deg);
-        opacity: 0;
-    }
-    10% {
-        opacity: 1;
-    }
-    100% {
-        transform: translateY(120vh) rotateZ(720deg) rotateX(360deg);
-        opacity: 0.6;
-    }
-}
-
-@keyframes confettiSway {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(20px); }
-    75% { transform: translateX(-20px); }
-}
-
-        @keyframes confettiGlow {
-            0%, 100% { filter: brightness(1); }
-            50% { filter: brightness(1.5); }
-        }
-
         @keyframes prizeCardFloat {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-5px); }
@@ -244,6 +219,86 @@
         @keyframes valueCountUp {
             0% { transform: scale(1.3); opacity: 0.5; }
             100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Win effects */
+        @keyframes winPulseOnce {
+            0% { transform: scale(1); filter: brightness(1); }
+            50% { transform: scale(1.15); filter: brightness(1.4); }
+            100% { transform: scale(1); filter: brightness(1); }
+        }
+
+        @keyframes particleFly {
+            0% { 
+                transform: translate(0, 0) scale(1); 
+                opacity: 1; 
+            }
+            100% { 
+                transform: translate(var(--tx), var(--ty)) scale(0.3); 
+                opacity: 0; 
+            }
+        }
+
+        @keyframes floatUpFade {
+            0% { 
+                transform: translateY(0) scale(0.8); 
+                opacity: 0; 
+            }
+            20% {
+                opacity: 1;
+                transform: translateY(-10px) scale(1);
+            }
+            100% { 
+                transform: translateY(-80px) scale(0.9); 
+                opacity: 0; 
+            }
+        }
+
+        @keyframes glowExpand {
+            0% { 
+                transform: scale(0.5); 
+                opacity: 0.8; 
+            }
+            100% { 
+                transform: scale(2); 
+                opacity: 0; 
+            }
+        }
+
+        @keyframes sparkle {
+            0% { 
+                transform: scale(0) rotate(0deg); 
+                opacity: 1; 
+            }
+            50% {
+                opacity: 1;
+            }
+            100% { 
+                transform: scale(1) rotate(180deg); 
+                opacity: 0; 
+            }
+        }
+
+        .demo-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #f59e0b, #fbbf24);
+            color: #1a1a2e;
+            text-align: center;
+            padding: 8px 16px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            z-index: 1000;
+            text-transform: uppercase;
+            box-shadow: 0 4px 20px rgba(251, 191, 36, 0.4);
+        }
+
+        body.demo-mode {
+            padding-top: 50px;
         }
 
         .header {
@@ -362,7 +417,7 @@
         .balance-card.stars .balance-icon-wrap {
             background: linear-gradient(145deg, rgba(251, 191, 36, 0.3), rgba(251, 191, 36, 0.15));
             box-shadow: 0 0 25px rgba(251, 191, 36, 0.4);
-            animation-delay: 0.5s;
+            animation: none !important;
         }
 
         .balance-icon {
@@ -411,6 +466,14 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            transition: none;
+            animation: none !important;
+            transform: none !important;
+        }
+
+        .balance-card.stars .balance-value.updated {
+            animation: none !important;
+            transform: none !important;
         }
 
         .balance-label {
@@ -1206,7 +1269,7 @@
 
         .status-message.show { display: block; animation: cardEnter 0.3s ease-out; }
 
-        /* ========== MODAL - INSTANT ========== */
+        /* ========== MODAL ========== */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -1228,7 +1291,15 @@
         .modal-overlay.show { opacity: 1; visibility: visible; }
 
         .modal {
-            background: linear-gradient(180deg, rgba(20, 20, 50, 0.98) 0%, rgba(10, 10, 25, 0.99) 100%);
+            --modal-color: var(--theme-color);
+            --modal-color-light: var(--theme-color-light);
+            --modal-glow: var(--theme-glow);
+            background:
+                radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.06), transparent 35%),
+                radial-gradient(circle at 80% 10%, color-mix(in srgb, var(--modal-color) 35%, transparent), transparent 45%),
+                radial-gradient(circle at 20% 80%, color-mix(in srgb, var(--modal-color) 25%, transparent), transparent 55%),
+                radial-gradient(circle at 75% 75%, color-mix(in srgb, var(--modal-color-light) 30%, transparent), transparent 50%),
+                linear-gradient(180deg, rgba(12, 12, 28, 0.98) 0%, rgba(6, 6, 16, 0.99) 100%);
             border-radius: 28px;
             padding: 35px 30px;
             text-align: center;
@@ -1236,10 +1307,10 @@
             width: 90%;
             transform: scale(0.95);
             transition: transform 0.15s ease-out;
-            border: 2px solid var(--theme-color);
+            border: 2px solid var(--modal-color);
             position: relative;
             overflow: hidden;
-            box-shadow: 0 0 80px var(--theme-glow), 0 25px 80px rgba(0, 0, 0, 0.8);
+            box-shadow: 0 0 80px var(--modal-glow), 0 25px 80px rgba(0, 0, 0, 0.8);
         }
 
         .modal::before {
@@ -1249,14 +1320,32 @@
             left: 0;
             right: 0;
             height: 2px;
-            background: linear-gradient(90deg, transparent, var(--theme-color-light), transparent);
+            background: linear-gradient(90deg, transparent, var(--modal-color-light), transparent);
+        }
+
+        .modal::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: none;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .modal-stars {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.9;
         }
 
         .modal-overlay.show .modal { transform: scale(1); }
 
         .modal.win {
-            border-color: var(--theme-color);
-            box-shadow: 0 0 100px var(--theme-glow), 0 25px 80px rgba(0, 0, 0, 0.8);
+            border-color: var(--modal-color);
+            box-shadow: 0 0 100px var(--modal-glow), 0 25px 80px rgba(0, 0, 0, 0.8);
         }
 
         .modal.lose {
@@ -1264,50 +1353,50 @@
             box-shadow: 0 0 60px rgba(107, 114, 128, 0.4), 0 25px 80px rgba(0, 0, 0, 0.8);
         }
 
-        /* Modal confetti container */
-        #confettiOverlay {
+        /* Win effects overlay - behind modal content */
+        #winEffectsContainer {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 1;
-            overflow: hidden;
+            z-index: 0;
+            overflow: visible;
             border-radius: 28px;
         }
 
-        .confetti {
+        .win-particle {
             position: absolute;
-            top: -20px;
-            width: 12px;
-            height: 12px;
-            pointer-events: none;
-            will-change: transform;
-        }
-
-        .confetti-inner {
-            width: 100%;
-            height: 100%;
-            animation: confettiGlow 2s ease-in-out infinite;
-        }
-
-        .confetti.square .confetti-inner {
-            border-radius: 2px;
-        }
-
-        .confetti.circle .confetti-inner {
             border-radius: 50%;
+            pointer-events: none;
+            will-change: transform, opacity;
         }
 
-        .confetti.star .confetti-inner {
-            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+        .win-glow {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: glowExpand 1s ease-out forwards;
         }
 
-        .confetti.ribbon .confetti-inner {
-            width: 8px;
-            height: 20px;
-            border-radius: 4px;
+        .floating-value {
+            position: absolute;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #fbbf24;
+            text-shadow: 0 0 15px rgba(251, 191, 36, 0.8), 0 0 30px rgba(251, 191, 36, 0.5);
+            pointer-events: none;
+            animation: floatUpFade 1.8s ease-out forwards;
+            white-space: nowrap;
+        }
+
+        .sparkle-star {
+            position: absolute;
+            pointer-events: none;
+            font-size: 1.2rem;
+            animation: sparkle 0.8s ease-out forwards;
         }
 
         .modal-emoji {
@@ -1316,6 +1405,13 @@
             filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5));
             position: relative;
             z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.win .modal-emoji {
+            animation: winPulseOnce 0.6s ease-out;
         }
 
         .modal-prize-image {
@@ -1331,9 +1427,9 @@
         }
 
         .modal.win .modal-prize-image {
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5), 0 0 60px var(--theme-glow);
-            border-color: var(--theme-color);
-            animation: pulseGlow 2s ease-in-out infinite;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5), 0 0 60px var(--modal-glow);
+            border-color: var(--modal-color);
+            animation: winPulseOnce 0.6s ease-out;
         }
 
         .modal-title {
@@ -1348,7 +1444,7 @@
         }
 
         .modal.win .modal-title {
-            background: linear-gradient(135deg, #fff, var(--theme-color-light), #fff);
+            background: linear-gradient(135deg, color-mix(in srgb, var(--modal-color) 25%, white), var(--modal-color), color-mix(in srgb, var(--modal-color-light) 35%, white));
             background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -1371,13 +1467,13 @@
             font-family: 'Orbitron', sans-serif;
             font-size: 2.2rem;
             font-weight: 900;
-            background: linear-gradient(135deg, #fff, var(--theme-color-light), var(--theme-color));
+            background: linear-gradient(135deg, color-mix(in srgb, var(--modal-color) 25%, white), var(--modal-color-light), var(--modal-color));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 18px;
             position: relative;
             z-index: 2;
-            filter: drop-shadow(0 4px 15px var(--theme-glow));
+            filter: drop-shadow(0 4px 18px var(--modal-glow));
         }
 
         .modal.lose .modal-prize {
@@ -1406,9 +1502,6 @@
             border-radius: 16px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             position: relative;
-            /* No animations or transforms */
-            transform: none !important;
-            animation: none !important;
         }
 
         .modal-balance-item::before {
@@ -1422,15 +1515,11 @@
         }
 
         .modal-balance-item.sapphire {
-            border-color: rgba(99, 102, 241, 0.4);
-            transform: none !important;
-            animation: none !important;
+            border-color: color-mix(in srgb, var(--modal-color) 55%, rgba(255, 255, 255, 0.2));
         }
 
         .modal-balance-item.star {
-            border-color: rgba(251, 191, 36, 0.4);
-            transform: none !important;
-            animation: none !important;
+            border-color: color-mix(in srgb, var(--modal-color) 55%, rgba(255, 255, 255, 0.2));
         }
 
         .modal-balance-icon {
@@ -1454,22 +1543,30 @@
             font-size: 1.1rem;
             font-weight: 700;
             line-height: 1;
-            transform: none !important;
-            animation: none !important;
         }
 
         .modal-balance-item.sapphire .modal-balance-value {
-            background: linear-gradient(135deg, #c4b5fd, #818cf8);
+            background: linear-gradient(135deg, color-mix(in srgb, var(--modal-color) 35%, white), var(--modal-color));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
         .modal-balance-item.star .modal-balance-value {
-            background: linear-gradient(135deg, #fef3c7, #fbbf24);
+            background: linear-gradient(135deg, color-mix(in srgb, var(--modal-color-light) 35%, white), var(--modal-color));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            animation: none !important;
+            transition: none !important;
+            transform: none !important;
+        }
+
+        .modal-balance-item.star,
+        .modal-balance-item.star * {
+            animation: none !important;
+            transition: none !important;
+            transform: none !important;
         }
 
         .modal-buttons {
@@ -1509,25 +1606,25 @@
 
         .modal-button.secondary {
             background: transparent;
-            border: 2px solid rgba(255, 255, 255, 0.15);
-            color: var(--text-secondary);
+            border: 2px solid color-mix(in srgb, var(--modal-color) 45%, rgba(255, 255, 255, 0.2));
+            color: color-mix(in srgb, var(--modal-color) 65%, white);
             padding: 14px 32px;
         }
 
         .modal-button.secondary:hover, .modal-button.secondary:active {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(255, 255, 255, 0.3);
+            background: color-mix(in srgb, var(--modal-color) 12%, transparent);
+            border-color: color-mix(in srgb, var(--modal-color) 70%, rgba(255, 255, 255, 0.4));
             color: white;
         }
 
         .modal-button.theme-btn { 
-            background: linear-gradient(135deg, var(--theme-color), var(--theme-color-light)); 
+            background: linear-gradient(135deg, var(--modal-color), var(--modal-color-light)); 
             color: #1a1a2e;
-            box-shadow: 0 8px 30px var(--theme-glow);
+            box-shadow: 0 8px 30px var(--modal-glow);
         }
 
         .modal-button.theme-btn:hover { 
-            box-shadow: 0 12px 50px var(--theme-glow); 
+            box-shadow: 0 12px 50px var(--modal-glow); 
         }
 
         .loading-overlay {
@@ -1646,8 +1743,6 @@
         <div class="bg-stars" id="bgStars"></div>
     </div>
 
-
-
     <div class="header">
         <div class="brand-container">
             <h1 class="brand-text">Divine Case</h1>
@@ -1723,10 +1818,11 @@
 
     <div class="session-info" id="sessionInfo"></div>
 
-<div class="modal-overlay" id="modalOverlay">
-    <div class="modal" id="modal">
-        <div id="confettiOverlay"></div>
-        <div class="modal-emoji" id="modalEmoji"></div>
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" id="modal">
+            <div class="modal-stars" id="modalStarsField"></div>
+            <div id="winEffectsContainer"></div>
+            <div class="modal-emoji" id="modalEmoji"></div>
             <div class="modal-title" id="modalTitle">Поздравляем!</div>
             <div class="modal-prize" id="modalPrize">+50</div>
             <div class="modal-balance" id="modalBalance">
@@ -1752,18 +1848,24 @@
         const initData = tg?.initData || '';
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 769;
 
+        const IS_DEMO_MODE = !initData || initData === '';
+
+        const MODAL_COLOR_MAP = {
+            cosmic: { color: '#6366f1', light: '#818cf8', glow: 'rgba(99, 102, 241, 0.5)' },
+            stellar: { color: '#ec4899', light: '#f472b6', glow: 'rgba(236, 72, 153, 0.5)' },
+            golden: { color: '#fbbf24', light: '#fcd34d', glow: 'rgba(251, 191, 36, 0.5)' },
+            divine: { color: '#ec4899', light: '#f472b6', glow: 'rgba(236, 72, 153, 0.5)' }
+        };
+
         const GITHUB_USER = "deadveel-crypto";
         const GITHUB_REPO = "divine-case-assets";
         const GITHUB_BRANCH = "main";
         const IMG_CDN = `https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${GITHUB_REPO}@${GITHUB_BRANCH}`;
 
-        const CUSTOM_ICONS = {
-            sapphire: null,
-            star: null
-        };
+        const CUSTOM_ICONS = { sapphire: null, star: null };
 
         const CASES = [
-            { id: 'cosmic', name: 'Cosmic Case', emoji: null, image: `${IMG_CDN}/cases/cosmic.png`, cost: 100, tag: 'NEW', style: 'cosmic-style', theme: 'theme-cosmic' },
+            { id: 'cosmic', name: 'Cosmic Case', emoji: null, image: `${IMG_CDN}/cases/cosmic.png`, cost: 100, tag: IS_DEMO_MODE ? 'DEMO' : 'NEW', style: 'cosmic-style', theme: 'theme-cosmic' },
             { id: 'stellar', name: 'Stellar Case', emoji: null, image: `${IMG_CDN}/cases/stellar.png`, cost: 250, tag: 'BEST', style: 'stellar-style', theme: 'theme-stellar' },
             { id: 'golden', name: 'Golden Case', emoji: null, image: `${IMG_CDN}/cases/golden.png`, cost: 500, tag: 'HOT', style: 'golden-style', theme: 'theme-golden' },
             { id: 'divine', name: 'Divine Case', emoji: null, image: `${IMG_CDN}/cases/divine.png`, cost: 1000, tag: 'VIP', style: 'divine-style', theme: 'theme-divine' }
@@ -1772,10 +1874,10 @@
         let STATE = {
             userId: null,
             username: '',
-            sapphires: 0,
-            stars: 0,
+            sapphires: IS_DEMO_MODE ? 99999 : 0,
+            stars: IS_DEMO_MODE ? 0 : 0,
             spinCost: 100,
-            canSpin: false,
+            canSpin: true,
             isInitialized: false,
             spinsCount: 0,
             totalWon: 0,
@@ -1785,8 +1887,6 @@
         };
 
         let isSpinning = false;
-        let confettiActive = false;
-        const MAX_CONFETTI = 40;
 
         const PRIZE_VISUALS = {
             0: { stars: 0, emoji: null, rarity: "empty", image: `${IMG_CDN}/prizes/void.png`, name: "Void" },
@@ -1806,6 +1906,10 @@
             cosmic: {
                 prizes: [0, 15, 25, 50, 75, 100],
                 getRandomPrize: () => {
+                    if (IS_DEMO_MODE) {
+                        const demoPool = [15, 25, 50, 75, 100];
+                        return demoPool[Math.floor(Math.random() * demoPool.length)];
+                    }
                     const rand = Math.random() * 100;
                     if (rand < 93) return 0;
                     if (rand < 98) return 15;
@@ -1815,6 +1919,10 @@
             stellar: {
                 prizes: [0, 25, 50, 75, 100, 150, 250],
                 getRandomPrize: () => {
+                    if (IS_DEMO_MODE) {
+                        const demoPool = [25, 50, 75, 100, 150, 250];
+                        return demoPool[Math.floor(Math.random() * demoPool.length)];
+                    }
                     const rand = Math.random() * 100;
                     if (rand < 93) return 0;
                     if (rand < 98) return 25;
@@ -1824,6 +1932,10 @@
             golden: {
                 prizes: [0, 75, 100, 150, 250, 500],
                 getRandomPrize: () => {
+                    if (IS_DEMO_MODE) {
+                        const demoPool = [75, 100, 150, 250, 500];
+                        return demoPool[Math.floor(Math.random() * demoPool.length)];
+                    }
                     const rand = Math.random() * 100;
                     if (rand < 93) return 0;
                     if (rand < 98) return 75;
@@ -1833,6 +1945,10 @@
             divine: {
                 prizes: [0, 100, 150, 250, 500, 1000, 9999],
                 getRandomPrize: () => {
+                    if (IS_DEMO_MODE) {
+                        const demoPool = [100, 150, 250, 500, 1000, 9999];
+                        return demoPool[Math.floor(Math.random() * demoPool.length)];
+                    }
                     const rand = Math.random() * 100;
                     if (rand < 93) return 0;
                     if (rand < 98) return 100;
@@ -1910,9 +2026,14 @@
         let ITEM_WIDTH = getItemWidth();
         const VISIBLE_ITEMS = isMobile ? 40 : 50;
 
-        window.addEventListener('resize', () => { ITEM_WIDTH = getItemWidth(); });
+        window.addEventListener('resize', () => {
+            ITEM_WIDTH = getItemWidth();
+        });
 
         async function apiRequest(path, options = {}) {
+            if (IS_DEMO_MODE) {
+                return { success: true };
+            }
             const res = await fetch(API_BASE + path, {
                 ...options,
                 headers: {
@@ -1929,6 +2050,13 @@
         }
 
         async function loadBalance() {
+            if (IS_DEMO_MODE) {
+                STATE.sapphires = 99999;
+                STATE.stars = 0;
+                STATE.canSpin = true;
+                updateUI();
+                return true;
+            }
             try {
                 const data = await apiRequest("/api/balance");
                 STATE.sapphires = data.sapphires;
@@ -1948,7 +2076,7 @@
             const starIcon = document.getElementById('starIcon');
             const modalSapphireIcon = document.getElementById('modalSapphireIcon');
             const modalStarIcon = document.getElementById('modalStarIcon');
-            
+
             if (CUSTOM_ICONS.sapphire) {
                 sapphireIcon.innerHTML = `<img src="${CUSTOM_ICONS.sapphire}" class="balance-icon-img" alt="" onerror="this.parentElement.innerHTML='💎'">`;
                 modalSapphireIcon.innerHTML = `<img src="${CUSTOM_ICONS.sapphire}" alt="" onerror="this.parentElement.innerHTML='💎'">`;
@@ -1956,9 +2084,9 @@
                 sapphireIcon.innerHTML = '💎';
                 modalSapphireIcon.innerHTML = '💎';
             }
-            
+
             if (CUSTOM_ICONS.star) {
-                starIcon.innerHTML = `<img src="${CUSTOM_ICONS.star}" class="balance-icon-img" alt="" onerror="this.parentElement.innerHTML='⭐'">`;
+                starIcon.innerHTML = `<img src="${CUSTOM_ICONS.star}" class="balance-icon-img" alt="" onerror="this.parentElement.innerHTML='⭐'">`
                 modalStarIcon.innerHTML = `<img src="${CUSTOM_ICONS.star}" alt="" onerror="this.parentElement.innerHTML='⭐'">`;
             } else {
                 starIcon.innerHTML = '⭐';
@@ -1975,13 +2103,23 @@
             imageUrls.forEach(url => { const img = new Image(); img.src = url; });
         }
 
+        function setupDemoMode() {
+            if (!IS_DEMO_MODE) return;
+            document.body.classList.add('demo-mode');
+            const banner = document.createElement('div');
+            banner.className = 'demo-banner';
+            banner.innerHTML = '🎮 DEMO MODE — 100% WIN CHANCE 🎮';
+            document.body.insertBefore(banner, document.body.firstChild);
+        }
+
         async function init() {
-            if (!initData) {
+            setupDemoMode();
+            if (!IS_DEMO_MODE && !initData) {
                 showFatalError("Telegram initData не получен.\nОткрой страницу только через бота.");
                 return;
             }
 
-            if (tg) {
+            if (tg && !IS_DEMO_MODE) {
                 tg.ready();
                 tg.expand();
                 if (tg.initDataUnsafe?.user) {
@@ -1993,15 +2131,18 @@
             }
 
             generateStars();
+            generateStars('modalStarsField', isMobile ? 45 : 70);
             generateCasesGrid();
             setupCustomIcons();
             preloadImages();
 
             const balanceLoaded = await loadBalance();
-            if (!balanceLoaded) return;
+            if (!balanceLoaded && !IS_DEMO_MODE) return;
 
             STATE.isInitialized = true;
-            setTimeout(() => { document.getElementById('loadingOverlay').classList.add('hidden'); }, 400);
+            setTimeout(() => {
+                document.getElementById('loadingOverlay').classList.add('hidden');
+            }, 400);
             updateSessionInfo();
         }
 
@@ -2030,6 +2171,7 @@
             STATE.selectedCase = selectedCase;
             STATE.spinCost = selectedCase.cost;
             document.body.className = selectedCase.theme;
+            if (IS_DEMO_MODE) document.body.classList.add('demo-mode');
 
             const emojiEl = document.getElementById('currentCaseEmoji');
             const imageEl = document.getElementById('currentCaseImage');
@@ -2038,9 +2180,7 @@
                 emojiEl.classList.add('hidden');
                 imageEl.classList.remove('hidden');
                 imageEl.src = selectedCase.image;
-                imageEl.onerror = () => {
-                    imageEl.classList.add('hidden');
-                };
+                imageEl.onerror = () => { imageEl.classList.add('hidden'); };
             } else {
                 imageEl.classList.add('hidden');
                 emojiEl.classList.remove('hidden');
@@ -2065,6 +2205,7 @@
                 menuScreen.classList.remove('hidden');
                 caseScreen.classList.add('hidden');
                 document.body.className = '';
+                if (IS_DEMO_MODE) document.body.classList.add('demo-mode');
             } else {
                 menuScreen.classList.add('hidden');
                 caseScreen.classList.remove('hidden');
@@ -2088,9 +2229,11 @@
             const grid = document.getElementById('prizesGrid');
             const caseId = STATE.selectedCase?.id || 'cosmic';
             const config = CASE_CONFIG[caseId];
-
             const displayPrizes = config.prizes.filter(s => s > 0).sort((a, b) => b - a).map(stars => PRIZE_VISUALS[stars]);
-            displayPrizes.push(PRIZE_VISUALS[0]);
+
+            if (!IS_DEMO_MODE) {
+                displayPrizes.push(PRIZE_VISUALS[0]);
+            }
 
             grid.className = 'prizes-grid';
             const count = displayPrizes.length;
@@ -2132,7 +2275,7 @@
 
             const fragment = document.createDocumentFragment();
             let prevWasZero = false;
-            
+
             for (let i = 0; i < VISIBLE_ITEMS; i++) {
                 let prize;
 
@@ -2146,7 +2289,7 @@
                     prize = getNonZeroPrizeForDisplay();
                     prevWasZero = false;
                 } else {
-                    const shouldBeZero = Math.random() < 0.2;
+                    const shouldBeZero = IS_DEMO_MODE ? false : Math.random() < 0.2;
                     if (shouldBeZero && !prevWasZero) {
                         prize = PRIZE_VISUALS[0];
                         prevWasZero = true;
@@ -2180,7 +2323,6 @@
 
         async function runAnimation(winningPrize) {
             const winningIndex = 30 + Math.floor(Math.random() * 5);
-
             generateItemsStrip(winningPrize, winningIndex);
 
             const container = document.getElementById('caseContainer');
@@ -2188,9 +2330,8 @@
             const containerWidth = container.offsetWidth;
             const centerPosition = containerWidth / 2;
             const targetPosition = (winningIndex * ITEM_WIDTH) + (ITEM_WIDTH / 2) - centerPosition;
-            
+
             let randomOffset;
-            
             if (winningPrize.stars === 0) {
                 const edgeChance = Math.random();
                 if (edgeChance < 0.45) {
@@ -2205,7 +2346,7 @@
             } else {
                 randomOffset = (Math.random() - 0.5) * 20;
             }
-            
+
             const finalPosition = targetPosition + randomOffset;
 
             strip.style.transform = `translateX(${containerWidth}px)`;
@@ -2254,40 +2395,39 @@
             updateUI();
 
             const animationPromise = runAnimation(prize);
-            
-            let spinSuccess = false;
-            const spinPromise = (async () => {
-                try {
-                    await apiRequest("/api/spin", {
-                        method: "POST",
-                        body: JSON.stringify({ cost: currentCost, case_id: STATE.selectedCase?.id || 'cosmic' })
-                    });
-                    spinSuccess = true;
-                } catch (e) {
-                    console.error("Spin error:", e);
-                    showStatus('Ошибка: ' + e.message, 'error');
-                    haptic('error');
-                    await loadBalance();
-                }
-            })();
+            let spinSuccess = true;
 
-            await Promise.all([animationPromise, spinPromise]);
+            if (!IS_DEMO_MODE) {
+                const spinPromise = (async () => {
+                    try {
+                        await apiRequest("/api/spin", {
+                            method: "POST",
+                            body: JSON.stringify({ cost: currentCost, case_id: STATE.selectedCase?.id || 'cosmic' })
+                        });
+                    } catch (e) {
+                        console.error("Spin error:", e);
+                        showStatus('Ошибка: ' + e.message, 'error');
+                        haptic('error');
+                        spinSuccess = false;
+                        await loadBalance();
+                    }
+                })();
+                await Promise.all([animationPromise, spinPromise]);
+            } else {
+                await animationPromise;
+            }
 
-            let apiSuccess = false;
-            if (spinSuccess) {
+            let apiSuccess = IS_DEMO_MODE;
+
+            if (!IS_DEMO_MODE && spinSuccess) {
                 try {
                     const claimData = await apiRequest("/api/claim", {
                         method: "POST",
-                        body: JSON.stringify({
-                            stars: prizeStars,
-                            case_id: STATE.selectedCase?.id || 'cosmic'
-                        })
+                        body: JSON.stringify({ stars: prizeStars, case_id: STATE.selectedCase?.id || 'cosmic' })
                     });
-
                     STATE.sapphires = claimData.new_sapphires;
                     STATE.stars = claimData.new_stars;
                     STATE.canSpin = claimData.can_spin;
-
                     if (prizeStars > 0) STATE.totalWon += prizeStars;
                     apiSuccess = true;
                     updateUI();
@@ -2299,7 +2439,13 @@
                 }
             }
 
-            if (apiSuccess) {
+            if (IS_DEMO_MODE) {
+                STATE.stars += prizeStars;
+                if (prizeStars > 0) STATE.totalWon += prizeStars;
+                updateUI();
+            }
+
+            if (apiSuccess || IS_DEMO_MODE) {
                 showResult(prize);
             }
 
@@ -2310,7 +2456,6 @@
         function playTickSounds() {
             let tickCount = 0;
             const maxTicks = 35;
-
             const tickInterval = setInterval(() => {
                 tickCount++;
                 if (tickCount > maxTicks) {
@@ -2319,6 +2464,132 @@
                 }
                 if (tickCount < 18) haptic('selection');
             }, 120);
+        }
+
+        // ============ WIN EFFECTS SYSTEM ============
+        function createWinEffects(stars) {
+            const container = document.getElementById('winEffectsContainer');
+            container.innerHTML = '';
+
+            const centerX = container.offsetWidth / 2;
+            const centerY = 80;
+
+            const particleColors = [
+                'color-mix(in srgb, var(--theme-color) 75%, white)',
+                'color-mix(in srgb, var(--theme-color) 85%, white)',
+                'color-mix(in srgb, var(--theme-color-light) 85%, white)',
+                'color-mix(in srgb, var(--theme-color) 65%, white)',
+                'color-mix(in srgb, var(--theme-color-light) 65%, white)',
+                'color-mix(in srgb, var(--theme-color) 55%, white)'
+            ];
+
+            // Create soft glow circles behind
+            for (let i = 0; i < 3; i++) {
+                setTimeout(() => {
+                    const glow = document.createElement('div');
+                    glow.className = 'win-glow';
+                    const size = 100 + i * 40;
+                    glow.style.cssText = `
+                        left: ${centerX}px;
+                        top: ${centerY}px;
+                        width: ${size}px;
+                        height: ${size}px;
+                        margin-left: -${size/2}px;
+                        margin-top: -${size/2}px;
+                        background: radial-gradient(circle, ${particleColors[i * 3]} 0%, transparent 70%);
+                        opacity: 0.4;
+                    `;
+                    container.appendChild(glow);
+                    setTimeout(() => glow.remove(), 1000);
+                }, i * 100);
+            }
+
+            // Create particles flying outward
+            const particleCount = 20;
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'win-particle';
+                
+                const color = particleColors[Math.floor(Math.random() * particleColors.length)];
+                const size = 4 + Math.random() * 6;
+                const angle = (i / particleCount) * Math.PI * 2;
+                const distance = 80 + Math.random() * 60;
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance;
+                const duration = 0.6 + Math.random() * 0.4;
+                const delay = Math.random() * 0.2;
+
+                particle.style.cssText = `
+                    left: ${centerX}px;
+                    top: ${centerY}px;
+                    width: ${size}px;
+                    height: ${size}px;
+                    background: ${color};
+                    box-shadow: 0 0 ${size * 2}px ${color};
+                    --tx: ${tx}px;
+                    --ty: ${ty}px;
+                    animation: particleFly ${duration}s ease-out forwards;
+                    animation-delay: ${delay}s;
+                `;
+                container.appendChild(particle);
+                setTimeout(() => particle.remove(), (duration + delay) * 1000 + 100);
+            }
+
+            // Create sparkle stars
+            const starEmojis = ['✨', '⭐', '💫', '🌟'];
+            for (let i = 0; i < 6; i++) {
+                setTimeout(() => {
+                    const sparkle = document.createElement('div');
+                    sparkle.className = 'sparkle-star';
+                    sparkle.textContent = starEmojis[Math.floor(Math.random() * starEmojis.length)];
+                    
+                    const angle = Math.random() * Math.PI * 2;
+                    const distance = 40 + Math.random() * 80;
+                    const offsetX = Math.cos(angle) * distance;
+                    const offsetY = Math.sin(angle) * distance;
+
+                    sparkle.style.cssText = `
+                        left: ${centerX + offsetX}px;
+                        top: ${centerY + offsetY}px;
+                        color: ${particleColors[Math.floor(Math.random() * 6)]};
+                    `;
+                    container.appendChild(sparkle);
+                    setTimeout(() => sparkle.remove(), 800);
+                }, i * 100);
+            }
+
+            // Create floating +value texts in different positions
+            const positions = [
+                { x: -125, y: -35 },
+                { x: 95, y: -20 },
+                { x: -110, y: 55 },
+                { x: 95, y: 55 },
+                { x: 0, y: -60 },
+                { x: -85, y: 85 }
+            ];
+
+            for (let i = 0; i < 4; i++) {
+                setTimeout(() => {
+                    const floatVal = document.createElement('div');
+                    floatVal.className = 'floating-value';
+                    floatVal.textContent = `+${stars}⭐`;
+                    
+                    const pos = positions[i % positions.length];
+                    const randomOffset = { 
+                        x: (Math.random() - 0.5) * 30, 
+                        y: (Math.random() - 0.5) * 20 
+                    };
+
+                    floatVal.style.cssText = `
+                        left: ${centerX + pos.x + randomOffset.x}px;
+                        top: ${centerY + pos.y + randomOffset.y}px;
+                        font-size: ${0.8 + Math.random() * 0.4}rem;
+                        transform: translateX(-50%);
+                    `;
+                    container.appendChild(floatVal);
+                    setTimeout(() => floatVal.remove(), 1800);
+                }, 200 + i * 150);
+            }
         }
 
         function showResult(prize) {
@@ -2332,7 +2603,9 @@
             const prizeText = document.getElementById('modalPrize');
             const spinAgainBtn = document.getElementById('spinAgainBtn');
 
-            stopConfetti();
+            // Clear previous effects
+            document.getElementById('winEffectsContainer').innerHTML = '';
+
             modal.classList.remove('win', 'lose');
 
             if (prize.image) {
@@ -2344,9 +2617,7 @@
             if (prize.stars > 0) {
                 modal.classList.add('win');
                 
-                if (prize.stars >= 9999) {
-                    title.textContent = 'ДЖЕКПОТ!';
-                } else if (prize.stars >= 1000) {
+                if (prize.stars >= 1000) {
                     title.textContent = 'ДЖЕКПОТ!';
                 } else if (prize.stars >= 500) {
                     title.textContent = 'Невероятно!';
@@ -2355,10 +2626,12 @@
                 } else {
                     title.textContent = 'Поздравляем!';
                 }
-                
+
                 prizeText.textContent = `+${prize.stars}`;
                 haptic('success');
-                startConfetti();
+
+                // Trigger effects after modal is visible
+                setTimeout(() => createWinEffects(prize.stars), 100);
             } else {
                 modal.classList.add('lose');
                 title.textContent = 'Пусто...';
@@ -2375,122 +2648,6 @@
             overlay.classList.add('show');
         }
 
-        // ============ NEW CONFETTI SYSTEM ============
-        const confettiColors = [
-            '#fbbf24', '#f59e0b', '#fcd34d', // Gold
-            '#6366f1', '#818cf8', '#a78bfa', // Purple
-            '#ec4899', '#f472b6', '#fb7185', // Pink
-            '#22d3ee', '#67e8f9', '#06b6d4', // Cyan
-            '#10b981', '#34d399', '#6ee7b7', // Green
-            '#ef4444', '#f87171', '#fca5a5', // Red
-            '#ffffff', '#e2e8f0'              // White
-        ];
-
-        const confettiShapes = ['square', 'circle', 'star', 'ribbon'];
-        let confettiInterval = null;
-        let confettiPieces = [];
-        const MAX_CONFETTI_PIECES = 25;
-
-        function createConfetti() {
-    const modal = document.getElementById('modal');
-    const overlay = modal?.querySelector('#confettiOverlay');
-    if (!overlay || !confettiActive) return;
-
-    // Limit confetti count
-    if (confettiPieces.length >= MAX_CONFETTI_PIECES) {
-        const oldPiece = confettiPieces.shift();
-        if (oldPiece && oldPiece.parentNode) {
-            oldPiece.remove();
-        }
-    }
-
-    const confetti = document.createElement('div');
-    const inner = document.createElement('div');
-    inner.className = 'confetti-inner';
-
-    const shape = confettiShapes[Math.floor(Math.random() * confettiShapes.length)];
-    confetti.className = `confetti ${shape}`;
-
-    const color = confettiColors[Math.floor(Math.random() * confettiColors.length)];
-    const size = 6 + Math.random() * 8;
-    const left = Math.random() * 100;
-    const duration = 8 + Math.random() * 4;
-    const swayDuration = 3 + Math.random() * 2;
-    const delay = Math.random() * 0.3;
-    const rotateStart = Math.random() * 360;
-
-    inner.style.background = color;
-    inner.style.boxShadow = `0 0 ${size/2}px ${color}`;
-
-    confetti.style.cssText = `
-        left: ${left}%;
-        width: ${size}px;
-        height: ${shape === 'ribbon' ? size * 2 : size}px;
-        animation: confettiDrop ${duration}s ease-in forwards, confettiSway ${swayDuration}s ease-in-out infinite;
-        animation-delay: ${delay}s;
-        transform: rotateZ(${rotateStart}deg);
-        opacity: 0;
-    `;
-
-    setTimeout(() => {
-        confetti.style.opacity = '1';
-    }, delay * 1000);
-
-    confetti.appendChild(inner);
-    overlay.appendChild(confetti);
-    confettiPieces.push(confetti);
-
-    setTimeout(() => {
-        if (confetti.parentNode) {
-            confetti.remove();
-        }
-        const index = confettiPieces.indexOf(confetti);
-        if (index > -1) {
-            confettiPieces.splice(index, 1);
-        }
-    }, (duration + delay) * 1000);
-}
-
-        function startConfetti() {
-    confettiActive = true;
-    const modal = document.getElementById('modal');
-    const overlay = modal?.querySelector('#confettiOverlay');
-    if (!overlay) return;
-
-    // Initial burst - create fewer confetti
-    for (let i = 0; i < 12; i++) {
-        setTimeout(() => {
-            if (confettiActive) createConfetti();
-        }, i * 80);
-    }
-
-    // Continue creating confetti slowly
-    confettiInterval = setInterval(() => {
-        if (confettiActive) {
-            createConfetti();
-        } else {
-            clearInterval(confettiInterval);
-        }
-    }, 400);
-}
-
-        function stopConfetti() {
-    confettiActive = false;
-    
-    if (confettiInterval) {
-        clearInterval(confettiInterval);
-        confettiInterval = null;
-    }
-
-    // Clear all confetti from modal
-    const modal = document.getElementById('modal');
-    const overlay = modal?.querySelector('#confettiOverlay');
-    if (overlay) {
-        overlay.innerHTML = '';
-    }
-    confettiPieces = [];
-}
-
         function spinAgain() {
             closeModal();
             requestAnimationFrame(() => {
@@ -2501,7 +2658,7 @@
 
         function closeModal() {
             STATE.isModalOpen = false;
-            stopConfetti();
+            document.getElementById('winEffectsContainer').innerHTML = '';
             document.getElementById('modalOverlay').classList.remove('show');
             document.getElementById('modal').classList.remove('win', 'lose');
             updateUI();
@@ -2510,33 +2667,28 @@
         function updateUI() {
             const sapphiresEl = document.getElementById('sapphires');
             const starsEl = document.getElementById('stars-balance');
-            
+
             const oldSapphires = parseInt(sapphiresEl.textContent) || 0;
             const oldStars = parseInt(starsEl.textContent) || 0;
-            
+
             sapphiresEl.textContent = STATE.sapphires;
             starsEl.textContent = STATE.stars;
-            
+
             if (oldSapphires !== STATE.sapphires) {
                 sapphiresEl.classList.add('updated');
                 setTimeout(() => sapphiresEl.classList.remove('updated'), 400);
             }
             if (oldStars !== STATE.stars) {
-                starsEl.classList.add('updated');
-                setTimeout(() => starsEl.classList.remove('updated'), 400);
+                starsEl.classList.remove('updated');
             }
 
-            const canSpin = STATE.sapphires >= STATE.spinCost &&
-                           !isSpinning &&
-                           !STATE.isModalOpen &&
-                           STATE.canSpin !== false;
-
+            const canSpin = STATE.sapphires >= STATE.spinCost && !isSpinning && !STATE.isModalOpen && STATE.canSpin !== false;
             document.getElementById('spinBtn').disabled = !canSpin;
         }
 
         function updateSessionInfo() {
-            document.getElementById('sessionInfo').textContent =
-                `ID:${STATE.userId || '?'} | Spins:${STATE.spinsCount} | Won:${STATE.totalWon}`;
+            const mode = IS_DEMO_MODE ? 'DEMO' : 'LIVE';
+            document.getElementById('sessionInfo').textContent = `${mode} | ID:${STATE.userId || '?'} | Spins:${STATE.spinsCount} | Won:${STATE.totalWon}`;
         }
 
         function showStatus(message, type = 'error') {
@@ -2550,10 +2702,12 @@
             document.getElementById('statusMessage').classList.remove('show');
         }
 
-        function generateStars() {
-            const container = document.getElementById('bgStars');
-            const starCount = isMobile ? 60 : 100;
+        function generateStars(containerId = 'bgStars', countOverride = null) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            const starCount = countOverride ?? (isMobile ? 60 : 100);
             const fragment = document.createDocumentFragment();
+            container.innerHTML = '';
 
             for (let i = 0; i < starCount; i++) {
                 const star = document.createElement('div');
@@ -2561,7 +2715,6 @@
                 const size = Math.random() * 2.5 + 0.5;
                 const isBig = size > 2;
                 if (isBig) star.classList.add('big');
-                
                 star.style.cssText = `
                     left: ${Math.random() * 100}%;
                     top: ${Math.random() * 100}%;
@@ -2573,7 +2726,6 @@
                 `;
                 fragment.appendChild(star);
             }
-
             container.appendChild(fragment);
         }
 
@@ -2615,12 +2767,8 @@
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
                 document.body.classList.add('paused');
-                stopConfetti();
             } else {
                 document.body.classList.remove('paused');
-                if (STATE.isModalOpen && document.getElementById('modal').classList.contains('win')) {
-                    startConfetti();
-                }
             }
         });
     </script>
