@@ -1712,109 +1712,79 @@
                 // ============ PREMIUM CONFETTI SYSTEM ============
                 // ============ PREMIUM CONFETTI SYSTEM ============
                 // ============ PREMIUM CONFETTI SYSTEM (Mobile Optimized) ============
+                // ============ CONFETTI SYSTEM (Mobile Optimized) ============
         let confettiCanvas = null;
         let confettiCtx = null;
         let confettiActive = false;
         let confettiAnimationId = null;
         
-        // Яркие насыщенные цвета
         const CONFETTI_COLORS = [
             '#FF0055', '#FF00FF', '#00FFFF', '#00FF99',
             '#FFFF00', '#FFD700', '#39FF14', '#FF3366',
             '#7B68EE', '#BA55D3', '#00BFFF', '#FFFFFF'
         ];
 
-        // Настройки в зависимости от устройства
         const CONFETTI_CONFIG = {
-            burstCount: isMobile ? 50 : 100,
-            maxParticles: isMobile ? 120 : 300,
-            spawnRate: isMobile ? 4 : 2, // каждые N кадров
+            maxParticles: isMobile ? 80 : 150,
+            spawnRate: isMobile ? 3 : 2,
             spawnCount: isMobile ? 2 : 3,
-            particleSizeMin: isMobile ? 6 : 8,
-            particleSizeMax: isMobile ? 8 : 10,
-            useGlow: !isMobile // свечение только на десктопе
+            sizeMin: isMobile ? 6 : 8,
+            sizeMax: isMobile ? 9 : 12,
+            useGlow: !isMobile
         };
 
         let particles = [];
         let canvasW = 0;
         let canvasH = 0;
-        let burstComplete = false;
         let frameCount = 0;
-
-        // Используем типизированные массивы для производительности
-        const MAX_POOL = 350;
-        let particlePool = [];
-        let poolIndex = 0;
 
         class ConfettiParticle {
             constructor() {
                 this.active = false;
             }
             
-            init(x, y, isBurst) {
+            init(x, y) {
                 this.x = x;
                 this.y = y;
                 this.active = true;
                 
-                const sizeRange = CONFETTI_CONFIG.particleSizeMax - CONFETTI_CONFIG.particleSizeMin;
-                this.size = Math.random() * sizeRange + CONFETTI_CONFIG.particleSizeMin;
-                this.sizeY = this.size * (0.4 + Math.random() * 0.3);
+                this.size = Math.random() * (CONFETTI_CONFIG.sizeMax - CONFETTI_CONFIG.sizeMin) + CONFETTI_CONFIG.sizeMin;
+                this.sizeY = this.size * (0.35 + Math.random() * 0.3);
                 
-                if (isBurst) {
-                    const angle = -1.57 + (Math.random() - 0.5) * 1.4; // -PI/2
-                    const power = 18 + Math.random() * 12;
-                    this.vx = Math.cos(angle) * power + (Math.random() - 0.5) * 8;
-                    this.vy = Math.sin(angle) * power;
-                    this.gravity = 0.5 + Math.random() * 0.25;
-                    this.isBurst = true;
-                } else {
-                    this.vx = (Math.random() - 0.5) * 2.5;
-                    this.vy = Math.random() * 1.5 + 0.8;
-                    this.gravity = 0.06 + Math.random() * 0.04;
-                    this.isBurst = false;
-                }
+                // Медленное падение
+                this.vy = 0.4 + Math.random() * 0.6;
+                this.vx = 0;
                 
-                this.rotation = Math.random() * 6.28; // 2*PI
-                this.rotationSpeed = (Math.random() - 0.5) * 0.2;
+                // Очень лёгкое покачивание
+                this.wiggleSpeed = 0.015 + Math.random() * 0.015;
+                this.wiggleAmount = 0.3 + Math.random() * 0.4;
                 this.wiggleOffset = Math.random() * 6.28;
                 this.time = 0;
+                
+                // Медленное вращение
+                this.rotation = Math.random() * 6.28;
+                this.rotationSpeed = (Math.random() - 0.5) * 0.03;
+                
                 this.opacity = 1;
                 this.color = CONFETTI_COLORS[(Math.random() * CONFETTI_COLORS.length) | 0];
                 this.shape = (Math.random() * 3) | 0;
-                this.transitioned = false;
                 
                 return this;
             }
             
             update() {
                 this.time++;
-                this.vy += this.gravity;
                 
-                if (this.isBurst && !this.transitioned && this.vy > 0) {
-                    this.transitioned = true;
-                    this.gravity = 0.05 + Math.random() * 0.03;
-                    this.vy *= 0.35;
-                    this.vx *= 0.5;
-                }
-                
-                // Упрощённое колебание
-                if (this.vy > 0) {
-                    this.vx += Math.sin(this.time * 0.035 + this.wiggleOffset) * 0.12;
-                }
-                
-                // Ограничение скорости
-                if (this.vy > 4) this.vy = 4;
+                // Плавное покачивание
+                this.vx = Math.sin(this.time * this.wiggleSpeed + this.wiggleOffset) * this.wiggleAmount;
                 
                 this.x += this.vx;
                 this.y += this.vy;
-                this.vx *= 0.988;
-                
                 this.rotation += this.rotationSpeed;
-                this.rotationSpeed *= 0.997;
                 
-                // Затухание
-                if (this.y > canvasH * 0.72) {
-                    this.opacity -= 0.025;
+                // Затухание внизу
+                if (this.y > canvasH * 0.7) {
+                    this.opacity -= 0.015;
                 }
                 
                 if (this.opacity <= 0 || this.y > canvasH + 20) {
@@ -1825,27 +1795,27 @@
             }
         }
 
-        // Предсоздаём пул частиц
+        const MAX_POOL = 200;
+        let particlePool = [];
+        let poolIndex = 0;
+
         function initParticlePool() {
             particlePool = [];
             for (let i = 0; i < MAX_POOL; i++) {
                 particlePool.push(new ConfettiParticle());
             }
-            poolIndex = 0;
         }
 
-        function getParticle(x, y, isBurst) {
-            // Ищем неактивную частицу в пуле
+        function getParticle(x, y) {
             for (let i = 0; i < MAX_POOL; i++) {
                 const idx = (poolIndex + i) % MAX_POOL;
                 if (!particlePool[idx].active) {
                     poolIndex = (idx + 1) % MAX_POOL;
-                    return particlePool[idx].init(x, y, isBurst);
+                    return particlePool[idx].init(x, y);
                 }
             }
-            // Пул заполнен - переиспользуем самую старую
             poolIndex = (poolIndex + 1) % MAX_POOL;
-            return particlePool[poolIndex].init(x, y, isBurst);
+            return particlePool[poolIndex].init(x, y);
         }
 
         function createConfettiCanvas() {
@@ -1862,16 +1832,11 @@
             modal.appendChild(canvas);
             
             const rect = modal.getBoundingClientRect();
-            // Уменьшаем разрешение на мобильных для производительности
             const scale = isMobile ? 0.75 : 1;
             canvas.width = rect.width * scale;
             canvas.height = rect.height * scale;
             canvasW = canvas.width;
             canvasH = canvas.height;
-            
-            if (isMobile) {
-                canvas.style.imageRendering = 'auto';
-            }
             
             return canvas;
         }
@@ -1887,23 +1852,20 @@
                 desynchronized: true 
             });
             
-            // Отключаем сглаживание на мобильных
             if (isMobile) {
                 confettiCtx.imageSmoothingEnabled = false;
             }
             
             confettiActive = true;
             particles = [];
-            burstComplete = false;
             frameCount = 0;
             
-            // Мгновенный выстрел
-            const centerX = canvasW / 2;
-            const startY = canvasH + 15;
-            
-            for (let i = 0; i < CONFETTI_CONFIG.burstCount; i++) {
-                const x = centerX + (Math.random() - 0.5) * canvasW * 0.7;
-                particles.push(getParticle(x, startY, true));
+            // Начальные частицы по всей высоте
+            const initialCount = CONFETTI_CONFIG.maxParticles / 2 | 0;
+            for (let i = 0; i < initialCount; i++) {
+                const x = Math.random() * canvasW;
+                const y = Math.random() * canvasH * 0.8;
+                particles.push(getParticle(x, y));
             }
             
             animateConfetti();
@@ -1914,8 +1876,8 @@
             for (let i = 0; i < count; i++) {
                 if (particles.length >= CONFETTI_CONFIG.maxParticles) break;
                 const x = Math.random() * canvasW;
-                const y = -15 - Math.random() * 20;
-                particles.push(getParticle(x, y, false));
+                const y = -10 - Math.random() * 20;
+                particles.push(getParticle(x, y));
             }
         }
 
@@ -1927,23 +1889,16 @@
             
             frameCount++;
             
-            // Проверяем завершение burst
-            if (!burstComplete && frameCount > 30) {
-                burstComplete = true;
-            }
-            
-            // Спавн падающих частиц
-            if (burstComplete && frameCount % CONFETTI_CONFIG.spawnRate === 0) {
+            // Спавн новых частиц
+            if (frameCount % CONFETTI_CONFIG.spawnRate === 0) {
                 spawnFallingParticles();
             }
             
-            // Настройка свечения (только для десктопа)
             if (CONFETTI_CONFIG.useGlow) {
                 ctx.shadowBlur = 4;
             }
             
             // Обновляем и рисуем
-            let activeCount = 0;
             for (let i = particles.length - 1; i >= 0; i--) {
                 const p = particles[i];
                 if (!p.active) {
@@ -1952,8 +1907,6 @@
                 }
                 
                 if (p.update()) {
-                    activeCount++;
-                    
                     ctx.save();
                     ctx.translate(p.x, p.y);
                     ctx.rotate(p.rotation);
@@ -1964,7 +1917,6 @@
                         ctx.shadowColor = p.color;
                     }
                     
-                    // Упрощённые формы
                     if (p.shape === 0) {
                         ctx.fillRect(-p.size * 0.5, -p.sizeY * 0.5, p.size, p.sizeY);
                     } else if (p.shape === 1) {
@@ -1972,7 +1924,6 @@
                         ctx.arc(0, 0, p.size * 0.4, 0, 6.28);
                         ctx.fill();
                     } else {
-                        // Упрощённый ромб вместо звезды
                         ctx.beginPath();
                         ctx.moveTo(0, -p.size * 0.45);
                         ctx.lineTo(p.size * 0.3, 0);
@@ -2009,9 +1960,7 @@
             confettiCtx = null;
             particles = [];
             frameCount = 0;
-            burstComplete = false;
             
-            // Деактивируем все частицы в пуле
             for (let i = 0; i < particlePool.length; i++) {
                 particlePool[i].active = false;
             }
