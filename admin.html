@@ -1787,7 +1787,7 @@
 
                 <div class="input-group">
                     <label class="input-label">Кнопка под сообщением</label>
-                    <div class="action-grid" style="grid-template-columns: repeat(3, 1fr);">
+                    <div class="action-grid" style="grid-template-columns: repeat(4, 1fr);">
                         <button class="action-btn" onclick="setBroadcastButtonType('url')">
                             <span class="action-btn-icon">🔗</span>
                             <span>Ссылка</span>
@@ -1800,12 +1800,43 @@
                             <span class="action-btn-icon">👤</span>
                             <span>Профиль</span>
                         </button>
+                        <button class="action-btn" onclick="setBroadcastButtonType('markdown')">
+                            <span class="action-btn-icon">🧩</span>
+                            <span>Markdown</span>
+                        </button>
                     </div>
                     <label class="input-label" style="margin-top: 12px;">Текст кнопки</label>
                     <input type="text" class="input-field" id="broadcastButtonText" placeholder="Например: Открыть магазин">
                     <label class="input-label" style="margin-top: 12px;">Ссылка (только для типа «Ссылка»)</label>
                     <input type="url" class="input-field" id="broadcastButtonUrl" placeholder="https://...">
-                    <div class="input-hint">Для типов Support/Профиль URL не нужен</div>
+                    <label class="input-label" style="margin-top: 12px;">Кнопки (Markdown)</label>
+                    <textarea class="input-field" id="broadcastButtonMarkdown" rows="3" style="resize: vertical; min-height: 84px;"
+                              placeholder="[Открыть магазин](https://example.com)\n[Профиль](callback:profile) | [Support](https://t.me/support)"></textarea>
+                    <div class="input-hint">Каждая строка — ряд кнопок, разделяйте кнопки « | ». Формат: [Текст](https://...) или [Текст](callback:DATA)</div>
+                    <div class="input-group" style="margin-top: 12px;">
+                        <label class="input-label">Быстрое добавление кнопок из бота</label>
+                        <div class="amount-presets">
+                            <button class="amount-preset" onclick="addMarkdownPreset('Профиль', 'callback:profile')">Профиль</button>
+                            <button class="amount-preset" onclick="addMarkdownPreset('Сапфиры', 'callback:sapphires')">Сапфиры</button>
+                            <button class="amount-preset" onclick="addMarkdownPreset('Продать подарок', 'callback:sell_gift')">Продать подарок</button>
+                            <button class="amount-preset" onclick="addMarkdownPreset('Вывод звёзд', 'callback:withdraw_stars')">Вывод звёзд</button>
+                            <button class="amount-preset" onclick="addMarkdownPreset('Пополнить', 'callback:topup')">Пополнить</button>
+                            <button class="amount-preset" onclick="addMarkdownPreset('Правила', 'callback:rules')">Правила</button>
+                            <button class="amount-preset" onclick="addMarkdownPreset('Задания', 'callback:tasks')">Задания</button>
+                            <button class="amount-preset" onclick="addMarkdownPreset('Кейсы', 'https://deadveel-crypto.github.io/gift-webapp/roulette.html')">Кейсы</button>
+                            <button class="amount-preset" onclick="addMarkdownPreset('Админ-панель', 'https://deadveel-crypto.github.io/gift-webapp/admin.html')">Админ-панель</button>
+                        </div>
+                        <div class="input-group" style="margin-top: 10px;">
+                            <label class="input-label">Свой callback или ссылка</label>
+                            <input type="text" class="input-field" id="quickButtonText" placeholder="Текст кнопки">
+                            <input type="text" class="input-field" id="quickButtonCallback" placeholder="callback_data (например: profile)" style="margin-top: 8px;">
+                            <input type="url" class="input-field" id="quickButtonUrl" placeholder="https://..." style="margin-top: 8px;">
+                            <div class="btn-row" style="margin-top: 10px;">
+                                <button class="btn btn-secondary" onclick="appendMarkdownButton('callback')">Добавить callback</button>
+                                <button class="btn btn-secondary" onclick="appendMarkdownButton('url')">Добавить ссылку</button>
+                            </div>
+                        </div>
+                    </div>
                     <div class="btn-row" style="margin-top: 12px;">
                         <button class="btn btn-secondary" onclick="toggleBroadcastButton(false)">Без кнопки</button>
                         <button class="btn btn-primary" onclick="toggleBroadcastButton(true)">Добавить кнопку</button>
@@ -1859,11 +1890,76 @@
             showToast(enabled ? 'Кнопка будет добавлена' : 'Кнопка отключена', 'info');
         }
 
+        function addMarkdownPreset(label, target) {
+            const markdownField = document.getElementById('broadcastButtonMarkdown');
+            if (!markdownField) return;
+            const line = `[${label}](${target})`;
+            markdownField.value = markdownField.value.trim()
+                ? `${markdownField.value.trim()}\n${line}`
+                : line;
+            broadcastButtonType = 'markdown';
+            broadcastButtonEnabled = true;
+            showToast('Кнопка добавлена в Markdown', 'info');
+        }
+
+        function appendMarkdownButton(type) {
+            const textField = document.getElementById('quickButtonText');
+            const callbackField = document.getElementById('quickButtonCallback');
+            const urlField = document.getElementById('quickButtonUrl');
+            const markdownField = document.getElementById('broadcastButtonMarkdown');
+
+            if (!markdownField || !textField) return;
+
+            const text = textField.value.trim();
+            if (!text) {
+                showToast('Введите текст кнопки', 'error');
+                return;
+            }
+
+            let target = '';
+            if (type === 'callback') {
+                const callback = (callbackField?.value || '').trim();
+                if (!callback) {
+                    showToast('Введите callback_data', 'error');
+                    return;
+                }
+                target = `callback:${callback}`;
+            } else {
+                const url = (urlField?.value || '').trim();
+                if (!url || !url.startsWith('http')) {
+                    showToast('Введите корректную ссылку', 'error');
+                    return;
+                }
+                target = url;
+            }
+
+            const line = `[${text}](${target})`;
+            markdownField.value = markdownField.value.trim()
+                ? `${markdownField.value.trim()}\n${line}`
+                : line;
+
+            broadcastButtonType = 'markdown';
+            broadcastButtonEnabled = true;
+            textField.value = '';
+            if (callbackField) callbackField.value = '';
+            if (urlField) urlField.value = '';
+            showToast('Кнопка добавлена в Markdown', 'success');
+        }
+
         function getBroadcastButtonPayload() {
             if (!broadcastButtonEnabled) return null;
 
             const text = document.getElementById('broadcastButtonText')?.value.trim();
             const url = document.getElementById('broadcastButtonUrl')?.value.trim();
+            const markdown = document.getElementById('broadcastButtonMarkdown')?.value.trim();
+
+            if (broadcastButtonType === 'markdown') {
+                if (!markdown) {
+                    showToast('Введите Markdown для кнопок', 'error');
+                    return null;
+                }
+                return { type: 'markdown', markdown };
+            }
 
             if (!text) {
                 showToast('Введите текст кнопки', 'error');
