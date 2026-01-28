@@ -1000,6 +1000,8 @@
         let sortOrder = "desc";
         let allUsers = [];
         let broadcastAttachment = null;
+        let broadcastButtonEnabled = false;
+        let broadcastButtonType = "url";
 
         if (tg) {
             try {
@@ -1783,6 +1785,33 @@
                     <div class="input-hint">Поддерживаются изображения, видео, аудио и PDF</div>
                 </div>
 
+                <div class="input-group">
+                    <label class="input-label">Кнопка под сообщением</label>
+                    <div class="action-grid" style="grid-template-columns: repeat(3, 1fr);">
+                        <button class="action-btn" onclick="setBroadcastButtonType('url')">
+                            <span class="action-btn-icon">🔗</span>
+                            <span>Ссылка</span>
+                        </button>
+                        <button class="action-btn" onclick="setBroadcastButtonType('support')">
+                            <span class="action-btn-icon">💬</span>
+                            <span>Support</span>
+                        </button>
+                        <button class="action-btn" onclick="setBroadcastButtonType('profile')">
+                            <span class="action-btn-icon">👤</span>
+                            <span>Профиль</span>
+                        </button>
+                    </div>
+                    <label class="input-label" style="margin-top: 12px;">Текст кнопки</label>
+                    <input type="text" class="input-field" id="broadcastButtonText" placeholder="Например: Открыть магазин">
+                    <label class="input-label" style="margin-top: 12px;">Ссылка (только для типа «Ссылка»)</label>
+                    <input type="url" class="input-field" id="broadcastButtonUrl" placeholder="https://...">
+                    <div class="input-hint">Для типов Support/Профиль URL не нужен</div>
+                    <div class="btn-row" style="margin-top: 12px;">
+                        <button class="btn btn-secondary" onclick="toggleBroadcastButton(false)">Без кнопки</button>
+                        <button class="btn btn-primary" onclick="toggleBroadcastButton(true)">Добавить кнопку</button>
+                    </div>
+                </div>
+
                 <div class="btn-row">
                     <button class="btn btn-secondary" onclick="closeEditModal()">Отмена</button>
                     <button class="btn btn-primary" onclick="executeBroadcast()">
@@ -1820,6 +1849,46 @@
             if (preview) preview.innerHTML = '';
         }
 
+        function setBroadcastButtonType(type) {
+            broadcastButtonType = type;
+            showToast(`Тип кнопки: ${type}`, 'info');
+        }
+
+        function toggleBroadcastButton(enabled) {
+            broadcastButtonEnabled = enabled;
+            showToast(enabled ? 'Кнопка будет добавлена' : 'Кнопка отключена', 'info');
+        }
+
+        function getBroadcastButtonPayload() {
+            if (!broadcastButtonEnabled) return null;
+
+            const text = document.getElementById('broadcastButtonText')?.value.trim();
+            const url = document.getElementById('broadcastButtonUrl')?.value.trim();
+
+            if (!text) {
+                showToast('Введите текст кнопки', 'error');
+                return null;
+            }
+
+            if (broadcastButtonType === 'url') {
+                if (!url || !url.startsWith('http')) {
+                    showToast('Введите корректную ссылку', 'error');
+                    return null;
+                }
+                return { type: 'url', text, url };
+            }
+
+            if (broadcastButtonType === 'support') {
+                return { type: 'support', text };
+            }
+
+            if (broadcastButtonType === 'profile') {
+                return { type: 'profile', text };
+            }
+
+            return null;
+        }
+
         async function executeBroadcast() {
             const text = document.getElementById('broadcastText').value.trim();
 
@@ -1836,14 +1905,25 @@
             try {
                 showToast('Отправка...', 'info');
 
+                const buttonPayload = getBroadcastButtonPayload();
+                if (broadcastButtonEnabled && !buttonPayload) {
+                    return;
+                }
+
                 let result;
                 if (broadcastAttachment) {
                     const formData = new FormData();
                     formData.append('text', text);
                     formData.append('attachment', broadcastAttachment);
+                    if (buttonPayload) {
+                        formData.append('button', JSON.stringify(buttonPayload));
+                    }
                     result = await apiRequestForm('/api/admin/broadcast', formData);
                 } else {
-                    result = await apiRequest('/api/admin/broadcast', 'POST', { text });
+                    result = await apiRequest('/api/admin/broadcast', 'POST', {
+                        text,
+                        button: buttonPayload
+                    });
                 }
 
                 if (result.success) {
