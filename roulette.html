@@ -2086,7 +2086,7 @@
         const initData = tg?.initData || '';
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 769;
 
-        const IS_DEMO_MODE = !initData || initData === '';
+        const IS_DEMO_MODE = false;
 
         const MODAL_COLOR_MAP = {
             cosmic: { color: '#6366f1', light: '#818cf8', glow: 'rgba(99, 102, 241, 0.5)' },
@@ -2103,7 +2103,7 @@
         const CUSTOM_ICONS = { sapphire: null, star: null };
 
         const CASES = [
-            { id: 'cosmic', name: 'Cosmic Case', emoji: null, image: `${IMG_CDN}/cases/cosmic.png`, cost: 100, tag: IS_DEMO_MODE ? 'DEMO' : 'NEW', style: 'cosmic-style', theme: 'theme-cosmic' },
+            { id: 'cosmic', name: 'Cosmic Case', emoji: null, image: `${IMG_CDN}/cases/cosmic.png`, cost: 100, tag: 'NEW', style: 'cosmic-style', theme: 'theme-cosmic' },
             { id: 'stellar', name: 'Stellar Case', emoji: null, image: `${IMG_CDN}/cases/stellar.png`, cost: 250, tag: 'BEST', style: 'stellar-style', theme: 'theme-stellar' },
             { id: 'golden', name: 'Golden Case', emoji: null, image: `${IMG_CDN}/cases/golden.png`, cost: 500, tag: 'HOT', style: 'golden-style', theme: 'theme-golden' },
             { id: 'divine', name: 'Divine Case', emoji: null, image: `${IMG_CDN}/cases/divine.png`, cost: 1000, tag: 'VIP', style: 'divine-style', theme: 'theme-divine' }
@@ -2112,8 +2112,8 @@
         let STATE = {
             userId: null,
             username: '',
-            sapphires: IS_DEMO_MODE ? 99999 : 0,
-            stars: IS_DEMO_MODE ? 0 : 0,
+            sapphires: 0,
+            stars: 0,
             spinCost: 100,
             canSpin: true,
             isInitialized: false,
@@ -2144,10 +2144,6 @@
             cosmic: {
                 prizes: [0, 15, 25, 50, 75, 100],
                 getRandomPrize: () => {
-                    if (IS_DEMO_MODE) {
-                        const demoPool = [15, 25, 50, 75, 100];
-                        return demoPool[Math.floor(Math.random() * demoPool.length)];
-                    }
                     const rand = Math.random() * 100;
                     if (rand < 93) return 0;
                     if (rand < 98) return 15;
@@ -2157,10 +2153,6 @@
             stellar: {
                 prizes: [0, 25, 50, 75, 100, 150, 250],
                 getRandomPrize: () => {
-                    if (IS_DEMO_MODE) {
-                        const demoPool = [25, 50, 75, 100, 150, 250];
-                        return demoPool[Math.floor(Math.random() * demoPool.length)];
-                    }
                     const rand = Math.random() * 100;
                     if (rand < 93) return 0;
                     if (rand < 98) return 25;
@@ -2170,10 +2162,6 @@
             golden: {
                 prizes: [0, 75, 100, 150, 250, 500],
                 getRandomPrize: () => {
-                    if (IS_DEMO_MODE) {
-                        const demoPool = [75, 100, 150, 250, 500];
-                        return demoPool[Math.floor(Math.random() * demoPool.length)];
-                    }
                     const rand = Math.random() * 100;
                     if (rand < 93) return 0;
                     if (rand < 98) return 75;
@@ -2183,10 +2171,6 @@
             divine: {
                 prizes: [0, 100, 150, 250, 500, 1000, 9999],
                 getRandomPrize: () => {
-                    if (IS_DEMO_MODE) {
-                        const demoPool = [100, 150, 250, 500, 1000, 9999];
-                        return demoPool[Math.floor(Math.random() * demoPool.length)];
-                    }
                     const rand = Math.random() * 100;
                     if (rand < 93) return 0;
                     if (rand < 98) return 100;
@@ -2306,9 +2290,6 @@
         });
 
         async function apiRequest(path, options = {}) {
-            if (IS_DEMO_MODE) {
-                return { success: true };
-            }
             const res = await fetch(API_BASE + path, {
                 ...options,
                 headers: {
@@ -2325,13 +2306,6 @@
         }
 
         async function loadBalance() {
-            if (IS_DEMO_MODE) {
-                STATE.sapphires = 99999;
-                STATE.stars = 0;
-                STATE.canSpin = true;
-                updateUI();
-                return true;
-            }
             try {
                 const data = await apiRequest("/api/balance");
                 STATE.sapphires = data.sapphires;
@@ -2378,23 +2352,13 @@
             imageUrls.forEach(url => { const img = new Image(); img.src = url; });
         }
 
-        function setupDemoMode() {
-            if (!IS_DEMO_MODE) return;
-            document.body.classList.add('demo-mode');
-            const banner = document.createElement('div');
-            banner.className = 'demo-banner';
-            banner.innerHTML = '🎮 DEMO MODE — 100% WIN CHANCE 🎮';
-            document.body.insertBefore(banner, document.body.firstChild);
-        }
-
         async function init() {
-            setupDemoMode();
-            if (!IS_DEMO_MODE && !initData) {
+            if (!initData) {
                 showFatalError("Telegram initData не получен.\nОткрой страницу только через бота.");
                 return;
             }
 
-            if (tg && !IS_DEMO_MODE) {
+            if (tg) {
                 tg.ready();
                 tg.expand();
                 if (tg.initDataUnsafe?.user) {
@@ -2412,7 +2376,7 @@
             preloadImages();
 
             const balanceLoaded = await loadBalance();
-            if (!balanceLoaded && !IS_DEMO_MODE) return;
+            if (!balanceLoaded) return;
 
             STATE.isInitialized = true;
             setTimeout(() => {
@@ -2446,7 +2410,6 @@
             STATE.selectedCase = selectedCase;
             STATE.spinCost = selectedCase.cost;
             document.body.className = selectedCase.theme;
-            if (IS_DEMO_MODE) document.body.classList.add('demo-mode');
 
             const emojiEl = document.getElementById('currentCaseEmoji');
             const imageEl = document.getElementById('currentCaseImage');
@@ -2480,7 +2443,6 @@
                 menuScreen.classList.remove('hidden');
                 caseScreen.classList.add('hidden');
                 document.body.className = '';
-                if (IS_DEMO_MODE) document.body.classList.add('demo-mode');
             } else {
                 menuScreen.classList.add('hidden');
                 caseScreen.classList.remove('hidden');
@@ -2505,10 +2467,7 @@
             const caseId = STATE.selectedCase?.id || 'cosmic';
             const config = CASE_CONFIG[caseId];
             const displayPrizes = config.prizes.filter(s => s > 0).sort((a, b) => b - a).map(stars => PRIZE_VISUALS[stars]);
-
-            if (!IS_DEMO_MODE) {
-                displayPrizes.push(PRIZE_VISUALS[0]);
-            }
+            displayPrizes.push(PRIZE_VISUALS[0]);
 
             grid.className = 'prizes-grid';
             const count = displayPrizes.length;
@@ -2564,7 +2523,7 @@
                     prize = getNonZeroPrizeForDisplay();
                     prevWasZero = false;
                 } else {
-                    const shouldBeZero = IS_DEMO_MODE ? false : Math.random() < 0.2;
+                    const shouldBeZero = Math.random() < 0.2;
                     if (shouldBeZero && !prevWasZero) {
                         prize = PRIZE_VISUALS[0];
                         prevWasZero = true;
@@ -2672,29 +2631,23 @@
             const animationPromise = runAnimation(prize);
             let spinSuccess = true;
 
-            if (!IS_DEMO_MODE) {
-                const spinPromise = (async () => {
-                    try {
-                        await apiRequest("/api/spin", {
-                            method: "POST",
-                            body: JSON.stringify({ cost: currentCost, case_id: STATE.selectedCase?.id || 'cosmic' })
-                        });
-                    } catch (e) {
-                        console.error("Spin error:", e);
-                        showStatus('Ошибка: ' + e.message, 'error');
-                        haptic('error');
-                        spinSuccess = false;
-                        await loadBalance();
-                    }
-                })();
-                await Promise.all([animationPromise, spinPromise]);
-            } else {
-                await animationPromise;
-            }
+            const spinPromise = (async () => {
+                try {
+                    await apiRequest("/api/spin", {
+                        method: "POST",
+                        body: JSON.stringify({ cost: currentCost, case_id: STATE.selectedCase?.id || 'cosmic' })
+                    });
+                } catch (e) {
+                    console.error("Spin error:", e);
+                    showStatus('Ошибка: ' + e.message, 'error');
+                    haptic('error');
+                    spinSuccess = false;
+                    await loadBalance();
+                }
+            })();
+            await Promise.all([animationPromise, spinPromise]);
 
-            let apiSuccess = IS_DEMO_MODE;
-
-            if (!IS_DEMO_MODE && spinSuccess) {
+            if (spinSuccess) {
                 try {
                     const claimData = await apiRequest("/api/claim", {
                         method: "POST",
@@ -2704,7 +2657,6 @@
                     STATE.stars = claimData.new_stars;
                     STATE.canSpin = claimData.can_spin;
                     if (prizeStars > 0) STATE.totalWon += prizeStars;
-                    apiSuccess = true;
                     updateUI();
                 } catch (e) {
                     console.error("Claim error:", e);
@@ -2714,13 +2666,7 @@
                 }
             }
 
-            if (IS_DEMO_MODE) {
-                STATE.stars += prizeStars;
-                if (prizeStars > 0) STATE.totalWon += prizeStars;
-                updateUI();
-            }
-
-            if (apiSuccess || IS_DEMO_MODE) {
+            if (spinSuccess) {
                 showResult(prize);
             }
 
@@ -2970,7 +2916,7 @@
         }
 
         function updateSessionInfo() {
-            const mode = IS_DEMO_MODE ? 'DEMO' : 'LIVE';
+            const mode = 'LIVE';
             document.getElementById('sessionInfo').textContent = `${mode} | ID:${STATE.userId || '?'} | Spins:${STATE.spinsCount} | Won:${STATE.totalWon}`;
         }
 
