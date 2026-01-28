@@ -353,11 +353,11 @@
             border: 1px solid rgba(255, 255, 255, 0.08);
             overflow: hidden;
             min-width: 140px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: none;
         }
 
         .balance-card:hover {
-            transform: translateY(-3px);
+            transform: none;
         }
 
         .balance-card::before {
@@ -406,7 +406,7 @@
             justify-content: center;
             border-radius: 12px;
             flex-shrink: 0;
-            animation: iconBounce 3s ease-in-out infinite;
+            animation: none;
         }
 
         .balance-card.sapphires .balance-icon-wrap {
@@ -418,6 +418,12 @@
             background: linear-gradient(145deg, rgba(251, 191, 36, 0.3), rgba(251, 191, 36, 0.15));
             box-shadow: 0 0 25px rgba(251, 191, 36, 0.4);
             animation: none !important;
+        }
+
+        .balance-card.stars .balance-icon,
+        .balance-card.stars .ui-icon.star {
+            animation: none !important;
+            transform: none !important;
         }
 
         .balance-icon {
@@ -432,6 +438,44 @@
             height: 28px;
             object-fit: contain;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+
+        .ui-icon {
+            width: 28px;
+            height: 28px;
+            display: inline-block;
+            position: relative;
+            filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.45));
+        }
+
+        .ui-icon.sapphire {
+            background: linear-gradient(145deg, #a5b4fc, #6366f1 60%, #4338ca);
+            clip-path: polygon(50% 0%, 92% 28%, 100% 58%, 50% 100%, 0% 58%, 8% 28%);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+        }
+
+        .ui-icon.sapphire::after {
+            content: '';
+            position: absolute;
+            inset: 4px;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0));
+            clip-path: polygon(50% 0%, 88% 30%, 92% 58%, 50% 92%, 8% 58%, 12% 30%);
+            opacity: 0.6;
+        }
+
+        .ui-icon.star {
+            background: radial-gradient(circle at 30% 30%, #fff7d6, #fbbf24 65%, #d97706 100%);
+            clip-path: polygon(50% 0%, 61% 36%, 98% 36%, 68% 58%, 79% 96%, 50% 74%, 21% 96%, 32% 58%, 2% 36%, 39% 36%);
+            box-shadow: 0 0 18px rgba(251, 191, 36, 0.55);
+        }
+
+        .ui-icon.star::after {
+            content: '';
+            position: absolute;
+            inset: 6px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0));
+            clip-path: inherit;
+            opacity: 0.6;
         }
 
         .balance-info {
@@ -528,7 +572,7 @@
             padding: 28px 16px;
             text-align: center;
             cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: none;
             -webkit-tap-highlight-color: transparent;
             overflow: hidden;
             background: transparent;
@@ -570,15 +614,8 @@
             opacity: 0.6;
             pointer-events: none;
             z-index: 0;
-            transition: all 0.4s ease;
+            transition: none;
             animation: breatheGlow 4s ease-in-out infinite;
-        }
-
-        .case-card:hover .case-card-glow,
-        .case-card:active .case-card-glow {
-            opacity: 1;
-            filter: blur(50px);
-            transform: scale(1.15);
         }
 
         .case-card.cosmic-style .case-card-glow {
@@ -597,14 +634,14 @@
             background: radial-gradient(circle, rgba(34, 211, 238, 0.8) 0%, rgba(34, 211, 238, 0.4) 40%, transparent 70%);
         }
 
-        .case-card:active { transform: scale(0.97); }
+        .case-card:active { transform: none; }
 
         @media (min-width: 769px) {
-            .case-card:hover { transform: translateY(-8px) scale(1.02); }
+            .case-card:hover { transform: none; }
         }
 
         .case-card.cosmic-style { box-shadow: 0 10px 40px rgba(99, 102, 241, 0.25), 0 0 80px rgba(99, 102, 241, 0.15); }
-        .case-card.cosmic-style:hover { box-shadow: 0 20px 60px rgba(99, 102, 241, 0.4), 0 0 100px rgba(99, 102, 241, 0.25); }
+        .case-card.cosmic-style:hover { box-shadow: 0 10px 40px rgba(99, 102, 241, 0.25), 0 0 80px rgba(99, 102, 241, 0.15); }
         .case-card.cosmic-style .case-card-name {
             background: linear-gradient(135deg, #e0e7ff, #a78bfa, #818cf8);
             -webkit-background-clip: text;
@@ -612,7 +649,7 @@
         }
 
         .case-card.stellar-style { box-shadow: 0 10px 40px rgba(236, 72, 153, 0.25), 0 0 80px rgba(236, 72, 153, 0.15); }
-        .case-card.stellar-style:hover { box-shadow: 0 20px 60px rgba(236, 72, 153, 0.4), 0 0 100px rgba(236, 72, 153, 0.25); }
+        .case-card.stellar-style:hover { box-shadow: 0 10px 40px rgba(236, 72, 153, 0.25), 0 0 80px rgba(236, 72, 153, 0.15); }
         .case-card.stellar-style .case-card-name {
             background: linear-gradient(135deg, #fce7f3, #f472b6, #ec4899);
             -webkit-background-clip: text;
@@ -620,7 +657,7 @@
         }
 
         .case-card.golden-style { box-shadow: 0 10px 40px rgba(251, 191, 36, 0.3), 0 0 80px rgba(251, 191, 36, 0.15); }
-        .case-card.golden-style:hover { box-shadow: 0 20px 60px rgba(251, 191, 36, 0.45), 0 0 100px rgba(251, 191, 36, 0.25); }
+        .case-card.golden-style:hover { box-shadow: 0 10px 40px rgba(251, 191, 36, 0.3), 0 0 80px rgba(251, 191, 36, 0.15); }
         .case-card.golden-style .case-card-name {
             background: linear-gradient(135deg, #fef3c7, #fbbf24, #f59e0b);
             -webkit-background-clip: text;
@@ -628,7 +665,7 @@
         }
 
         .case-card.divine-style { box-shadow: 0 10px 40px rgba(34, 211, 238, 0.3), 0 0 80px rgba(34, 211, 238, 0.15); }
-        .case-card.divine-style:hover { box-shadow: 0 20px 60px rgba(34, 211, 238, 0.45), 0 0 100px rgba(34, 211, 238, 0.25); }
+        .case-card.divine-style:hover { box-shadow: 0 10px 40px rgba(34, 211, 238, 0.3), 0 0 80px rgba(34, 211, 238, 0.15); }
         .case-card.divine-style .case-card-name {
             background: linear-gradient(135deg, #cffafe, #22d3ee, #06b6d4);
             -webkit-background-clip: text;
@@ -661,11 +698,7 @@
             position: relative;
             z-index: 1;
             animation: subtleFloat 4s ease-in-out infinite;
-            transition: transform 0.3s ease;
-        }
-
-        .case-card:hover .case-card-image {
-            transform: scale(1.05);
+            transition: none;
         }
 
         .case-card:nth-child(1) .case-card-image { animation-delay: 0s; }
@@ -980,21 +1013,21 @@
         }
 
         .prize-item.rarity-stars-15 {
-            background: linear-gradient(145deg, rgba(52, 211, 153, 0.8), rgba(16, 185, 129, 0.85));
-            border-color: rgba(52, 211, 153, 0.6);
-            box-shadow: 0 0 20px rgba(52, 211, 153, 0.4);
+            background: linear-gradient(145deg, rgba(196, 181, 253, 0.9), rgba(167, 139, 250, 0.95));
+            border-color: rgba(196, 181, 253, 0.75);
+            box-shadow: 0 0 24px rgba(196, 181, 253, 0.6);
         }
 
         .prize-item.rarity-stars-25 {
-            background: linear-gradient(145deg, rgba(45, 212, 191, 0.8), rgba(20, 184, 166, 0.85));
-            border-color: rgba(45, 212, 191, 0.6);
-            box-shadow: 0 0 20px rgba(45, 212, 191, 0.4);
+            background: linear-gradient(145deg, rgba(236, 72, 153, 0.88), rgba(219, 39, 119, 0.92));
+            border-color: rgba(236, 72, 153, 0.75);
+            box-shadow: 0 0 24px rgba(236, 72, 153, 0.6);
         }
 
         .prize-item.rarity-stars-50 {
-            background: linear-gradient(145deg, rgba(59, 130, 246, 0.85), rgba(37, 99, 235, 0.9));
-            border-color: rgba(59, 130, 246, 0.6);
-            box-shadow: 0 0 25px rgba(59, 130, 246, 0.45);
+            background: linear-gradient(145deg, rgba(196, 181, 253, 0.9), rgba(167, 139, 250, 0.95));
+            border-color: rgba(196, 181, 253, 0.7);
+            box-shadow: 0 0 26px rgba(196, 181, 253, 0.55);
         }
 
         .prize-item.rarity-stars-75 {
@@ -1176,29 +1209,21 @@
             padding: 10px;
             padding-bottom: 12px;
             text-align: center;
-            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-            animation: prizeCardFloat 4s ease-in-out infinite;
+            transition: none;
+            animation: none;
         }
-
-        .prize-card:nth-child(1) { animation-delay: 0s; }
-        .prize-card:nth-child(2) { animation-delay: 0.5s; }
-        .prize-card:nth-child(3) { animation-delay: 1s; }
-        .prize-card:nth-child(4) { animation-delay: 1.5s; }
-        .prize-card:nth-child(5) { animation-delay: 2s; }
-        .prize-card:nth-child(6) { animation-delay: 2.5s; }
-        .prize-card:nth-child(7) { animation-delay: 3s; }
 
         @media (min-width: 769px) {
             .prize-card:hover {
-                transform: translateY(-4px) scale(1.02);
-                border-color: var(--theme-color);
-                box-shadow: 0 12px 40px var(--theme-glow);
+                transform: none;
+                border-color: rgba(255, 255, 255, 0.08);
+                box-shadow: none;
                 animation: none;
             }
         }
 
-        .prize-card.stars-15 { border-color: rgba(52, 211, 153, 0.4); background: linear-gradient(145deg, rgba(52, 211, 153, 0.12), rgba(15, 15, 35, 0.95)); }
-        .prize-card.stars-25 { border-color: rgba(45, 212, 191, 0.4); background: linear-gradient(145deg, rgba(45, 212, 191, 0.12), rgba(15, 15, 35, 0.95)); }
+        .prize-card.stars-15 { border-color: rgba(196, 181, 253, 0.6); background: linear-gradient(145deg, rgba(196, 181, 253, 0.18), rgba(15, 15, 35, 0.95)); }
+        .prize-card.stars-25 { border-color: rgba(236, 72, 153, 0.6); background: linear-gradient(145deg, rgba(236, 72, 153, 0.2), rgba(15, 15, 35, 0.95)); }
         .prize-card.stars-50 { border-color: rgba(59, 130, 246, 0.4); background: linear-gradient(145deg, rgba(59, 130, 246, 0.12), rgba(15, 15, 35, 0.95)); }
         .prize-card.stars-75 { border-color: rgba(99, 102, 241, 0.4); background: linear-gradient(145deg, rgba(99, 102, 241, 0.12), rgba(15, 15, 35, 0.95)); }
         .prize-card.stars-100 { border-color: rgba(139, 92, 246, 0.45); background: linear-gradient(145deg, rgba(139, 92, 246, 0.12), rgba(15, 15, 35, 0.95)); }
@@ -1207,6 +1232,167 @@
         .prize-card.stars-500 { border-color: rgba(251, 146, 60, 0.5); background: linear-gradient(145deg, rgba(251, 146, 60, 0.14), rgba(15, 15, 35, 0.95)); }
         .prize-card.stars-1000 { border-color: rgba(251, 191, 36, 0.5); background: linear-gradient(145deg, rgba(251, 191, 36, 0.14), rgba(15, 15, 35, 0.95)); }
         .prize-card.stars-9999 { border-color: rgba(239, 68, 68, 0.5); background: linear-gradient(145deg, rgba(239, 68, 68, 0.14), rgba(15, 15, 35, 0.95)); }
+
+        body.theme-cosmic .prize-item.rarity-stars-100,
+        body.theme-cosmic .prize-card.stars-100,
+        body.theme-cosmic .modal-prize-image.rarity-stars-100 {
+            border-color: rgba(239, 68, 68, 0.9) !important;
+            box-shadow: 0 0 36px rgba(239, 68, 68, 0.7) !important;
+        }
+
+        body.theme-cosmic .prize-item.rarity-stars-75,
+        body.theme-cosmic .prize-card.stars-75,
+        body.theme-cosmic .modal-prize-image.rarity-stars-75 {
+            border-color: rgba(249, 115, 22, 0.9) !important;
+            box-shadow: 0 0 32px rgba(249, 115, 22, 0.65) !important;
+        }
+
+        body.theme-cosmic .prize-item.rarity-stars-50,
+        body.theme-cosmic .prize-card.stars-50,
+        body.theme-cosmic .modal-prize-image.rarity-stars-50 {
+            border-color: rgba(245, 158, 11, 0.9) !important;
+            box-shadow: 0 0 30px rgba(245, 158, 11, 0.6) !important;
+        }
+
+        body.theme-cosmic .prize-item.rarity-stars-25,
+        body.theme-cosmic .prize-card.stars-25,
+        body.theme-cosmic .modal-prize-image.rarity-stars-25 {
+            border-color: rgba(236, 72, 153, 0.95) !important;
+            box-shadow: 0 0 30px rgba(236, 72, 153, 0.7) !important;
+        }
+
+        body.theme-cosmic .prize-item.rarity-stars-15,
+        body.theme-cosmic .prize-card.stars-15,
+        body.theme-cosmic .modal-prize-image.rarity-stars-15 {
+            border-color: rgba(196, 181, 253, 0.92) !important;
+            box-shadow: 0 0 30px rgba(196, 181, 253, 0.7) !important;
+        }
+
+        body.theme-stellar .prize-item.rarity-stars-250,
+        body.theme-stellar .prize-card.stars-250,
+        body.theme-stellar .modal-prize-image.rarity-stars-250 {
+            border-color: rgba(239, 68, 68, 0.9) !important;
+            box-shadow: 0 0 36px rgba(239, 68, 68, 0.7) !important;
+        }
+
+        body.theme-stellar .prize-item.rarity-stars-150,
+        body.theme-stellar .prize-card.stars-150,
+        body.theme-stellar .modal-prize-image.rarity-stars-150 {
+            border-color: rgba(249, 115, 22, 0.9) !important;
+            box-shadow: 0 0 32px rgba(249, 115, 22, 0.65) !important;
+        }
+
+        body.theme-stellar .prize-item.rarity-stars-100,
+        body.theme-stellar .prize-card.stars-100,
+        body.theme-stellar .modal-prize-image.rarity-stars-100 {
+            border-color: rgba(245, 158, 11, 0.9) !important;
+            box-shadow: 0 0 30px rgba(245, 158, 11, 0.6) !important;
+        }
+
+        body.theme-stellar .prize-item.rarity-stars-75,
+        body.theme-stellar .prize-card.stars-75,
+        body.theme-stellar .modal-prize-image.rarity-stars-75 {
+            border-color: rgba(236, 72, 153, 0.95) !important;
+            box-shadow: 0 0 30px rgba(236, 72, 153, 0.7) !important;
+        }
+
+        body.theme-stellar .prize-item.rarity-stars-50,
+        body.theme-stellar .prize-card.stars-50,
+        body.theme-stellar .modal-prize-image.rarity-stars-50 {
+            border-color: rgba(196, 181, 253, 0.92) !important;
+            box-shadow: 0 0 30px rgba(196, 181, 253, 0.7) !important;
+        }
+
+        body.theme-stellar .prize-item.rarity-stars-25,
+        body.theme-stellar .prize-card.stars-25,
+        body.theme-stellar .modal-prize-image.rarity-stars-25 {
+            border-color: rgba(59, 130, 246, 0.9) !important;
+            box-shadow: 0 0 28px rgba(59, 130, 246, 0.65) !important;
+        }
+
+        body.theme-stellar .prize-item.rarity-stars-15,
+        body.theme-stellar .prize-card.stars-15,
+        body.theme-stellar .modal-prize-image.rarity-stars-15 {
+            border-color: rgba(59, 130, 246, 0.9) !important;
+            box-shadow: 0 0 28px rgba(59, 130, 246, 0.65) !important;
+        }
+
+        body.theme-golden .prize-item.rarity-stars-500,
+        body.theme-golden .prize-card.stars-500,
+        body.theme-golden .modal-prize-image.rarity-stars-500 {
+            border-color: rgba(239, 68, 68, 0.92) !important;
+            box-shadow: 0 0 36px rgba(239, 68, 68, 0.7) !important;
+        }
+
+        body.theme-golden .prize-item.rarity-stars-250,
+        body.theme-golden .prize-card.stars-250,
+        body.theme-golden .modal-prize-image.rarity-stars-250 {
+            border-color: rgba(249, 115, 22, 0.9) !important;
+            box-shadow: 0 0 32px rgba(249, 115, 22, 0.65) !important;
+        }
+
+        body.theme-golden .prize-item.rarity-stars-150,
+        body.theme-golden .prize-card.stars-150,
+        body.theme-golden .modal-prize-image.rarity-stars-150 {
+            border-color: rgba(234, 179, 8, 0.92) !important;
+            box-shadow: 0 0 30px rgba(234, 179, 8, 0.6) !important;
+        }
+
+        body.theme-golden .prize-item.rarity-stars-100,
+        body.theme-golden .prize-card.stars-100,
+        body.theme-golden .modal-prize-image.rarity-stars-100 {
+            border-color: rgba(236, 72, 153, 0.95) !important;
+            box-shadow: 0 0 30px rgba(236, 72, 153, 0.7) !important;
+        }
+
+        body.theme-golden .prize-item.rarity-stars-75,
+        body.theme-golden .prize-card.stars-75,
+        body.theme-golden .modal-prize-image.rarity-stars-75 {
+            border-color: rgba(196, 181, 253, 0.92) !important;
+            box-shadow: 0 0 30px rgba(196, 181, 253, 0.7) !important;
+        }
+
+        body.theme-divine .prize-item.rarity-stars-9999,
+        body.theme-divine .prize-card.stars-9999,
+        body.theme-divine .modal-prize-image.rarity-stars-9999 {
+            border-color: rgba(239, 68, 68, 0.94) !important;
+            box-shadow: 0 0 40px rgba(239, 68, 68, 0.75) !important;
+        }
+
+        body.theme-divine .prize-item.rarity-stars-1000,
+        body.theme-divine .prize-card.stars-1000,
+        body.theme-divine .modal-prize-image.rarity-stars-1000 {
+            border-color: rgba(249, 115, 22, 0.92) !important;
+            box-shadow: 0 0 36px rgba(249, 115, 22, 0.7) !important;
+        }
+
+        body.theme-divine .prize-item.rarity-stars-500,
+        body.theme-divine .prize-card.stars-500,
+        body.theme-divine .modal-prize-image.rarity-stars-500 {
+            border-color: rgba(245, 158, 11, 0.9) !important;
+            box-shadow: 0 0 32px rgba(245, 158, 11, 0.65) !important;
+        }
+
+        body.theme-divine .prize-item.rarity-stars-250,
+        body.theme-divine .prize-card.stars-250,
+        body.theme-divine .modal-prize-image.rarity-stars-250 {
+            border-color: rgba(236, 72, 153, 0.95) !important;
+            box-shadow: 0 0 30px rgba(236, 72, 153, 0.7) !important;
+        }
+
+        body.theme-divine .prize-item.rarity-stars-150,
+        body.theme-divine .prize-card.stars-150,
+        body.theme-divine .modal-prize-image.rarity-stars-150 {
+            border-color: rgba(196, 181, 253, 0.92) !important;
+            box-shadow: 0 0 30px rgba(196, 181, 253, 0.7) !important;
+        }
+
+        body.theme-divine .prize-item.rarity-stars-100,
+        body.theme-divine .prize-card.stars-100,
+        body.theme-divine .modal-prize-image.rarity-stars-100 {
+            border-color: rgba(59, 130, 246, 0.9) !important;
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.65) !important;
+        }
 
         .prize-card.empty {
             border-color: rgba(107, 114, 128, 0.25);
@@ -1241,7 +1427,7 @@
             font-family: 'Orbitron', sans-serif;
             font-size: 0.65rem;
             font-weight: 600;
-            background: linear-gradient(135deg, var(--theme-color-light), var(--theme-color));
+            background: linear-gradient(135deg, #fef3c7, #fbbf24, #f59e0b);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-align: center;
@@ -1420,15 +1606,31 @@
             object-fit: cover;
             margin-bottom: 15px;
             border-radius: 22px;
-            border: 3px solid rgba(255, 255, 255, 0.2);
+            border: 3px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
             position: relative;
             z-index: 2;
         }
 
+        .modal-prize-image.rarity-empty { border-color: rgba(107, 114, 128, 0.8); box-shadow: 0 0 22px rgba(107, 114, 128, 0.6), 0 15px 50px rgba(0, 0, 0, 0.5); }
+        .modal-prize-image.rarity-stars-15 { border-color: rgba(196, 181, 253, 0.98); box-shadow: 0 0 34px rgba(196, 181, 253, 0.85), 0 15px 50px rgba(0, 0, 0, 0.5); }
+        .modal-prize-image.rarity-stars-25 { border-color: rgba(236, 72, 153, 0.95); box-shadow: 0 0 30px rgba(236, 72, 153, 0.75), 0 15px 50px rgba(0, 0, 0, 0.5); }
+        .modal-prize-image.rarity-stars-50 { border-color: rgba(59, 130, 246, 0.95); box-shadow: 0 0 32px rgba(59, 130, 246, 0.75), 0 15px 50px rgba(0, 0, 0, 0.5); }
+        .modal-prize-image.rarity-stars-75 { border-color: rgba(99, 102, 241, 0.95); box-shadow: 0 0 32px rgba(99, 102, 241, 0.75), 0 15px 50px rgba(0, 0, 0, 0.5); }
+        .modal-prize-image.rarity-stars-100 { border-color: rgba(139, 92, 246, 0.96); box-shadow: 0 0 34px rgba(139, 92, 246, 0.78), 0 15px 50px rgba(0, 0, 0, 0.5); }
+        .modal-prize-image.rarity-stars-150 { border-color: rgba(168, 85, 247, 0.96); box-shadow: 0 0 34px rgba(168, 85, 247, 0.78), 0 15px 50px rgba(0, 0, 0, 0.5); }
+        .modal-prize-image.rarity-stars-250 { border-color: rgba(236, 72, 153, 0.96); box-shadow: 0 0 36px rgba(236, 72, 153, 0.8), 0 15px 50px rgba(0, 0, 0, 0.5); }
+        .modal-prize-image.rarity-stars-500 { border-color: rgba(251, 146, 60, 0.98); box-shadow: 0 0 38px rgba(251, 146, 60, 0.82), 0 15px 50px rgba(0, 0, 0, 0.5); }
+        .modal-prize-image.rarity-stars-1000 { border-color: rgba(251, 191, 36, 0.99); box-shadow: 0 0 40px rgba(251, 191, 36, 0.85), 0 15px 50px rgba(0, 0, 0, 0.5); }
+        .modal-prize-image.rarity-stars-9999 { border-color: rgba(239, 68, 68, 0.99); box-shadow: 0 0 44px rgba(239, 68, 68, 0.85), 0 15px 50px rgba(0, 0, 0, 0.5); }
+
+        .modal-balance-icon .ui-icon {
+            width: 20px;
+            height: 20px;
+        }
+
         .modal.win .modal-prize-image {
             box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5), 0 0 60px var(--modal-glow);
-            border-color: var(--modal-color);
             animation: winPulseOnce 0.6s ease-out;
         }
 
@@ -1467,13 +1669,25 @@
             font-family: 'Orbitron', sans-serif;
             font-size: 2.2rem;
             font-weight: 900;
-            background: linear-gradient(135deg, color-mix(in srgb, var(--modal-color) 25%, white), var(--modal-color-light), var(--modal-color));
+            background: linear-gradient(135deg, #fef3c7, #fbbf24, #f59e0b);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 18px;
             position: relative;
             z-index: 2;
-            filter: drop-shadow(0 4px 18px var(--modal-glow));
+            filter: drop-shadow(0 4px 18px rgba(251, 191, 36, 0.5));
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .modal-prize-star {
+            width: 22px;
+            height: 22px;
+            display: inline-block;
+            flex-shrink: 0;
+            transform: translateY(2px);
         }
 
         .modal.lose .modal-prize {
@@ -1519,7 +1733,8 @@
         }
 
         .modal-balance-item.star {
-            border-color: color-mix(in srgb, var(--modal-color) 55%, rgba(255, 255, 255, 0.2));
+            border-color: rgba(251, 191, 36, 0.35);
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.2);
         }
 
         .modal-balance-icon {
@@ -1553,7 +1768,7 @@
         }
 
         .modal-balance-item.star .modal-balance-value {
-            background: linear-gradient(135deg, color-mix(in srgb, var(--modal-color-light) 35%, white), var(--modal-color));
+            background: linear-gradient(135deg, #fef3c7, #fbbf24, #f59e0b);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -1567,6 +1782,13 @@
             animation: none !important;
             transition: none !important;
             transform: none !important;
+        }
+
+        .modal-prize .ui-icon.star,
+        .modal-prize-star {
+            animation: none !important;
+            transition: none !important;
+            transform: translateY(2px) !important;
         }
 
         .modal-buttons {
@@ -1678,6 +1900,22 @@
             color: rgba(255,255,255,0.1);
             z-index: 1;
             font-family: monospace;
+        }
+
+        .case-card:hover .case-card-glow,
+        .case-card:active .case-card-glow {
+            opacity: 0.6;
+            filter: blur(40px);
+            transform: none;
+        }
+
+        .case-card:hover .case-card-image,
+        .case-card:active .case-card-image {
+            transform: none;
+        }
+
+        .case-display-image:hover {
+            transform: none;
         }
 
         @media (max-width: 390px) {
@@ -1957,6 +2195,43 @@
             }
         };
 
+        const CASE_RARITY_THEME = {
+            cosmic: {
+                empty: { color: 'rgba(107, 114, 128, 0.9)', light: '#d1d5db', glow: 'rgba(107, 114, 128, 0.5)' },
+                'stars-15': { color: 'rgba(196, 181, 253, 0.95)', light: '#ddd6fe', glow: 'rgba(196, 181, 253, 0.7)' },
+                'stars-25': { color: 'rgba(236, 72, 153, 0.95)', light: '#f472b6', glow: 'rgba(236, 72, 153, 0.7)' },
+                'stars-50': { color: 'rgba(245, 158, 11, 0.9)', light: '#fde68a', glow: 'rgba(245, 158, 11, 0.55)' },
+                'stars-75': { color: 'rgba(249, 115, 22, 0.9)', light: '#fdba74', glow: 'rgba(249, 115, 22, 0.6)' },
+                'stars-100': { color: 'rgba(239, 68, 68, 0.9)', light: '#fca5a5', glow: 'rgba(239, 68, 68, 0.65)' }
+            },
+            stellar: {
+                empty: { color: 'rgba(107, 114, 128, 0.9)', light: '#d1d5db', glow: 'rgba(107, 114, 128, 0.5)' },
+                'stars-25': { color: 'rgba(59, 130, 246, 0.9)', light: '#93c5fd', glow: 'rgba(59, 130, 246, 0.6)' },
+                'stars-50': { color: 'rgba(196, 181, 253, 0.95)', light: '#ddd6fe', glow: 'rgba(196, 181, 253, 0.7)' },
+                'stars-75': { color: 'rgba(236, 72, 153, 0.95)', light: '#f472b6', glow: 'rgba(236, 72, 153, 0.7)' },
+                'stars-100': { color: 'rgba(245, 158, 11, 0.9)', light: '#fde68a', glow: 'rgba(245, 158, 11, 0.55)' },
+                'stars-150': { color: 'rgba(249, 115, 22, 0.9)', light: '#fdba74', glow: 'rgba(249, 115, 22, 0.6)' },
+                'stars-250': { color: 'rgba(239, 68, 68, 0.9)', light: '#fca5a5', glow: 'rgba(239, 68, 68, 0.65)' }
+            },
+            golden: {
+                empty: { color: 'rgba(107, 114, 128, 0.9)', light: '#d1d5db', glow: 'rgba(107, 114, 128, 0.5)' },
+                'stars-75': { color: 'rgba(196, 181, 253, 0.95)', light: '#ddd6fe', glow: 'rgba(196, 181, 253, 0.7)' },
+                'stars-100': { color: 'rgba(236, 72, 153, 0.95)', light: '#f472b6', glow: 'rgba(236, 72, 153, 0.7)' },
+                'stars-150': { color: 'rgba(234, 179, 8, 0.9)', light: '#fcd34d', glow: 'rgba(234, 179, 8, 0.55)' },
+                'stars-250': { color: 'rgba(249, 115, 22, 0.9)', light: '#fdba74', glow: 'rgba(249, 115, 22, 0.6)' },
+                'stars-500': { color: 'rgba(239, 68, 68, 0.9)', light: '#fca5a5', glow: 'rgba(239, 68, 68, 0.65)' }
+            },
+            divine: {
+                empty: { color: 'rgba(107, 114, 128, 0.9)', light: '#d1d5db', glow: 'rgba(107, 114, 128, 0.5)' },
+                'stars-100': { color: 'rgba(59, 130, 246, 0.9)', light: '#93c5fd', glow: 'rgba(59, 130, 246, 0.6)' },
+                'stars-150': { color: 'rgba(196, 181, 253, 0.95)', light: '#ddd6fe', glow: 'rgba(196, 181, 253, 0.7)' },
+                'stars-250': { color: 'rgba(236, 72, 153, 0.95)', light: '#f472b6', glow: 'rgba(236, 72, 153, 0.7)' },
+                'stars-500': { color: 'rgba(245, 158, 11, 0.9)', light: '#fde68a', glow: 'rgba(245, 158, 11, 0.6)' },
+                'stars-1000': { color: 'rgba(249, 115, 22, 0.9)', light: '#fdba74', glow: 'rgba(249, 115, 22, 0.65)' },
+                'stars-9999': { color: 'rgba(239, 68, 68, 0.92)', light: '#fca5a5', glow: 'rgba(239, 68, 68, 0.7)' }
+            }
+        };
+
         function getExpensivePrizeForCase() {
             const caseId = STATE.selectedCase?.id || 'cosmic';
             const expensivePrizes = {
@@ -2078,19 +2353,19 @@
             const modalStarIcon = document.getElementById('modalStarIcon');
 
             if (CUSTOM_ICONS.sapphire) {
-                sapphireIcon.innerHTML = `<img src="${CUSTOM_ICONS.sapphire}" class="balance-icon-img" alt="" onerror="this.parentElement.innerHTML='💎'">`;
-                modalSapphireIcon.innerHTML = `<img src="${CUSTOM_ICONS.sapphire}" alt="" onerror="this.parentElement.innerHTML='💎'">`;
+                sapphireIcon.innerHTML = `<img src="${CUSTOM_ICONS.sapphire}" class="balance-icon-img" alt="" onerror="this.parentElement.innerHTML='<span class=\"ui-icon sapphire\"></span>'">`;
+                modalSapphireIcon.innerHTML = `<img src="${CUSTOM_ICONS.sapphire}" alt="" onerror="this.parentElement.innerHTML='<span class=\"ui-icon sapphire\"></span>'">`;
             } else {
-                sapphireIcon.innerHTML = '💎';
-                modalSapphireIcon.innerHTML = '💎';
+                sapphireIcon.innerHTML = '<span class="ui-icon sapphire"></span>';
+                modalSapphireIcon.innerHTML = '<span class="ui-icon sapphire"></span>';
             }
 
             if (CUSTOM_ICONS.star) {
-                starIcon.innerHTML = `<img src="${CUSTOM_ICONS.star}" class="balance-icon-img" alt="" onerror="this.parentElement.innerHTML='⭐'">`
-                modalStarIcon.innerHTML = `<img src="${CUSTOM_ICONS.star}" alt="" onerror="this.parentElement.innerHTML='⭐'">`;
+                starIcon.innerHTML = `<img src="${CUSTOM_ICONS.star}" class="balance-icon-img" alt="" onerror="this.parentElement.innerHTML='<span class=\"ui-icon star\"></span>'">`;
+                modalStarIcon.innerHTML = `<img src="${CUSTOM_ICONS.star}" alt="" onerror="this.parentElement.innerHTML='<span class=\"ui-icon star\"></span>'">`;
             } else {
-                starIcon.innerHTML = '⭐';
-                modalStarIcon.innerHTML = '⭐';
+                starIcon.innerHTML = '<span class="ui-icon star"></span>';
+                modalStarIcon.innerHTML = '<span class="ui-icon star"></span>';
             }
         }
 
@@ -2603,13 +2878,21 @@
             const prizeText = document.getElementById('modalPrize');
             const spinAgainBtn = document.getElementById('spinAgainBtn');
 
+            const caseId = STATE.selectedCase?.id || 'cosmic';
+            const themeMap = CASE_RARITY_THEME[caseId] || CASE_RARITY_THEME.cosmic;
+            const theme = themeMap[prize.rarity] || themeMap.empty;
+
+            modal.style.setProperty('--modal-color', theme.color);
+            modal.style.setProperty('--modal-color-light', theme.light);
+            modal.style.setProperty('--modal-glow', theme.glow);
+
             // Clear previous effects
             document.getElementById('winEffectsContainer').innerHTML = '';
 
             modal.classList.remove('win', 'lose');
 
             if (prize.image) {
-                emoji.innerHTML = `<img src="${prize.image}" class="modal-prize-image" onerror="this.style.display='none'">`;
+                emoji.innerHTML = `<img src="${prize.image}" class="modal-prize-image rarity-${prize.rarity}" onerror="this.style.display='none'">`;
             } else {
                 emoji.innerHTML = '';
             }
@@ -2627,7 +2910,7 @@
                     title.textContent = 'Поздравляем!';
                 }
 
-                prizeText.textContent = `+${prize.stars}`;
+                prizeText.innerHTML = `+${prize.stars} <span class="ui-icon star modal-prize-star"></span>`;
                 haptic('success');
 
                 // Trigger effects after modal is visible
@@ -2740,7 +3023,11 @@
             }
         }
 
-        document.addEventListener('DOMContentLoaded', init);
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
 
         document.getElementById('modalOverlay').addEventListener('click', (e) => {
             if (e.target.id === 'modalOverlay') closeModal();
