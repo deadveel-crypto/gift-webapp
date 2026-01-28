@@ -8,6 +8,7 @@
     <title>Divine Shop — Admin</title>
     <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600;700;800&family=SF+Pro+Text:wght@400;500;600&display=swap" rel="stylesheet">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
         :root {
             --bg-primary: #0a0a0f;
@@ -42,6 +43,33 @@
             padding-top: var(--safe-area-top);
             padding-bottom: var(--safe-area-bottom);
             overflow-x: hidden;
+            touch-action: manipulation;
+            -webkit-text-size-adjust: 100%;
+            overscroll-behavior-y: contain;
+        }
+
+        button, input, textarea {
+            -webkit-appearance: none;
+            appearance: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        button:focus-visible, .action-btn:focus-visible, .btn:focus-visible, .quick-action:focus-visible,
+        .user-card:focus-visible, .pagination-btn:focus-visible, .sort-pill:focus-visible {
+            outline: 2px solid rgba(99, 102, 241, 0.5);
+            outline-offset: 2px;
+        }
+
+        button,
+        .action-btn,
+        .btn,
+        .quick-action,
+        .user-card,
+        .pagination-btn,
+        .sort-pill {
+            touch-action: manipulation;
+            -webkit-user-select: none;
+            user-select: none;
         }
 
         .bg-gradient {
@@ -138,7 +166,6 @@
             margin-top: 4px;
         }
 
-        /* Search & Sort Container */
         .search-sort-container {
             margin-bottom: 20px;
         }
@@ -178,7 +205,6 @@
             opacity: 0.5;
         }
 
-        /* Sort Pills */
         .sort-container {
             display: flex;
             flex-direction: column;
@@ -247,7 +273,6 @@
             opacity: 1;
         }
 
-        /* Users List */
         .users-list {
             display: flex;
             flex-direction: column;
@@ -340,7 +365,6 @@
             color: var(--warning);
         }
 
-        /* Modal */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -353,6 +377,7 @@
             justify-content: center;
             padding: 20px;
             padding-bottom: var(--safe-area-bottom);
+            pointer-events: auto;
         }
 
         .modal-overlay.show {
@@ -374,11 +399,15 @@
             max-height: 85vh;
             overflow-y: auto;
             animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            pointer-events: auto;
+            transform: translateZ(0);
+            -webkit-overflow-scrolling: touch;
+            touch-action: manipulation;
         }
 
         @keyframes slideUp {
-            from { transform: translateY(100%); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            from { transform: translateY(100%) scale(0.98); opacity: 0; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
         }
 
         .modal-header {
@@ -417,11 +446,23 @@
             background: rgba(255, 255, 255, 0.2);
         }
 
+        .modal-close,
+        .action-btn,
+        .btn,
+        .sort-pill,
+        .pagination-btn,
+        .quick-action,
+        .user-card,
+        .amount-preset {
+            -webkit-user-select: none;
+            user-select: none;
+            touch-action: manipulation;
+        }
+
         .modal-body {
             padding: 20px;
         }
 
-        /* User Detail */
         .user-detail-header {
             text-align: center;
             padding-bottom: 20px;
@@ -472,7 +513,6 @@
             color: var(--success);
         }
 
-        /* Balance Cards */
         .balance-cards {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -504,7 +544,6 @@
             margin-top: 2px;
         }
 
-        /* Action Buttons */
         .action-section {
             margin-bottom: 20px;
         }
@@ -538,6 +577,8 @@
             flex-direction: column;
             align-items: center;
             gap: 6px;
+            min-height: 64px;
+            touch-action: manipulation;
         }
 
         .action-btn:active {
@@ -571,7 +612,6 @@
             font-size: 24px;
         }
 
-        /* Input Modal */
         .input-group {
             margin-bottom: 20px;
         }
@@ -606,7 +646,6 @@
             margin-top: 6px;
         }
 
-        /* Buttons */
         .btn {
             width: 100%;
             padding: 16px;
@@ -616,6 +655,8 @@
             cursor: pointer;
             transition: all 0.2s;
             border: none;
+            min-height: 52px;
+            touch-action: manipulation;
         }
 
         .btn:active {
@@ -657,7 +698,6 @@
             flex: 1;
         }
 
-        /* Quick Actions */
         .quick-actions {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -673,6 +713,8 @@
             text-align: center;
             cursor: pointer;
             transition: all 0.2s;
+            min-height: 120px;
+            touch-action: manipulation;
         }
 
         .quick-action:active {
@@ -700,7 +742,6 @@
             margin-top: 4px;
         }
 
-        /* Toast */
         .toast {
             position: fixed;
             bottom: calc(100px + var(--safe-area-bottom));
@@ -734,7 +775,6 @@
             background: rgba(239, 68, 68, 0.15);
         }
 
-        /* Loading */
         .loading {
             display: flex;
             align-items: center;
@@ -755,7 +795,6 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Empty State */
         .empty-state {
             text-align: center;
             padding: 40px 20px;
@@ -772,7 +811,6 @@
             font-size: 16px;
         }
 
-        /* Pagination */
         .pagination {
             display: flex;
             justify-content: center;
@@ -790,6 +828,7 @@
             font-weight: 500;
             cursor: pointer;
             transition: all 0.2s;
+            min-height: 40px;
         }
 
         .pagination-btn:disabled {
@@ -807,7 +846,6 @@
             color: var(--text-secondary);
         }
 
-        /* Access Denied */
         .access-denied {
             display: flex;
             flex-direction: column;
@@ -834,7 +872,6 @@
             color: var(--text-secondary);
         }
 
-        /* Amount presets */
         .amount-presets {
             display: flex;
             gap: 8px;
@@ -867,7 +904,6 @@
             background: rgba(239, 68, 68, 0.1);
         }
 
-        /* Users count badge */
         .users-count {
             display: flex;
             align-items: center;
@@ -888,6 +924,27 @@
             font-weight: 700;
             color: var(--accent-light);
         }
+
+        .attachment-chip {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 10px 12px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            background: rgba(99, 102, 241, 0.08);
+            font-size: 13px;
+            margin-top: 10px;
+        }
+
+        .attachment-chip button {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
@@ -906,7 +963,6 @@
         </div>
     </main>
 
-    <!-- User Detail Modal -->
     <div class="modal-overlay" id="userModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -917,7 +973,6 @@
         </div>
     </div>
 
-    <!-- Edit Modal -->
     <div class="modal-overlay" id="editModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -931,11 +986,8 @@
     <div class="toast" id="toast"></div>
 
     <script>
-        // ============================================
-        // КОНФИГУРАЦИЯ
-        // ============================================
         const API_URL = "https://deadveel.pythonanywhere.com";
-        
+
         const tg = window.Telegram?.WebApp;
         let initData = "";
         let isAdmin = false;
@@ -943,18 +995,18 @@
         let currentPage = 0;
         let searchQuery = "";
         let searchTimeout = null;
-        
-        // Сортировка
-        let sortBy = "created_at"; // created_at, sapphires, stars, referrals
-        let sortOrder = "desc"; // asc, desc
-        let allUsers = []; // Кэш всех пользователей для сортировки
+
+        let sortBy = "created_at";
+        let sortOrder = "desc";
+        let allUsers = [];
+        let broadcastAttachment = null;
 
         if (tg) {
             try {
                 tg.ready();
                 tg.expand();
                 initData = tg.initData || "";
-                
+
                 tg.BackButton.show();
                 tg.BackButton.onClick(() => {
                     if (document.getElementById('editModal').classList.contains('show')) {
@@ -970,9 +1022,6 @@
             }
         }
 
-        // ============================================
-        // API ЗАПРОСЫ
-        // ============================================
         async function apiRequest(endpoint, method = 'GET', body = null) {
             const options = {
                 method,
@@ -982,18 +1031,26 @@
                 }
             };
             if (body) options.body = JSON.stringify(body);
-            
+
             const response = await fetch(`${API_URL}${endpoint}`, options);
             return response.json();
         }
 
-        // ============================================
-        // СОРТИРОВКА
-        // ============================================
+        async function apiRequestForm(endpoint, formData) {
+            const response = await fetch(`${API_URL}${endpoint}`, {
+                method: 'POST',
+                headers: {
+                    'X-Telegram-Init-Data': initData
+                },
+                body: formData
+            });
+            return response.json();
+        }
+
         function sortUsers(users) {
             return [...users].sort((a, b) => {
                 let aVal, bVal;
-                
+
                 switch (sortBy) {
                     case 'sapphires':
                         aVal = a.sapphires || 0;
@@ -1017,7 +1074,7 @@
                         bVal = new Date(b.created_at || 0).getTime();
                         break;
                 }
-                
+
                 if (sortOrder === 'asc') {
                     return aVal - bVal;
                 } else {
@@ -1028,16 +1085,14 @@
 
         function toggleSort(field) {
             haptic('light');
-            
+
             if (sortBy === field) {
-                // Меняем направление
                 sortOrder = sortOrder === 'desc' ? 'asc' : 'desc';
             } else {
-                // Новое поле, по умолчанию desc
                 sortBy = field;
                 sortOrder = 'desc';
             }
-            
+
             renderUsersList();
         }
 
@@ -1046,18 +1101,15 @@
             return sortOrder === 'desc' ? '↓' : '↑';
         }
 
-        // ============================================
-        // ИНИЦИАЛИЗАЦИЯ
-        // ============================================
         async function init() {
             try {
                 const result = await apiRequest('/api/check-admin');
-                
+
                 if (!result.success || !result.is_admin) {
                     showAccessDenied();
                     return;
                 }
-                
+
                 isAdmin = true;
                 await loadDashboard();
             } catch (error) {
@@ -1076,12 +1128,9 @@
             `;
         }
 
-        // ============================================
-        // DASHBOARD
-        // ============================================
         async function loadDashboard() {
             const container = document.getElementById('mainContent');
-            
+
             try {
                 const [statsResult, usersResult] = await Promise.all([
                     apiRequest('/api/admin/stats'),
@@ -1092,7 +1141,6 @@
                 allUsers = usersResult.success ? usersResult.users : [];
 
                 container.innerHTML = `
-                    <!-- Stats -->
                     <div class="stats-grid">
                         <div class="stat-card">
                             <div class="stat-icon">👥</div>
@@ -1116,7 +1164,6 @@
                         </div>
                     </div>
 
-                    <!-- Quick Actions -->
                     <div class="quick-actions">
                         <div class="quick-action" onclick="showMassGiveModal('sapphires')">
                             <div class="quick-action-icon">💎</div>
@@ -1140,7 +1187,6 @@
                         </div>
                     </div>
 
-                    <!-- Search & Sort -->
                     <div class="search-sort-container">
                         <div class="search-container">
                             <span class="search-icon">🔍</span>
@@ -1149,7 +1195,7 @@
                                    value="${searchQuery}"
                                    oninput="handleSearch(this.value)">
                         </div>
-                        
+
                         <div class="sort-container">
                             <div class="sort-label">Сортировка</div>
                             <div class="sort-pills" id="sortPills">
@@ -1182,16 +1228,13 @@
                         </div>
                     </div>
 
-                    <!-- Users Count -->
                     <div class="users-count">
                         <span class="users-count-label">Найдено пользователей:</span>
                         <span class="users-count-value" id="usersCountValue">${allUsers.length}</span>
                     </div>
 
-                    <!-- Users List -->
                     <div class="users-list" id="usersList"></div>
 
-                    <!-- Pagination -->
                     <div class="pagination" id="pagination"></div>
                 `;
 
@@ -1216,7 +1259,6 @@
             const endIdx = Math.min(startIdx + pageSize, sortedUsers.length);
             const pageUsers = sortedUsers.slice(startIdx, endIdx);
 
-            // Обновляем кнопки сортировки
             const sortPills = document.getElementById('sortPills');
             if (sortPills) {
                 sortPills.innerHTML = `
@@ -1248,7 +1290,6 @@
                 `;
             }
 
-            // Обновляем список пользователей
             const usersList = document.getElementById('usersList');
             if (usersList) {
                 if (pageUsers.length === 0) {
@@ -1263,7 +1304,6 @@
                 }
             }
 
-            // Обновляем пагинацию
             const pagination = document.getElementById('pagination');
             if (pagination && totalPages > 1) {
                 pagination.innerHTML = `
@@ -1275,7 +1315,6 @@
                 pagination.innerHTML = '';
             }
 
-            // Обновляем счётчик
             const countValue = document.getElementById('usersCountValue');
             if (countValue) {
                 countValue.textContent = allUsers.length;
@@ -1284,12 +1323,11 @@
 
         function renderUserCard(user) {
             const initials = (user.full_name || user.username || 'U').substring(0, 2).toUpperCase();
-            
-            // Определяем какое поле подсвечивать
+
             const highlightSapphires = sortBy === 'sapphires';
             const highlightStars = sortBy === 'stars';
             const highlightReferrals = sortBy === 'referrals';
-            
+
             return `
                 <div class="user-card ${user.is_banned ? 'banned' : ''}" onclick="openUserModal(${user.user_id})">
                     <div class="user-avatar">${initials}</div>
@@ -1315,16 +1353,12 @@
             `;
         }
 
-        // ============================================
-        // ПОИСК И ПАГИНАЦИЯ
-        // ============================================
         function handleSearch(query) {
             clearTimeout(searchTimeout);
             searchTimeout = setTimeout(async () => {
                 searchQuery = query;
                 currentPage = 0;
-                
-                // Загружаем пользователей с поиском
+
                 const result = await apiRequest(`/api/admin/users?page=0&limit=1000&q=${encodeURIComponent(searchQuery)}`);
                 if (result.success) {
                     allUsers = result.users;
@@ -1336,35 +1370,31 @@
         function changePage(page) {
             currentPage = Math.max(0, page);
             renderUsersList();
-            
-            // Скроллим к списку
+
             document.getElementById('usersList')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
-        // ============================================
-        // МОДАЛЬНОЕ ОКНО ПОЛЬЗОВАТЕЛЯ
-        // ============================================
         async function openUserModal(userId) {
             haptic('light');
-            
+
             const modal = document.getElementById('userModal');
             const body = document.getElementById('userModalBody');
-            
+
             body.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
             modal.classList.add('show');
-            
+
             try {
                 const result = await apiRequest(`/api/admin/user/${userId}`);
-                
+
                 if (!result.success) {
                     body.innerHTML = '<div class="empty-state"><div class="empty-state-icon">❌</div><div class="empty-state-text">Пользователь не найден</div></div>';
                     return;
                 }
-                
+
                 currentUser = result.user;
                 const user = result.user;
                 const initials = (user.full_name || user.username || 'U').substring(0, 2).toUpperCase();
-                
+
                 body.innerHTML = `
                     <div class="user-detail-header">
                         <div class="user-detail-avatar">${initials}</div>
@@ -1448,7 +1478,7 @@
                         `}
                     </div>
                 `;
-                
+
             } catch (error) {
                 console.error("Open user modal error:", error);
                 body.innerHTML = '<div class="empty-state"><div class="empty-state-icon">❌</div><div class="empty-state-text">Ошибка загрузки</div></div>';
@@ -1460,36 +1490,33 @@
             currentUser = null;
         }
 
-        // ============================================
-        // МОДАЛЬНОЕ ОКНО РЕДАКТИРОВАНИЯ
-        // ============================================
         function showEditModal(currency, action) {
             haptic('light');
-            
+
             if (!currentUser) return;
-            
+
             const modal = document.getElementById('editModal');
             const title = document.getElementById('editModalTitle');
             const body = document.getElementById('editModalBody');
-            
+
             const titles = {
                 sapphires: '💎 Сапфиры',
                 stars: '⭐ Звёзды',
                 referrals: '👥 Рефералы'
             };
-            
+
             const actionTitles = {
                 add: 'Добавить',
                 subtract: 'Списать',
                 set: 'Установить'
             };
-            
+
             title.textContent = `${titles[currency]} — ${actionTitles[action]}`;
-            
+
             const presets = action === 'subtract' 
                 ? ['-10', '-50', '-100', '-500', '-1000']
                 : ['10', '50', '100', '500', '1000', '5000'];
-            
+
             body.innerHTML = `
                 <div class="input-group">
                     <label class="input-label">Количество</label>
@@ -1508,7 +1535,7 @@
                           action === 'subtract' ? 'Будет списано с баланса' : 'Будет добавлено к балансу'}
                     </div>
                 </div>
-                
+
                 <div class="btn-row">
                     <button class="btn btn-secondary" onclick="closeEditModal()">Отмена</button>
                     <button class="btn ${action === 'subtract' ? 'btn-danger' : 'btn-primary'}" 
@@ -1517,9 +1544,9 @@
                     </button>
                 </div>
             `;
-            
+
             modal.classList.add('show');
-            
+
             setTimeout(() => {
                 document.getElementById('amountInput').focus();
             }, 300);
@@ -1527,24 +1554,25 @@
 
         function closeEditModal() {
             document.getElementById('editModal').classList.remove('show');
+            broadcastAttachment = null;
         }
 
         async function executeAction(currency, action) {
             if (!currentUser) return;
-            
+
             const input = document.getElementById('amountInput');
             let value = parseInt(input.value);
-            
+
             if (isNaN(value) || value <= 0) {
                 showToast('Введите корректное число', 'error');
                 haptic('error');
                 return;
             }
-            
+
             if (action === 'subtract') {
                 value = -value;
             }
-            
+
             const actionMap = {
                 'sapphires_add': 'add_sapphires',
                 'sapphires_subtract': 'add_sapphires',
@@ -1555,20 +1583,20 @@
                 'referrals_add': 'add_referrals',
                 'referrals_set': 'set_referrals'
             };
-            
+
             const apiAction = actionMap[`${currency}_${action}`];
-            
+
             try {
                 const result = await apiRequest(`/api/admin/user/${currentUser.user_id}/update`, 'POST', {
                     action: apiAction,
                     value: action === 'set' ? Math.abs(value) : value
                 });
-                
+
                 if (result.success) {
                     showToast(result.message || 'Успешно!', 'success');
                     haptic('success');
                     closeEditModal();
-                    
+
                     if (result.balance) {
                         document.getElementById('userSapphires').textContent = formatNumber(result.balance.sapphires);
                         document.getElementById('userStars').textContent = formatNumber(result.balance.stars);
@@ -1576,8 +1604,7 @@
                         currentUser.sapphires = result.balance.sapphires;
                         currentUser.stars = result.balance.stars;
                         currentUser.referrals = result.balance.referrals;
-                        
-                        // Обновляем в кэше
+
                         const userInCache = allUsers.find(u => u.user_id === currentUser.user_id);
                         if (userInCache) {
                             userInCache.sapphires = result.balance.sapphires;
@@ -1596,30 +1623,26 @@
             }
         }
 
-        // ============================================
-        // БАН/РАЗБАН
-        // ============================================
         async function toggleBan(userId, ban) {
             haptic('warning');
-            
+
             const confirmed = confirm(ban ? 
                 'Заблокировать пользователя?' : 
                 'Разблокировать пользователя?'
             );
-            
+
             if (!confirmed) return;
-            
+
             try {
                 const result = await apiRequest(`/api/admin/user/${userId}/update`, 'POST', {
                     action: ban ? 'ban' : 'unban'
                 });
-                
+
                 if (result.success) {
                     showToast(result.message || 'Успешно!', 'success');
                     haptic('success');
                     closeUserModal();
-                    
-                    // Обновляем в кэше
+
                     const userInCache = allUsers.find(u => u.user_id === userId);
                     if (userInCache) {
                         userInCache.is_banned = ban;
@@ -1636,24 +1659,21 @@
             }
         }
 
-        // ============================================
-        // МАССОВАЯ ВЫДАЧА
-        // ============================================
         function showMassGiveModal(currency) {
             haptic('light');
-            
+
             const modal = document.getElementById('editModal');
             const title = document.getElementById('editModalTitle');
             const body = document.getElementById('editModalBody');
-            
+
             const titles = {
                 sapphires: '💎 Выдать сапфиры всем',
                 stars: '⭐ Выдать звёзды всем',
                 referrals: '👥 Добавить рефералов всем'
             };
-            
+
             title.textContent = titles[currency];
-            
+
             body.innerHTML = `
                 <div class="input-group">
                     <label class="input-label">Количество</label>
@@ -1669,7 +1689,7 @@
                            placeholder="Введите количество" inputmode="numeric" pattern="[0-9]*">
                     <div class="input-hint">Будет выдано всем активным пользователям</div>
                 </div>
-                
+
                 <div class="btn-row">
                     <button class="btn btn-secondary" onclick="closeEditModal()">Отмена</button>
                     <button class="btn btn-primary" onclick="executeMassGive('${currency}')">
@@ -1677,9 +1697,9 @@
                     </button>
                 </div>
             `;
-            
+
             modal.classList.add('show');
-            
+
             setTimeout(() => {
                 document.getElementById('massAmountInput').focus();
             }, 300);
@@ -1688,31 +1708,31 @@
         async function executeMassGive(currency) {
             const input = document.getElementById('massAmountInput');
             const amount = parseInt(input.value);
-            
+
             if (isNaN(amount) || amount <= 0) {
                 showToast('Введите корректное число', 'error');
                 haptic('error');
                 return;
             }
-            
+
             const currencyNames = {
                 sapphires: 'сапфиров',
                 stars: 'звёзд',
                 referrals: 'рефералов'
             };
-            
+
             const confirmed = confirm(`Выдать ${amount} ${currencyNames[currency]} ВСЕМ пользователям?`);
-            
+
             if (!confirmed) return;
-            
+
             try {
                 showToast('Выполняется...', 'info');
-                
+
                 const result = await apiRequest('/api/admin/mass-give', 'POST', {
                     currency,
                     amount
                 });
-                
+
                 if (result.success) {
                     showToast(`Успешно! Обновлено: ${result.updated}`, 'success');
                     haptic('success');
@@ -1729,18 +1749,16 @@
             }
         }
 
-        // ============================================
-        // РАССЫЛКА
-        // ============================================
         function showBroadcastModal() {
             haptic('light');
-            
+            broadcastAttachment = null;
+
             const modal = document.getElementById('editModal');
             const title = document.getElementById('editModalTitle');
             const body = document.getElementById('editModalBody');
-            
+
             title.textContent = '📣 Рассылка';
-            
+
             body.innerHTML = `
                 <div class="input-group">
                     <label class="input-label">Текст сообщения</label>
@@ -1749,7 +1767,22 @@
                               rows="5" style="resize: vertical; min-height: 120px;"></textarea>
                     <div class="input-hint">Поддерживается Markdown разметка</div>
                 </div>
-                
+
+                <div class="input-group">
+                    <label class="input-label">Вложение</label>
+                    <div class="btn-row">
+                        <label class="btn btn-secondary" for="broadcastAttachment">
+                            📎 Прикрепить файл
+                        </label>
+                        <button class="btn btn-secondary" onclick="clearAttachment()">
+                            ❌ Убрать
+                        </button>
+                    </div>
+                    <input type="file" id="broadcastAttachment" class="hidden" accept="image/*,video/*,audio/*,application/pdf" onchange="handleAttachment(event)">
+                    <div id="attachmentPreview"></div>
+                    <div class="input-hint">Поддерживаются изображения, видео, аудио и PDF</div>
+                </div>
+
                 <div class="btn-row">
                     <button class="btn btn-secondary" onclick="closeEditModal()">Отмена</button>
                     <button class="btn btn-primary" onclick="executeBroadcast()">
@@ -1757,32 +1790,62 @@
                     </button>
                 </div>
             `;
-            
+
             modal.classList.add('show');
-            
+
             setTimeout(() => {
                 document.getElementById('broadcastText').focus();
             }, 300);
         }
 
+        function handleAttachment(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            broadcastAttachment = file;
+            const preview = document.getElementById('attachmentPreview');
+            preview.innerHTML = `
+                <div class="attachment-chip">
+                    <span>📎 ${file.name}</span>
+                    <button onclick="clearAttachment()">×</button>
+                </div>
+            `;
+        }
+
+        function clearAttachment() {
+            broadcastAttachment = null;
+            const input = document.getElementById('broadcastAttachment');
+            if (input) input.value = '';
+            const preview = document.getElementById('attachmentPreview');
+            if (preview) preview.innerHTML = '';
+        }
+
         async function executeBroadcast() {
             const text = document.getElementById('broadcastText').value.trim();
-            
+
             if (!text) {
                 showToast('Введите текст сообщения', 'error');
                 haptic('error');
                 return;
             }
-            
+
             const confirmed = confirm('Отправить сообщение ВСЕМ пользователям?');
-            
+
             if (!confirmed) return;
-            
+
             try {
                 showToast('Отправка...', 'info');
-                
-                const result = await apiRequest('/api/admin/broadcast', 'POST', { text });
-                
+
+                let result;
+                if (broadcastAttachment) {
+                    const formData = new FormData();
+                    formData.append('text', text);
+                    formData.append('attachment', broadcastAttachment);
+                    result = await apiRequestForm('/api/admin/broadcast', formData);
+                } else {
+                    result = await apiRequest('/api/admin/broadcast', 'POST', { text });
+                }
+
                 if (result.success) {
                     showToast(`Отправлено: ${result.sent}, Ошибок: ${result.failed}`, 'success');
                     haptic('success');
@@ -1798,9 +1861,6 @@
             }
         }
 
-        // ============================================
-        // УТИЛИТЫ
-        // ============================================
         function formatNumber(num) {
             if (num === null || num === undefined) return '0';
             num = Number(num);
@@ -1818,7 +1878,7 @@
             toast.textContent = message;
             toast.className = `toast ${type}`;
             toast.classList.add('show');
-            
+
             setTimeout(() => {
                 toast.classList.remove('show');
             }, 3000);
@@ -1845,7 +1905,6 @@
             }
         }
 
-        // Закрытие модалок
         document.getElementById('userModal').addEventListener('click', (e) => {
             if (e.target.id === 'userModal') closeUserModal();
         });
@@ -1854,7 +1913,6 @@
             if (e.target.id === 'editModal') closeEditModal();
         });
 
-        // Инициализация
         document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
