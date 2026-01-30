@@ -2171,7 +2171,10 @@
             divine: {
                 prizes: [0, 100, 150, 250, 500, 1000, 9999],
                 getRandomPrize: () => {
-                    return 9999;
+                    const rand = Math.random() * 100;
+                    if (rand < 93) return 0;
+                    if (rand < 98) return 100;
+                    return 150;
                 }
             }
         };
